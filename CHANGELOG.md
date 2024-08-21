@@ -1,5 +1,30 @@
 # Change Log
 
+## 0.2.15
+
+### Patch Changes
+
+- [`409bba45`](https://github.com/LekoArts/gatsby-themes/commit/409bba451d8637d04de2efc8199fa662a2595c68) Thanks [@LekoArts](https://github.com/LekoArts)! - Remove link to my Patreon page. To simplify things I disabled my Patreon. If you want to support my OSS work, please consider using GitHub sponsors or Ko-fi. Thanks!
+
+- Updated dependencies [[`409bba45`](https://github.com/LekoArts/gatsby-themes/commit/409bba451d8637d04de2efc8199fa662a2595c68)]:
+  - @lekoarts/gatsby-theme-cara@5.1.4
+
+## 0.2.14
+
+### Patch Changes
+
+- [#1116](https://github.com/LekoArts/gatsby-themes/pull/1116) [`cf7d5122`](https://github.com/LekoArts/gatsby-themes/commit/cf7d51223a73387f12cac490e2a42f068b0ded26) Thanks [@LekoArts](https://github.com/LekoArts)! - chore(deps): Various dependency updates
+
+- Updated dependencies [[`cf7d5122`](https://github.com/LekoArts/gatsby-themes/commit/cf7d51223a73387f12cac490e2a42f068b0ded26)]:
+  - @lekoarts/gatsby-theme-cara@5.0.5
+
+## 0.2.13
+
+### Patch Changes
+
+- Updated dependencies [[`02872400`](https://github.com/LekoArts/gatsby-themes/commit/0287240022c308a7d1fcc8af348ee7d21bca0dd5)]:
+  - @lekoarts/gatsby-theme-cara@5.0.0
+
 ## 0.2.12
 
 ### Patch Changes

@@ -1,11 +1,11 @@
 {
-  "private": true,
-  "name": "cara",
-  "description": "Playful and Colorful One-Page portfolio featuring Parallax effects and animations",
-  "version": "0.2.12",
-  "author": "LekoArts",
-  "license": "0BSD",
-  "starter-name": "gatsby-starter-portfolio-cara",
+  "name": "travnikov.dev",
+  "version": "0.1.0",
+  "description": "Personal website of software developer Roman Travnikov",
+  "main": "index.js",
+  "repository": "https://github.com/TravnikovDev/travnikov.dev.github.io",
+  "author": "Travnikov.dev",
+  "license": "ISC",
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
@@ -16,14 +16,18 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@lekoarts/gatsby-theme-cara": "^4.0.0",
-    "gatsby": "^4.24.1",
-    "gatsby-plugin-manifest": "^4.24.0",
-    "gatsby-plugin-webpack-bundle-analyser-v2": "^1.1.27",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@lekoarts/gatsby-theme-cara": "^5.1.4",
+    "gatsby": "^5.13.6",
+    "gatsby-plugin-manifest": "^5.13.1",
+    "gatsby-plugin-webpack-statoscope": "^1.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "cross-env": "^7.0.3",
+    "typescript": "^5.5.3"
   }
 }

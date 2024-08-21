@@ -1,23 +1,23 @@
-require(`dotenv`).config()
+import type { GatsbyConfig, PluginRef } from "gatsby"
+import "dotenv/config"
 
 const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE
 
-/**
- * @type {import('gatsby').GatsbyConfig}
- */
-module.exports = {
+const config: GatsbyConfig = {
   siteMetadata: {
     // You can overwrite values here that are used for the SEO component
     // You can also add new values here to query them like usual
-    // See all options: https://github.com/LekoArts/gatsby-themes/blob/main/themes/gatsby-theme-cara/gatsby-config.js
+    // See all options: https://github.com/LekoArts/gatsby-themes/blob/main/themes/gatsby-theme-cara/gatsby-config.mjs
     siteTitle: `Travnikov.dev`,
     siteTitleAlt: `Travnikov.dev - personal website of Roman Travnikov`,
     siteHeadline: `Travnikov.dev - personal website of Roman Travnikov`,
     siteUrl: `https://Travnikov.dev`,
     siteDescription: `Playful and Colorful One-Page portfolio featuring Parallax effects and animations`,
     siteImage: `/banner.jpg`,
+    siteLanguage: `en`,
     author: `@Travnikov.dev`,
   },
+  trailingSlash: `always`,
   plugins: [
     {
       resolve: `@lekoarts/gatsby-theme-cara`,
@@ -50,13 +50,16 @@ module.exports = {
         ],
       },
     },
+    // You can remove this plugin if you don't need it
     shouldAnalyseBundle && {
-      resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
+      resolve: `gatsby-plugin-webpack-statoscope`,
       options: {
-        analyzerMode: `static`,
-        reportFilename: `_bundle.html`,
-        openAnalyzer: false,
+        saveReportTo: `${__dirname}/public/.statoscope/_bundle.html`,
+        saveStatsTo: `${__dirname}/public/.statoscope/_stats.json`,
+        open: false,
       },
     },
-  ].filter(Boolean),
+  ].filter(Boolean) as Array<PluginRef>,
 }
+
+export default config
