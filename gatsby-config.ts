@@ -9,13 +9,13 @@ const config: GatsbyConfig = {
     // You can also add new values here to query them like usual
     // See all options: https://github.com/LekoArts/gatsby-themes/blob/main/themes/gatsby-theme-cara/gatsby-config.mjs
     siteTitle: `Travnikov.dev`,
-    siteTitleAlt: `Travnikov.dev - personal website of Roman Travnikov`,
-    siteHeadline: `Travnikov.dev - personal website of Roman Travnikov`,
+    siteTitleAlt: `Roman Travnikov - Senior Frontend Developer`,
+    siteHeadline: `Roman Travnikov - Senior Frontend Developer with 10+ years of experience`,
     siteUrl: `https://Travnikov.dev`,
-    siteDescription: `Playful and Colorful One-Page portfolio featuring Parallax effects and animations`,
+    siteDescription: `Personal website of Roman Travnikov, a senior frontend developer with 10+ years of experience. Explore projects, blog, and experiments.`,
     siteImage: `/banner.jpg`,
     siteLanguage: `en`,
-    author: `@Travnikov.dev`,
+    author: `Roman Travnikov`,
   },
   trailingSlash: `always`,
   plugins: [
@@ -24,12 +24,69 @@ const config: GatsbyConfig = {
       // See the theme's README for all available options
       options: {},
     },
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `blog`,
+        path: `${__dirname}/src/content/blog`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `projects`,
+        path: `${__dirname}/src/content/projects`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `experiments`,
+        path: `${__dirname}/src/content/experiments`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-transformer-remark`,
+            options: {
+              plugins: [],
+            },
+          },
+        ],
+      },
+    },
+    // Commented out Strapi configuration as it's causing errors
+    // We'll use local markdown content instead
+    /*
+    {
+      resolve: `gatsby-source-strapi`,
+      options: {
+        apiURL: process.env.STRAPI_API_URL || "http://localhost:1337",
+        accessToken: process.env.STRAPI_TOKEN,
+        collectionTypes: [
+          "article",
+          "project",
+          "experiment",
+        ],
+        singleTypes: [
+          "about",
+          "contact",
+          "homepage",
+        ],
+      },
+    },
+    */
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Cara - @lekoarts/gatsby-theme-cara`,
-        short_name: `Cara`,
-        description: `Playful and Colorful One-Page portfolio featuring Parallax effects and animations`,
+        name: `Roman Travnikov - Senior Frontend Developer`,
+        short_name: `Travnikov.dev`,
+        description: `Personal website of Roman Travnikov, a senior frontend developer with 10+ years of experience.`,
         start_url: `/`,
         background_color: `#141821`,
         // This will impact how browsers show your PWA/website
