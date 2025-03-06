@@ -1,5 +1,5 @@
-import React, { useRef, useMemo, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { useRef, useMemo, useState, useLayoutEffect } from 'react';
+import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { 
   Float, 
   Text3D, 
@@ -10,7 +10,8 @@ import {
   ContactShadows,
   PointMaterial,
   Points,
-  Cloud
+  Cloud,
+  RoundedBox
 } from '@react-three/drei';
 import { Box } from '@mantine/core';
 import { keyframes } from '@emotion/react';
@@ -285,85 +286,435 @@ function FlowingRibbon({ color = "#2290E0", width = 0.1, points = 100, length = 
   );
 }
 
-// Main scene with enhanced environment and effects
+// Theme-related 3D components
+// Floating UI Card component to represent a web interface
+function FloatingUICard({ position, rotation, scale = 1, color = "#0078F0" }) {
+  const cardRef = useRef();
+  const contentRef = useRef();
+  
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    
+    // Gentle floating animation
+    if (cardRef.current) {
+      cardRef.current.position.y = position[1] + Math.sin(t * 0.5) * 0.1;
+      cardRef.current.rotation.x = rotation[0] + Math.sin(t * 0.3) * 0.03;
+      cardRef.current.rotation.y = rotation[1] + Math.sin(t * 0.4) * 0.03;
+    }
+    
+    // Pulse content
+    if (contentRef.current) {
+      contentRef.current.scale.x = 1 + Math.sin(t * 0.5) * 0.02;
+      contentRef.current.scale.y = 1 + Math.sin(t * 0.5) * 0.02;
+    }
+  });
+  
+  return (
+    <group ref={cardRef} position={position} rotation={rotation} scale={scale}>
+      {/* Card body */}
+      <RoundedBox 
+        args={[1.6, 0.9, 0.05]} 
+        radius={0.1}
+        smoothness={10}
+        castShadow 
+        receiveShadow
+      >
+        <meshPhysicalMaterial
+          color="#1A1E2A"
+          roughness={0.3}
+          metalness={0.5}
+          clearcoat={1}
+          clearcoatRoughness={0.2}
+          envMapIntensity={2}
+        />
+      </RoundedBox>
+      
+      {/* UI content */}
+      <group ref={contentRef} position={[0, 0, 0.03]}>
+        {/* Header bar */}
+        <mesh position={[0, 0.35, 0]}>
+          <planeGeometry args={[1.4, 0.15]} />
+          <meshBasicMaterial color={color} transparent opacity={0.9} />
+        </mesh>
+        
+        {/* Content blocks */}
+        {[...Array(3)].map((_, i) => (
+          <mesh key={i} position={[0, 0.15 - i * 0.2, 0]}>
+            <planeGeometry args={[1.4, 0.1]} />
+            <meshBasicMaterial 
+              color="white" 
+              transparent 
+              opacity={0.1 + (0.05 * Math.abs(1-i))} 
+            />
+          </mesh>
+        ))}
+        
+        {/* Button */}
+        <mesh position={[0.45, -0.3, 0]}>
+          <planeGeometry args={[0.3, 0.12]} />
+          <meshBasicMaterial 
+            color={color} 
+            transparent 
+            opacity={0.9} 
+          />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
+// Floating Code Snippet - representing development
+function FloatingCodeBlock({ position, rotation, scale = 1 }) {
+  const blockRef = useRef();
+  
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    
+    // Gentle floating animation
+    if (blockRef.current) {
+      blockRef.current.position.y = position[1] + Math.sin(t * 0.4 + 2) * 0.15;
+      blockRef.current.rotation.z = rotation[2] + Math.sin(t * 0.3) * 0.05;
+    }
+  });
+  
+  return (
+    <group ref={blockRef} position={position} rotation={rotation} scale={scale}>
+      {/* Code block background */}
+      <RoundedBox 
+        args={[1.2, 0.7, 0.05]} 
+        radius={0.05}
+        smoothness={8}
+        castShadow 
+        receiveShadow
+      >
+        <meshPhysicalMaterial
+          color="#121420"
+          roughness={0.3}
+          metalness={0.3}
+          clearcoat={0.5}
+          clearcoatRoughness={0.3}
+        />
+      </RoundedBox>
+      
+      {/* Code lines */}
+      {[...Array(5)].map((_, i) => (
+        <mesh key={i} position={[0, 0.25 - i * 0.11, 0.03]}>
+          <planeGeometry args={[i % 3 === 0 ? 0.8 : i % 2 === 0 ? 0.7 : 0.5, 0.03]} />
+          <meshBasicMaterial 
+            color={
+              i === 0 ? "#E0000E" :
+              i === 1 ? "#0078F0" :
+              i === 2 ? "#7000E0" :
+              i === 3 ? "#0078F0" : "#FFFFFF"
+            } 
+            transparent 
+            opacity={0.8} 
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// Terminal Block
+function TerminalBlock({ position, rotation, scale = 1 }) {
+  const terminalRef = useRef();
+  const cursorRef = useRef();
+  
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    
+    // Gentle floating animation
+    if (terminalRef.current) {
+      terminalRef.current.position.y = position[1] + Math.sin(t * 0.3 + 1) * 0.1;
+      terminalRef.current.rotation.x = rotation[0] + Math.sin(t * 0.2) * 0.02;
+    }
+    
+    // Blinking cursor
+    if (cursorRef.current) {
+      cursorRef.current.visible = Math.sin(t * 4) > 0;
+    }
+  });
+  
+  return (
+    <group ref={terminalRef} position={position} rotation={rotation} scale={scale}>
+      {/* Terminal background */}
+      <RoundedBox 
+        args={[1.4, 0.8, 0.05]} 
+        radius={0.05}
+        smoothness={10}
+        castShadow 
+        receiveShadow
+      >
+        <meshPhysicalMaterial
+          color="#000000"
+          roughness={0.3}
+          metalness={0.5}
+          clearcoat={0.8}
+        />
+      </RoundedBox>
+      
+      {/* Terminal header */}
+      <mesh position={[0, 0.32, 0.03]}>
+        <planeGeometry args={[1.38, 0.15]} />
+        <meshBasicMaterial color="#111111" />
+      </mesh>
+      
+      {/* Control dots */}
+      {[...Array(3)].map((_, i) => (
+        <mesh key={i} position={[-0.6 + i * 0.1, 0.32, 0.04]}>
+          <circleGeometry args={[0.02, 16]} />
+          <meshBasicMaterial color={i === 0 ? "#E0000E" : i === 1 ? "#FFA500" : "#00AA00"} />
+        </mesh>
+      ))}
+      
+      {/* Command lines */}
+      {[...Array(3)].map((_, i) => (
+        <group key={i} position={[-0.55, 0.15 - i * 0.12, 0.03]} scale={[1, 1, 1]}>
+          <mesh position={[0.22, 0, 0]}>
+            <planeGeometry args={[0.44 + (i * 0.15), 0.03]} />
+            <meshBasicMaterial color="#7000E0" transparent opacity={0.9} />
+          </mesh>
+          
+          <mesh position={[0.7 - (i * 0.1), 0, 0]}>
+            <planeGeometry args={[0.3 - (i * 0.05), 0.03]} />
+            <meshBasicMaterial color="#0078F0" transparent opacity={0.7} />
+          </mesh>
+        </group>
+      ))}
+      
+      {/* Cursor */}
+      <mesh ref={cursorRef} position={[-0.35, -0.15, 0.04]}>
+        <planeGeometry args={[0.03, 0.03]} />
+        <meshBasicMaterial color="#FFFFFF" />
+      </mesh>
+    </group>
+  );
+}
+
+// Floating React Logo
+function ReactLogo({ position, scale = 1 }) {
+  const groupRef = useRef();
+  
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    if (groupRef.current) {
+      groupRef.current.rotation.y = t * 0.3;
+      groupRef.current.rotation.z = Math.sin(t * 0.3) * 0.2;
+      groupRef.current.position.y = position[1] + Math.sin(t * 0.5) * 0.1;
+    }
+  });
+  
+  return (
+    <group ref={groupRef} position={position} scale={scale}>
+      {/* Center dot */}
+      <mesh castShadow>
+        <sphereGeometry args={[0.12, 32, 32]} />
+        <meshPhysicalMaterial
+          color="#0077FF" // Light theme blue
+          roughness={0.1}
+          metalness={0.8}
+          emissive="#0077FF"
+          emissiveIntensity={0.5}
+        />
+      </mesh>
+      
+      {/* Orbits */}
+      {[...Array(3)].map((_, i) => {
+        const angle = (i / 3) * Math.PI;
+        return (
+          <group key={i} rotation={[angle, angle * 2, angle / 2]}>
+            <mesh>
+              <torusGeometry args={[0.4, 0.02, 16, 30]} />
+              <meshPhysicalMaterial
+                color="#0077FF" // Light theme blue
+                roughness={0.3}
+                metalness={0.7}
+                emissive="#0077FF"
+                emissiveIntensity={0.4} // Slightly more intense for light theme
+                transparent
+                opacity={0.7}
+              />
+            </mesh>
+          </group>
+        );
+      })}
+    </group>
+  );
+}
+
+// Main scene with enhanced environment and thematic elements
 function Scene() {
   // Mouse tracking for interactive effects
   const mouse = useRef([0, 0]);
+  const sceneRef = useRef();
+  
+  useFrame(({ clock, mouse: sceneMouse }) => {
+    if (sceneRef.current) {
+      // Gentle tilt based on mouse position
+      sceneRef.current.rotation.y = THREE.MathUtils.lerp(
+        sceneRef.current.rotation.y || 0,
+        (sceneMouse.x * 0.2) || 0,
+        0.05
+      );
+      sceneRef.current.rotation.x = THREE.MathUtils.lerp(
+        sceneRef.current.rotation.x || 0,
+        (-sceneMouse.y * 0.1) || 0,
+        0.05
+      );
+    }
+  });
   
   return (
     <>
-      {/* Improved lighting */}
-      <ambientLight intensity={0.3} />
-      <spotLight position={[5, 5, 5]} angle={0.15} penumbra={1} intensity={1} castShadow />
-      <pointLight position={[-5, -5, -5]} intensity={0.5} />
-      <pointLight position={[5, -2, 3]} color="#7A52C5" intensity={0.8} />
-      <pointLight position={[-3, 2, -3]} color="#2290E0" intensity={0.8} />
+      {/* Light theme optimized lighting */}
+      <ambientLight intensity={0.6} /> {/* Brighter ambient light */}
+      <directionalLight 
+        position={[5, 8, 5]} 
+        intensity={1.8} 
+        castShadow 
+        shadow-mapSize={[1024, 1024]}
+        color="#FFFFFF"
+      />
+      <spotLight 
+        position={[0, 5, 0]} 
+        angle={0.5} 
+        penumbra={1} 
+        intensity={1.2} 
+        castShadow
+        color="#FFFFFF"
+      />
+      <pointLight position={[5, -2, 3]} color="#2050FF" intensity={1} /> {/* Royal blue */}
+      <pointLight position={[-3, 2, -3]} color="#0077FF" intensity={1} /> {/* Bright blue */}
+      <pointLight position={[2, -5, 2]} color="#FFAC00" intensity={0.6} /> {/* Gold */}
       
-      {/* Main floating name */}
-      <FloatingName />
-      
-      {/* Advanced particles system */}
-      <Particles count={800} mouse={mouse} />
-      
-      {/* Enhanced animated blobs */}
-      <AnimatedBlob position={[2.2, -0.8, -1]} color="#2290E0" scale={1.2} speed={0.8} />
-      <AnimatedBlob position={[-2.3, 0.9, -2]} color="#8422E0" scale={1} speed={1.2} />
-      <AnimatedBlob position={[0, -1.8, -3]} color="#FF2D32" scale={0.7} speed={1.5} complexity={2} />
-      
-      {/* Flowing ribbons for dynamic movement */}
-      <group position={[0, 1.5, -2]} rotation={[0.2, 0.5, 0.1]}>
-        <FlowingRibbon color="#2290E0" width={0.06} length={12} />
+      {/* Scene group for global control */}
+      <group ref={sceneRef} position={[0, 0, 0]}>
+        {/* Frontend themes: UI components for light theme */}
+        <FloatingUICard 
+          position={[1.8, 0, -1]} 
+          rotation={[-0.1, -0.3, 0.1]} 
+          scale={1.2} 
+          color="#0077FF" // Bright blue for light theme
+        />
+        
+        <FloatingUICard 
+          position={[-2, 0.6, -2]} 
+          rotation={[0.15, 0.4, -0.05]} 
+          scale={0.9} 
+          color="#2050FF" // Royal blue for light theme
+        />
+        
+        <FloatingCodeBlock 
+          position={[-1.5, -0.8, -1]} 
+          rotation={[0.2, 0.3, -0.1]} 
+          scale={1}
+        />
+        
+        <TerminalBlock 
+          position={[0.8, -1.2, -0.5]} 
+          rotation={[-0.1, -0.2, 0.05]} 
+          scale={0.8}
+        />
+        
+        <ReactLogo 
+          position={[0, 1.3, -1.5]} 
+          scale={1.2}
+        />
+        
+        {/* Enhanced main floating name */}
+        <group position={[0, 0, 0]}>
+          <FloatingName />
+        </group>
+        
+        {/* Advanced particles system - more dense */}
+        <Particles count={1000} mouse={mouse} />
+        
+        {/* Enhanced animated blobs with light theme colors */}
+        <AnimatedBlob position={[2.2, -0.8, -1]} color="#0077FF" scale={1.2} speed={0.8} /> {/* Bright blue */}
+        <AnimatedBlob position={[-2.3, 0.9, -2]} color="#2050FF" scale={1} speed={1.2} /> {/* Royal blue */}
+        <AnimatedBlob position={[0.3, -1.8, -3]} color="#FFAC00" scale={0.7} speed={1.5} complexity={2} /> {/* Gold */}
+        
+        {/* Flowing ribbons for dynamic movement - with light theme colors */}
+        <group position={[0, 1.5, -2]} rotation={[0.2, 0.5, 0.1]}>
+          <FlowingRibbon color="#0077FF" width={0.06} length={12} /> {/* Bright blue */}
+        </group>
+        <group position={[-1, -1, -1.5]} rotation={[-0.3, -0.2, 0.3]}>
+          <FlowingRibbon color="#2050FF" width={0.04} length={10} /> {/* Royal blue */}
+        </group>
+        <group position={[1.5, 0.5, -2.5]} rotation={[0.1, -0.4, 0.2]}>
+          <FlowingRibbon color="#FFAC00" width={0.03} length={8} /> {/* Gold */}
+        </group>
       </group>
-      <group position={[-1, -1, -1.5]} rotation={[-0.3, -0.2, 0.3]}>
-        <FlowingRibbon color="#8422E0" width={0.04} length={10} />
-      </group>
       
-      {/* Cloud particles for depth */}
+      {/* Atmospheric elements */}
       <Cloud 
-        position={[0, 0, -6]} 
-        opacity={0.3} 
-        speed={0.1} 
-        width={15} 
-        depth={1.5} 
-        segments={20}
+        position={[0, 0, -10]} 
+        opacity={0.4} 
+        speed={0.08} 
+        width={20} 
+        depth={2.5} 
+        segments={25}
       />
       
-      {/* Enhanced environment */}
-      <Environment preset="night" background={false} />
+      {/* Enhanced environment lighting */}
+      <Environment preset="night" background={false} blur={0.8} />
       <ContactShadows 
         position={[0, -1.8, 0]} 
-        opacity={0.7} 
-        width={15} 
-        height={15} 
-        blur={2} 
-        far={3}
-        color="#000"
+        opacity={0.8} 
+        width={18} 
+        height={18} 
+        blur={2.5} 
+        far={3.5}
+        color="#000000"
       />
       
-      {/* Camera controls - improved smooth interaction */}
+      {/* Enhanced camera controls */}
       <OrbitControls 
         enableZoom={false} 
         enablePan={false}
-        minPolarAngle={Math.PI / 3}
+        minPolarAngle={Math.PI / 3.5}
         maxPolarAngle={Math.PI / 1.8}
-        dampingFactor={0.07}
-        rotateSpeed={0.05}
+        dampingFactor={0.08}
+        rotateSpeed={0.03}
         autoRotate
-        autoRotateSpeed={0.5}
+        autoRotateSpeed={0.3}
       />
       
-      {/* Track mouse movement for interactive effects */}
+      {/* Track mouse for interactive particles */}
       <mesh visible={false} onPointerMove={(e) => {
         mouse.current = [
           (e.point.x / 5),
           (e.point.y / 5)
         ];
       }}>
-        <planeGeometry args={[40, 40]} />
-        <meshBasicMaterial />
+        <planeGeometry args={[50, 50]} />
+        <meshBasicMaterial transparent opacity={0} />
       </mesh>
       
-      {/* Post-processing effects removed to fix compatibility issues */}
+      {/* Light rays - light theme version */}
+      <group position={[0, 2, -5]}>
+        {[...Array(3)].map((_, i) => {
+          const angle = (i / 3) * Math.PI * 2;
+          const rad = 3;
+          return (
+            <spotLight
+              key={i}
+              position={[
+                Math.cos(angle) * rad,
+                Math.sin(angle) * rad,
+                5
+              ]}
+              angle={0.15}
+              distance={15}
+              penumbra={1}
+              intensity={0.4} // Lower intensity for light theme
+              color={i === 0 ? "#0077FF" : i === 1 ? "#2050FF" : "#FFAC00"} // Light theme colors
+              castShadow={false}
+            />
+          );
+        })}
+      </group>
     </>
   );
 }
@@ -379,13 +730,18 @@ export default function HeroAnimation() {
   return (
     <Box
       sx={{
-        width: '100%',
-        height: '70vh', // Increased height for more impact
-        position: 'relative',
+        width: '100vw', // Full viewport width
+        height: '100vh', // Full viewport height
+        position: 'fixed', // Fixed position to cover entire screen
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         overflow: 'hidden',
-        borderRadius: '16px',
-        boxShadow: '0 10px 30px -5px rgba(0,0,0,0.3)',
-        animation: `${glowPulse} 6s infinite ease-in-out`,
+        transform: 'translateZ(0)', // Hardware acceleration
+        zIndex: 1, // Place behind content but above body
+        
+        // Light blue tint for the entire scene
         '&:after': {
           content: '""',
           position: 'absolute',
@@ -393,9 +749,22 @@ export default function HeroAnimation() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'radial-gradient(circle at center, rgba(0,0,0,0) 70%, rgba(0,0,0,0.8) 100%)',
+          background: 'radial-gradient(circle at center, rgba(220,240,255,0.2) 0%, rgba(200,230,255,0.5) 100%)',
           pointerEvents: 'none',
           zIndex: 1
+        },
+        
+        // Top gradient for depth with blue tint
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '70%',
+          background: 'linear-gradient(to bottom, rgba(210,235,255,0.5) 0%, rgba(210,235,255,0) 100%)',
+          zIndex: 1,
+          pointerEvents: 'none',
         }
       }}
     >
@@ -406,13 +775,18 @@ export default function HeroAnimation() {
           antialias: true,
           alpha: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.2,
+          toneMappingExposure: 1.5, // Increased exposure
           outputColorSpace: THREE.SRGBColorSpace
         }}
         shadows
+        style={{
+          touchAction: 'none', // Improve touch handling
+          willChange: 'transform', // Hint for better performance
+        }}
       >
         <Scene />
       </Canvas>
+      {/* No decorative corner accents needed for full-screen background */}
     </Box>
   );
 }
