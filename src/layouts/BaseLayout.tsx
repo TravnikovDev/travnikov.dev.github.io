@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  AppShell,
-  AppShellMain,
-} from "@mantine/core";
+import { AppShell, AppShellMain } from "@mantine/core";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 
 // Import components
@@ -15,7 +12,8 @@ interface BaseLayoutProps {
 }
 
 export default function BaseLayout({ children }: BaseLayoutProps) {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
   const [scroll] = useWindowScroll();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -31,22 +29,17 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
       padding="0" // Reduced padding to allow full-width sections
     >
       {/* Header component */}
-      <Header 
+      <Header
         isScrolled={isScrolled}
         drawerOpened={drawerOpened}
         toggleDrawer={toggleDrawer}
       />
-      
+
       {/* Mobile Navigation Drawer */}
-      <MobileDrawer 
-        opened={drawerOpened}
-        onClose={closeDrawer}
-      />
-      
-      <AppShellMain>
-        {children}
-      </AppShellMain>
-      
+      <MobileDrawer opened={drawerOpened} onClose={closeDrawer} />
+
+      <AppShellMain>{children}</AppShellMain>
+
       {/* Footer component */}
       <Footer />
     </AppShell>

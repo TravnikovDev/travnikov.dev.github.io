@@ -768,7 +768,7 @@ const glowPulse = keyframes({
 export default function HeroAnimation() {
   return (
     <Box
-      sx={{
+      style={{
         width: "100vw", // Full viewport width
         height: "100vh", // Full viewport height
         position: "fixed", // Fixed position to cover entire screen
@@ -823,6 +823,8 @@ export default function HeroAnimation() {
         style={{
           touchAction: "none", // Improve touch handling
           willChange: "transform", // Hint for better performance
+          height: "100%", // Full height
+          width: "100%", // Full width
         }}
       >
         <Scene />

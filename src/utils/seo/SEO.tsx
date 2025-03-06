@@ -1,6 +1,6 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import { useStaticQuery, graphql } from 'gatsby';
+import React from "react";
+import { Helmet } from "react-helmet";
+import { useStaticQuery, graphql } from "gatsby";
 
 interface SEOProps {
   title?: string;
@@ -10,7 +10,13 @@ interface SEOProps {
   children?: React.ReactNode;
 }
 
-export function SEO({ title, description, pathname, image, children }: SEOProps) {
+export function SEO({
+  title,
+  description,
+  pathname,
+  image,
+  children,
+}: SEOProps) {
   const { site } = useStaticQuery(graphql`
     query {
       site {
@@ -46,7 +52,11 @@ export function SEO({ title, description, pathname, image, children }: SEOProps)
   };
 
   return (
-    <Helmet title={title} defaultTitle={siteTitle} titleTemplate={`%s | ${siteTitle}`}>
+    <Helmet
+      title={title}
+      defaultTitle={siteTitle}
+      titleTemplate={`%s | ${siteTitle}`}
+    >
       <html lang={siteLanguage} />
       <meta name="description" content={seo.description} />
       <meta name="image" content={seo.image} />

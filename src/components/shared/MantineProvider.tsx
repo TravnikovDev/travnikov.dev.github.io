@@ -1,116 +1,121 @@
-import React from 'react';
-import { createTheme, MantineProvider as Provider } from '@mantine/core';
-import '@mantine/core/styles.css';
+import React from "react";
+import { createTheme, MantineProvider as Provider } from "@mantine/core";
+import "@mantine/core/styles.css";
 
 // Enhanced theme with bolder colors, better contrasts, and funky typography
 const theme = createTheme({
-  primaryColor: 'primary',
+  primaryColor: "primary",
   colors: {
     // Professional yet vibrant color palette for light theme with navy/blue accents
     primary: [
-      '#EBF8FF', // 0 - Almost white with blue tint
-      '#D1EFFF', // 1
-      '#A7DCFF', // 2
-      '#7CC4FF', // 3
-      '#51ABFF', // 4
-      '#2593FF', // 5
-      '#0077FF', // 6: primary - Bright blue
-      '#0062D6', // 7
-      '#004EAD', // 8
-      '#003A84', // 9 - Navy
+      "#EBF8FF", // 0 - Almost white with blue tint
+      "#D1EFFF", // 1
+      "#A7DCFF", // 2
+      "#7CC4FF", // 3
+      "#51ABFF", // 4
+      "#2593FF", // 5
+      "#0077FF", // 6: primary - Bright blue
+      "#0062D6", // 7
+      "#004EAD", // 8
+      "#003A84", // 9 - Navy
     ],
     secondary: [
-      '#F0F4FF', // 0
-      '#DCE4FF', // 1
-      '#B6C8FF', // 2
-      '#91ACFF', // 3
-      '#6B8FFF', // 4
-      '#4673FF', // 5
-      '#2050FF', // 6: secondary - Royal blue
-      '#1A42D6', // 7
-      '#1335AD', // 8
-      '#0D2884', // 9 - Deep royal blue
+      "#F0F4FF", // 0
+      "#DCE4FF", // 1
+      "#B6C8FF", // 2
+      "#91ACFF", // 3
+      "#6B8FFF", // 4
+      "#4673FF", // 5
+      "#2050FF", // 6: secondary - Royal blue
+      "#1A42D6", // 7
+      "#1335AD", // 8
+      "#0D2884", // 9 - Deep royal blue
     ],
     accent: [
-      '#FFF8EB', // 0
-      '#FFF1D7', // 1
-      '#FFE4B0', // 2
-      '#FFD788', // 3
-      '#FFC961', // 4
-      '#FFBC39', // 5
-      '#FFAC00', // 6: accent - Gold
-      '#D69000', // 7
-      '#AD7400', // 8
-      '#845800', // 9 - Deep gold
+      "#FFF8EB", // 0
+      "#FFF1D7", // 1
+      "#FFE4B0", // 2
+      "#FFD788", // 3
+      "#FFC961", // 4
+      "#FFBC39", // 5
+      "#FFAC00", // 6: accent - Gold
+      "#D69000", // 7
+      "#AD7400", // 8
+      "#845800", // 9 - Deep gold
     ],
     gray: [
-      '#F9FAFC', // 0 - Almost white
-      '#F0F2F5', // 1
-      '#E2E6ED', // 2
-      '#D3DAE4', // 3
-      '#C4CDDC', // 4
-      '#A9B6CD', // 5
-      '#8C9CB8', // 6 - Light slate
-      '#6B7D9B', // 7
-      '#50617D', // 8
-      '#39485E', // 9 - Slate blue
+      "#F9FAFC", // 0 - Almost white
+      "#F0F2F5", // 1
+      "#E2E6ED", // 2
+      "#D3DAE4", // 3
+      "#C4CDDC", // 4
+      "#A9B6CD", // 5
+      "#8C9CB8", // 6 - Light slate
+      "#6B7D9B", // 7
+      "#50617D", // 8
+      "#39485E", // 9 - Slate blue
     ],
   },
-  // Extreme typography with maximum personality and impact  
-  fontFamily: '"Cabinet Grotesk", "Mona Sans", "Switzer", "Inter", system-ui, -apple-system, sans-serif',
-  fontFamilyMonospace: '"JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+  // Extreme typography with maximum personality and impact
+  fontFamily:
+    '"Cabinet Grotesk", "Mona Sans", "Switzer", "Inter", system-ui, -apple-system, sans-serif',
+  fontFamilyMonospace:
+    '"JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   headings: {
     // Ultra-bold, ultra-dramatic typography
-    fontFamily: '"Monument Extended", "Clash Display", "Druk Wide", "Chillax", "PP Neue Montreal", system-ui, sans-serif',
-    fontWeight: '900', // Maximum boldness
+    fontFamily:
+      '"Monument Extended", "Clash Display", "Druk Wide", "Chillax", "PP Neue Montreal", system-ui, sans-serif',
+    fontWeight: "900", // Maximum boldness
     sizes: {
-      h1: { fontSize: '7rem', lineHeight: '1', letterSpacing: '-0.04em' }, // GIGANTIC
-      h2: { fontSize: '5rem', lineHeight: '1.05', letterSpacing: '-0.035em' }, // ENORMOUS
-      h3: { fontSize: '3.2rem', lineHeight: '1.1', letterSpacing: '-0.03em' }, // HUGE
-      h4: { fontSize: '2.2rem', lineHeight: '1.2', letterSpacing: '-0.02em' }, // Very large
-      h5: { fontSize: '1.6rem', lineHeight: '1.25', letterSpacing: '-0.015em' }, // Large
+      h1: { fontSize: "7rem", lineHeight: "1", letterSpacing: "-0.04em" }, // GIGANTIC
+      h2: { fontSize: "5rem", lineHeight: "1.05", letterSpacing: "-0.035em" }, // ENORMOUS
+      h3: { fontSize: "3.2rem", lineHeight: "1.1", letterSpacing: "-0.03em" }, // HUGE
+      h4: { fontSize: "2.2rem", lineHeight: "1.2", letterSpacing: "-0.02em" }, // Very large
+      h5: { fontSize: "1.6rem", lineHeight: "1.25", letterSpacing: "-0.015em" }, // Large
     },
   },
   // Increased radius for more modern look
-  defaultRadius: 'lg',
-  defaultGradient: { from: 'primary', to: 'secondary', deg: 45 },
+  defaultRadius: "lg",
+  defaultGradient: { from: "primary", to: "secondary", deg: 45 },
   components: {
     Button: {
       defaultProps: {
-        size: 'lg',
-        radius: 'xl', // Rounder buttons
+        size: "lg",
+        radius: "xl", // Rounder buttons
       },
       styles: {
         root: {
           fontWeight: 700, // Bolder text
-          fontSize: '1.1rem', // Slightly larger
-          letterSpacing: '-0.01em',
-          boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)', // Stronger shadow
-          transition: 'all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)', // More playful animation
-          '&:hover': {
-            transform: 'translateY(-5px) scale(1.02)', // More dramatic hover effect
-            boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 120, 240, 0.3)',
+          fontSize: "1.1rem", // Slightly larger
+          letterSpacing: "-0.01em",
+          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)", // Stronger shadow
+          transition: "all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)", // More playful animation
+          "&:hover": {
+            transform: "translateY(-5px) scale(1.02)", // More dramatic hover effect
+            boxShadow:
+              "0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 120, 240, 0.3)",
           },
         },
       },
     },
     Container: {
       defaultProps: {
-        px: { base: 'xl', sm: '2xl' }, // Increased padding
+        px: { base: "xl", sm: "2xl" }, // Increased padding
       },
     },
     Paper: {
       defaultProps: {
-        p: 'xl', // Increased padding
-        radius: 'lg', // Rounder corners
+        p: "xl", // Increased padding
+        radius: "lg", // Rounder corners
       },
       styles: {
         root: {
-          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-          transition: 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease',
-          '&:hover': {
-            transform: 'translateY(-5px)',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
+          transition:
+            "transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease",
+          "&:hover": {
+            transform: "translateY(-5px)",
+            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)",
           },
         },
       },
@@ -119,60 +124,67 @@ const theme = createTheme({
       styles: {
         root: {
           // More dynamic line-height
-          '&[data-order="1"]': { letterSpacing: '-0.03em' },
-          '&[data-order="2"]': { letterSpacing: '-0.02em' },
+          '&[data-order="1"]': { letterSpacing: "-0.03em" },
+          '&[data-order="2"]': { letterSpacing: "-0.02em" },
         },
       },
     },
   },
   // Enhanced CSS variables for more vivid gradients and effects
-  cssVariablesResolver: theme => ({
+  cssVariablesResolver: (theme) => ({
     variables: {
       // Professional yet vibrant gradients for light theme
-      '--mantine-primary-gradient': 'linear-gradient(45deg, var(--mantine-color-primary-6), var(--mantine-color-secondary-6))',
-      '--mantine-secondary-gradient': 'linear-gradient(45deg, var(--mantine-color-secondary-6), var(--mantine-color-accent-6))',
-      '--mantine-tertiary-gradient': 'linear-gradient(45deg, var(--mantine-color-accent-5), var(--mantine-color-primary-5))',
-      
+      "--mantine-primary-gradient":
+        "linear-gradient(45deg, var(--mantine-color-primary-6), var(--mantine-color-secondary-6))",
+      "--mantine-secondary-gradient":
+        "linear-gradient(45deg, var(--mantine-color-secondary-6), var(--mantine-color-accent-6))",
+      "--mantine-tertiary-gradient":
+        "linear-gradient(45deg, var(--mantine-color-accent-5), var(--mantine-color-primary-5))",
+
       // SUPER VIBRANT animated gradients for light theme
-      '--mantine-animated-gradient': 'linear-gradient(90deg, #0080FF, #00F0FF, #2050FF, #5F43FF, #FFAC00, #FF5E00, #0080FF)',
-      '--mantine-blue-gradient': 'linear-gradient(45deg, #00A1FF, #2050FF, #00E0FF, #51ABFF)',
-      '--mantine-dramatic-gradient': 'radial-gradient(circle at top left, #0077FF, #2050FF, #FFAC00)',
-      '--mantine-shine-gradient': 'linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)',
-      
+      "--mantine-animated-gradient":
+        "linear-gradient(90deg, #0080FF, #00F0FF, #2050FF, #5F43FF, #FFAC00, #FF5E00, #0080FF)",
+      "--mantine-blue-gradient":
+        "linear-gradient(45deg, #00A1FF, #2050FF, #00E0FF, #51ABFF)",
+      "--mantine-dramatic-gradient":
+        "radial-gradient(circle at top left, #0077FF, #2050FF, #FFAC00)",
+      "--mantine-shine-gradient":
+        "linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)",
+
       // Refined shadows and glows for light theme
-      '--mantine-glow-shadow': '0 10px 30px rgba(0, 119, 255, 0.2)',
-      '--mantine-royal-glow': '0 10px 30px rgba(32, 80, 255, 0.2)',
-      '--mantine-gold-glow': '0 10px 30px rgba(255, 172, 0, 0.2)',
-      '--mantine-soft-shadow': '0 20px 80px -20px rgba(57, 72, 94, 0.25)',
-      '--mantine-card-shadow': '0 10px 40px -10px rgba(57, 72, 94, 0.3)',
-      
+      "--mantine-glow-shadow": "0 10px 30px rgba(0, 119, 255, 0.2)",
+      "--mantine-royal-glow": "0 10px 30px rgba(32, 80, 255, 0.2)",
+      "--mantine-gold-glow": "0 10px 30px rgba(255, 172, 0, 0.2)",
+      "--mantine-soft-shadow": "0 20px 80px -20px rgba(57, 72, 94, 0.25)",
+      "--mantine-card-shadow": "0 10px 40px -10px rgba(57, 72, 94, 0.3)",
+
       // Spacing variables for consistent layout
-      '--mantine-section-spacing': '6rem',
-      '--mantine-card-spacing': '2rem',
-      
+      "--mantine-section-spacing": "6rem",
+      "--mantine-card-spacing": "2rem",
+
       // Ultra transparent page background to let 3D scene show through
-      '--mantine-page-bg': 'transparent',
-      
+      "--mantine-page-bg": "transparent",
+
       // Z-index layers
-      '--mantine-z-navbar': '1000',
-      '--mantine-z-overlay': '900',
-      '--mantine-z-modal': '1100',
+      "--mantine-z-navbar": "1000",
+      "--mantine-z-overlay": "900",
+      "--mantine-z-modal": "1100",
     },
     light: {},
     dark: {
       // Enhanced dark theme variables
-      '--mantine-color-body': '#0F1015',
+      "--mantine-color-body": "#0F1015",
     },
   }),
   // Dramatically increased spacing for maximum breathing room
   spacing: {
-    xs: '1rem',     // +60%
-    sm: '1.5rem',   // +71%
-    md: '2.5rem',   // +100%
-    lg: '3.5rem',   // +100%
-    xl: '5rem',     // +100%
-    '2xl': '7rem',  // +100%
-    '3xl': '10rem', // New ultra-large spacing
+    xs: "1rem", // +60%
+    sm: "1.5rem", // +71%
+    md: "2.5rem", // +100%
+    lg: "3.5rem", // +100%
+    xl: "5rem", // +100%
+    "2xl": "7rem", // +100%
+    "3xl": "10rem", // New ultra-large spacing
   },
 });
 
@@ -191,51 +203,51 @@ export function MantineProvider({ children }: MantineProviderProps) {
 // Enhanced font loading with more personality fonts
 export const onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([
-    <link 
-      rel="stylesheet" 
-      href="https://unpkg.com/@mantine/core@7.6.2/styles.css" 
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@mantine/core@7.6.2/styles.css"
       key="mantine-styles"
     />,
     // Base Inter font
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" 
-      rel="stylesheet" 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
       key="google-fonts-inter"
     />,
     // EXTREME personality with ultra-dramatic fonts from multiple sources
-    <link 
-      href="https://api.fontshare.com/v2/css?f[]=clash-display@700,800,900&f[]=cabinet-grotesk@700,800,900,500,400&f[]=chillax@600,700,800,900&f[]=switzer@600,700,800,900&f[]=satoshi@900,700&f[]=general-sans@700,900&display=swap" 
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=clash-display@700,800,900&f[]=cabinet-grotesk@700,800,900,500,400&f[]=chillax@600,700,800,900&f[]=switzer@600,700,800,900&f[]=satoshi@900,700&f[]=general-sans@700,900&display=swap"
       rel="stylesheet"
       key="fontshare-fonts-1"
     />,
-    <link 
-      href="https://fonts.cdnfonts.com/css/monument-extended" 
+    <link
+      href="https://fonts.cdnfonts.com/css/monument-extended"
       rel="stylesheet"
       key="cdnfonts-monument"
     />,
-    <link 
-      href="https://fonts.cdnfonts.com/css/druk-wide" 
+    <link
+      href="https://fonts.cdnfonts.com/css/druk-wide"
       rel="stylesheet"
       key="cdnfonts-druk"
     />,
-    <link 
-      href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-display.min.css" 
+    <link
+      href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-display.min.css"
       rel="stylesheet"
       key="jakarta-display"
     />,
-    <link 
-      href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/hk-grotesk.min.css" 
+    <link
+      href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/hk-grotesk.min.css"
       rel="stylesheet"
       key="hk-grotesk"
     />,
     // Monospace font for code
-    <link 
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" 
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
       key="google-fonts-mono"
     />,
     // Global styles for animated backgrounds and increased whitespace
-    <style 
+    <style
       key="global-styles"
       dangerouslySetInnerHTML={{
         __html: `
@@ -514,8 +526,8 @@ export const onRenderBody = ({ setHeadComponents }) => {
           * {
             -webkit-tap-highlight-color: transparent;
           }
-        `
+        `,
       }}
-    />
+    />,
   ]);
 };

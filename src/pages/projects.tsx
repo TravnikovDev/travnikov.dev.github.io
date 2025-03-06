@@ -1,8 +1,18 @@
-import React from 'react';
-import { graphql, Link, PageProps } from 'gatsby';
-import { SimpleGrid, Card, Image, Text, Badge, Group, Title, Container, Box } from '@mantine/core';
-import BaseLayout from '../layouts/BaseLayout';
-import { SEO } from '../utils/seo/SEO';
+import React from "react";
+import { graphql, Link, PageProps } from "gatsby";
+import {
+  SimpleGrid,
+  Card,
+  Image,
+  Text,
+  Badge,
+  Group,
+  Title,
+  Container,
+  Box,
+} from "@mantine/core";
+import BaseLayout from "../layouts/BaseLayout";
+import { SEO } from "../utils/seo/SEO";
 
 interface ProjectsPageProps extends PageProps {
   data: {
@@ -14,27 +24,30 @@ interface ProjectsPageProps extends PageProps {
 export default function ProjectsPage({ data }: ProjectsPageProps) {
   // Since we're not using Strapi currently, we'll default to placeholder content
   const projects: any[] = [];
-  
+
   return (
     <BaseLayout>
       <Container size="lg" py="xl">
         <Box mb="xl">
-          <Title order={1} mb="md">Projects</Title>
+          <Title order={1} mb="md">
+            Projects
+          </Title>
           <Text size="lg">
-            A showcase of my work as a senior frontend developer, including indie projects, browser extensions, and professional work.
+            A showcase of my work as a senior frontend developer, including
+            indie projects, browser extensions, and professional work.
           </Text>
         </Box>
-        
+
         {projects.length > 0 ? (
           <SimpleGrid
             cols={{ base: 1, sm: 2, md: 3 }}
-            spacing={{ base: 'md', sm: 'lg' }}
+            spacing={{ base: "md", sm: "lg" }}
           >
             {projects.map((project) => (
-              <Link 
-                key={project.id} 
+              <Link
+                key={project.id}
                 to={`/projects/${project.slug}`}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ textDecoration: "none", color: "inherit" }}
               >
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
                   {project.image && (
@@ -61,7 +74,7 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
           // Placeholder content when no projects exist yet
           <SimpleGrid
             cols={{ base: 1, sm: 2, md: 3 }}
-            spacing={{ base: 'md', sm: 'lg' }}
+            spacing={{ base: "md", sm: "lg" }}
           >
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card key={i} shadow="sm" padding="lg" radius="md" withBorder>
@@ -73,7 +86,8 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
                   <Badge color="blue">Web App</Badge>
                 </Group>
                 <Text size="sm" color="dimmed">
-                  This is a placeholder for a project description. Projects will be loaded from Markdown files.
+                  This is a placeholder for a project description. Projects will
+                  be loaded from Markdown files.
                 </Text>
               </Card>
             ))}
@@ -86,8 +100,8 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
 
 export function Head() {
   return (
-    <SEO 
-      title="Projects" 
+    <SEO
+      title="Projects"
       description="Browse through Roman Travnikov's portfolio of frontend development projects including web applications, browser extensions, and more."
     />
   );

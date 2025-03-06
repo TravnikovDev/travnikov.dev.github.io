@@ -90,65 +90,6 @@ const buttonVariants = {
   tap: { scale: 0.95 },
 };
 
-// Overlay code elements for decoration
-const CodeSnippet = ({ style }) => (
-  <Box
-    sx={{
-      fontFamily: '"JetBrains Mono", monospace',
-      fontSize: "0.9rem",
-      color: "#39485E",
-      background: "rgba(255, 255, 255, 0.85)",
-      backdropFilter: "blur(8px)",
-      padding: "1.5rem", // More padding
-      borderRadius: "0.75rem", // Rounder corners
-      border: "1px solid rgba(0, 119, 255, 0.2)", // Light blue border
-      position: "absolute",
-      zIndex: 1,
-      maxWidth: "280px", // Wider
-      boxShadow: "var(--mantine-soft-shadow)",
-      transform: "rotate(-3deg)", // Slight tilt
-      ...style,
-    }}
-    className="hover-card animated-border" // Add hover effect and animated border
-  >
-    <Text>
-      <Box component="span" sx={{ color: "#E0000E" }}>
-        function
-      </Box>{" "}
-      <Box component="span" sx={{ color: "#0077FF" }}>
-        createImpressiveUI
-      </Box>
-      () {"{"}
-      <br />
-      &nbsp;&nbsp;
-      <Box component="span" sx={{ color: "#2050FF" }}>
-        const
-      </Box>{" "}
-      experience ={" "}
-      <Box component="span" sx={{ color: "#0077FF" }}>
-        amazing
-      </Box>
-      ();
-      <br />
-      &nbsp;&nbsp;
-      <Box component="span" sx={{ color: "#FFAC00" }}>
-        // Add some parallax effects
-      </Box>
-      <br />
-      &nbsp;&nbsp;
-      <Box component="span" sx={{ color: "#E0000E" }}>
-        return
-      </Box>{" "}
-      <Box component="span" sx={{ color: "#0077FF" }}>
-        experience
-      </Box>
-      ;
-      <br />
-      {"}"}
-    </Text>
-  </Box>
-);
-
 const FloatingElement = ({ children, style, animationDuration = 5 }) => (
   <Box
     sx={{
@@ -222,18 +163,6 @@ export default function HeroSection() {
       {/* The 3D scene is now fixed and positioned in its own component, 
           so we don't need a container here. Just render it directly. */}
       <HeroAnimation />
-      {/* Decorative floating elements for depth and interest */}
-      <FloatingElement
-        style={{
-          top: "15%",
-          left: "5%",
-          transform: "rotate(-5deg)",
-          display: { base: "none", md: "block" },
-        }}
-        animationDuration={8}
-      >
-        <CodeSnippet />
-      </FloatingElement>
 
       <FloatingElement
         style={{

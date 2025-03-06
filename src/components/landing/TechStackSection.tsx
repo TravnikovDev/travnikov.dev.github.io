@@ -12,7 +12,7 @@ import {
   Progress,
   useMantineTheme,
 } from "@mantine/core";
-import { keyframes } from '@emotion/react';
+import { keyframes } from "@emotion/react";
 
 interface TechItem {
   name: string;
