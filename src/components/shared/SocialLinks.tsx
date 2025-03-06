@@ -1,39 +1,39 @@
-import React from 'react';
-import { Group, ActionIcon, Tooltip } from '@mantine/core';
+import React from "react";
+import { Group, ActionIcon, Tooltip } from "@mantine/core";
 
 // In a real implementation, these would be actual icon components from a library
 const socialLinks = [
   {
-    name: 'GitHub',
-    icon: '📂',
-    url: 'https://github.com/TravnikovDev',
-    color: '#333',
+    name: "GitHub",
+    icon: "📂",
+    url: "https://github.com/TravnikovDev",
+    color: "#333",
   },
   {
-    name: 'LinkedIn',
-    icon: '🔗',
-    url: 'https://www.linkedin.com/in/roman-travnikov/',
-    color: '#0077B5',
+    name: "LinkedIn",
+    icon: "🔗",
+    url: "https://www.linkedin.com/in/roman-travnikov/",
+    color: "#0077B5",
   },
   {
-    name: 'Instagram',
-    icon: '📷',
-    url: 'https://instagram.com/travnikov.dev',
-    color: '#E1306C',
+    name: "Instagram",
+    icon: "📷",
+    url: "https://instagram.com/travnikov.dev",
+    color: "#E1306C",
   },
   {
-    name: 'Email',
-    icon: '📧',
-    url: 'mailto:hello@travnikov.dev',
-    color: '#D44638',
+    name: "Email",
+    icon: "📧",
+    url: "mailto:roman@travnikov.dev",
+    color: "#D44638",
   },
 ];
 
 interface SocialLinksProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
-export default function SocialLinks({ size = 'md' }: SocialLinksProps) {
+export default function SocialLinks({ size = "md" }: SocialLinksProps) {
   const iconSize = {
     sm: 16,
     md: 20,
@@ -55,9 +55,9 @@ export default function SocialLinks({ size = 'md' }: SocialLinksProps) {
             radius="xl"
             size={size}
             sx={{
-              backgroundColor: 'transparent',
-              '&:hover': {
-                backgroundColor: 'rgba(0, 0, 0, 0.05)',
+              backgroundColor: "transparent",
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.05)",
               },
             }}
           >
