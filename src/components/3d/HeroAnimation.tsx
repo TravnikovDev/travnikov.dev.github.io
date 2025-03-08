@@ -16,7 +16,6 @@ import {
 import { Box } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import * as THREE from "three";
-import Particles from "./Particles";
 import AnimatedBlob from "./AnimatedBlob";
 import FloatingName from "./FloatingName";
 import FlowingRibbon from "./FlowingRibbon";
@@ -41,6 +40,10 @@ function Scene() {
         -sceneMouse.y * 0.1 || 0,
         0.05
       );
+
+      // Update position based on scroll
+      const scrollY = window.scrollY || window.pageYOffset;
+      sceneRef.current.position.y = scrollY * 0.001;
     }
   });
 
@@ -92,7 +95,6 @@ function Scene() {
         <group position={[0, 0, 0]}>
           <FloatingName />
         </group>
-        <Particles count={1000} mouse={mouse} />
         <AnimatedBlob
           position={[2.2, -0.8, -1]}
           color="#3D7FFF"

@@ -14,6 +14,10 @@ function FloatingUICard({ position, rotation, scale = 1, color = "#0078F0" }) {
       cardRef.current.position.y = position[1] + Math.sin(t * 0.5) * 0.1;
       cardRef.current.rotation.x = rotation[0] + Math.sin(t * 0.3) * 0.03;
       cardRef.current.rotation.y = rotation[1] + Math.sin(t * 0.4) * 0.03;
+
+      // Update position based on scroll
+      const scrollY = window.scrollY || window.pageYOffset;
+      cardRef.current.position.y += scrollY * 0.001;
     }
 
     // Pulse content
