@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
       sx={{
         borderTop: "1px solid rgba(255, 255, 255, 0.08)",
         background:
-          "linear-gradient(180deg, rgba(15, 16, 21, 0) 0%, rgba(15, 16, 21, 0.9) 30%, rgba(15, 16, 21, 1) 100%)",
+          "linear-gradient(180deg, rgba(10, 15, 36, 0) 0%, rgba(10, 15, 36, 0.9) 30%, rgba(10, 15, 36, 1) 100%)",
         backdropFilter: "blur(15px)",
         position: "relative",
         overflow: "hidden",

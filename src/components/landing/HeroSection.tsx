@@ -153,7 +153,7 @@ export default function HeroSection() {
           right: 0,
           bottom: 0,
           background:
-            "radial-gradient(circle at top right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3) 70%), radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3) 70%)",
+            "radial-gradient(circle at top right, rgba(10, 15, 36, 0.5), rgba(10, 15, 36, 0.3) 70%), radial-gradient(circle at bottom left, rgba(10, 15, 36, 0.5), rgba(10, 15, 36, 0.3) 70%)",
           zIndex: -1,
           pointerEvents: "none",
           backdropFilter: "blur(2px)",
@@ -179,7 +179,7 @@ export default function HeroSection() {
             height: "80px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle at 30% 30%, rgba(0, 120, 240, 0.4), transparent 70%)",
+              "radial-gradient(circle at 30% 30%, rgba(61, 127, 255, 0.4), transparent 70%)",
             filter: "blur(10px)",
             animation: `${pulseGlow} 4s infinite alternate`,
           }}
@@ -217,7 +217,7 @@ export default function HeroSection() {
               fontFamily: '"Monument Extended", "Clash Display", sans-serif', // More dramatic font
               letterSpacing: "-0.07em", // Tighter spacing
               color: "transparent", // Transparent text with gradient stroke
-              WebkitTextStroke: "2px rgba(0, 77, 255, 0.05)", // Light blue outline for light theme
+              WebkitTextStroke: "2px rgba(61, 127, 255, 0.05)", // Light blue outline for light theme
               position: "absolute",
               lineHeight: 0.75, // Even tighter line height
               textTransform: "uppercase",
@@ -225,11 +225,11 @@ export default function HeroSection() {
               pointerEvents: "none",
               // Complex background effect for light theme
               background:
-                "linear-gradient(to bottom, rgba(0, 77, 255, 0.035) 0%, rgba(0, 77, 255, 0.01) 100%)",
+                "linear-gradient(to bottom, rgba(61, 127, 255, 0.035) 0%, rgba(61, 127, 255, 0.01) 100%)",
               WebkitBackgroundClip: "text",
               // Text shadow for depth - lighter for light theme
               textShadow:
-                "0 0 50px rgba(0, 119, 255, 0.03), 0 0 100px rgba(32, 80, 255, 0.02)",
+                "0 0 50px rgba(61, 127, 255, 0.03), 0 0 100px rgba(166, 77, 255, 0.02)",
               transform: "rotateZ(-2deg)", // Slight tilt for more dynamic feel
             }}
           >
@@ -244,7 +244,7 @@ export default function HeroSection() {
               fontFamily: '"Monument Extended", "Clash Display", sans-serif',
               letterSpacing: "-0.07em",
               color: "transparent",
-              WebkitTextStroke: "1px rgba(0, 77, 255, 0.02)", // Light blue for light theme
+              WebkitTextStroke: "1px rgba(61, 127, 255, 0.02)", // Light blue for light theme
               position: "absolute",
               lineHeight: 0.75,
               textTransform: "uppercase",
@@ -321,7 +321,7 @@ export default function HeroSection() {
                     sx={{
                       fontSize: { base: "4.5rem", sm: "6.5rem", md: "7.5rem" }, // ENORMOUS
                       lineHeight: 0.85, // Ultra tight line height
-                      color: "#003A84", // Navy blue for light theme
+                      color: "#E3E7F1", // Soft White
                       backgroundImage: "var(--mantine-blue-gradient)",
                       backgroundSize: "400% 100%",
                       WebkitBackgroundClip: "text",
@@ -331,7 +331,7 @@ export default function HeroSection() {
                       fontFamily:
                         '"Monument Extended", "Clash Display", sans-serif', // Super dramatic font
                       animation: `${shimmer} 12s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
-                      textShadow: "0 2px 20px rgba(0, 77, 255, 0.1)", // Subtler glow for light theme
+                      textShadow: "0 2px 20px rgba(61, 127, 255, 0.1)", // Subtler glow for light theme
                       transform: "translateZ(70px) scale(1.02) rotateX(2deg)", // More dramatic 3D effect
                       position: "relative",
                       transformStyle: "preserve-3d",
@@ -342,7 +342,7 @@ export default function HeroSection() {
                         position: "absolute",
                         inset: -8,
                         background:
-                          "linear-gradient(135deg, rgba(0, 119, 255, 0.03), transparent 60%, rgba(32, 80, 255, 0.03))",
+                          "linear-gradient(135deg, rgba(61, 127, 255, 0.03), transparent 60%, rgba(166, 77, 255, 0.03))",
                         borderRadius: "8px",
                         filter: "blur(10px)",
                         opacity: 0.5,
@@ -360,7 +360,7 @@ export default function HeroSection() {
                         right: 0,
                         bottom: 0,
                         color: "transparent",
-                        WebkitTextStroke: "1px rgba(0, 77, 255, 0.05)",
+                        WebkitTextStroke: "1px rgba(61, 127, 255, 0.05)",
                         WebkitTextFillColor: "transparent",
                       },
                     }}
@@ -386,7 +386,7 @@ export default function HeroSection() {
                     sx={{
                       lineHeight: 2, // Even more breathing room
                       maxWidth: "650px", // Wider text block
-                      color: "#39485E", // Dark slate blue for light theme
+                      color: "#E3E7F1", // Soft White
                       fontSize: "1.6rem", // Even larger font
                       fontFamily: '"Cabinet Grotesk", sans-serif', // More personality
                       letterSpacing: "-0.01em",
@@ -394,9 +394,9 @@ export default function HeroSection() {
                       position: "relative",
                       padding: "1.5rem 2rem 1.5rem 1.5rem", // MUCH more padding
                       borderRadius: "0.5rem",
-                      background: "rgba(255, 255, 255, 0.6)", // Light background
+                      background: "rgba(10, 15, 36, 0.6)", // Light background
                       backdropFilter: "blur(10px)",
-                      border: "1px solid rgba(255, 255, 255, 0.8)",
+                      border: "1px solid rgba(10, 15, 36, 0.8)",
 
                       // Add subtle highlight background - blue for light theme
                       "&::before": {
@@ -418,7 +418,7 @@ export default function HeroSection() {
                       className="highlight-blue"
                       fw={900}
                       sx={{
-                        color: "#0077FF",
+                        color: "#3D7FFF",
                         position: "relative",
                         padding: "0 5px",
                         transformStyle: "preserve-3d",
@@ -434,7 +434,7 @@ export default function HeroSection() {
                       className="highlight-royal"
                       fw={900}
                       sx={{
-                        color: "#2050FF",
+                        color: "#A64DFF",
                         position: "relative",
                         padding: "0 5px",
                         transformStyle: "preserve-3d",
@@ -451,9 +451,9 @@ export default function HeroSection() {
                       component="span"
                       fw={700}
                       sx={{
-                        color: "#0077FF",
+                        color: "#3D7FFF",
                         textDecoration: "underline",
-                        textDecorationColor: "rgba(0, 119, 255, 0.3)",
+                        textDecorationColor: "rgba(61, 127, 255, 0.3)",
                         textDecorationThickness: "2px",
                         textUnderlineOffset: "3px",
                       }}
@@ -465,9 +465,9 @@ export default function HeroSection() {
                       component="span"
                       fw={700}
                       sx={{
-                        color: "#2050FF",
+                        color: "#A64DFF",
                         textDecoration: "underline",
-                        textDecorationColor: "rgba(32, 80, 255, 0.3)",
+                        textDecorationColor: "rgba(166, 77, 255, 0.3)",
                         textDecorationThickness: "2px",
                         textUnderlineOffset: "3px",
                       }}
@@ -510,7 +510,7 @@ export default function HeroSection() {
                           border: "2px solid rgba(255, 255, 255, 0.15)", // More visible border
                           backdropFilter: "blur(10px)",
                           boxShadow:
-                            "0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 120, 240, 0.3)", // Stronger shadow & glow
+                            "0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(61, 127, 255, 0.3)", // Stronger shadow & glow
                           transform: "translateZ(20px)", // 3D effect with parallax
                           position: "relative",
                           overflow: "hidden",
@@ -563,10 +563,10 @@ export default function HeroSection() {
                           fontFamily: '"Cabinet Grotesk", sans-serif', // More personality
                           letterSpacing: "-0.01em",
                           backdropFilter: "blur(10px)",
-                          background: "rgba(255, 255, 255, 0.03)",
+                          background: "rgba(10, 15, 36, 0.03)",
                           borderColor: "var(--mantine-color-secondary-6)",
                           boxShadow:
-                            "0 10px 30px rgba(0, 0, 0, 0.15), 0 0 15px rgba(112, 0, 224, 0.2)", // Enhanced shadow & glow
+                            "0 10px 30px rgba(0, 0, 0, 0.15), 0 0 15px rgba(166, 77, 255, 0.2)", // Enhanced shadow & glow
                           transform: "translateZ(20px)", // 3D effect with parallax
                           position: "relative",
                           overflow: "hidden",
@@ -574,14 +574,14 @@ export default function HeroSection() {
                           // Enhanced hover and active states
                           "&:hover": {
                             borderColor: "var(--mantine-color-secondary-5)",
-                            background: "rgba(255, 255, 255, 0.05)",
+                            background: "rgba(10, 15, 36, 0.05)",
                             boxShadow:
-                              "0 15px 40px rgba(0, 0, 0, 0.2), 0 0 25px rgba(112, 0, 224, 0.3)",
+                              "0 15px 40px rgba(0, 0, 0, 0.2), 0 0 25px rgba(166, 77, 255, 0.3)",
                           },
                           "&:active": {
                             transform: "translateZ(20px) translateY(3px)",
                             boxShadow:
-                              "0 5px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(112, 0, 224, 0.2)",
+                              "0 5px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(166, 77, 255, 0.2)",
                           },
                         }}
                       >
@@ -607,10 +607,10 @@ export default function HeroSection() {
                       fontSize: "1rem",
                       fontFamily: '"Cabinet Grotesk", sans-serif',
                       padding: "10px 20px",
-                      background: "rgba(255, 255, 255, 0.03)",
+                      background: "rgba(10, 15, 36, 0.03)",
                       backdropFilter: "blur(10px)",
                       borderRadius: "30px",
-                      border: "1px solid rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(10, 15, 36, 0.05)",
                       boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
                       maxWidth: "fit-content",
                     }}
@@ -620,8 +620,8 @@ export default function HeroSection() {
                         width: "10px",
                         height: "10px",
                         borderRadius: "50%",
-                        background: "#0078F0",
-                        boxShadow: "0 0 15px #0078F0",
+                        background: "#3D7FFF",
+                        boxShadow: "0 0 15px #3D7FFF",
                         animation: `${pulseGlow} 2s infinite, ${bounce} 4s infinite`,
                       }}
                     />
@@ -644,9 +644,9 @@ export default function HeroSection() {
                           variant="outline"
                           color={i % 2 === 0 ? "primary" : "secondary"}
                           sx={{
-                            background: "rgba(255, 255, 255, 0.03)",
+                            background: "rgba(10, 15, 36, 0.03)",
                             backdropFilter: "blur(5px)",
-                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                            border: "1px solid rgba(10, 15, 36, 0.1)",
                             padding: "8px 12px",
                             fontFamily: '"Cabinet Grotesk", sans-serif',
                             animation: `${float} ${
@@ -686,7 +686,7 @@ export default function HeroSection() {
         <Text
           size="sm"
           sx={{
-            color: "#39485E",
+            color: "#E3E7F1",
             textTransform: "uppercase",
             letterSpacing: "0.1em",
             fontSize: "0.8rem",
@@ -699,7 +699,7 @@ export default function HeroSection() {
           sx={{
             width: "30px",
             height: "50px",
-            border: "2px solid rgba(0, 119, 255, 0.3)",
+            border: "2px solid rgba(61, 127, 255, 0.3)",
             borderRadius: "20px",
             position: "relative",
 
@@ -710,7 +710,7 @@ export default function HeroSection() {
               left: "50%",
               width: "6px",
               height: "6px",
-              backgroundColor: "rgba(0, 119, 255, 0.8)",
+              backgroundColor: "rgba(61, 127, 255, 0.8)",
               borderRadius: "50%",
               transform: "translateX(-50%)",
               animation: `${bounce} 2s infinite`,
@@ -735,7 +735,7 @@ export default function HeroSection() {
             className="animated-border"
             sx={{
               padding: "3rem",
-              backgroundColor: "white",
+              backgroundColor: "rgba(10, 15, 36, 1)",
               borderRadius: "1rem",
               position: "relative",
               zIndex: 10,
@@ -747,7 +747,7 @@ export default function HeroSection() {
               mb="xl"
               className="shimmer"
               sx={{
-                color: "#003A84",
+                color: "#E3E7F1",
                 fontFamily: '"Clash Display", sans-serif',
                 fontSize: "3rem",
                 maxWidth: "800px",
@@ -761,14 +761,14 @@ export default function HeroSection() {
                 {
                   title: "Projects",
                   icon: "💻",
-                  color: "#0077FF",
+                  color: "#3D7FFF",
                   path: "/projects",
                 },
-                { title: "Blog", icon: "📝", color: "#2050FF", path: "/blog" },
+                { title: "Blog", icon: "📝", color: "#A64DFF", path: "/blog" },
                 {
                   title: "Experiments",
                   icon: "🧪",
-                  color: "#FFAC00",
+                  color: "#00F0FF",
                   path: "/experiments",
                 },
               ].map((item, i) => (
@@ -791,8 +791,8 @@ export default function HeroSection() {
                         sx={{
                           padding: "2rem",
                           borderRadius: "1rem",
-                          backgroundColor: "white",
-                          boxShadow: "0 10px 30px rgba(0, 119, 255, 0.1)",
+                          backgroundColor: "rgba(10, 15, 36, 1)",
+                          boxShadow: "0 10px 30px rgba(61, 127, 255, 0.1)",
                           border: `2px solid ${item.color}20`,
                           transition: "all 0.3s ease",
                           "&:hover": {
@@ -810,7 +810,7 @@ export default function HeroSection() {
                         >
                           {item.title}
                         </Title>
-                        <Text size="md" sx={{ color: "#39485E" }}>
+                        <Text size="md" sx={{ color: "#E3E7F1" }}>
                           Discover amazing {item.title.toLowerCase()} with
                           smooth scroll animations and interactive elements.
                         </Text>
