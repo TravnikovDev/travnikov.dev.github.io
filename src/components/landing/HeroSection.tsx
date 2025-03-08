@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import { Link } from "gatsby";
-import HeroAnimation from "./HeroAnimation";
+import HeroAnimation from "../3d/HeroAnimation";
 import {
   motion,
   useScroll,
