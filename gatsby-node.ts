@@ -8,58 +8,30 @@ export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions,
   const blogTemplate = path.resolve('./src/templates/BlogTemplate.tsx');
   const projectTemplate = path.resolve('./src/templates/ProjectTemplate.tsx');
 
-  // Temporarily disabled Strapi content creation
-  // Will be replaced with local markdown files later
-  
-  // For now, create a sample blog post and project page
-  // This is just to ensure the templates are working
-  
-  // Sample blog post
-  createPage({
-    path: `/blog/sample-post`,
-    component: blogTemplate,
-    context: {
-      id: 'sample-post',
-    },
-  });
-
-  // Sample project
-  createPage({
-    path: `/projects/sample-project`,
-    component: projectTemplate,
-    context: {
-      id: 'sample-project',
-    },
-  });
-  
-  // Original Strapi code (commented out)
-  /*
-  // Query for Strapi articles and projects
+  // Query for local markdown files
   const result = await graphql<{
-    allStrapiArticle: {
+    allMarkdownRemark: {
       nodes: Array<{
         id: string;
-        slug: string;
-      }>;
-    };
-    allStrapiProject: {
-      nodes: Array<{
-        id: string;
-        slug: string;
+        fields: {
+          slug: string;
+        };
+        frontmatter: {
+          template: string;
+        };
       }>;
     };
   }>(`
     query {
-      allStrapiArticle {
+      allMarkdownRemark {
         nodes {
           id
-          slug
-        }
-      }
-      allStrapiProject {
-        nodes {
-          id
-          slug
+          fields {
+            slug
+          }
+          frontmatter {
+            template
+          }
         }
       }
     }
@@ -70,28 +42,16 @@ export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions,
     return;
   }
 
-  // Create blog post pages
-  const articles = result.data?.allStrapiArticle.nodes || [];
-  articles.forEach((article) => {
+  // Create pages for markdown files
+  const markdownPages = result.data?.allMarkdownRemark.nodes || [];
+  markdownPages.forEach((page) => {
+    const template = page.frontmatter.template === 'blog' ? blogTemplate : projectTemplate;
     createPage({
-      path: `/blog/${article.slug}`,
-      component: blogTemplate,
+      path: page.fields.slug,
+      component: template,
       context: {
-        id: article.id,
+        id: page.id,
       },
     });
   });
-
-  // Create project pages
-  const projects = result.data?.allStrapiProject.nodes || [];
-  projects.forEach((project) => {
-    createPage({
-      path: `/projects/${project.slug}`,
-      component: projectTemplate,
-      context: {
-        id: project.id,
-      },
-    });
-  });
-  */
 };

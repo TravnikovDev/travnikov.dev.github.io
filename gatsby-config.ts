@@ -60,27 +60,6 @@ const config: GatsbyConfig = {
         ],
       },
     },
-    // Commented out Strapi configuration as it's causing errors
-    // We'll use local markdown content instead
-    /*
-    {
-      resolve: `gatsby-source-strapi`,
-      options: {
-        apiURL: process.env.STRAPI_API_URL || "http://localhost:1337",
-        accessToken: process.env.STRAPI_TOKEN,
-        collectionTypes: [
-          "article",
-          "project",
-          "experiment",
-        ],
-        singleTypes: [
-          "about",
-          "contact",
-          "homepage",
-        ],
-      },
-    },
-    */
     {
       resolve: `gatsby-plugin-manifest`,
       options: {

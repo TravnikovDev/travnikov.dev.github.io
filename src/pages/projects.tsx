@@ -16,14 +16,25 @@ import { SEO } from "../utils/seo/SEO";
 
 interface ProjectsPageProps extends PageProps {
   data: {
-    // We'll use local content instead of Strapi for now
-    // Fallback already included in component
+    allMarkdownRemark: {
+      nodes: {
+        id: string;
+        frontmatter: {
+          title: string;
+          slug: string;
+          description: string;
+          featuredImage: {
+            publicURL: string;
+          };
+          category: string;
+        };
+      }[];
+    };
   };
 }
 
 export default function ProjectsPage({ data }: ProjectsPageProps) {
-  // Since we're not using Strapi currently, we'll default to placeholder content
-  const projects: any[] = [];
+  const projects = data.allMarkdownRemark.nodes;
 
   return (
     <BaseLayout>
@@ -46,25 +57,25 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
             {projects.map((project) => (
               <Link
                 key={project.id}
-                to={`/projects/${project.slug}`}
+                to={`/projects/${project.frontmatter.slug}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
-                  {project.image && (
+                  {project.frontmatter.featuredImage && (
                     <Card.Section>
                       <Image
-                        src={project.image.publicURL}
+                        src={project.frontmatter.featuredImage.publicURL}
                         height={160}
-                        alt={project.title}
+                        alt={project.frontmatter.title}
                       />
                     </Card.Section>
                   )}
                   <Group justify="space-between" mt="md" mb="xs">
-                    <Text fw={500}>{project.title}</Text>
-                    <Badge color="blue">{project.category}</Badge>
+                    <Text fw={500}>{project.frontmatter.title}</Text>
+                    <Badge color="blue">{project.frontmatter.category}</Badge>
                   </Group>
                   <Text size="sm" color="dimmed" lineClamp={3}>
-                    {project.description}
+                    {project.frontmatter.description}
                   </Text>
                 </Card>
               </Link>
@@ -107,24 +118,21 @@ export function Head() {
   );
 }
 
-// Removed the Strapi query that was causing errors
-// We can add a query for local markdown files later if needed
-/*
 export const query = graphql`
   query {
-    allStrapiProject {
+    allMarkdownRemark(filter: { frontmatter: { template: { eq: "project" } } }) {
       nodes {
         id
-        title
-        description
-        slug
-        category
-        tags
-        image {
-          publicURL
+        frontmatter {
+          title
+          slug
+          description
+          featuredImage {
+            publicURL
+          }
+          category
         }
       }
     }
   }
 `;
-*/

@@ -16,14 +16,25 @@ import { SEO } from "../utils/seo/SEO";
 
 interface BlogPageProps extends PageProps {
   data: {
-    // We'll use local content instead of Strapi for now
-    // Fallback already included in component
+    allMarkdownRemark: {
+      nodes: {
+        id: string;
+        frontmatter: {
+          title: string;
+          date: string;
+          slug: string;
+          excerpt: string;
+          featuredImage: {
+            publicURL: string;
+          };
+        };
+      }[];
+    };
   };
 }
 
 export default function BlogPage({ data }: BlogPageProps) {
-  // Since we're not using Strapi currently, we'll default to placeholder content
-  const articles: any[] = [];
+  const articles = data.allMarkdownRemark.nodes;
 
   return (
     <BaseLayout>
@@ -41,7 +52,7 @@ export default function BlogPage({ data }: BlogPageProps) {
         <Stack spacing="xl">
           {articles.length > 0
             ? articles.map((article) => {
-                const date = new Date(article.publishedAt).toLocaleDateString(
+                const date = new Date(article.frontmatter.date).toLocaleDateString(
                   "en-US",
                   {
                     year: "numeric",
@@ -53,17 +64,17 @@ export default function BlogPage({ data }: BlogPageProps) {
                 return (
                   <Link
                     key={article.id}
-                    to={`/blog/${article.slug}`}
+                    to={`/blog/${article.frontmatter.slug}`}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <Card shadow="sm" padding="lg" radius="md" withBorder>
                       <Group align="flex-start" gap="xl">
-                        {article.image && (
+                        {article.frontmatter.featuredImage && (
                           <Image
-                            src={article.image.publicURL}
+                            src={article.frontmatter.featuredImage.publicURL}
                             width={200}
                             height={150}
-                            alt={article.title}
+                            alt={article.frontmatter.title}
                             radius="md"
                           />
                         )}
@@ -72,9 +83,9 @@ export default function BlogPage({ data }: BlogPageProps) {
                             {date}
                           </Text>
                           <Title order={3} mb="sm">
-                            {article.title}
+                            {article.frontmatter.title}
                           </Title>
-                          <Text lineClamp={3}>{article.excerpt}</Text>
+                          <Text lineClamp={3}>{article.frontmatter.excerpt}</Text>
                         </Box>
                       </Group>
                     </Card>
@@ -116,23 +127,21 @@ export function Head() {
   );
 }
 
-// Removed the Strapi query that was causing errors
-// We can add a query for local markdown files later if needed
-/*
 export const query = graphql`
   query {
-    allStrapiArticle {
+    allMarkdownRemark {
       nodes {
         id
-        title
-        excerpt
-        slug
-        publishedAt
-        image {
-          publicURL
+        frontmatter {
+          title
+          date
+          slug
+          excerpt
+          featuredImage {
+            publicURL
+          }
         }
       }
     }
   }
 `;
-*/

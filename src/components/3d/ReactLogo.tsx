@@ -13,8 +13,26 @@ function ReactLogo({ position, scale = 1 }) {
     }
   });
 
+  const handlePointerOver = () => {
+    if (groupRef.current) {
+      groupRef.current.scale.set(scale * 1.2, scale * 1.2, scale * 1.2);
+    }
+  };
+
+  const handlePointerOut = () => {
+    if (groupRef.current) {
+      groupRef.current.scale.set(scale, scale, scale);
+    }
+  };
+
   return (
-    <group ref={groupRef} position={position} scale={scale}>
+    <group
+      ref={groupRef}
+      position={position}
+      scale={scale}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+    >
       {/* Center dot */}
       <mesh castShadow>
         <sphereGeometry args={[0.12, 32, 32]} />
