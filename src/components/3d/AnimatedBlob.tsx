@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Sphere, MeshDistortMaterial } from "@react-three/drei";
 
 function AnimatedBlob({ position, color, scale = 1, speed = 1, complexity = 1.5 }) {
   const blobRef = useRef();
-  const [hover, setHover] = useState(false);
 
   useFrame(({ clock }) => {
     if (blobRef.current) {
@@ -19,13 +18,13 @@ function AnimatedBlob({ position, color, scale = 1, speed = 1, complexity = 1.5 
       const breathingScale = scale * (1 + Math.sin(t * 0.4) * 0.05);
       blobRef.current.scale.set(breathingScale, breathingScale, breathingScale);
 
-      // If hovered, make it more distorted
-      if (blobRef.current.material) {
-        blobRef.current.material.distort = hover
-          ? 0.8 + Math.sin(t * 2) * 0.2
-          : 0.4 + Math.sin(t) * 0.1;
+      // Update position based on scroll
+      const scrollY = window.scrollY || window.pageYOffset;
+      blobRef.current.position.y = position[1] + scrollY * 0.001;
 
-        blobRef.current.material.speed = hover ? 2.5 : 1.5;
+      if (blobRef.current.material) {
+        blobRef.current.material.distort = 0.4 + Math.sin(t) * 0.1;
+        blobRef.current.material.speed = 1.5 * speed;
       }
     }
   });
@@ -35,8 +34,6 @@ function AnimatedBlob({ position, color, scale = 1, speed = 1, complexity = 1.5 
       ref={blobRef}
       position={position}
       args={[1 * scale, 64, 64]}
-      onPointerOver={() => setHover(true)}
-      onPointerOut={() => setHover(false)}
     >
       <MeshDistortMaterial
         color={color}

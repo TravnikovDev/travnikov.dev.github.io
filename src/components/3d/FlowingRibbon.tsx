@@ -34,6 +34,10 @@ function FlowingRibbon({ color = "#3D7FFF", width = 0.1, points = 100, length = 
       }
 
       ribbon.current.geometry.attributes.position.needsUpdate = true;
+
+      // Update position based on scroll
+      const scrollY = window.scrollY || window.pageYOffset;
+      ribbon.current.position.y = scrollY * 0.001;
     }
   });
 

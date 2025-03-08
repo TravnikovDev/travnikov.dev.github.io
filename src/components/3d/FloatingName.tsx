@@ -6,16 +6,15 @@ function FloatingName() {
   const textRef = useRef();
   const materialRef = useRef();
 
-  useFrame(({ clock, pointer }) => {
+  useFrame(({ clock }) => {
     if (textRef.current) {
       const t = clock.getElapsedTime();
 
       textRef.current.position.y = Math.sin(t * 0.5) * 0.15;
 
-      textRef.current.rotation.x =
-        pointer.y * 0.2 - 0.1 + Math.sin(t * 0.3) * 0.05;
-      textRef.current.rotation.y =
-        pointer.x * 0.3 - 0.15 + Math.sin(t * 0.4) * 0.05;
+      // Update position based on scroll
+      const scrollY = window.scrollY || window.pageYOffset;
+      textRef.current.position.y += scrollY * 0.001;
 
       if (materialRef.current) {
         materialRef.current.emissiveIntensity = 0.8 + Math.sin(t * 2) * 0.2;

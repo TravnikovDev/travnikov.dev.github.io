@@ -12,6 +12,10 @@ function FloatingCodeBlock({ position, rotation, scale = 1 }) {
     if (blockRef.current) {
       blockRef.current.position.y = position[1] + Math.sin(t * 0.4 + 2) * 0.15;
       blockRef.current.rotation.z = rotation[2] + Math.sin(t * 0.3) * 0.05;
+
+      // Update position based on scroll
+      const scrollY = window.scrollY || window.pageYOffset;
+      blockRef.current.position.y += scrollY * 0.001;
     }
   });
 
