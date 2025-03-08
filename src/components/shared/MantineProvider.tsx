@@ -6,42 +6,30 @@ import "@mantine/core/styles.css";
 const theme = createTheme({
   primaryColor: "primary",
   colors: {
-    // Professional yet vibrant color palette for light theme with navy/blue accents
+    // Updated color palette to include specified dark-but-vibrant colors
     primary: [
-      "#EBF8FF", // 0 - Almost white with blue tint
-      "#D1EFFF", // 1
-      "#A7DCFF", // 2
-      "#7CC4FF", // 3
-      "#51ABFF", // 4
-      "#2593FF", // 5
-      "#0077FF", // 6: primary - Bright blue
-      "#0062D6", // 7
-      "#004EAD", // 8
-      "#003A84", // 9 - Navy
+      "#0A0F24", // 0 - Deep Navy
+      "#12183A", // 1 - Midnight Blue
+      "#E3E7F1", // 2 - Soft White
+      "#3D7FFF", // 3 - Electric Blue
+      "#A64DFF", // 4 - Cyber Purple
+      "#00F0FF", // 5 - Neon Cyan
     ],
     secondary: [
-      "#F0F4FF", // 0
-      "#DCE4FF", // 1
-      "#B6C8FF", // 2
-      "#91ACFF", // 3
-      "#6B8FFF", // 4
-      "#4673FF", // 5
-      "#2050FF", // 6: secondary - Royal blue
-      "#1A42D6", // 7
-      "#1335AD", // 8
-      "#0D2884", // 9 - Deep royal blue
+      "#0A0F24", // 0 - Deep Navy
+      "#12183A", // 1 - Midnight Blue
+      "#E3E7F1", // 2 - Soft White
+      "#3D7FFF", // 3 - Electric Blue
+      "#A64DFF", // 4 - Cyber Purple
+      "#00F0FF", // 5 - Neon Cyan
     ],
     accent: [
-      "#FFF8EB", // 0
-      "#FFF1D7", // 1
-      "#FFE4B0", // 2
-      "#FFD788", // 3
-      "#FFC961", // 4
-      "#FFBC39", // 5
-      "#FFAC00", // 6: accent - Gold
-      "#D69000", // 7
-      "#AD7400", // 8
-      "#845800", // 9 - Deep gold
+      "#0A0F24", // 0 - Deep Navy
+      "#12183A", // 1 - Midnight Blue
+      "#E3E7F1", // 2 - Soft White
+      "#3D7FFF", // 3 - Electric Blue
+      "#A64DFF", // 4 - Cyber Purple
+      "#00F0FF", // 5 - Neon Cyan
     ],
     gray: [
       "#F9FAFC", // 0 - Almost white
@@ -76,7 +64,7 @@ const theme = createTheme({
   },
   // Increased radius for more modern look
   defaultRadius: "lg",
-  defaultGradient: { from: "primary", to: "secondary", deg: 45 },
+  defaultGradient: { from: "primary.3", to: "primary.4", deg: 45 }, // Updated gradient
   components: {
     Button: {
       defaultProps: {
@@ -133,28 +121,28 @@ const theme = createTheme({
   // Enhanced CSS variables for more vivid gradients and effects
   cssVariablesResolver: (theme) => ({
     variables: {
-      // Professional yet vibrant gradients for light theme
+      // Updated gradients to use specified colors
       "--mantine-primary-gradient":
-        "linear-gradient(45deg, var(--mantine-color-primary-6), var(--mantine-color-secondary-6))",
+        "linear-gradient(45deg, var(--mantine-color-primary-3), var(--mantine-color-primary-4))",
       "--mantine-secondary-gradient":
-        "linear-gradient(45deg, var(--mantine-color-secondary-6), var(--mantine-color-accent-6))",
+        "linear-gradient(45deg, var(--mantine-color-primary-4), var(--mantine-color-primary-5))",
       "--mantine-tertiary-gradient":
-        "linear-gradient(45deg, var(--mantine-color-accent-5), var(--mantine-color-primary-5))",
+        "linear-gradient(45deg, var(--mantine-color-primary-5), var(--mantine-color-primary-3))",
 
-      // SUPER VIBRANT animated gradients for light theme
+      // SUPER VIBRANT animated gradients for dark theme
       "--mantine-animated-gradient":
-        "linear-gradient(90deg, #0080FF, #00F0FF, #2050FF, #5F43FF, #FFAC00, #FF5E00, #0080FF)",
+        "linear-gradient(90deg, #3D7FFF, #A64DFF, #00F0FF, #3D7FFF)",
       "--mantine-blue-gradient":
-        "linear-gradient(45deg, #00A1FF, #2050FF, #00E0FF, #51ABFF)",
+        "linear-gradient(45deg, #3D7FFF, #A64DFF, #00F0FF, #3D7FFF)",
       "--mantine-dramatic-gradient":
-        "radial-gradient(circle at top left, #0077FF, #2050FF, #FFAC00)",
+        "radial-gradient(circle at top left, #3D7FFF, #A64DFF, #00F0FF)",
       "--mantine-shine-gradient":
         "linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)",
 
-      // Refined shadows and glows for light theme
-      "--mantine-glow-shadow": "0 10px 30px rgba(0, 119, 255, 0.2)",
-      "--mantine-royal-glow": "0 10px 30px rgba(32, 80, 255, 0.2)",
-      "--mantine-gold-glow": "0 10px 30px rgba(255, 172, 0, 0.2)",
+      // Refined shadows and glows for dark theme
+      "--mantine-glow-shadow": "0 10px 30px rgba(61, 127, 255, 0.2)",
+      "--mantine-royal-glow": "0 10px 30px rgba(166, 77, 255, 0.2)",
+      "--mantine-gold-glow": "0 10px 30px rgba(0, 240, 255, 0.2)",
       "--mantine-soft-shadow": "0 20px 80px -20px rgba(57, 72, 94, 0.25)",
       "--mantine-card-shadow": "0 10px 40px -10px rgba(57, 72, 94, 0.3)",
 
@@ -194,7 +182,7 @@ interface MantineProviderProps {
 
 export function MantineProvider({ children }: MantineProviderProps) {
   return (
-    <Provider theme={theme} defaultColorScheme="light">
+    <Provider theme={theme} defaultColorScheme="dark">
       {children}
     </Provider>
   );
@@ -352,10 +340,10 @@ export const onRenderBody = ({ setHeadComponents }) => {
             background-size: 50% 50%, 50% 50%;
             background-position: 0 0, 100% 0, 100% 100%, 0 100%;
             background-image: 
-              linear-gradient(#0077FF, #0077FF), 
-              linear-gradient(#2050FF, #2050FF), 
-              linear-gradient(#FFAC00, #FFAC00), 
-              linear-gradient(#00E0FF, #00E0FF);
+              linear-gradient(#3D7FFF, #3D7FFF), 
+              linear-gradient(#A64DFF, #A64DFF), 
+              linear-gradient(#00F0FF, #00F0FF), 
+              linear-gradient(#3D7FFF, #3D7FFF);
             animation: rotate 6s linear infinite;
           }
           
@@ -367,7 +355,7 @@ export const onRenderBody = ({ setHeadComponents }) => {
             top: 3px;
             width: calc(100% - 6px);
             height: calc(100% - 6px);
-            background: white;
+            background: #0A0F24;
             border-radius: 8px;
           }
           
@@ -383,15 +371,15 @@ export const onRenderBody = ({ setHeadComponents }) => {
             100% { background-position: 0% 0% }
           }
           
-          /* Professional glow effects for light theme */
+          /* Professional glow effects for dark theme */
           .glow-text {
-            color: var(--mantine-color-primary-9);
-            text-shadow: 0 2px 10px rgba(0, 77, 255, 0.15);
+            color: var(--mantine-color-primary-2);
+            text-shadow: 0 2px 10px rgba(61, 127, 255, 0.15);
             position: relative;
           }
           
           .highlight-blue {
-            color: #0077FF;
+            color: #3D7FFF;
             font-weight: 700;
             position: relative;
             z-index: 1;
@@ -404,13 +392,13 @@ export const onRenderBody = ({ setHeadComponents }) => {
             right: -2px;
             bottom: 0;
             height: 0.5em;
-            background-color: rgba(0, 119, 255, 0.1);
+            background-color: rgba(61, 127, 255, 0.1);
             z-index: -1;
             transform: rotate(-1deg);
           }
           
           .highlight-royal {
-            color: #2050FF;
+            color: #A64DFF;
             font-weight: 700;
             position: relative;
             z-index: 1;
@@ -423,13 +411,13 @@ export const onRenderBody = ({ setHeadComponents }) => {
             right: -2px;
             bottom: 0;
             height: 0.5em;
-            background-color: rgba(32, 80, 255, 0.1);
+            background-color: rgba(166, 77, 255, 0.1);
             z-index: -1;
             transform: rotate(-1deg);
           }
           
           .highlight-gold {
-            color: #D69000;
+            color: #00F0FF;
             font-weight: 700;
             position: relative;
             z-index: 1;
@@ -442,7 +430,7 @@ export const onRenderBody = ({ setHeadComponents }) => {
             right: -2px;
             bottom: 0;
             height: 0.5em;
-            background-color: rgba(255, 172, 0, 0.15);
+            background-color: rgba(0, 240, 255, 0.15);
             z-index: -1;
             transform: rotate(-1deg);
           }

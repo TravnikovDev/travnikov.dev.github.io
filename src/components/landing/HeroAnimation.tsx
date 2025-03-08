@@ -221,10 +221,10 @@ function FloatingName() {
           TRAVNIKOV
           <meshPhysicalMaterial
             ref={materialRef}
-            color="#FFD700"
+            color="#E3E7F1"
             roughness={0.05}
             metalness={0.9}
-            emissive="#ff9500"
+            emissive="#E3E7F1"
             emissiveIntensity={0.8}
             clearcoat={1.0}
             clearcoatRoughness={0.1}
@@ -238,7 +238,7 @@ function FloatingName() {
 
 // Create a flowing ribbon effect
 function FlowingRibbon({
-  color = "#2290E0",
+  color = "#3D7FFF",
   width = 0.1,
   points = 100,
   length = 10,
@@ -661,21 +661,21 @@ function Scene() {
         {/* Enhanced animated blobs with light theme colors */}
         <AnimatedBlob
           position={[2.2, -0.8, -1]}
-          color="#0077FF"
+          color="#3D7FFF"
           scale={1.2}
           speed={0.8}
         />{" "}
         {/* Bright blue */}
         <AnimatedBlob
           position={[-2.3, 0.9, -2]}
-          color="#2050FF"
+          color="#A64DFF"
           scale={1}
           speed={1.2}
         />{" "}
         {/* Royal blue */}
         <AnimatedBlob
           position={[0.3, -1.8, -3]}
-          color="#FFAC00"
+          color="#00F0FF"
           scale={0.7}
           speed={1.5}
           complexity={2}
@@ -683,15 +683,15 @@ function Scene() {
         {/* Gold */}
         {/* Flowing ribbons for dynamic movement - with light theme colors */}
         <group position={[0, 1.5, -2]} rotation={[0.2, 0.5, 0.1]}>
-          <FlowingRibbon color="#0077FF" width={0.06} length={12} />{" "}
+          <FlowingRibbon color="#3D7FFF" width={0.06} length={12} />{" "}
           {/* Bright blue */}
         </group>
         <group position={[-1, -1, -1.5]} rotation={[-0.3, -0.2, 0.3]}>
-          <FlowingRibbon color="#2050FF" width={0.04} length={10} />{" "}
+          <FlowingRibbon color="#A64DFF" width={0.04} length={10} />{" "}
           {/* Royal blue */}
         </group>
         <group position={[1.5, 0.5, -2.5]} rotation={[0.1, -0.4, 0.2]}>
-          <FlowingRibbon color="#FFAC00" width={0.03} length={8} /> {/* Gold */}
+          <FlowingRibbon color="#00F0FF" width={0.03} length={8} /> {/* Gold */}
         </group>
       </group>
       {/* Atmospheric elements */}
