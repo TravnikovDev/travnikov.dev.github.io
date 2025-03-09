@@ -1,8 +1,9 @@
 import React, { useRef, useMemo } from "react";
 import { useFrame, extend } from "@react-three/fiber";
 import { Sphere, shaderMaterial } from "@react-three/drei";
-import { Mesh, Color } from "three";
+import { Mesh, Color, IcosahedronGeometry, ShaderMaterial } from "three";
 import * as THREE from "three";
+
 
 const BlobMaterial = shaderMaterial(
   {
@@ -133,13 +134,19 @@ const BlobMaterial = shaderMaterial(
   `
 );
 
+// Extend React Three Fiber with our custom materials
 extend({ BlobMaterial });
 
-declare module '@react-three/fiber' {
-  interface ThreeElements {
-    blobMaterial: any;
+// Declare the material for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'blobMaterial': any
+    }
   }
 }
+
+// No need to extend IcosahedronGeometry as it's already included in R3F
 
 interface AnimatedBlobProps {
   position?: [number, number, number];

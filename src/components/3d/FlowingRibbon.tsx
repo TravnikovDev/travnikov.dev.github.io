@@ -1,7 +1,12 @@
 import React, { useRef, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, extend } from "@react-three/fiber";
 import * as THREE from "three";
-import { Group, BufferGeometry, Vector3, ColorRepresentation, BufferAttribute } from "three";
+import { 
+  Group, Vector3, ColorRepresentation, BufferGeometry, 
+  BufferAttribute, LineBasicMaterial 
+} from "three";
+
+// No need to extend native Three.js components as they're built into R3F
 
 interface FlowingRibbonProps {
   color?: ColorRepresentation;
@@ -23,7 +28,7 @@ export function FlowingRibbon({
   scale = 1
 }: FlowingRibbonProps) {
   const groupRef = useRef<Group>(null);
-  const geometryRef = useRef<BufferGeometry>(null);
+  const geometryRef = useRef<any>(null);
   const phase = useRef(0);
   const initialY = useRef(position[1]);
 
@@ -45,7 +50,7 @@ export function FlowingRibbon({
     if (!geometryRef.current) return;
 
     phase.current += 0.01;
-    const positions = geometryRef.current.attributes.position as BufferAttribute;
+    const positions = geometryRef.current.attributes.position;
 
     for (let i = 0; i < segments; i++) {
       const t = (i / segments) * Math.PI * 2;
