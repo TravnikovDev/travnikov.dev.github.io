@@ -1,9 +1,10 @@
-import React from "react";
-import { AppShellHeader, Container, Group, Burger } from "@mantine/core";
-import { motion } from "framer-motion";
+import React, { useRef, useEffect } from "react";
+import { AppShellHeader, Container, Group, Burger, Box } from "@mantine/core";
+import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import Logo from "./Logo";
 import DesktopNavigation from "./DesktopNavigation";
 import { gradientShift } from "./AnimationKeyframes";
+import { keyframes } from "@emotion/react";
 
 interface HeaderProps {
   isScrolled: boolean;
@@ -11,19 +12,67 @@ interface HeaderProps {
   toggleDrawer: () => void;
 }
 
+// Keyframes for animated elements
+const glowPulse = keyframes({
+  "0%": { boxShadow: "0 0 10px rgba(61, 127, 255, 0.2), 0 0 20px rgba(61, 127, 255, 0.1)" },
+  "50%": { boxShadow: "0 0 15px rgba(61, 127, 255, 0.3), 0 0 30px rgba(61, 127, 255, 0.15)" },
+  "100%": { boxShadow: "0 0 10px rgba(61, 127, 255, 0.2), 0 0 20px rgba(61, 127, 255, 0.1)" }
+});
+
+const scanlineEffect = keyframes({
+  "0%": { transform: "translateY(-100%)" },
+  "100%": { transform: "translateY(100%)" }
+});
+
 const Header: React.FC<HeaderProps> = ({
   isScrolled,
   drawerOpened,
   toggleDrawer,
 }) => {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Track scroll for parallax effects
+  const { scrollYProgress } = useScroll();
+  const headerY = useTransform(scrollYProgress, [0, 0.1], [0, -5]);
+  const blurStrength = useTransform(scrollYProgress, [0, 0.1], [10, 25]);
+  const borderOpacity = useTransform(scrollYProgress, [0, 0.05], [0.05, 0.2]);
+  
+  // Mouse interaction effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!headerRef.current) return;
+      
+      // Get header bounds
+      const rect = headerRef.current.getBoundingClientRect();
+      
+      // Calculate mouse position relative to header
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      
+      // Update motion values
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+  
+  // Transform values for gradient and highlight effects
+  const gradientX = useTransform(mouseX, [0, 1], ["0%", "100%"]);
+  const gradientY = useTransform(mouseY, [0, 1], ["0%", "100%"]);
+  const highlightX = useTransform(mouseX, [0, 1], ["-50%", "150%"]);
+
   // Navbar animation variants
   const navVariants = {
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.2,
-        duration: 0.5,
+        delay: 0.1,
+        duration: 0.6,
         ease: "easeOut",
       },
     },
@@ -36,80 +85,169 @@ const Header: React.FC<HeaderProps> = ({
     },
   };
 
+  // Enhanced visibility based on scroll
+  const opacity = useTransform(
+    scrollYProgress, 
+    [0, 0.05, 0.1], 
+    [0.9, 0.95, 1]
+  );
+
   return (
-    <AppShellHeader
+    <motion.div
       style={{
-        borderBottom: isScrolled
-          ? `1px solid rgba(255, 255, 255, 0.1)`
-          : "none",
-        background: isScrolled ? "rgba(12, 12, 18, 0.5)" : "transparent", // Even more transparent
-        backdropFilter: isScrolled ? "blur(25px) saturate(200%)" : "none", // Enhanced blur
-        boxShadow: isScrolled
-          ? "0 15px 40px rgba(0, 0, 0, 0.25), 0 0 20px rgba(0, 120, 240, 0.15)"
-          : "none", // More dramatic glow
-        transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)", // More dynamic transition
-        zIndex: "var(--mantine-z-navbar)",
-        transform: isScrolled ? "translateY(0)" : "translateY(-100%)", // Slide-in effect on scroll
-        opacity: isScrolled ? 1 : 0, // Fade in on scroll
         position: "fixed",
         width: "100%",
         top: 0,
-        // Add gradient highlight
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "1px",
-          background:
-            "linear-gradient(90deg, transparent, rgba(0, 120, 240, 0.5), transparent)",
-          opacity: isScrolled ? 1 : 0,
-          transition: "opacity 0.6s ease",
-        },
-        // Add animated gradient
-        "&::after": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background:
-            "linear-gradient(135deg, rgba(0, 120, 240, 0.03), transparent 20%, rgba(112, 0, 224, 0.03), transparent 70%, rgba(0, 120, 240, 0.03))",
-          backgroundSize: "400% 400%",
-          animation: "gradientAnimation 15s ease infinite",
-          zIndex: -1,
-          opacity: isScrolled ? 1 : 0,
-          transition: "opacity 0.6s ease",
-        },
-        "@keyframes gradientAnimation": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
-        },
+        zIndex: 1000,
+        y: isScrolled ? headerY : -100,
+        opacity: isScrolled ? opacity : 0,
       }}
+      animate={{
+        y: isScrolled ? 0 : -100,
+        opacity: isScrolled ? 1 : 0,
+      }}
+      transition={{
+        y: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.4 }
+      }}
+      ref={headerRef}
     >
-      <Container size="xl">
-        <motion.div initial="hidden" animate="visible" variants={navVariants}>
-          <Group justify="space-between" h="100%" py={10}>
-            <Group>
-              <Burger
-                opened={drawerOpened}
-                onClick={toggleDrawer}
-                hiddenFrom="md"
-                size="sm"
-                color="var(--mantine-color-primary-6)"
-              />
-              <Logo />
-            </Group>
+      <AppShellHeader
+        style={{
+          border: "none",
+          background: "transparent",
+          backdropFilter: "none",
+          boxShadow: "none",
+          overflow: "visible",
+          height: "auto",
+          minHeight: "80px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        {/* Futuristic backdrop panel */}
+        <Box 
+          style={{
+            position: "absolute",
+            inset: "8px",
+            background: "rgba(10, 15, 36, 0.3)",
+            backdropFilter: `blur(${blurStrength}px) saturate(180%)`,
+            borderRadius: "16px",
+            border: "1px solid rgba(61, 127, 255, 0.1)",
+            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2), 0 0 15px rgba(61, 127, 255, 0.15)",
+            overflow: "hidden",
+            zIndex: -1,
+          }}
+        >
+          {/* Animated gradient background */}
+          <motion.div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "radial-gradient(circle at var(--x) var(--y), rgba(61, 127, 255, 0.15), transparent 70%)",
+              backgroundSize: "120% 120%",
+              opacity: 0.8,
+              zIndex: -1,
+              "--x": gradientX,
+              "--y": gradientY,
+            } as any}
+          />
+          
+          {/* Top highlight line */}
+          <Box
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "1px",
+              background: "linear-gradient(90deg, transparent, rgba(61, 127, 255, 0.8), transparent)",
+              opacity: borderOpacity.get(),
+            }}
+          />
+          
+          {/* Bottom highlight line */}
+          <Box
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "1px",
+              background: "linear-gradient(90deg, transparent, rgba(61, 127, 255, 0.5), transparent)",
+              opacity: borderOpacity.get(),
+            }}
+          />
+          
+          {/* Moving highlight effect */}
+          <motion.div
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              width: "100px",
+              background: "linear-gradient(90deg, transparent, rgba(61, 127, 255, 0.1), transparent)",
+              x: highlightX,
+              filter: "blur(5px)",
+              opacity: 0.5,
+            }}
+            transition={{
+              duration: 1.5,
+              ease: "linear"
+            }}
+          />
+          
+          {/* Sci-fi scanline effect */}
+          <Box
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "20px",
+              background: "linear-gradient(180deg, rgba(61, 127, 255, 0.05), transparent)",
+              opacity: 0.3,
+              zIndex: 2,
+              animation: `${scanlineEffect} 8s linear infinite`,
+              filter: "blur(1px)",
+            }}
+          />
+        </Box>
+        
+        <Container size="xl" style={{ position: "relative", zIndex: 3 }}>
+          <motion.div initial="hidden" animate="visible" variants={navVariants}>
+            <Group justify="space-between" h="100%" py={15}>
+              <Group>
+                <Burger
+                  opened={drawerOpened}
+                  onClick={toggleDrawer}
+                  hiddenFrom="md"
+                  size="sm"
+                  color="var(--mantine-color-primary-6)"
+                  styles={{
+                    root: {
+                      padding: "8px",
+                      borderRadius: "8px",
+                      background: "rgba(61, 127, 255, 0.1)",
+                      border: "1px solid rgba(61, 127, 255, 0.2)",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        background: "rgba(61, 127, 255, 0.15)",
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(61, 127, 255, 0.15)"
+                      }
+                    }
+                  }}
+                />
+              </Group>
 
-            {/* Desktop Navigation */}
-            <DesktopNavigation />
-          </Group>
-        </motion.div>
-      </Container>
-    </AppShellHeader>
+              {/* Desktop Navigation */}
+              <DesktopNavigation />
+            </Group>
+          </motion.div>
+        </Container>
+      </AppShellHeader>
+    </motion.div>
   );
 };
 
