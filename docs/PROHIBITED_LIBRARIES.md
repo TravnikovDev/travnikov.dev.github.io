@@ -16,6 +16,10 @@ This document lists libraries that are prohibited from use in this project.
    - Reason: Project focuses on 3D animations using Three.js
    - Alternative suggestions: Use @react-three/fiber and @react-three/drei for animations
 
+4. **CSS-in-JS Libraries** (@emotion/react, styled-components, etc.)
+   - Reason: Project should use standard CSS/SCSS for styling
+   - Alternative suggestions: Use regular CSS modules or SCSS
+
 ## Guidelines
 
 When developing new features or modifying existing code:
