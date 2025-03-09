@@ -1,27 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, AppShellFooter, Box, Text, Group, Anchor } from "@mantine/core";
+import { Container, AppShellFooter, Box, Text, Group, Anchor, useMantineTheme } from "@mantine/core";
 import { Link } from "gatsby";
 import SocialLinks from "./SocialLinks";
+import { useMediaQuery } from '@mantine/hooks';
 
 const Footer: React.FC = () => {
-  // Mobile detection
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    // Check if we're in the browser and update the mobile state
-    if (typeof window !== 'undefined') {
-      const checkMobile = () => {
-        setIsMobile(window.innerWidth < 768);
-      };
-      
-      // Check on mount
-      checkMobile();
-      
-      // Update on resize
-      window.addEventListener('resize', checkMobile);
-      return () => window.removeEventListener('resize', checkMobile);
-    }
-  }, []);
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   return (
     <>

@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
-    "@lekoarts/gatsby-theme-cara": "^5.1.4",
     "@mantine/core": "^7.6.2",
     "@mantine/form": "^7.6.2",
     "@mantine/hooks": "^7.6.2",

@@ -1,18 +1,11 @@
 import React, { useRef, useEffect } from "react";
-import { AppShellHeader, Container, Group, Burger, Box } from "@mantine/core";
-import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
-import Logo from "./Logo";
+import { AppShellHeader, Container, Group, Box } from "@mantine/core";
+import { motion, useTransform, useMotionValue } from "framer-motion";
 import DesktopNavigation from "./DesktopNavigation";
-import { gradientShift } from "./AnimationKeyframes";
 import { keyframes } from "@emotion/react";
 
-interface HeaderProps {
-  isScrolled: boolean;
-  drawerOpened: boolean;
-  toggleDrawer: () => void;
-}
+interface HeaderProps {}
 
-// Keyframes for animated elements
 const glowPulse = keyframes({
   "0%": { boxShadow: "0 0 10px rgba(61, 127, 255, 0.2), 0 0 20px rgba(61, 127, 255, 0.1)" },
   "50%": { boxShadow: "0 0 15px rgba(61, 127, 255, 0.3), 0 0 30px rgba(61, 127, 255, 0.15)" },
@@ -24,46 +17,30 @@ const scanlineEffect = keyframes({
   "100%": { transform: "translateY(100%)" }
 });
 
-const Header: React.FC<HeaderProps> = ({
-  isScrolled,
-  drawerOpened,
-  toggleDrawer,
-}) => {
+const Header: React.FC<HeaderProps> = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
-  // Always visible header - no parallax effects that might hide content
-  const blurStrength = useMotionValue(15); // Fixed value
-  const borderOpacity = useMotionValue(0.2); // Fixed value
-  
-  // Mouse interaction effect
+  const blurStrength = useMotionValue(15);
+  const borderOpacity = useMotionValue(0.2);
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!headerRef.current) return;
-      
-      // Get header bounds
       const rect = headerRef.current.getBoundingClientRect();
-      
-      // Calculate mouse position relative to header
       const x = (e.clientX - rect.left) / rect.width;
       const y = (e.clientY - rect.top) / rect.height;
-      
-      // Update motion values
       mouseX.set(x);
       mouseY.set(y);
     };
-    
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
-  
-  // Transform values for gradient and highlight effects
+
   const gradientX = useTransform(mouseX, [0, 1], ["0%", "100%"]);
   const gradientY = useTransform(mouseY, [0, 1], ["0%", "100%"]);
   const highlightX = useTransform(mouseX, [0, 1], ["-50%", "150%"]);
-
-  // Navbar animation variants
+  
   const navVariants = {
     visible: {
       opacity: 1,
@@ -82,10 +59,7 @@ const Header: React.FC<HeaderProps> = ({
       },
     },
   };
-
-  // Keep header fully visible
-  const opacity = 1;
-
+  
   return (
     <motion.div
       style={{
@@ -95,8 +69,8 @@ const Header: React.FC<HeaderProps> = ({
         zIndex: 1000,
         y: 0,
         opacity: 1,
-        pointerEvents: "auto", // Ensure it's always interactive
-        transform: "translateZ(0)", // Force hardware acceleration for smoother fixed positioning
+        pointerEvents: "auto",
+        transform: "translateZ(0)",
       }}
       initial={{ y: 0, opacity: 1 }}
       animate={{ y: 0, opacity: 1 }}
@@ -110,18 +84,17 @@ const Header: React.FC<HeaderProps> = ({
       <AppShellHeader
         style={{
           border: "none",
-          background: "rgba(10, 15, 36, 0.95)", // Darker background for better visibility
+          background: "rgba(10, 15, 36, 0.95)",
           backdropFilter: "blur(10px)",
-          boxShadow: "0 4px 25px rgba(0, 0, 0, 0.25), 0 2px 5px rgba(61, 127, 255, 0.2)", // Enhanced shadow for better visibility
+          boxShadow: "0 4px 25px rgba(0, 0, 0, 0.25), 0 2px 5px rgba(61, 127, 255, 0.2)",
           overflow: "visible",
           height: "auto",
-          minHeight: "60px", // Compact height for mobile
+          minHeight: "60px",
           display: "flex",
           alignItems: "center",
-          borderBottom: "1px solid rgba(61, 127, 255, 0.2)", // Add border for clarity
+          borderBottom: "1px solid rgba(61, 127, 255, 0.2)",
         }}
       >
-        {/* Futuristic backdrop panel */}
         <Box 
           style={{
             position: "absolute",
@@ -135,7 +108,6 @@ const Header: React.FC<HeaderProps> = ({
             zIndex: -1,
           }}
         >
-          {/* Animated gradient background */}
           <motion.div
             style={{
               position: "absolute",
@@ -148,8 +120,6 @@ const Header: React.FC<HeaderProps> = ({
               "--y": gradientY,
             } as any}
           />
-          
-          {/* Top highlight line */}
           <Box
             style={{
               position: "absolute",
@@ -161,8 +131,6 @@ const Header: React.FC<HeaderProps> = ({
               opacity: borderOpacity.get(),
             }}
           />
-          
-          {/* Bottom highlight line */}
           <Box
             style={{
               position: "absolute",
@@ -174,8 +142,6 @@ const Header: React.FC<HeaderProps> = ({
               opacity: borderOpacity.get(),
             }}
           />
-          
-          {/* Moving highlight effect */}
           <motion.div
             style={{
               position: "absolute",
@@ -192,8 +158,6 @@ const Header: React.FC<HeaderProps> = ({
               ease: "linear"
             }}
           />
-          
-          {/* Sci-fi scanline effect */}
           <Box
             style={{
               position: "absolute",
@@ -209,35 +173,12 @@ const Header: React.FC<HeaderProps> = ({
             }}
           />
         </Box>
-        
         <Container size="xl" style={{ position: "relative", zIndex: 3 }}>
           <motion.div initial="hidden" animate="visible" variants={navVariants}>
             <Group justify="space-between" h="100%" py={15}>
               <Group>
-                <Burger
-                  opened={drawerOpened}
-                  onClick={toggleDrawer}
-                  hiddenFrom="md"
-                  size="sm"
-                  color="var(--mantine-color-primary-6)"
-                  styles={{
-                    root: {
-                      padding: "8px",
-                      borderRadius: "8px",
-                      background: "rgba(61, 127, 255, 0.1)",
-                      border: "1px solid rgba(61, 127, 255, 0.2)",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        background: "rgba(61, 127, 255, 0.15)",
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(61, 127, 255, 0.15)"
-                      }
-                    }
-                  }}
-                />
+                {/* Burger menu removed since we don't have drawer props */}
               </Group>
-
-              {/* Desktop Navigation */}
               <DesktopNavigation />
             </Group>
           </motion.div>

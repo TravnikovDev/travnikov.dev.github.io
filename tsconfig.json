@@ -18,9 +18,6 @@
     "noUncheckedIndexedAccess": false,
     "noPropertyAccessFromIndexSignature": false,
     "ignoreDeprecations": "5.0",
-    // Additional options to make TypeScript less strict
-    "suppressExcessPropertyErrors": true,
-    "suppressImplicitAnyIndexErrors": true
   },
   "include": [
     "./src/**/*",

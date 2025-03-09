@@ -7,7 +7,6 @@ const config: GatsbyConfig = {
   siteMetadata: {
     // You can overwrite values here that are used for the SEO component
     // You can also add new values here to query them like usual
-    // See all options: https://github.com/LekoArts/gatsby-themes/blob/main/themes/gatsby-theme-cara/gatsby-config.mjs
     siteTitle: `Travnikov.dev`,
     siteTitleAlt: `Roman Travnikov - Senior Frontend Developer`,
     siteHeadline: `Roman Travnikov - Senior Frontend Developer with 10+ years of experience`,
@@ -19,11 +18,6 @@ const config: GatsbyConfig = {
   },
   trailingSlash: `always`,
   plugins: [
-    {
-      resolve: `@lekoarts/gatsby-theme-cara`,
-      // See the theme's README for all available options
-      options: {},
-    },
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     `gatsby-transformer-remark`,
