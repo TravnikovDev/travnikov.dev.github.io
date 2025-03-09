@@ -10,7 +10,7 @@
 - **File Naming**: PascalCase for components (e.g., `Header.tsx`)
 - **Imports**: Group external libraries first, then internal imports
 - **Styling**: Use Mantine UI components and Emotion for CSS-in-JS
-- **Animations**: Use Framer Motion and custom Emotion keyframes
+- **Animations**: Use React Three Fiber for 3D animations
 - **Types**: Define prop interfaces at the top of component files
 - **3D Elements**: Use React Three Fiber for 3D components
 - **Structure**: Organize by feature/purpose in appropriate directories

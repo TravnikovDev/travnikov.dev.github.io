@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Container, Title, Timeline, Text, Box, Group, Badge, ActionIcon, Tooltip, Button } from "@mantine/core";
-import { motion, useAnimation, useInView, useScroll, useTransform } from "framer-motion";
+import { Container, Title, Text, Box, Group, Badge, ActionIcon, Button } from "@mantine/core";
 import { keyframes } from "@emotion/react";
-import { FaBriefcase, FaLaptopCode, FaCode, FaServer, FaBrain } from "react-icons/fa";
+import { FaBriefcase, FaLaptopCode, FaCode, FaServer } from "react-icons/fa";
 
 // Animation keyframes
 const glowEffect = keyframes({
@@ -85,93 +84,53 @@ const timelineData: TimelineItem[] = [
   }
 ];
 
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.3
-    }
-  }
-};
+// Animated component with intersection observer
+const AnimatedSection = ({ children, delay = 0, className = "", style = {} }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
 
-const titleVariants = {
-  hidden: { y: -30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 15
-    }
-  }
-};
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-const lineVariants = {
-  hidden: { scaleY: 0, originY: 0 },
-  visible: {
-    scaleY: 1,
-    transition: { 
-      duration: 1.5,
-      ease: "easeOut"
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
     }
-  }
-};
 
-const itemVariants = {
-  hidden: { x: -50, opacity: 0 },
-  visible: (i: number) => ({
-    x: 0,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 10,
-      delay: i * 0.2
-    }
-  })
-};
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, []);
 
-const logoVariants = {
-  hidden: { scale: 0, rotate: -45 },
-  visible: {
-    scale: 1,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 20
-    }
-  },
-  hover: {
-    scale: 1.2,
-    boxShadow: "0 0 20px rgba(61, 127, 255, 0.6)",
-    transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 10
-    }
-  }
+  return (
+    <div
+      ref={elementRef}
+      className={className}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: `translateY(${isVisible ? 0 : '30px'})`,
+        transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
 };
 
 // Card component with hover effect
 const TimelineCard = ({ item, index }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: false, amount: 0.3 });
-  const controls = useAnimation();
-  
-  useEffect(() => {
-    if (isInView) {
-      controls.start("visible");
-    }
-  }, [isInView, controls]);
-  
-  // Color values based on item color
+
   const colors = {
     blue: {
       primary: "#3D7FFF",
@@ -195,40 +154,19 @@ const TimelineCard = ({ item, index }) => {
       glow: "rgba(0, 184, 217, 0.5)"
     }
   };
-  
+
   const color = colors[item.color];
-  
+
   return (
-    <motion.div
-      ref={cardRef}
-      custom={index}
-      variants={itemVariants}
-      initial="hidden"
-      animate={controls}
-      style={{
-        perspective: "1000px"
-      }}
-    >
-      <motion.div
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
+    <AnimatedSection delay={index * 0.2}>
+      <div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         onClick={() => setIsExpanded(!isExpanded)}
         style={{
-          transformStyle: "preserve-3d",
-          cursor: "pointer",
-          position: "relative"
-        }}
-        animate={{
-          rotateX: isHovered ? 8 : 0,
-          rotateY: isHovered ? -15 : 0,
-          z: isHovered ? 50 : 0,
-          scale: isHovered ? 1.05 : 1,
-          y: isHovered ? -15 : 0
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 15
+          transform: isHovered ? 'scale(1.02) translateY(-5px)' : 'scale(1) translateY(0)',
+          transition: 'transform 0.3s ease',
+          cursor: 'pointer',
         }}
       >
         <Box
@@ -244,36 +182,6 @@ const TimelineCard = ({ item, index }) => {
               : "0 8px 30px rgba(0, 0, 0, 0.15)",
             transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
             overflow: "hidden",
-            transform: isHovered ? "translateY(-8px)" : "translateY(0)",
-            transformStyle: "preserve-3d",
-            
-            // Animated highlight
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "5px",
-              height: "100%",
-              background: `linear-gradient(180deg, ${color.primary}, ${color.secondary})`,
-              opacity: isHovered ? 1 : 0.7,
-              transition: "opacity 0.3s ease"
-            },
-            
-            // Enhanced scanline effect
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "20px",
-              background: `linear-gradient(90deg, transparent, ${color.primary}80, transparent)`,
-              opacity: isHovered ? 0.7 : 0,
-              filter: "blur(2px)",
-              animation: isHovered ? `${scanlineEffect} 1.2s linear infinite` : "none",
-              zIndex: 1
-            }
           }}
         >
           {/* Top date badge */}
@@ -301,11 +209,7 @@ const TimelineCard = ({ item, index }) => {
           
           {/* Title and company section */}
           <Group align="flex-start" mb="md">
-            <motion.div
-              variants={logoVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover="hover"
+            <div
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -322,7 +226,7 @@ const TimelineCard = ({ item, index }) => {
               }}
             >
               {item.icon}
-            </motion.div>
+            </div>
             
             <Box style={{ flex: 1 }}>
               <Title 
@@ -369,14 +273,14 @@ const TimelineCard = ({ item, index }) => {
           </Text>
           
           {/* Achievements Section - Only shows when expanded */}
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ 
+          <div
+            style={{ 
               height: isExpanded ? "auto" : 0,
-              opacity: isExpanded ? 1 : 0
+              opacity: isExpanded ? 1 : 0,
+              transition: "height 0.3s, opacity 0.3s",
+              overflow: "hidden", 
+              marginBottom: isExpanded ? "1rem" : 0 
             }}
-            transition={{ duration: 0.3 }}
-            style={{ overflow: "hidden", marginBottom: isExpanded ? "1rem" : 0 }}
           >
             <Box 
               style={{
@@ -409,22 +313,19 @@ const TimelineCard = ({ item, index }) => {
                 </Group>
               ))}
             </Box>
-          </motion.div>
+          </div>
           
           {/* Skills */}
           <Box>
             {item.skills.map((skill, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ 
-                  opacity: 1, 
-                  y: 0, 
-                  transition: { delay: 0.1 + (i * 0.05) } 
-                }}
                 style={{
                   display: "inline-block",
-                  margin: "0 0.5rem 0.5rem 0"
+                  margin: "0 0.5rem 0.5rem 0",
+                  opacity: 1,
+                  transform: "translateY(0)",
+                  transition: `opacity 0.3s ${0.1 + (i * 0.05)}s, transform 0.3s ${0.1 + (i * 0.05)}s`
                 }}
               >
                 <Badge
@@ -448,7 +349,7 @@ const TimelineCard = ({ item, index }) => {
                 >
                   {skill}
                 </Badge>
-              </motion.div>
+              </div>
             ))}
           </Box>
           
@@ -476,34 +377,25 @@ const TimelineCard = ({ item, index }) => {
             </ActionIcon>
           </Box>
         </Box>
-      </motion.div>
-    </motion.div>
+      </div>
+    </AnimatedSection>
   );
 };
 
 export function TimelineSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Responsive layout detection
   const [isMobile, setIsMobile] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
-  
+
   useEffect(() => {
-    // Check if we're in the browser and update the mobile state
-    if (typeof window !== 'undefined') {
-      const checkMobile = () => {
-        setIsMobile(window.innerWidth < 768);
-      };
-      
-      // Check on mount
-      checkMobile();
-      
-      // Update on resize
-      window.addEventListener('resize', checkMobile);
-      return () => window.removeEventListener('resize', checkMobile);
-    }
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
-  
+
   // Card navigation handlers
   const nextCard = () => {
     setActiveCardIndex((prev) => (prev < timelineData.length - 1 ? prev + 1 : prev));
@@ -522,20 +414,19 @@ export function TimelineSection() {
       default: return `rgba(61, 127, 255, ${opacity})`;
     }
   };
-  
+
   return (
-    <Container size="lg" py={isMobile ? "4rem" : "8rem"} ref={containerRef}>
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
+    <Container size="lg" py={isMobile ? "4rem" : "8rem"}>
+      <AnimatedSection>
         {/* Animated Section Title */}
-        <motion.div
+        <div
           style={{
             textAlign: "center",
             marginBottom: isMobile ? "2rem" : "3rem", 
             opacity: 1 // Always visible
           }}
         >
-          <motion.div
-            variants={titleVariants}
+          <div
             style={{
               display: "inline-block",
               position: "relative"
@@ -563,10 +454,7 @@ export function TimelineSection() {
             </Title>
             
             {/* Animated underline */}
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "60%" }}
-              transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+            <div
               style={{
                 position: "absolute",
                 height: "4px",
@@ -574,10 +462,12 @@ export function TimelineSection() {
                 bottom: 0,
                 left: "20%",
                 borderRadius: "2px",
-                boxShadow: "0 2px 10px rgba(61, 127, 255, 0.5)"
+                boxShadow: "0 2px 10px rgba(61, 127, 255, 0.5)",
+                width: "60%",
+                transition: "width 0.8s ease-out 0.6s"
               }}
             />
-          </motion.div>
+          </div>
           
           <Text
             size={isMobile ? "lg" : "xl"}
@@ -591,7 +481,7 @@ export function TimelineSection() {
           >
             My professional path in creating exceptional digital experiences
           </Text>
-        </motion.div>
+        </div>
 
         {/* Mobile-First Card Layout (used for all devices) */}
         <Box 
@@ -720,249 +610,243 @@ export function TimelineSection() {
                     cursor: "pointer"
                   }}
                 >
-                  <Tooltip label={`${item.date}: ${item.title}`} position="top">
-                    <Box
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50%",
-                        background: idx <= activeCardIndex 
-                          ? `linear-gradient(135deg, ${getColor(item.color, 1)}, ${getColor(item.color, 0.7)})` 
-                          : "rgba(15, 20, 40, 0.8)",
-                        border: `2px solid ${idx <= activeCardIndex ? getColor(item.color, 1) : "rgba(61, 127, 255, 0.3)"}`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "0.9rem",
-                        fontWeight: 600,
-                        color: "#fff",
-                        boxShadow: idx <= activeCardIndex ? `0 0 15px ${getColor(item.color, 0.5)}` : "none",
-                        transition: "all 0.3s ease"
-                      }}
-                    >
-                      {idx + 1}
-                    </Box>
-                  </Tooltip>
+                  <Box
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      borderRadius: "50%",
+                      background: idx <= activeCardIndex 
+                        ? `linear-gradient(135deg, ${getColor(item.color, 1)}, ${getColor(item.color, 0.7)})` 
+                        : "rgba(15, 20, 40, 0.8)",
+                      border: `2px solid ${idx <= activeCardIndex ? getColor(item.color, 1) : "rgba(61, 127, 255, 0.3)"}`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "0.9rem",
+                      fontWeight: 600,
+                      color: "#fff",
+                      boxShadow: idx <= activeCardIndex ? `0 0 15px ${getColor(item.color, 0.5)}` : "none",
+                      transition: "all 0.3s ease"
+                    }}
+                  >
+                    {idx + 1}
+                  </Box>
                 </Box>
               ))}
             </Box>
           )}
           
           {/* Main Card Container with Animation */}
-          <motion.div
+          <div
             key={activeCardIndex}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.4 }}
+            style={{
+              opacity: 1,
+              transform: "translateX(0)",
+              transition: "opacity 0.4s, transform 0.4s",
+              padding: isMobile ? "1.8rem" : "2.5rem",
+              background: "rgba(10, 15, 36, 0.8)",
+              borderRadius: "1.2rem", 
+              border: `3px solid ${getColor(timelineData[activeCardIndex].color, 0.4)}`,
+              boxShadow: `0 20px 40px rgba(0, 0, 0, 0.25), 0 0 30px ${getColor(timelineData[activeCardIndex].color, 0.15)}`,
+              position: "relative",
+              overflow: "hidden"
+            }}
           >
-            <Box 
-              style={{ 
-                padding: isMobile ? "1.8rem" : "2.5rem",
-                background: "rgba(10, 15, 36, 0.8)",
-                borderRadius: "1.2rem", 
-                border: `3px solid ${getColor(timelineData[activeCardIndex].color, 0.4)}`,
-                boxShadow: `0 20px 40px rgba(0, 0, 0, 0.25), 0 0 30px ${getColor(timelineData[activeCardIndex].color, 0.15)}`,
-                position: "relative",
-                overflow: "hidden"
+            {/* Date badge with larger, more visible text */}
+            <Badge
+              variant="filled"
+              color={timelineData[activeCardIndex].color}
+              size="xl"
+              radius="md"
+              style={{
+                position: "absolute",
+                top: "1.2rem",
+                right: "1.2rem",
+                background: `linear-gradient(135deg, 
+                  ${getColor(timelineData[activeCardIndex].color, 1)},
+                  ${getColor(timelineData[activeCardIndex].color, 0.7)})`,
+                border: `1px solid ${getColor(timelineData[activeCardIndex].color, 0.5)}`,
+                padding: "0.8rem 1.5rem",
+                fontSize: isMobile ? "1.1rem" : "1.2rem",
+                fontWeight: 700,
+                boxShadow: `0 5px 15px ${getColor(timelineData[activeCardIndex].color, 0.35)}`
               }}
             >
-              {/* Date badge with larger, more visible text */}
-              <Badge
-                variant="filled"
-                color={timelineData[activeCardIndex].color}
-                size="xl"
-                radius="md"
+              {timelineData[activeCardIndex].date}
+            </Badge>
+            
+            {/* Title and Company - Larger and more accessible */}
+            <Group align="flex-start" mb="xl" wrap="nowrap">
+              <Box
                 style={{
-                  position: "absolute",
-                  top: "1.2rem",
-                  right: "1.2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: isMobile ? "70px" : "90px",
+                  height: isMobile ? "70px" : "90px",
+                  borderRadius: "18px",
                   background: `linear-gradient(135deg, 
                     ${getColor(timelineData[activeCardIndex].color, 1)},
                     ${getColor(timelineData[activeCardIndex].color, 0.7)})`,
-                  border: `1px solid ${getColor(timelineData[activeCardIndex].color, 0.5)}`,
-                  padding: "0.8rem 1.5rem",
-                  fontSize: isMobile ? "1.1rem" : "1.2rem",
-                  fontWeight: 700,
-                  boxShadow: `0 5px 15px ${getColor(timelineData[activeCardIndex].color, 0.35)}`
+                  color: "white",
+                  boxShadow: `0 10px 25px ${getColor(timelineData[activeCardIndex].color, 0.5)}`,
+                  marginRight: "1.5rem",
+                  fontSize: isMobile ? "1.8rem" : "2.2rem",
+                  animation: `${float} 3s infinite ease-in-out`
                 }}
               >
-                {timelineData[activeCardIndex].date}
-              </Badge>
+                {timelineData[activeCardIndex].icon}
+              </Box>
               
-              {/* Title and Company - Larger and more accessible */}
-              <Group align="flex-start" mb="xl" wrap="nowrap">
-                <Box
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: isMobile ? "70px" : "90px",
-                    height: isMobile ? "70px" : "90px",
-                    borderRadius: "18px",
-                    background: `linear-gradient(135deg, 
-                      ${getColor(timelineData[activeCardIndex].color, 1)},
-                      ${getColor(timelineData[activeCardIndex].color, 0.7)})`,
-                    color: "white",
-                    boxShadow: `0 10px 25px ${getColor(timelineData[activeCardIndex].color, 0.5)}`,
-                    marginRight: "1.5rem",
-                    fontSize: isMobile ? "1.8rem" : "2.2rem",
-                    animation: `${float} 3s infinite ease-in-out`
+              <Box style={{ flex: 1 }}>
+                <Title 
+                  order={2} 
+                  mb={12}
+                  style={{ 
+                    color: getColor(timelineData[activeCardIndex].color, 1), 
+                    fontWeight: 800,
+                    fontSize: isMobile ? "2rem" : "2.5rem",
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.1
                   }}
                 >
-                  {timelineData[activeCardIndex].icon}
-                </Box>
+                  {timelineData[activeCardIndex].title}
+                </Title>
                 
-                <Box style={{ flex: 1 }}>
-                  <Title 
-                    order={2} 
-                    mb={12}
-                    style={{ 
-                      color: getColor(timelineData[activeCardIndex].color, 1), 
-                      fontWeight: 800,
-                      fontSize: isMobile ? "2rem" : "2.5rem",
-                      letterSpacing: "-0.01em",
-                      lineHeight: 1.1
-                    }}
-                  >
-                    {timelineData[activeCardIndex].title}
-                  </Title>
-                  
-                  <Text 
-                    size="xl" 
-                    fw={700}
-                    style={{
-                      color: "#E3E7F1",
-                      fontSize: isMobile ? "1.4rem" : "1.5rem",
-                      marginBottom: "1rem"
-                    }}
-                  >
-                    {timelineData[activeCardIndex].company}
-                  </Text>
-                </Box>
-              </Group>
-              
-              {/* Description - Larger, more readable text with better spacing */}
-              <Box 
-                mb="xl"
-                style={{
-                  background: "rgba(0, 0, 0, 0.15)",
-                  padding: "1.5rem",
-                  borderRadius: "12px",
-                  borderLeft: `4px solid ${getColor(timelineData[activeCardIndex].color, 0.8)}`,
-                  boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.2)"
-                }}
-              >
                 <Text 
-                  size="lg" 
+                  size="xl" 
+                  fw={700}
                   style={{
-                    color: "rgba(227, 231, 241, 1)",
-                    lineHeight: 1.7,
-                    fontSize: isMobile ? "1.2rem" : "1.25rem",
-                    fontWeight: 400
+                    color: "#E3E7F1",
+                    fontSize: isMobile ? "1.4rem" : "1.5rem",
+                    marginBottom: "1rem"
                   }}
                 >
-                  {timelineData[activeCardIndex].description}
+                  {timelineData[activeCardIndex].company}
                 </Text>
               </Box>
+            </Group>
+            
+            {/* Description - Larger, more readable text with better spacing */}
+            <Box 
+              mb="xl"
+              style={{
+                background: "rgba(0, 0, 0, 0.15)",
+                padding: "1.5rem",
+                borderRadius: "12px",
+                borderLeft: `4px solid ${getColor(timelineData[activeCardIndex].color, 0.8)}`,
+                boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.2)"
+              }}
+            >
+              <Text 
+                size="lg" 
+                style={{
+                  color: "rgba(227, 231, 241, 1)",
+                  lineHeight: 1.7,
+                  fontSize: isMobile ? "1.2rem" : "1.25rem",
+                  fontWeight: 400
+                }}
+              >
+                {timelineData[activeCardIndex].description}
+              </Text>
+            </Box>
+            
+            {/* Achievements Section - Always visible */}
+            <Box mb="xl">
+              <Title 
+                order={4} 
+                mb="md" 
+                style={{ 
+                  color: "#E3E7F1", 
+                  fontSize: isMobile ? "1.3rem" : "1.4rem" 
+                }}
+              >
+                Key Achievements
+              </Title>
               
-              {/* Achievements Section - Always visible */}
-              <Box mb="xl">
-                <Title 
-                  order={4} 
-                  mb="md" 
-                  style={{ 
-                    color: "#E3E7F1", 
-                    fontSize: isMobile ? "1.3rem" : "1.4rem" 
-                  }}
-                >
-                  Key Achievements
-                </Title>
-                
-                <Box 
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1rem"
-                  }}
-                >
-                  {timelineData[activeCardIndex].achievements.map((achievement, i) => (
-                    <Group key={i} align="flex-start" wrap="nowrap">
-                      <Box 
-                        style={{
-                          minWidth: "24px",
-                          height: "24px",
-                          borderRadius: "50%",
-                          background: getColor(timelineData[activeCardIndex].color, 0.2),
-                          border: `2px solid ${getColor(timelineData[activeCardIndex].color, 0.6)}`,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginTop: "0.2rem",
-                          boxShadow: `0 0 10px ${getColor(timelineData[activeCardIndex].color, 0.3)}`
-                        }}
-                      >
-                        <Box style={{ width: "8px", height: "8px", borderRadius: "50%", background: getColor(timelineData[activeCardIndex].color, 1) }} />
-                      </Box>
-                      <Text 
-                        size="md" 
-                        style={{ 
-                          flex: 1, 
-                          color: "rgba(227, 231, 241, 0.95)",
-                          fontSize: isMobile ? "1.1rem" : "1.15rem",
-                          lineHeight: 1.5
-                        }}
-                      >
-                        {achievement}
-                      </Text>
-                    </Group>
-                  ))}
-                </Box>
-              </Box>
-              
-              {/* Skills - Larger, more readable badges */}
-              <Box>
-                <Title 
-                  order={4} 
-                  mb="md" 
-                  style={{ 
-                    color: "#E3E7F1", 
-                    fontSize: isMobile ? "1.3rem" : "1.4rem" 
-                  }}
-                >
-                  Skills
-                </Title>
-                
-                <Box
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "12px"
-                  }}
-                >
-                  {timelineData[activeCardIndex].skills.map((skill, i) => (
-                    <Badge
-                      key={i}
-                      variant="filled"
-                      size="xl"
-                      radius="md"
+              <Box 
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem"
+                }}
+              >
+                {timelineData[activeCardIndex].achievements.map((achievement, i) => (
+                  <Group key={i} align="flex-start" wrap="nowrap">
+                    <Box 
                       style={{
-                        padding: "0.8rem 1.2rem",
-                        background: getColor(timelineData[activeCardIndex].color, 0.15),
-                        border: `1px solid ${getColor(timelineData[activeCardIndex].color, 0.5)}`,
-                        color: getColor(timelineData[activeCardIndex].color, 1),
-                        fontSize: isMobile ? "1rem" : "1.05rem",
-                        fontWeight: 600,
-                        boxShadow: `0 3px 10px ${getColor(timelineData[activeCardIndex].color, 0.1)}`
+                        minWidth: "24px",
+                        height: "24px",
+                        borderRadius: "50%",
+                        background: getColor(timelineData[activeCardIndex].color, 0.2),
+                        border: `2px solid ${getColor(timelineData[activeCardIndex].color, 0.6)}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginTop: "0.2rem",
+                        boxShadow: `0 0 10px ${getColor(timelineData[activeCardIndex].color, 0.3)}`
                       }}
                     >
-                      {skill}
-                    </Badge>
-                  ))}
-                </Box>
+                      <Box style={{ width: "8px", height: "8px", borderRadius: "50%", background: getColor(timelineData[activeCardIndex].color, 1) }} />
+                    </Box>
+                    <Text 
+                      size="md" 
+                      style={{ 
+                        flex: 1, 
+                        color: "rgba(227, 231, 241, 0.95)",
+                        fontSize: isMobile ? "1.1rem" : "1.15rem",
+                        lineHeight: 1.5
+                      }}
+                    >
+                      {achievement}
+                    </Text>
+                  </Group>
+                ))}
               </Box>
             </Box>
-          </motion.div>
+            
+            {/* Skills - Larger, more readable badges */}
+            <Box>
+              <Title 
+                order={4} 
+                mb="md" 
+                style={{ 
+                  color: "#E3E7F1", 
+                  fontSize: isMobile ? "1.3rem" : "1.4rem" 
+                }}
+              >
+                Skills
+              </Title>
+              
+              <Box
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "12px"
+                }}
+              >
+                {timelineData[activeCardIndex].skills.map((skill, i) => (
+                  <Badge
+                    key={i}
+                    variant="filled"
+                    size="xl"
+                    radius="md"
+                    style={{
+                      padding: "0.8rem 1.2rem",
+                      background: getColor(timelineData[activeCardIndex].color, 0.15),
+                      border: `1px solid ${getColor(timelineData[activeCardIndex].color, 0.5)}`,
+                      color: getColor(timelineData[activeCardIndex].color, 1),
+                      fontSize: isMobile ? "1rem" : "1.05rem",
+                      fontWeight: 600,
+                      boxShadow: `0 3px 10px ${getColor(timelineData[activeCardIndex].color, 0.1)}`
+                    }}
+                  >
+                    {skill}
+                  </Badge>
+                ))}
+              </Box>
+            </Box>
+          </div>
           
           {/* Desktop Navigation Controls */}
           {!isMobile && (
@@ -1007,7 +891,7 @@ export function TimelineSection() {
             </Group>
           )}
         </Box>
-      </motion.div>
+      </AnimatedSection>
     </Container>
   );
 }

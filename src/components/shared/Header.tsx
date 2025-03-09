@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { AppShellHeader, Container, Group, Box } from "@mantine/core";
-import { motion, useTransform, useMotionValue } from "framer-motion";
 import DesktopNavigation from "./DesktopNavigation";
 import { keyframes } from "@emotion/react";
 
@@ -19,10 +18,14 @@ const scanlineEffect = keyframes({
 
 const Header: React.FC<HeaderProps> = () => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const blurStrength = useMotionValue(15);
-  const borderOpacity = useMotionValue(0.2);
+  const gradientRef = useRef<HTMLDivElement>(null);
+  const highlightRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+  
+  // State to track mouse position
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const blurStrength = 15;
+  const borderOpacity = 0.2;
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -30,56 +33,56 @@ const Header: React.FC<HeaderProps> = () => {
       const rect = headerRef.current.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
       const y = (e.clientY - rect.top) / rect.height;
-      mouseX.set(x);
-      mouseY.set(y);
+      
+      setMousePosition({ x, y });
+      
+      // Update gradient position using CSS variables
+      if (gradientRef.current) {
+        gradientRef.current.style.setProperty('--x', `${x * 100}%`);
+        gradientRef.current.style.setProperty('--y', `${y * 100}%`);
+      }
+      
+      // Update highlight position
+      if (highlightRef.current) {
+        gsap.to(highlightRef.current, {
+          x: `${(x * 200) - 50}%`,
+          duration: 0.5,
+          ease: "power1.out"
+        });
+      }
     };
+    
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
+  }, []);
 
-  const gradientX = useTransform(mouseX, [0, 1], ["0%", "100%"]);
-  const gradientY = useTransform(mouseY, [0, 1], ["0%", "100%"]);
-  const highlightX = useTransform(mouseX, [0, 1], ["-50%", "150%"]);
-  
-  const navVariants = {
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.1,
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-    hidden: {
-      opacity: 0,
-      y: -20,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+  // Animation for the navigation on mount
+  useEffect(() => {
+    if (navRef.current) {
+      gsap.fromTo(navRef.current, 
+        { opacity: 0, y: -20 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.6, 
+          delay: 0.1,
+          ease: "power2.out"
+        }
+      );
+    }
+  }, []);
   
   return (
-    <motion.div
+    <div
+      ref={headerRef}
       style={{
         position: "fixed",
         width: "100%",
         top: 0,
         zIndex: 1000,
-        y: 0,
-        opacity: 1,
         pointerEvents: "auto",
         transform: "translateZ(0)",
       }}
-      initial={{ y: 0, opacity: 1 }}
-      animate={{ y: 0, opacity: 1 }}
-      className="always-visible-header"
-      transition={{ 
-        y: { type: "spring", stiffness: 500, damping: 40 },
-        opacity: { duration: 0.2 }
-      }}
-      ref={headerRef}
     >
       <AppShellHeader
         style={{
@@ -108,7 +111,8 @@ const Header: React.FC<HeaderProps> = () => {
             zIndex: -1,
           }}
         >
-          <motion.div
+          <div
+            ref={gradientRef}
             style={{
               position: "absolute",
               inset: 0,
@@ -116,8 +120,8 @@ const Header: React.FC<HeaderProps> = () => {
               backgroundSize: "120% 120%",
               opacity: 0.8,
               zIndex: -1,
-              "--x": gradientX,
-              "--y": gradientY,
+              "--x": "50%",
+              "--y": "50%",
             } as any}
           />
           <Box
@@ -128,7 +132,7 @@ const Header: React.FC<HeaderProps> = () => {
               right: 0,
               height: "1px",
               background: "linear-gradient(90deg, transparent, rgba(61, 127, 255, 0.8), transparent)",
-              opacity: borderOpacity.get(),
+              opacity: borderOpacity,
             }}
           />
           <Box
@@ -139,23 +143,20 @@ const Header: React.FC<HeaderProps> = () => {
               right: 0,
               height: "1px",
               background: "linear-gradient(90deg, transparent, rgba(61, 127, 255, 0.5), transparent)",
-              opacity: borderOpacity.get(),
+              opacity: borderOpacity,
             }}
           />
-          <motion.div
+          <div
+            ref={highlightRef}
             style={{
               position: "absolute",
               top: 0,
               bottom: 0,
               width: "100px",
               background: "linear-gradient(90deg, transparent, rgba(61, 127, 255, 0.1), transparent)",
-              x: highlightX,
+              transform: "translateX(0)",
               filter: "blur(5px)",
               opacity: 0.5,
-            }}
-            transition={{
-              duration: 1.5,
-              ease: "linear"
             }}
           />
           <Box
@@ -174,17 +175,17 @@ const Header: React.FC<HeaderProps> = () => {
           />
         </Box>
         <Container size="xl" style={{ position: "relative", zIndex: 3 }}>
-          <motion.div initial="hidden" animate="visible" variants={navVariants}>
+          <div ref={navRef}>
             <Group justify="space-between" h="100%" py={15}>
               <Group>
                 {/* Burger menu removed since we don't have drawer props */}
               </Group>
               <DesktopNavigation />
             </Group>
-          </motion.div>
+          </div>
         </Container>
       </AppShellHeader>
-    </motion.div>
+    </div>
   );
 };
 

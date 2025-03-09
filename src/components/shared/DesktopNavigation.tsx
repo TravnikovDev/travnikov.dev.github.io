@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box, Group, Text, Button, UnstyledButton, Badge } from "@mantine/core";
 import { Link } from "gatsby";
 import { useLocation } from "@reach/router";
 import { useColorScheme } from "@mantine/hooks";
-import { motion } from "framer-motion";
 import Logo from "./Logo";
 import { keyframes } from "@emotion/react";
+import gsap from "gsap";
 
 // Custom keyframes for nav items with more pronounced effect
 const glitchEffect = keyframes({
@@ -74,64 +74,92 @@ const panelGlow = keyframes({
 
 const NavItem = ({ label, path, isActive }) => {
   const [hovered, setHovered] = useState(false);
+  const itemRef = useRef(null);
+  const underlineRef = useRef(null);
+  const textRef = useRef(null);
+  const glowRef = useRef(null);
   
-  // Framer Motion variants for hover effects
-  const itemVariants = {
-    initial: { scale: 1 },
-    hover: { 
-      scale: 1.05,
-      transition: { type: "spring", stiffness: 400, damping: 10 }
-    }
-  };
-  
-  const underlineVariants = {
-    initial: { width: 0, opacity: 0, x: "50%" },
-    hover: { 
-      width: "90%", 
-      opacity: 1, 
-      x: "5%",
-      height: "4px",
-      background: "linear-gradient(90deg, #3D7FFF, #A64DFF)",
-      boxShadow: "0 0 10px rgba(61, 127, 255, 0.8), 0 0 20px rgba(166, 77, 255, 0.4)",
-      transition: { 
-        duration: 0.4, 
-        ease: [0.43, 0.13, 0.23, 0.96] // Custom easing for smoother motion
+  // Handle hover animations with GSAP
+  useEffect(() => {
+    if (hovered) {
+      gsap.to(textRef.current, {
+        y: -3,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+      
+      gsap.to(underlineRef.current, {
+        width: "90%",
+        opacity: 1,
+        left: "5%",
+        duration: 0.4,
+        ease: "power2.out"
+      });
+      
+      gsap.to(glowRef.current, {
+        opacity: 0.8,
+        duration: 0.3
+      });
+      
+      gsap.to(itemRef.current, {
+        scale: 1.05,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+    } else {
+      gsap.to(textRef.current, {
+        y: 0,
+        duration: 0.3
+      });
+      
+      if (!isActive) {
+        gsap.to(underlineRef.current, {
+          width: 0,
+          opacity: 0,
+          left: "50%",
+          duration: 0.3
+        });
       }
-    },
-    active: {
-      width: "100%",
-      opacity: 1,
-      x: "0%",
-      height: "4px",
-      background: "linear-gradient(90deg, #3D7FFF, #A64DFF)",
-      boxShadow: "0 0 15px rgba(61, 127, 255, 0.8), 0 0 30px rgba(166, 77, 255, 0.5)"
+      
+      gsap.to(glowRef.current, {
+        opacity: 0,
+        duration: 0.3
+      });
+      
+      gsap.to(itemRef.current, {
+        scale: 1,
+        duration: 0.3
+      });
     }
-  };
-
-  const textVariants = {
-    initial: { y: 0 },
-    hover: { 
-      y: -3,
-      transition: { type: "spring", stiffness: 300, damping: 10 }
-    }
-  };
+  }, [hovered, isActive]);
   
-  const glowVariants = {
-    initial: { opacity: 0 },
-    hover: { 
-      opacity: 0.8,
-      transition: { duration: 0.3 }
+  // Apply active state with GSAP
+  useEffect(() => {
+    if (isActive) {
+      gsap.to(underlineRef.current, {
+        width: "100%",
+        opacity: 1,
+        left: "0%",
+        duration: 0.4,
+        background: "linear-gradient(90deg, #3D7FFF, #A64DFF)",
+        boxShadow: "0 0 15px rgba(61, 127, 255, 0.8), 0 0 30px rgba(166, 77, 255, 0.5)"
+      });
+    } else {
+      gsap.to(underlineRef.current, {
+        width: 0,
+        opacity: 0,
+        left: "50%",
+        duration: 0.4
+      });
     }
-  };
-
+  }, [isActive]);
+  
   return (
-    <motion.div
-      initial="initial"
-      whileHover="hover"
-      animate={isActive ? "active" : "initial"}
+    <div
+      ref={itemRef}
       style={{ position: "relative" }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <UnstyledButton
         component={Link}
@@ -148,18 +176,19 @@ const NavItem = ({ label, path, isActive }) => {
         }}
       >
         {/* Glow effect behind text */}
-        <motion.div 
-          variants={glowVariants}
+        <div 
+          ref={glowRef}
           style={{
             position: "absolute",
             inset: 0,
             background: "radial-gradient(circle at center, rgba(61, 127, 255, 0.15), transparent 70%)",
-            zIndex: -1
+            zIndex: -1,
+            opacity: 0
           }}
         />
         
         {/* Main text */}
-        <motion.div variants={textVariants}>
+        <div ref={textRef}>
           <Text
             style={{
               color: isActive ? "#3D7FFF" : "#E3E7F1",
@@ -173,16 +202,18 @@ const NavItem = ({ label, path, isActive }) => {
           >
             {label}
           </Text>
-        </motion.div>
+        </div>
         
         {/* Animated underline */}
-        <motion.div
-          variants={underlineVariants}
+        <div
+          ref={underlineRef}
           style={{
             position: "absolute",
             bottom: "6px",
-            left: "0",
+            left: "50%",
             height: "2px",
+            width: isActive ? "100%" : "0",
+            opacity: isActive ? 1 : 0,
             background: "linear-gradient(90deg, #3D7FFF, transparent)",
             borderRadius: "4px",
             zIndex: 1
@@ -209,13 +240,14 @@ const NavItem = ({ label, path, isActive }) => {
           •
         </Badge>
       )}
-    </motion.div>
+    </div>
   );
 };
 
 export default function DesktopNavigation() {
   const colorScheme = useColorScheme();
   const location = useLocation();
+  const navigationRef = useRef(null);
   
   const navItems = [
     { label: "Projects", path: "/projects" },
@@ -224,14 +256,18 @@ export default function DesktopNavigation() {
     { label: "Contact", path: "/contact" },
   ];
 
+  // Animate navigation on mount
+  useEffect(() => {
+    gsap.fromTo(navigationRef.current,
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.5 }
+    );
+  }, []);
+  
   return (
     <Group gap="md" visibleFrom="sm">
       <Logo />
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, staggerChildren: 0.1, delayChildren: 0.2 }}
-      >
+      <div ref={navigationRef}>
         <Box
           style={{
             background: "rgba(10, 15, 36, 0.7)",
@@ -290,7 +326,7 @@ export default function DesktopNavigation() {
             ))}
           </Group>
         </Box>
-      </motion.div>
+      </div>
     </Group>
   );
 }

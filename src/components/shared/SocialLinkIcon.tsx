@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Text } from "@mantine/core";
-import { motion } from "framer-motion";
 import { Link } from "gatsby";
 
 interface SocialLinkIconProps {
@@ -17,10 +16,12 @@ const SocialLinkIcon: React.FC<SocialLinkIconProps> = ({
   hoverColor = "#3D7FFF"
 }) => {
   return (
-    <motion.div
-      whileHover={{
-        y: -5,
-        transition: { duration: 0.2, type: "spring", stiffness: 500 },
+    <Box
+      style={{
+        transition: "transform 0.2s",
+        "&:hover": {
+          transform: "translateY(-5px)"
+        }
       }}
     >
       <Link
@@ -51,6 +52,7 @@ const SocialLinkIcon: React.FC<SocialLinkIconProps> = ({
             "&:hover": {
               background: "rgba(255, 255, 255, 0.1)",
               boxShadow: `0 8px 25px rgba(0, 0, 0, 0.1), 0 0 20px ${hoverColor}40`,
+              transform: "translateY(-5px)"
             },
           }}
         >
@@ -70,7 +72,7 @@ const SocialLinkIcon: React.FC<SocialLinkIconProps> = ({
           </Text>
         )}
       </Link>
-    </motion.div>
+    </Box>
   );
 };
 

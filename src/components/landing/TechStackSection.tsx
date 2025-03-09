@@ -7,20 +7,19 @@ import {
   Paper,
   Group,
   Stack,
-  Tooltip,
   Box,
   Badge,
-  ActionIcon,
   RingProgress,
 } from "@mantine/core";
-import { motion, useInView, useAnimation, useMotionValue, useTransform, useScroll } from "framer-motion";
-import { theme } from "../../theme";
-import { useColorScheme, useElementSize } from "@mantine/hooks";
 import { keyframes } from "@emotion/react";
-import { FaReact, FaJs, FaHtml5, FaNodeJs, FaDatabase } from "react-icons/fa";
-import { 
-  SiTypescript, SiThreedotjs, SiWebgl, SiGreensock, 
-  SiSvg, SiGraphql, SiPostgresql, SiMongodb 
+import { theme } from "../../theme";
+import { useColorScheme } from "@mantine/hooks";
+import {
+  FaReact, FaJs, FaHtml5, FaNodeJs, FaDatabase
+} from "react-icons/fa";
+import {
+  SiTypescript, SiThreedotjs, SiWebgl, SiGreensock,
+  SiSvg, SiGraphql, SiPostgresql, SiMongodb
 } from "react-icons/si";
 
 // Animation keyframes
@@ -51,63 +50,6 @@ const rotateRing = keyframes({
   "0%": { transform: "rotate(0deg)" },
   "100%": { transform: "rotate(360deg)" }
 });
-
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const titleVariants = {
-  hidden: { y: -30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 15
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { y: 40, opacity: 0, scale: 0.9 },
-  visible: (i) => ({
-    y: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 80,
-      damping: 12,
-      delay: i * 0.05
-    }
-  }),
-  hover: {
-    y: -10,
-    scale: 1.05,
-    transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 10
-    }
-  },
-  tap: {
-    scale: 0.98,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 15
-    }
-  }
-};
 
 // Get icon by skill name
 const getSkillIcon = (name) => {
@@ -160,210 +102,245 @@ interface TechCategory {
   skills: TechSkill[];
 }
 
-// Extended tech data with descriptions
+// Tech stack data
 const techData: TechCategory[] = [
   {
     name: "Frontend Development",
     color: "#3D7FFF",
     icon: <FaReact size={32} />,
-    description: "Modern UI development with a focus on performance and accessibility",
+    description: "Modern web development with a focus on performance and user experience",
     skills: [
       {
         name: "React/Next.js",
         level: 95,
-        color: "#61DAFB",
-        experience: "8+ years",
-        projects: 50,
-        description: "Expert in component architecture, hooks, context, and state management"
+        color: "#3D7FFF",
+        experience: "6+ years",
+        projects: 30,
+        description: "Advanced React development including custom hooks, performance optimization, and state management"
       },
       {
         name: "TypeScript",
         level: 90,
-        color: "#3178C6",
-        experience: "5+ years",
-        projects: 40,
-        description: "Strong typing for scalable applications with advanced generics and utility types"
+        color: "#3D7FFF",
+        experience: "4+ years",
+        projects: 25,
+        description: "Type-safe development with advanced TypeScript features and patterns"
       },
       {
         name: "JavaScript",
         level: 95,
-        color: "#F7DF1E",
-        experience: "10+ years",
-        projects: 100,
-        description: "Deep knowledge of ES6+, async patterns, and browser APIs"
+        color: "#3D7FFF",
+        experience: "8+ years",
+        projects: 40,
+        description: "Deep understanding of JavaScript including ES6+, async programming, and design patterns"
       },
       {
         name: "HTML/CSS",
         level: 90,
-        color: "#E34F26",
+        color: "#3D7FFF",
         experience: "10+ years",
-        projects: 100,
-        description: "Semantic markup, CSS Grid/Flexbox, animations, and responsive design"
-      },
-    ],
+        projects: 50,
+        description: "Semantic HTML and modern CSS including Flexbox, Grid, and animations"
+      }
+    ]
   },
   {
     name: "Creative Development",
     color: "#A64DFF",
     icon: <SiThreedotjs size={32} />,
-    description: "Interactive and immersive web experiences with cutting-edge technologies",
+    description: "3D graphics and creative coding for immersive web experiences",
     skills: [
       {
         name: "Three.js",
         level: 85,
-        color: "#049EF4",
+        color: "#A64DFF",
         experience: "3+ years",
         projects: 15,
-        description: "3D scene creation, lighting, materials, and camera manipulation"
+        description: "3D graphics programming with Three.js, including custom shaders and animations"
       },
       {
         name: "WebGL",
         level: 80,
-        color: "#990000",
-        experience: "3+ years",
+        color: "#A64DFF",
+        experience: "2+ years",
         projects: 10,
-        description: "Custom shaders, post-processing effects, and performance optimization"
+        description: "Low-level graphics programming with WebGL for custom visual effects"
       },
       {
         name: "GSAP",
         level: 85,
-        color: "#88CE02",
+        color: "#A64DFF",
         experience: "4+ years",
         projects: 20,
-        description: "Complex timeline animations, scrolling effects, and interaction design"
+        description: "Advanced animations and motion design with GSAP"
       },
       {
         name: "SVG Animation",
-        level: 80,
-        color: "#FFB13B",
+        level: 90,
+        color: "#A64DFF",
         experience: "5+ years",
         projects: 25,
-        description: "Path animations, morphing, and interactive data visualizations"
-      },
-    ],
+        description: "Complex SVG animations and interactive graphics"
+      }
+    ]
   },
   {
     name: "Backend Development",
     color: "#00B8D9",
     icon: <FaNodeJs size={32} />,
-    description: "Scalable and performant server-side solutions for web applications",
+    description: "Server-side development with modern JavaScript/TypeScript",
     skills: [
       {
         name: "Node.js",
         level: 85,
-        color: "#339933",
-        experience: "6+ years",
-        projects: 30,
-        description: "API development, middleware patterns, and asynchronous programming"
+        color: "#00B8D9",
+        experience: "5+ years",
+        projects: 20,
+        description: "Backend development with Node.js including REST APIs and microservices"
       },
       {
         name: "GraphQL",
         level: 80,
-        color: "#E535AB",
+        color: "#00B8D9",
         experience: "3+ years",
-        projects: 15,
-        description: "Schema design, resolvers, and integration with various data sources"
+        projects: 12,
+        description: "API development with GraphQL, including schema design and resolvers"
       },
       {
         name: "PostgreSQL",
         level: 75,
-        color: "#336791",
-        experience: "5+ years",
-        projects: 20,
-        description: "Complex queries, performance optimization, and data modeling"
+        color: "#00B8D9",
+        experience: "4+ years",
+        projects: 15,
+        description: "Database design and optimization with PostgreSQL"
       },
       {
         name: "MongoDB",
         level: 80,
-        color: "#47A248",
+        color: "#00B8D9",
         experience: "4+ years",
-        projects: 15,
-        description: "Document modeling, aggregation pipelines, and indexing strategies"
-      },
-    ],
-  },
+        projects: 18,
+        description: "NoSQL database development with MongoDB"
+      }
+    ]
+  }
 ];
+
+// Animated component with intersection observer
+const AnimatedSection = ({ children, delay = 0, style = {}, className = "" }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      ref={elementRef}
+      className={className}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: `translateY(${isVisible ? 0 : '30px'})`,
+        transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 // Single skill card component with circular progress
 const SkillCard = ({ skill, index, categoryColor }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [progressValue, setProgressValue] = useState(0);
   const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: false, amount: 0.3 });
-  const controls = useAnimation();
-  const progressValue = useMotionValue(0);
-  const roundedValue = useTransform(progressValue, value => Math.round(value));
+  const [isVisible, setIsVisible] = useState(false);
   
   // Responsive layout detection
   const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
-    // Check if we're in the browser and update the mobile state
     if (typeof window !== 'undefined') {
       const checkMobile = () => {
         setIsMobile(window.innerWidth < 768);
       };
       
-      // Check on mount
       checkMobile();
-      
-      // Update on resize
       window.addEventListener('resize', checkMobile);
       return () => window.removeEventListener('resize', checkMobile);
     }
   }, []);
-  
+
   useEffect(() => {
-    if (isInView) {
-      controls.start("visible");
-      // Animate progress counter
-      // Animate progress counter without gsap
-      let startTimestamp = null;
-      const duration = 1500; // 1.5 seconds
-      const delay = 200 + (index * 100); // 0.2s + index*0.1s
-      
-      const animateProgress = (timestamp) => {
-        if (!startTimestamp) {
-          startTimestamp = timestamp;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Animate progress
+          const startTime = performance.now();
+          const duration = 1500;
+          const startValue = 0;
+          const endValue = skill.level;
+
+          const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Ease out function
+            const easedProgress = 1 - Math.pow(1 - progress, 2);
+            setProgressValue(startValue + (endValue - startValue) * easedProgress);
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            }
+          };
+
           setTimeout(() => {
-            requestAnimationFrame(animateProgress);
-          }, delay);
-          return;
+            requestAnimationFrame(animate);
+          }, 200 + index * 100);
         }
-        
-        const elapsed = timestamp - startTimestamp;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Ease out function
-        const easedProgress = 1 - Math.pow(1 - progress, 2);
-        
-        // Set the progress value
-        progressValue.set(easedProgress * skill.level);
-        
-        if (progress < 1) {
-          requestAnimationFrame(animateProgress);
-        }
-      };
-      
-      requestAnimationFrame(animateProgress);
-      
-      // No cleanup needed for this animation approach
+      },
+      { threshold: 0.1 }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
     }
-  }, [isInView, controls, progressValue, skill.level, index]);
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, [skill.level, index]);
   
   return (
-    <motion.div
+    <div
       ref={cardRef}
-      custom={index}
-      variants={itemVariants}
-      initial="hidden"
-      animate={controls}
-      whileHover={!isMobile ? "hover" : undefined}
-      whileTap="tap"
-      onHoverStart={() => !isMobile && setIsHovered(true)}
-      onHoverEnd={() => !isMobile && setIsHovered(false)}
-      onClick={() => setIsExpanded(!isExpanded)}
       style={{
+        opacity: isVisible ? 1 : 0,
+        transform: `translateY(${isVisible ? 0 : '30px'})`,
+        transition: `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`,
         height: "100%",
         perspective: "1000px"
       }}
@@ -388,6 +365,9 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             : "0 4px 20px rgba(0, 0, 0, 0.1)",
           transform: isHovered ? "translateY(-5px)" : "translateY(0)",
         }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => setIsExpanded(!isExpanded)}
       >
         {/* Gradient overlay effect */}
         <Box
@@ -443,16 +423,16 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                       textShadow: (isHovered || isMobile) ? `0 0 8px ${skill.color}` : "none"
                     }}
                   >
-                    <motion.span>{roundedValue}</motion.span>%
+                    {Math.round(progressValue)}%
                   </Text>
                 </Box>
               }
               sections={[
-                { value: skill.level, color: skill.color, tooltip: `${skill.level}% proficiency` },
+                { value: progressValue, color: skill.color, tooltip: `${skill.level}% proficiency` },
               ]}
             />
             
-            {/* Pulse effect background - always visible on mobile for better appearance */}
+            {/* Pulse effect background */}
             <Box
               style={{
                 position: "absolute",
@@ -507,10 +487,12 @@ const SkillCard = ({ skill, index, categoryColor }) => {
               size={isMobile ? "md" : "sm"} 
               color="#E3E7F1" 
               mb="md" 
-              lineClamp={isExpanded ? 0 : 2}
               style={{
+                maxHeight: isExpanded ? "none" : "3em",
+                overflow: "hidden",
                 fontSize: isMobile ? "1rem" : undefined,
-                fontWeight: isMobile ? 400 : undefined
+                fontWeight: isMobile ? 400 : undefined,
+                transition: "max-height 0.3s ease"
               }}
             >
               {skill.description}
@@ -544,243 +526,58 @@ const SkillCard = ({ skill, index, categoryColor }) => {
           }}
         />
       </Paper>
-    </motion.div>
-  );
-};
-
-// Category header component
-const CategoryHeader = ({ category, index }) => {
-  const headerRef = useRef(null);
-  const isInView = useInView(headerRef, { once: false, amount: 0.3 });
-  const controls = useAnimation();
-  
-  // Responsive layout detection
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    // Check if we're in the browser and update the mobile state
-    if (typeof window !== 'undefined') {
-      const checkMobile = () => {
-        setIsMobile(window.innerWidth < 768);
-      };
-      
-      // Check on mount
-      checkMobile();
-      
-      // Update on resize
-      window.addEventListener('resize', checkMobile);
-      return () => window.removeEventListener('resize', checkMobile);
-    }
-  }, []);
-  
-  useEffect(() => {
-    if (isInView) {
-      controls.start("visible");
-    }
-  }, [isInView, controls]);
-  
-  return (
-    <motion.div
-      ref={headerRef}
-      initial="hidden"
-      animate={controls}
-      variants={titleVariants}
-    >
-      <Paper
-        p={isMobile ? "md" : "lg"}
-        radius="lg"
-        style={{
-          marginBottom: isMobile ? "1.5rem" : "2rem",
-          background: `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.8))`,
-          backdropFilter: "blur(15px)",
-          border: `2px solid ${category.color}40`,
-          position: "relative",
-          overflow: "hidden"
-        }}
-      >
-        {/* Decorative background elements */}
-        <Box
-          style={{
-            position: "absolute",
-            top: "-20px",
-            right: "-20px",
-            width: "100px",
-            height: "100px",
-            borderRadius: "50%",
-            background: `radial-gradient(circle, ${category.color}30 0%, transparent 70%)`,
-            filter: "blur(15px)",
-            opacity: 0.8,
-            zIndex: 0
-          }}
-        />
-        
-        {isMobile ? (
-          // Mobile layout - stacked for better readability
-          <Stack gap="md">
-            <Group gap="md">
-              <Box
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "60px",
-                  height: "60px",
-                  borderRadius: "16px",
-                  background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
-                  color: "white",
-                  boxShadow: `0 5px 15px ${category.color}40`,
-                  animation: `${float} ${3 + index}s infinite ease-in-out`,
-                  fontSize: "1.7rem"
-                }}
-              >
-                {category.icon}
-              </Box>
-              
-              <Box style={{ flex: 1 }}>
-                <Title
-                  order={3}
-                  style={{
-                    fontSize: "1.7rem",
-                    fontWeight: 800,
-                    marginBottom: "0.25rem",
-                    background: `linear-gradient(90deg, #fff, ${category.color})`,
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  {category.name}
-                </Title>
-                
-                <Badge
-                  size="lg"
-                  radius="md"
-                  variant="filled"
-                  style={{
-                    background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
-                    border: `1px solid ${category.color}40`,
-                    backdropFilter: "blur(5px)",
-                    padding: "0.4rem 0.8rem",
-                    fontSize: "0.9rem",
-                    fontWeight: 600
-                  }}
-                >
-                  {category.skills.length} Skills
-                </Badge>
-              </Box>
-            </Group>
-            
-            <Text color="#E3E7F1" size="md" style={{ fontSize: "1rem", lineHeight: 1.5 }}>
-              {category.description}
-            </Text>
-          </Stack>
-        ) : (
-          // Desktop layout - horizontal with more space
-          <Group justify="space-between" align="center">
-            <Group gap="md">
-              <Box
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "60px",
-                  height: "60px",
-                  borderRadius: "16px",
-                  background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
-                  color: "white",
-                  boxShadow: `0 5px 15px ${category.color}40`,
-                  animation: `${float} ${3 + index}s infinite ease-in-out`
-                }}
-              >
-                {category.icon}
-              </Box>
-              
-              <Box>
-                <Title
-                  order={3}
-                  style={{
-                    fontSize: "2rem",
-                    fontWeight: 800,
-                    marginBottom: "0.25rem",
-                    background: `linear-gradient(90deg, #fff, ${category.color})`,
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  {category.name}
-                </Title>
-                
-                <Text color="#E3E7F1" size="md">
-                  {category.description}
-                </Text>
-              </Box>
-            </Group>
-            
-            <Badge
-              size="xl"
-              radius="md"
-              variant="filled"
-              style={{
-                background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
-                border: `1px solid ${category.color}40`,
-                backdropFilter: "blur(5px)",
-                padding: "0.5rem 1rem",
-              }}
-            >
-              {category.skills.length} Skills
-            </Badge>
-          </Group>
-        )}
-      </Paper>
-    </motion.div>
+    </div>
   );
 };
 
 export function TechStackSection() {
   const colorScheme = useColorScheme();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ 
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-  
-  // Parallax and animation effects - keeping elements visible
-  const titleY = useTransform(scrollYProgress, [0, 0.1], [20, 0]);
-  
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Handle scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const scrollProgress = Math.max(0, Math.min(1,
+          1 - (rect.top - window.innerHeight) / (rect.height + window.innerHeight)
+        ));
+        setScrollProgress(scrollProgress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Responsive layout detection
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
-    // Check if we're in the browser and update the mobile state
     if (typeof window !== 'undefined') {
       const checkMobile = () => {
         setIsMobile(window.innerWidth < 768);
       };
       
-      // Check on mount
       checkMobile();
-      
-      // Update on resize
       window.addEventListener('resize', checkMobile);
       return () => window.removeEventListener('resize', checkMobile);
     }
   }, []);
-  
+
   return (
     <Container ref={sectionRef} size="lg" py={isMobile ? "5rem" : "8rem"} id="skills">
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
-        {/* Animated Section Title */}
-        <motion.div
+      <AnimatedSection>
+        {/* Section Title */}
+        <Box
           style={{
             textAlign: "center",
             marginBottom: isMobile ? "2.5rem" : "4rem",
-            opacity: 1, // Always visible
-            y: titleY
           }}
         >
-          <motion.div
-            variants={titleVariants}
+          <Box
             style={{
               display: "inline-block",
               position: "relative"
@@ -808,21 +605,20 @@ export function TechStackSection() {
             </Title>
             
             {/* Animated underline */}
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "60%" }}
-              transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+            <Box
               style={{
                 position: "absolute",
                 height: "4px",
                 background: "linear-gradient(90deg, #3D7FFF, #A64DFF)",
                 bottom: 0,
                 left: "20%",
+                width: "60%",
                 borderRadius: "2px",
-                boxShadow: "0 2px 10px rgba(61, 127, 255, 0.5)"
+                boxShadow: "0 2px 10px rgba(61, 127, 255, 0.5)",
+                animation: `${shimmer} 10s linear infinite`
               }}
             />
-          </motion.div>
+          </Box>
           
           <Text
             size={isMobile ? "lg" : "xl"}
@@ -838,13 +634,144 @@ export function TechStackSection() {
             A showcase of my technical proficiency across various domains of web development,
             backed by years of hands-on experience.
           </Text>
-        </motion.div>
+        </Box>
         
         <Stack gap={isMobile ? "md" : "xl"}>
           {techData.map((category, idx) => (
             <Box key={idx} style={{ marginBottom: isMobile ? "2rem" : "3rem" }}>
-              <CategoryHeader category={category} index={idx} />
-              
+              <AnimatedSection delay={idx * 0.2}>
+                <Paper
+                  p={isMobile ? "md" : "lg"}
+                  radius="lg"
+                  style={{
+                    marginBottom: isMobile ? "1.5rem" : "2rem",
+                    background: `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.8))`,
+                    backdropFilter: "blur(15px)",
+                    border: `2px solid ${category.color}40`,
+                    position: "relative",
+                    overflow: "hidden"
+                  }}
+                >
+                  {/* Category header content */}
+                  {isMobile ? (
+                    <Stack gap="md">
+                      <Group gap="md">
+                        <Box
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "60px",
+                            height: "60px",
+                            borderRadius: "16px",
+                            background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
+                            color: "white",
+                            boxShadow: `0 5px 15px ${category.color}40`,
+                            animation: `${float} ${3 + idx}s infinite ease-in-out`,
+                            fontSize: "1.7rem"
+                          }}
+                        >
+                          {category.icon}
+                        </Box>
+                        
+                        <Box style={{ flex: 1 }}>
+                          <Title
+                            order={3}
+                            style={{
+                              fontSize: "1.7rem",
+                              fontWeight: 800,
+                              marginBottom: "0.25rem",
+                              background: `linear-gradient(90deg, #fff, ${category.color})`,
+                              backgroundClip: "text",
+                              WebkitBackgroundClip: "text",
+                              WebkitTextFillColor: "transparent",
+                            }}
+                          >
+                            {category.name}
+                          </Title>
+                          
+                          <Badge
+                            size="lg"
+                            radius="md"
+                            variant="filled"
+                            style={{
+                              background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
+                              border: `1px solid ${category.color}40`,
+                              backdropFilter: "blur(5px)",
+                              padding: "0.4rem 0.8rem",
+                              fontSize: "0.9rem",
+                              fontWeight: 600
+                            }}
+                          >
+                            {category.skills.length} Skills
+                          </Badge>
+                        </Box>
+                      </Group>
+                      
+                      <Text color="#E3E7F1" size="md" style={{ fontSize: "1rem", lineHeight: 1.5 }}>
+                        {category.description}
+                      </Text>
+                    </Stack>
+                  ) : (
+                    <Group justify="space-between" align="center">
+                      <Group gap="md">
+                        <Box
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "60px",
+                            height: "60px",
+                            borderRadius: "16px",
+                            background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
+                            color: "white",
+                            boxShadow: `0 5px 15px ${category.color}40`,
+                            animation: `${float} ${3 + idx}s infinite ease-in-out`
+                          }}
+                        >
+                          {category.icon}
+                        </Box>
+                        
+                        <Box>
+                          <Title
+                            order={3}
+                            style={{
+                              fontSize: "2rem",
+                              fontWeight: 800,
+                              marginBottom: "0.25rem",
+                              background: `linear-gradient(90deg, #fff, ${category.color})`,
+                              backgroundClip: "text",
+                              WebkitBackgroundClip: "text",
+                              WebkitTextFillColor: "transparent",
+                            }}
+                          >
+                            {category.name}
+                          </Title>
+                          
+                          <Text color="#E3E7F1" size="md">
+                            {category.description}
+                          </Text>
+                        </Box>
+                      </Group>
+                      
+                      <Badge
+                        size="xl"
+                        radius="md"
+                        variant="filled"
+                        style={{
+                          background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
+                          border: `1px solid ${category.color}40`,
+                          backdropFilter: "blur(5px)",
+                          padding: "0.5rem 1rem",
+                        }}
+                      >
+                        {category.skills.length} Skills
+                      </Badge>
+                    </Group>
+                  )}
+                </Paper>
+              </AnimatedSection>
+
               <Grid gutter={isMobile ? "md" : "xl"}>
                 {category.skills.map((skill, index) => (
                   <Grid.Col key={index} span={{ base: 12, md: 6, lg: 6 }}>
@@ -859,7 +786,7 @@ export function TechStackSection() {
             </Box>
           ))}
         </Stack>
-      </motion.div>
+      </AnimatedSection>
     </Container>
   );
 }

@@ -70,7 +70,6 @@ Rework current repo and Develop a personal website that showcases **Roman Travni
 ### 3. **Animations & Effects**
 - **Three.js / React Fiber**: Interactive 3D elements on the homepage
 - **Smooth Page Transitions**: Enhance user experience
-- **GSAP / Framer Motion**: Add micro-interactions (buttons, hover effects)
 - **Parallax Scrolling**: On landing and project showcase pages
 
 ---

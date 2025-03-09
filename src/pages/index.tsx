@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { graphql } from "gatsby";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
@@ -7,12 +7,6 @@ import { TimelineSection } from "../components/landing/TimelineSection";
 import { TechStackSection } from "../components/landing/TechStackSection";
 import { Box, Container } from "@mantine/core";
 import { keyframes } from "@emotion/react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-} from "framer-motion";
 
 // Background animation effects
 const gradientAnimation = keyframes({
@@ -20,38 +14,43 @@ const gradientAnimation = keyframes({
   "50%": { backgroundPosition: "100% 50%" },
   "100%": { backgroundPosition: "0% 50%" },
 });
-
 const glowPulse = keyframes({
   "0%": { opacity: 0.5 },
   "50%": { opacity: 0.8 },
   "100%": { opacity: 0.5 },
 });
 
-// Parallax components that respond to scroll
+// Simple parallax component with standard React
 function ParallaxBackground() {
-  const { scrollY } = useScroll();
+  const [scrollY, setScrollY] = useState(0);
 
-  // Transform values for parallax effects
-  const y1 = useTransform(scrollY, [0, 1000], [0, -200]);
-  const y2 = useTransform(scrollY, [0, 1000], [0, -100]);
-  const y3 = useTransform(scrollY, [0, 1000], [0, -50]);
-  const opacity1 = useTransform(scrollY, [0, 300], [1, 0]);
-  const opacity2 = useTransform(scrollY, [0, 500], [0.7, 0]);
-  const scale1 = useTransform(scrollY, [0, 500], [1, 1.2]);
-  const rotate1 = useTransform(scrollY, [0, 1000], [0, 15]);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
 
-  // Smooth animations with spring physics
-  const smoothY1 = useSpring(y1, { stiffness: 100, damping: 30 });
-  const smoothY2 = useSpring(y2, { stiffness: 80, damping: 40 });
-  const smoothOpacity1 = useSpring(opacity1, { stiffness: 300, damping: 100 });
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
+  // Calculate transform values based on scroll position
+  const y1 = scrollY * -0.2; // Equivalent to transform [0, 1000] to [0, -200]
+  const y2 = scrollY * -0.1; // Equivalent to transform [0, 1000] to [0, -100] 
+  const y3 = scrollY * -0.05; // Equivalent to transform [0, 1000] to [0, -50]
+  const opacity1 = Math.max(0, 1 - scrollY / 300); // Equivalent to transform [0, 300] to [1, 0]
+  const opacity2 = Math.max(0, 0.7 - scrollY / 500 * 0.7); // Equivalent to transform [0, 500] to [0.7, 0]
+  const scale1 = 1 + scrollY / 500 * 0.2; // Equivalent to transform [0, 500] to [1, 1.2]
+  const rotate1 = scrollY / 1000 * 15; // Equivalent to transform [0, 1000] to [0, 15]
+  
   return (
     <>
       {/* Top gradient circle - moves faster on scroll */}
-      <motion.div
+      <div
         style={{
-          y: smoothY1,
-          opacity: smoothOpacity1,
+          opacity: opacity1,
+          transform: `translateY(${y1}px)`,
           position: "absolute",
           top: "5%",
           left: "10%",
@@ -65,13 +64,9 @@ function ParallaxBackground() {
           pointerEvents: "none",
         }}
       />
-
       {/* Middle right blob - moves medium speed */}
-      <motion.div
+      <div
         style={{
-          y: smoothY2,
-          scale: scale1,
-          rotate: rotate1,
           position: "absolute",
           top: "40%",
           right: "5%",
@@ -84,13 +79,12 @@ function ParallaxBackground() {
           zIndex: -1,
           pointerEvents: "none",
           animation: `${glowPulse} 10s infinite ease-in-out`,
+          transform: `translateY(${y2}px) scale(${scale1}) rotate(${rotate1}deg)`,
         }}
       />
-
       {/* Bottom left blob - moves slower */}
-      <motion.div
+      <div
         style={{
-          y: y3,
           position: "absolute",
           bottom: "5%",
           left: "5%",
@@ -102,11 +96,11 @@ function ParallaxBackground() {
           filter: "blur(60px)",
           zIndex: -1,
           pointerEvents: "none",
+          transform: `translateY(${y3}px)`,
         }}
       />
-
       {/* Animated grid pattern */}
-      <motion.div
+      <div
         style={{
           opacity: opacity2,
           position: "absolute",
@@ -123,9 +117,8 @@ function ParallaxBackground() {
           pointerEvents: "none",
         }}
       />
-
       {/* Animated gradient lines */}
-      <motion.div
+      <div
         style={{
           position: "absolute",
           top: "25%",
@@ -141,8 +134,7 @@ function ParallaxBackground() {
           pointerEvents: "none",
         }}
       />
-
-      <motion.div
+      <div
         style={{
           position: "absolute",
           top: "75%",
@@ -162,33 +154,72 @@ function ParallaxBackground() {
   );
 }
 
-// Animate section on scroll into view
+// Animate section on scroll into view using Intersection Observer
 function ParallaxSection({ children, delay = 0, offsetY = 100, speed = 0.8 }) {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
+  const [isVisible, setIsVisible] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
-  const y = useTransform(scrollYProgress, [0, 1], [offsetY, -offsetY * speed]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1]);
+  // Handle intersection observer for visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-  const springConfig = { stiffness: 100, damping: 20, mass: 0.8 };
-  const smoothY = useSpring(y, springConfig);
-  const smoothOpacity = useSpring(opacity, springConfig);
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (ref.current) {
+        const rect = ref.current.getBoundingClientRect();
+        const scrollYProgress = Math.max(0, Math.min(1, 
+          1 - (rect.top - window.innerHeight) / (rect.height + window.innerHeight)
+        ));
+        setScrollPosition(scrollYProgress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial calculation
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Calculate parallax effects
+  const yOffset = isVisible ? 0 : offsetY;
+  const parallaxY = offsetY - scrollPosition * offsetY * 2 * speed;
+
+  // Apply style with delay
+  const style = {
+    opacity: isVisible ? 1 : 0,
+    transform: `translateY(${isVisible ? parallaxY : offsetY}px)`,
+    transition: `opacity 0.8s ease ${delay}s, transform 0.8s ease ${delay}s`,
+  };
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, y: offsetY }}
-      style={{
-        opacity: smoothOpacity,
-        y: smoothY,
-      }}
-      transition={{ duration: 0.8, delay }}
+      style={style}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -223,20 +254,17 @@ function ParallaxDivider() {
 }
 
 export default function IndexPage() {
-  // Capture scroll position for parallax effects
-  const { scrollYProgress } = useScroll();
-  const smoothScrollYProgress = useSpring(scrollYProgress);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Use for scroll-triggered animations
+  // Handle scroll events for progress indicator
   useEffect(() => {
     const handleScroll = () => {
-      // This will be used by the parallax effects
-      window.requestAnimationFrame(() => {
-        // Any additional scroll handlers can go here
-      });
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = Math.min(1, Math.max(0, window.scrollY / totalHeight));
+      setScrollProgress(progress);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -244,32 +272,26 @@ export default function IndexPage() {
     <BaseLayout>
       {/* Dynamic background elements with parallax */}
       <ParallaxBackground />
-
       {/* Main content with scroll animations */}
       <Box>
         {/* Hero section */}
         <ParallaxSection delay={0} offsetY={30} speed={0.2}>
           <HeroSection />
         </ParallaxSection>
-
         {/* Animated divider */}
         <ParallaxDivider />
-
         {/* Timeline section */}
         <ParallaxSection delay={0.1} offsetY={60} speed={0.5}>
           <TimelineSection />
         </ParallaxSection>
-
         {/* Animated divider */}
         <ParallaxDivider />
-
         {/* Tech stack section */}
         <ParallaxSection delay={0.2} offsetY={80} speed={0.7}>
           <TechStackSection />
         </ParallaxSection>
-
         {/* Scroll progress indicator */}
-        <motion.div
+        <div
           style={{
             position: "fixed",
             top: 0,
@@ -277,7 +299,7 @@ export default function IndexPage() {
             right: 0,
             height: "3px",
             background: "var(--mantine-primary-gradient)",
-            scaleX: smoothScrollYProgress,
+            transform: `scaleX(${scrollProgress})`,
             transformOrigin: "0%",
             zIndex: 1000,
           }}
