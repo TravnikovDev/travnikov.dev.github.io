@@ -114,27 +114,27 @@ const HeroSection = () => {
     offset: ["start start", "end start"],
   });
 
-  // ENHANCED scroll-based animations with more dramatic parallax effects
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.4], [1, 0.75]);
-  const y = useTransform(scrollYProgress, [0, 0.4], [0, 150]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.3], [0, 15]);
+  // Fixed animations to ensure visibility - no opacity changes on scroll
+  const opacity = 1; // Always fully visible
+  const scale = 1; // No scaling
+  const y = 0; // No vertical movement
+  const rotateX = 0; // No rotation
 
-  // Move title on scroll (large text effect) with more dramatic movement
-  const titleX = useTransform(scrollYProgress, [0, 0.3], [0, -150]);
-  const titleScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.4]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.4], [0.08, 0]);
+  // Keep title fully visible and in place
+  const titleX = 0;
+  const titleScale = 1;
+  const titleOpacity = 0.08; // Constant opacity for background text
 
-  // Additional dynamic effects for parallax layers
-  const floatingY = useTransform(scrollYProgress, [0, 0.3], [0, -30]);
-  const buttonScaleLeft = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
-  const buttonScaleRight = useTransform(scrollYProgress, [0, 0.2], [1, 0.85]);
-  const badgeY = useTransform(scrollYProgress, [0, 0.2], [0, -20]);
-  const textRotate = useTransform(scrollYProgress, [0, 0.2], [0, -2]);
+  // Keep elements in position without scroll-based movement
+  const floatingY = 0;
+  const buttonScaleLeft = 1;
+  const buttonScaleRight = 1;
+  const badgeY = 0;
+  const textRotate = 0;
 
-  // Section revealing effects
-  const sectionOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
-  const sectionY = useTransform(scrollYProgress, [0.2, 0.4], [50, 0]);
+  // Keep later sections visible too
+  const sectionOpacity = 1;
+  const sectionY = 0;
 
   return (
     <Container size="xl">
@@ -179,15 +179,17 @@ const HeroSection = () => {
 
           <Text
             style={{
-              fontSize: "clamp(4rem, 8vw, 6rem)",
+              fontSize: "clamp(3rem, 5vw, 5rem)", // Reduced size to fit screen
               fontWeight: 700,
               fontFamily: "Cabinet Grotesk, sans-serif",
               letterSpacing: "-0.03em",
               color: "#E3E7F1",
               WebkitTextStroke: "1px rgba(255, 255, 255, 0.1)",
               position: "absolute",
+              top: "20%", // Position more precisely 
+              left: "20%",
               opacity: 0.5,
-              transform: "translateX(-50%) translateY(-50%)",
+              zIndex: 1, // Ensure correct layering
             }}
           >
             FRONTEND
@@ -270,25 +272,25 @@ const HeroSection = () => {
               >
                 <Text
                   style={{
-                    fontSize: "clamp(12rem,18rem,25rem)", // MUCH larger
+                    fontSize: "clamp(6rem, 12vw, 16rem)", // Reduced size to fit screen
                     fontWeight: 900,
-                    fontFamily: '"Monument Extended", "Clash Display", sans-serif', // More dramatic font
-                    letterSpacing: "-0.07em", // Tighter spacing
-                    color: "transparent", // Transparent text with gradient stroke
-                    WebkitTextStroke: "2px rgba(61, 127, 255, 0.05)", // Light blue outline for light theme
+                    fontFamily: '"Monument Extended", "Clash Display", sans-serif',
+                    letterSpacing: "-0.07em",
+                    color: "transparent",
+                    WebkitTextStroke: "2px rgba(61, 127, 255, 0.2)", // Increased opacity for visibility
                     position: "absolute",
-                    lineHeight: 0.75, // Even tighter line height
+                    lineHeight: 0.75,
                     textTransform: "uppercase",
                     whiteSpace: "nowrap",
                     pointerEvents: "none",
-                    // Complex background effect for light theme
+                    // Improved visibility with stronger gradient
                     background:
-                      "linear-gradient(to bottom, rgba(61, 127, 255, 0.035) 0%, rgba(61, 127, 255, 0.01) 100%)",
+                      "linear-gradient(to bottom, rgba(61, 127, 255, 0.15) 0%, rgba(61, 127, 255, 0.08) 100%)",
                     WebkitBackgroundClip: "text",
-                    // Text shadow for depth - lighter for light theme
+                    // Stronger text shadow for better visibility
                     textShadow:
-                      "0 0 50px rgba(61, 127, 255, 0.03), 0 0 100px rgba(166, 77, 255, 0.02)",
-                    transform: "rotateZ(-2deg)", // Slight tilt for more dynamic feel
+                      "0 0 50px rgba(61, 127, 255, 0.2), 0 0 100px rgba(166, 77, 255, 0.15)",
+                    transform: "rotateZ(-2deg)",
                   }}
                 >
                   TRAVNIKOV
@@ -297,12 +299,12 @@ const HeroSection = () => {
                 {/* Second layer for enhanced depth effect - light theme version */}
                 <Text
                   style={{
-                    fontSize: "clamp(12rem,18rem,25rem)",
+                    fontSize: "clamp(6rem, 12vw, 16rem)", // Match front layer size
                     fontWeight: 900,
                     fontFamily: '"Monument Extended", "Clash Display", sans-serif',
                     letterSpacing: "-0.07em",
                     color: "transparent",
-                    WebkitTextStroke: "1px rgba(61, 127, 255, 0.02)", // Light blue for light theme
+                    WebkitTextStroke: "1px rgba(61, 127, 255, 0.15)", // Increased opacity
                     position: "absolute",
                     lineHeight: 0.75,
                     textTransform: "uppercase",
@@ -310,8 +312,8 @@ const HeroSection = () => {
                     pointerEvents: "none",
                     top: "0.5vh",
                     left: "0.5vw",
-                    filter: "blur(8px)",
-                    opacity: 0.3, // Lower opacity for light theme
+                    filter: "blur(6px)", // Reduced blur
+                    opacity: 0.5, // Increased opacity
                     transform: "rotateZ(-2deg)",
                   }}
                 >
@@ -377,50 +379,31 @@ const HeroSection = () => {
                           order={1}
                           mb={{ base: "lg", sm: "2xl" }}
                           style={{
-                            fontSize: "clamp(4.5rem, 10vw, 7.5rem)",
-                            lineHeight: 0.85, // Ultra tight line height
-                            color: "#E3E7F1", // Soft White
-                            backgroundImage: "var(--mantine-blue-gradient)",
-                            backgroundSize: "400% 100%",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            letterSpacing: "-0.04em", // Super tight letters
-                            fontWeight: 900, // Maximum boldness
-                            fontFamily:
-                              '"Monument Extended", "Clash Display", sans-serif', // Super dramatic font
-                            animation: `${shimmer} 12s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
-                            textShadow: "0 2px 20px rgba(61, 127, 255, 0.1)", // Subtler glow for light theme
-                            transform: "translateZ(70px) scale(1.02) rotateX(2deg)", // More dramatic 3D effect
+                            fontSize: "clamp(3.5rem, 8vw, 6rem)", // Reduced size
+                            lineHeight: 0.9, // Slightly more readable
+                            // Direct color instead of transparent with gradient
+                            color: "#FFFFFF", // Pure white for maximum visibility
+                            fontWeight: 900,
+                            fontFamily: '"Monument Extended", "Clash Display", sans-serif',
+                            letterSpacing: "-0.03em", // Less tight letters for readability
+                            // Add text stroke for visibility
+                            WebkitTextStroke: "1px rgba(61, 127, 255, 0.5)",
+                            // Add strong text shadow for better visibility
+                            textShadow: "0 0 15px rgba(61, 127, 255, 0.6), 0 0 30px rgba(61, 127, 255, 0.3)",
                             position: "relative",
-                            transformStyle: "preserve-3d",
-
-                            // Pseudo-elements for enhanced depth and effect - light theme version
+                            zIndex: 5, // Ensure it's above other elements
+                            
+                            // Add a subtle background behind text for contrast
                             "&::before": {
                               content: '""',
                               position: "absolute",
-                              inset: -8,
-                              background:
-                                "linear-gradient(135deg, rgba(61, 127, 255, 0.03), transparent 60%, rgba(166, 77, 255, 0.03))",
+                              inset: -15,
+                              background: "radial-gradient(circle, rgba(10, 15, 36, 0.6) 0%, transparent 70%)",
                               borderRadius: "8px",
-                              filter: "blur(10px)",
-                              opacity: 0.5,
+                              filter: "blur(5px)",
+                              opacity: 0.8,
                               zIndex: -1,
-                              transform: "translateZ(-10px)",
-                            },
-
-                            // Stroke effect - light theme version
-                            "&::after": {
-                              content: "attr(data-text)",
-                              position: "absolute",
-                              zIndex: -2,
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              color: "transparent",
-                              WebkitTextStroke: "1px rgba(61, 127, 255, 0.05)",
-                              WebkitTextFillColor: "transparent",
-                            },
+                            }
                           }}
                           data-text="Roman Travnikov" // For the stroke effect pseudo-element
                         >
@@ -440,21 +423,22 @@ const HeroSection = () => {
                         <Text
                           size="xl"
                           mb={{ base: "xl", sm: "3.5rem" }}
-                          className="hover-card" // Add hover effect
+                          className="hover-card"
                           style={{
-                            lineHeight: 2, // Even more breathing room
-                            maxWidth: "650px", // Wider text block
-                            color: "#E3E7F1", // Soft White
-                            fontSize: "1.6rem", // Even larger font
-                            fontFamily: '"Cabinet Grotesk", sans-serif', // More personality
+                            lineHeight: 1.8, // Slightly reduced for better fitting
+                            maxWidth: "650px",
+                            color: "#FFFFFF", // Pure white for visibility
+                            fontSize: "1.4rem", // Slightly smaller for better fitting
+                            fontFamily: '"Cabinet Grotesk", sans-serif',
                             letterSpacing: "-0.01em",
-                            transform: "translateZ(50px) rotateX(1deg)", // More dramatic 3D effect
                             position: "relative",
-                            padding: "1.5rem 2rem 1.5rem 1.5rem", // MUCH more padding
+                            padding: "1.2rem 1.5rem", // Adjusted padding
                             borderRadius: "0.5rem",
-                            background: "rgba(10, 15, 36, 0.6)", // Light background
+                            background: "rgba(10, 15, 36, 0.8)", // Stronger background for contrast
                             backdropFilter: "blur(10px)",
-                            border: "1px solid rgba(10, 15, 36, 0.8)",
+                            border: "2px solid rgba(61, 127, 255, 0.3)", // Blue border for visibility
+                            boxShadow: "0 0 20px rgba(61, 127, 255, 0.2)", // Glow effect
+                            zIndex: 5, // Ensure it's above other elements
 
                             // Add subtle highlight background - blue for light theme
                             "&::before": {
@@ -546,30 +530,29 @@ const HeroSection = () => {
                             initial="initial"
                             whileHover="hover"
                             whileTap="tap"
-                            style={{ scale: buttonScaleLeft }} // Apply scroll-based scaling
-                            className="shimmer" // Add shine effect
+                            style={{ zIndex: 10 }} // Ensure visibility
+                            className="shimmer"
                           >
                             <Button
                               component={Link}
                               to="/projects"
                               size="xl"
-                              radius="xl" // Rounder
-                              px={36} // Wider
-                              className="animated-border" // Add animated border
+                              radius="xl"
+                              px={36}
+                              className="animated-border"
                               style={{
-                                background: "var(--mantine-animated-gradient)",
+                                background: "linear-gradient(90deg, #3D7FFF, #00B8D9)",
                                 backgroundSize: "300% 100%",
                                 animation: `${shimmer} 8s ease-in-out infinite, ${pulseGlow} 4s infinite`,
-                                height: "68px", // Taller
-                                fontSize: "1.2rem", // Larger text
-                                fontWeight: 700, // Bolder text
-                                fontFamily: '"Cabinet Grotesk", sans-serif', // More personality
+                                height: "68px",
+                                fontSize: "1.2rem",
+                                fontWeight: 700,
+                                fontFamily: '"Cabinet Grotesk", sans-serif',
                                 letterSpacing: "-0.01em",
-                                border: "2px solid rgba(255, 255, 255, 0.15)", // More visible border
-                                backdropFilter: "blur(10px)",
+                                border: "2px solid rgba(255, 255, 255, 0.3)", // Brighter border
+                                color: "#FFFFFF", // Ensure text is visible
                                 boxShadow:
-                                  "0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(61, 127, 255, 0.3)", // Stronger shadow & glow
-                                transform: "translateZ(20px)", // 3D effect with parallax
+                                  "0 10px 30px rgba(0, 0, 0, 0.3), 0 0 30px rgba(61, 127, 255, 0.5)", // Stronger glow
                                 position: "relative",
                                 overflow: "hidden",
 
@@ -602,30 +585,29 @@ const HeroSection = () => {
                             initial="initial"
                             whileHover="hover"
                             whileTap="tap"
-                            style={{ scale: buttonScaleRight }} // Apply scroll-based scaling
-                            className="shimmer" // Add shine effect
+                            style={{ zIndex: 10 }} // Ensure visibility
+                            className="shimmer"
                           >
                             <Button
                               component={Link}
                               to="/contact"
                               variant="outline"
                               size="xl"
-                              className="animated-border" // Add animated border
-                              radius="xl" // Rounder
-                              px={36} // Wider
+                              className="animated-border"
+                              radius="xl"
+                              px={36}
                               style={{
                                 borderWidth: 2,
-                                height: "68px", // Taller
-                                fontSize: "1.2rem", // Larger text
-                                fontWeight: 700, // Bolder text
-                                fontFamily: '"Cabinet Grotesk", sans-serif', // More personality
+                                height: "68px",
+                                fontSize: "1.2rem",
+                                fontWeight: 700,
+                                fontFamily: '"Cabinet Grotesk", sans-serif',
                                 letterSpacing: "-0.01em",
-                                backdropFilter: "blur(10px)",
-                                background: "rgba(10, 15, 36, 0.03)",
-                                borderColor: "var(--mantine-color-secondary-6)",
+                                backgroundColor: "rgba(10, 15, 36, 0.8)", // Darker background for contrast
+                                borderColor: "#A64DFF", // Direct color for visibility
+                                color: "#FFFFFF", // Ensure text is visible
                                 boxShadow:
-                                  "0 10px 30px rgba(0, 0, 0, 0.15), 0 0 15px rgba(166, 77, 255, 0.2)", // Enhanced shadow & glow
-                                transform: "translateZ(20px)", // 3D effect with parallax
+                                  "0 10px 30px rgba(0, 0, 0, 0.3), 0 0 25px rgba(166, 77, 255, 0.4)", // Stronger glow
                                 position: "relative",
                                 overflow: "hidden",
 
