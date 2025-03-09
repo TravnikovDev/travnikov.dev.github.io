@@ -33,11 +33,9 @@ const Header: React.FC<HeaderProps> = ({
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
-  // Track scroll for parallax effects
-  const { scrollYProgress } = useScroll();
-  const headerY = useTransform(scrollYProgress, [0, 0.1], [0, -5]);
-  const blurStrength = useTransform(scrollYProgress, [0, 0.1], [10, 25]);
-  const borderOpacity = useTransform(scrollYProgress, [0, 0.05], [0.05, 0.2]);
+  // Always visible header - no parallax effects that might hide content
+  const blurStrength = useMotionValue(15); // Fixed value
+  const borderOpacity = useMotionValue(0.2); // Fixed value
   
   // Mouse interaction effect
   useEffect(() => {
@@ -98,29 +96,29 @@ const Header: React.FC<HeaderProps> = ({
         y: 0,
         opacity: 1,
         pointerEvents: "auto", // Ensure it's always interactive
+        transform: "translateZ(0)", // Force hardware acceleration for smoother fixed positioning
       }}
-      animate={{
-        y: 0,
-        opacity: 1,
-      }}
+      initial={{ y: 0, opacity: 1 }}
+      animate={{ y: 0, opacity: 1 }}
       className="always-visible-header"
-      transition={{
-        y: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.4 }
+      transition={{ 
+        y: { type: "spring", stiffness: 500, damping: 40 },
+        opacity: { duration: 0.2 }
       }}
       ref={headerRef}
     >
       <AppShellHeader
         style={{
           border: "none",
-          background: "rgba(10, 15, 36, 0.85)", // More solid background for better visibility
-          backdropFilter: "blur(8px)",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)", // Add shadow for better visibility
+          background: "rgba(10, 15, 36, 0.95)", // Darker background for better visibility
+          backdropFilter: "blur(10px)",
+          boxShadow: "0 4px 25px rgba(0, 0, 0, 0.25), 0 2px 5px rgba(61, 127, 255, 0.2)", // Enhanced shadow for better visibility
           overflow: "visible",
           height: "auto",
-          minHeight: "70px", // Slightly reduced height for mobile
+          minHeight: "60px", // Compact height for mobile
           display: "flex",
           alignItems: "center",
+          borderBottom: "1px solid rgba(61, 127, 255, 0.2)", // Add border for clarity
         }}
       >
         {/* Futuristic backdrop panel */}
