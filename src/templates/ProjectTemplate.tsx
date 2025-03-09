@@ -29,7 +29,7 @@ export default function ProjectTemplate({ data }: ProjectTemplateProps) {
           <Title order={1}>{projectData.frontmatter.title}</Title>
           <Group>
             <Badge size="lg">{projectData.frontmatter.category}</Badge>
-            {projectData.frontmatter.tags.map((tag, index) => (
+            {projectData.frontmatter.tags?.map((tag, index) => (
               <Badge key={index} size="md" variant="outline">
                 {tag}
               </Badge>

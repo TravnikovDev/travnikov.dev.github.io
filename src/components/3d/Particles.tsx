@@ -1,3 +1,4 @@
+import React from 'react';
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Points } from "@react-three/drei";

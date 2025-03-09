@@ -1,3 +1,4 @@
+import React from "react";
 import { Container, Title, Timeline, Text, Box } from "@mantine/core";
 import { motion } from "framer-motion";
 
