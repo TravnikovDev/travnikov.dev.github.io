@@ -85,12 +85,8 @@ const Header: React.FC<HeaderProps> = ({
     },
   };
 
-  // Enhanced visibility based on scroll
-  const opacity = useTransform(
-    scrollYProgress, 
-    [0, 0.05, 0.1], 
-    [0.9, 0.95, 1]
-  );
+  // Keep header fully visible
+  const opacity = 1;
 
   return (
     <motion.div
@@ -99,12 +95,12 @@ const Header: React.FC<HeaderProps> = ({
         width: "100%",
         top: 0,
         zIndex: 1000,
-        y: isScrolled ? headerY : -100,
-        opacity: isScrolled ? opacity : 0,
+        y: 0,
+        opacity: 1,
       }}
       animate={{
-        y: isScrolled ? 0 : -100,
-        opacity: isScrolled ? 1 : 0,
+        y: 0,
+        opacity: 1,
       }}
       transition={{
         y: { type: "spring", stiffness: 300, damping: 30 },

@@ -488,9 +488,8 @@ export function TimelineSection() {
     offset: ["start end", "end start"]
   });
   
-  // Parallax and animation effects
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
-  const titleY = useTransform(scrollYProgress, [0, 0.1], [50, 0]);
+  // Parallax and animation effects - keeping elements visible
+  const titleY = useTransform(scrollYProgress, [0, 0.1], [20, 0]);
   
   return (
     <Container size="lg" py="8rem" ref={containerRef}>
@@ -500,7 +499,7 @@ export function TimelineSection() {
           style={{
             textAlign: "center",
             marginBottom: "4rem",
-            opacity: titleOpacity,
+            opacity: 1, // Always visible
             y: titleY
           }}
         >

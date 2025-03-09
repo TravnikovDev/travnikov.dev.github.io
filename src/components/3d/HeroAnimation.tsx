@@ -126,37 +126,41 @@ function Scene() {
       ribbon3: { ref: ribbon3Ref, factor: 0.5 }
     };
     
-    // Apply more pronounced parallax movement
+    // Apply more pronounced parallax movement without affecting visibility
     Object.entries(refs).forEach(([key, { ref, factor }]) => {
       if (ref.current && initialPositions.current[key]) {
         const initial = initialPositions.current[key];
         
-        // Move in Y direction based on scroll with stronger effect
-        ref.current.position.y = initial.y + (scrollProgress * factor * -10);
+        // Move in Y direction based on scroll with controlled effect
+        ref.current.position.y = initial.y + (scrollProgress * factor * -5);
         
         // Add more pronounced X movement
-        ref.current.position.x = initial.x + (Math.sin(scrollProgress * Math.PI * 2) * factor * 2.0);
+        ref.current.position.x = initial.x + (Math.sin(scrollProgress * Math.PI * 2) * factor * 1.0);
         
-        // Move in Z direction for depth
-        ref.current.position.z = initial.z + (Math.cos(scrollProgress * Math.PI) * factor * 3.0);
+        // Move in Z direction for depth but not too extreme
+        ref.current.position.z = initial.z + (Math.cos(scrollProgress * Math.PI) * factor * 1.5);
         
-        // More dramatic rotation based on scroll
+        // Subtle rotation based on scroll
         ref.current.rotation.z = MathUtils.lerp(
           ref.current.rotation.z, 
-          scrollProgress * factor * 0.4, 
+          scrollProgress * factor * 0.2, 
           0.05
         );
         
         // Add Y-axis rotation for more dynamic movement
         ref.current.rotation.y = MathUtils.lerp(
           ref.current.rotation.y,
-          scrollProgress * factor * 0.3 * (key.includes('blob') ? 1 : -1),
+          scrollProgress * factor * 0.15 * (key.includes('blob') ? 1 : -1),
           0.05
         );
         
-        // Scale elements based on scroll for additional effect
+        // Keep elements at full visibility
+        // Skip material opacity adjustment since type checking doesn't recognize this
+        
+        // Scale elements based on scroll for additional effect but less extreme
         if (ref.current.scale) {
-          const scaleFactor = 1 + (Math.sin(scrollProgress * Math.PI) * 0.2 * factor);
+          // Limit scale changes to be more subtle
+          const scaleFactor = 1 + (Math.sin(scrollProgress * Math.PI) * 0.1 * factor);
           ref.current.scale.set(scaleFactor, scaleFactor, scaleFactor);
         }
       }
