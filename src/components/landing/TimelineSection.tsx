@@ -157,11 +157,10 @@ const TimelineCard = ({ item, index }) => {
             color={item.color}
             size="lg"
             radius="md"
-            className={styles.timelineBadge}
+            className={`${styles.timelineBadge} ${isHovered ? styles['timelineBadge--hovered'] : ''}`}
             style={{
               background: `linear-gradient(135deg, ${color.primary}, ${color.secondary})`,
-              border: `1px solid ${color.border}`,
-              animation: isHovered ? `${styles.glowEffect} 2s infinite ease-in-out` : "none"
+              border: `1px solid ${color.border}`
             }}
           >
             {item.date}
@@ -260,13 +259,12 @@ const TimelineCard = ({ item, index }) => {
                   size="md"
                   radius="sm"
                   color={item.color}
-                  className={styles.timelineSkillBadge}
+                  className={`${styles.timelineSkillBadge} ${isHovered ? styles['timelineSkillBadge--hovered'] : ''}`}
                   style={{
                     background: color.bg,
                     borderColor: color.border,
                     color: color.primary,
-                    animation: isHovered ? `${styles.float} ${2 + i * 0.5}s infinite ease-in-out` : "none",
-                    boxShadow: isHovered ? `0 5px 15px ${color.glow}25` : "none"
+                    animation: isHovered ? `${styles.float} ${2 + i * 0.5}s infinite ease-in-out` : "none"
                   }}
                 >
                   {skill}
@@ -283,9 +281,8 @@ const TimelineCard = ({ item, index }) => {
               variant="subtle" 
               color={item.color}
               radius="xl"
-              className={styles.timelineShowMoreIcon}
+              className={`${styles.timelineShowMoreIcon} ${isExpanded ? styles['timelineShowMoreIcon--expanded'] : ''}`}
               style={{
-                transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
                 background: color.bg,
                 border: `1px solid ${color.border}`,
                 color: color.primary
@@ -387,12 +384,7 @@ export function TimelineSection() {
                   radius="xl"
                   onClick={prevCard} 
                   disabled={activeCardIndex === 0}
-                  className={styles.timelineMobileNavIcon}
-                  style={{
-                    background: activeCardIndex === 0 ? "rgba(30, 40, 60, 0.5)" : "rgba(61, 127, 255, 0.8)",
-                    border: "1px solid rgba(61, 127, 255, 0.5)",
-                    boxShadow: activeCardIndex === 0 ? "none" : "0 5px 15px rgba(61, 127, 255, 0.3)"
-                  }}
+                  className={`${styles.timelineMobileNavIcon} ${activeCardIndex === 0 ? styles['timelineMobileNavIcon--disabled'] : styles['timelineMobileNavIcon--enabled']}`}
                 >
                   ←
                 </ActionIcon>
@@ -404,12 +396,7 @@ export function TimelineSection() {
                   radius="xl"
                   onClick={nextCard} 
                   disabled={activeCardIndex === timelineData.length - 1}
-                  className={styles.timelineMobileNavIcon}
-                  style={{
-                    background: activeCardIndex === timelineData.length - 1 ? "rgba(30, 40, 60, 0.5)" : "rgba(61, 127, 255, 0.8)",
-                    border: "1px solid rgba(61, 127, 255, 0.5)",
-                    boxShadow: activeCardIndex === timelineData.length - 1 ? "none" : "0 5px 15px rgba(61, 127, 255, 0.3)"
-                  }}
+                  className={`${styles.timelineMobileNavIcon} ${activeCardIndex === timelineData.length - 1 ? styles['timelineMobileNavIcon--disabled'] : styles['timelineMobileNavIcon--enabled']}`}
                 >
                   →
                 </ActionIcon>
@@ -443,13 +430,13 @@ export function TimelineSection() {
                   className={styles.timelineStepPoint}
                 >
                   <Box
-                    className={styles.timelineStepPointInner}
+                    className={`${styles.timelineStepPointInner} ${idx <= activeCardIndex ? styles['timelineStepPointInner--active'] : styles['timelineStepPointInner--inactive']}`}
                     style={{
                       background: idx <= activeCardIndex 
                         ? `linear-gradient(135deg, ${getColor(item.color, 1)}, ${getColor(item.color, 0.7)})` 
-                        : "rgba(15, 20, 40, 0.8)",
-                      border: `2px solid ${idx <= activeCardIndex ? getColor(item.color, 1) : "rgba(61, 127, 255, 0.3)"}`,
-                      boxShadow: idx <= activeCardIndex ? `0 0 15px ${getColor(item.color, 0.5)}` : "none",
+                        : undefined,
+                      borderColor: idx <= activeCardIndex ? getColor(item.color, 1) : undefined,
+                      boxShadow: idx <= activeCardIndex ? `0 0 15px ${getColor(item.color, 0.5)}` : undefined,
                     }}
                   >
                     {idx + 1}
@@ -618,11 +605,10 @@ export function TimelineSection() {
                 onClick={prevCard}
                 disabled={activeCardIndex === 0}
                 leftSection={<span>←</span>}
-                className={styles.timelineNavButton}
+                className={`${styles.timelineNavButton} ${activeCardIndex === 0 ? styles['timelineNavButton--disabled'] : styles['timelineNavButton--enabled']}`}
                 style={{
                   borderColor: activeCardIndex === 0 ? "rgba(61, 127, 255, 0.3)" : "rgba(61, 127, 255, 0.8)",
                   color: activeCardIndex === 0 ? "rgba(61, 127, 255, 0.5)" : "rgba(61, 127, 255, 1)",
-                  boxShadow: activeCardIndex === 0 ? "none" : "0 5px 15px rgba(61, 127, 255, 0.2)",
                 }}
               >
                 Previous Position
@@ -635,11 +621,7 @@ export function TimelineSection() {
                 onClick={nextCard}
                 disabled={activeCardIndex === timelineData.length - 1}
                 rightSection={<span>→</span>}
-                className={styles.timelineNavButton}
-                style={{
-                  opacity: activeCardIndex === timelineData.length - 1 ? 0.5 : 1,
-                  boxShadow: activeCardIndex === timelineData.length - 1 ? "none" : "0 5px 20px rgba(61, 127, 255, 0.4)",
-                }}
+                className={`${styles.timelineNavButton} ${activeCardIndex === timelineData.length - 1 ? styles['timelineNavButton--disabled'] : styles['timelineNavButton--enabled']}`}
               >
                 Next Position
               </Button>

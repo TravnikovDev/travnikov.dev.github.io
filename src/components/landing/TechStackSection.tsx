@@ -557,63 +557,32 @@ export function TechStackSection() {
           className={styles.sectionTitle}
           style={{
             textAlign: "center",
-            marginBottom: isMobile ? "2.5rem" : "4rem",
+            marginBottom: isMobile ? "2.5rem" : "4rem"
           }}
         >
           <Box
             className={styles.sectionTitleInner}
-            style={{
-              display: "inline-block",
-              position: "relative"
-            }}
           >
             <Title
               order={2}
               className={styles.sectionTitleText}
               style={{
-                fontSize: isMobile ? "2.3rem" : "3rem",
-                fontWeight: 800,
-                marginBottom: "1rem",
-                background: "linear-gradient(135deg, #3D7FFF, #A64DFF)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                textShadow: "0 5px 25px rgba(61, 127, 255, 0.4)",
-                fontFamily: '"Clash Display", sans-serif',
-                letterSpacing: "-0.02em",
-                textAlign: "center",
-                backgroundSize: "200% 100%",
+                fontSize: isMobile ? "2.3rem" : "3rem"
               }}
             >
               Technical Expertise
             </Title>
             
             {/* Animated underline */}
-            <Box
-              className={styles.animatedUnderline}
-              style={{
-                position: "absolute",
-                height: "4px",
-                background: "linear-gradient(90deg, #3D7FFF, #A64DFF)",
-                bottom: 0,
-                left: "20%",
-                width: "60%",
-                borderRadius: "2px",
-                boxShadow: "0 2px 10px rgba(61, 127, 255, 0.5)",
-              }}
-            />
+            <Box className={styles.animatedUnderline} />
           </Box>
           
           <Text
             size={isMobile ? "lg" : "xl"}
             className={styles.sectionDescription}
             style={{
-              maxWidth: "700px",
-              margin: isMobile ? "1.5rem auto 0" : "2rem auto 0",
-              lineHeight: 1.6,
-              color: "#E3E7F1",
-              fontSize: isMobile ? "1.1rem" : undefined,
-              padding: isMobile ? "0 1rem" : 0
+              padding: isMobile ? "0 1rem" : 0,
+              margin: isMobile ? "1.5rem auto 0" : "2rem auto 0"
             }}
           >
             A showcase of my technical proficiency across various domains of web development,

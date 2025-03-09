@@ -35,15 +35,28 @@
   border-radius: var(--mantine-radius-md);
 }
 
+.timelineCardBox--hovered {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
 .timelineBadge {
   position: absolute;
   top: 1rem;
   right: 1rem;
 }
 
+.timelineBadge--hovered {
+  animation: glowEffect 2s infinite ease-in-out;
+}
+
 .timelineIcon {
   width: 40px;
   height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
 }
 
 .timelineCompany {
@@ -57,6 +70,7 @@
 
 .timelineAchievements {
   margin-top: 1rem;
+  overflow: hidden;
 }
 
 .timelineAchievementsBox {
@@ -85,6 +99,10 @@
   border-radius: var(--mantine-radius-sm);
 }
 
+.timelineSkillBadge--hovered {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
 .timelineShowMore {
   margin-top: 1rem;
   text-align: center;
@@ -92,6 +110,11 @@
 
 .timelineShowMoreIcon {
   margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.timelineShowMoreIcon--expanded {
+  transform: rotate(180deg);
 }
 
 .timelineTitleContainer {
@@ -115,6 +138,7 @@
   left: 0;
   width: 100%;
   height: 3px;
+  background: linear-gradient(90deg, transparent, #3D7FFF, transparent);
 }
 
 .timelineDescriptionText {
@@ -143,6 +167,17 @@
 .timelineMobileNavIcon {
   width: 24px;
   height: 24px;
+}
+
+.timelineMobileNavIcon--disabled {
+  background: rgba(30, 40, 60, 0.5);
+  border: 1px solid rgba(61, 127, 255, 0.5);
+}
+
+.timelineMobileNavIcon--enabled {
+  background: rgba(61, 127, 255, 0.8);
+  border: 1px solid rgba(61, 127, 255, 0.5);
+  box-shadow: 0 5px 15px rgba(61, 127, 255, 0.3);
 }
 
 .timelineDesktopStepper {
@@ -195,10 +230,21 @@
   transition: opacity 0.3s ease;
 }
 
+.timelineStepPointInner--active {
+  border: 2px solid;
+  box-shadow: 0 0 15px;
+}
+
+.timelineStepPointInner--inactive {
+  background: rgba(15, 20, 40, 0.8);
+  border: 2px solid rgba(61, 127, 255, 0.3);
+}
+
 .timelineMainCard {
   padding: 1.5rem;
   border-radius: var(--mantine-radius-lg);
   margin-top: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
 .timelineMainBadge {
@@ -210,6 +256,11 @@
 .timelineMainIcon {
   width: 48px;
   height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
 }
 
 .timelineMainTitle {
@@ -224,6 +275,7 @@
 
 .timelineMainDescriptionBox {
   margin: 1.5rem 0;
+  padding-left: 1rem;
 }
 
 .timelineMainDescriptionText {
@@ -244,6 +296,9 @@
   height: 10px;
   border-radius: 50%;
   margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .timelineMainAchievementText {
@@ -270,6 +325,14 @@
   padding: 0.5rem;
   border-radius: 50%;
   transition: all 0.3s ease;
+}
+
+.timelineNavButton--disabled {
+  opacity: 0.5;
+}
+
+.timelineNavButton--enabled {
+  box-shadow: 0 5px 20px rgba(61, 127, 255, 0.4);
 }
 
 @keyframes float {
