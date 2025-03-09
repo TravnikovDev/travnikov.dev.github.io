@@ -97,11 +97,13 @@ const Header: React.FC<HeaderProps> = ({
         zIndex: 1000,
         y: 0,
         opacity: 1,
+        pointerEvents: "auto", // Ensure it's always interactive
       }}
       animate={{
         y: 0,
         opacity: 1,
       }}
+      className="always-visible-header"
       transition={{
         y: { type: "spring", stiffness: 300, damping: 30 },
         opacity: { duration: 0.4 }
@@ -111,12 +113,12 @@ const Header: React.FC<HeaderProps> = ({
       <AppShellHeader
         style={{
           border: "none",
-          background: "transparent",
-          backdropFilter: "none",
-          boxShadow: "none",
+          background: "rgba(10, 15, 36, 0.85)", // More solid background for better visibility
+          backdropFilter: "blur(8px)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)", // Add shadow for better visibility
           overflow: "visible",
           height: "auto",
-          minHeight: "80px",
+          minHeight: "70px", // Slightly reduced height for mobile
           display: "flex",
           alignItems: "center",
         }}
