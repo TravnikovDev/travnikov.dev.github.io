@@ -310,7 +310,7 @@ export default function HeroAnimation() {
         bottom: 0,
         overflow: "hidden",
         transform: "translateZ(0)",
-        zIndex: 1,
+        zIndex: -1, // Changed from 1 to -1 to ensure it stays behind content
         pointerEvents: "none",
         "&:after": {
           content: '""',
@@ -320,7 +320,7 @@ export default function HeroAnimation() {
           right: 0,
           bottom: 0,
           background:
-            "radial-gradient(circle at center, rgba(10,15,36,0.6) 0%, rgba(10,15,36,0.8) 100%)",
+            "radial-gradient(circle at center, rgba(10,15,36,0.3) 0%, rgba(10,15,36,0.5) 100%)", // Adjusted opacity
           pointerEvents: "none",
           zIndex: 1,
         },
@@ -332,7 +332,7 @@ export default function HeroAnimation() {
           right: 0,
           height: "50%",
           background:
-            "linear-gradient(to bottom, rgba(10,15,36,0.7) 0%, rgba(10,15,36,0) 100%)",
+            "linear-gradient(to bottom, rgba(10,15,36,0.5) 0%, rgba(10,15,36,0) 100%)", // Adjusted opacity
           zIndex: 1,
           pointerEvents: "none",
         },
@@ -345,11 +345,12 @@ export default function HeroAnimation() {
           antialias: true,
           alpha: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.5,
+          toneMappingExposure: 1.2, // Slightly reduced exposure
           outputColorSpace: THREE.SRGBColorSpace,
         }}
         shadows
         style={{
+          position: "absolute", // Added to ensure proper stacking
           touchAction: "none",
           willChange: "transform",
           height: "100%",
