@@ -74,84 +74,15 @@ function ParallaxBackground() {
   );
 }
 
-// Animate section on scroll into view using Intersection Observer
-function ParallaxSection({ children, delay = 0, offsetY = 100, speed = 0.8 }) {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  // Handle intersection observer for visibility
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, []);
-
-  // Handle scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      if (ref.current) {
-        const rect = ref.current.getBoundingClientRect();
-        const scrollYProgress = Math.max(0, Math.min(1, 
-          1 - (rect.top - window.innerHeight) / (rect.height + window.innerHeight)
-        ));
-        setScrollPosition(scrollYProgress);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial calculation
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  // Calculate parallax effects
-  const yOffset = isVisible ? 0 : offsetY;
-  const parallaxY = offsetY - scrollPosition * offsetY * 2 * speed;
-
-  // Apply style with delay
-  const style = {
-    opacity: isVisible ? 1 : 0,
-    transform: `translateY(${isVisible ? parallaxY : offsetY}px)`,
-    transition: `opacity 0.8s ease ${delay}s, transform 0.8s ease ${delay}s`,
-  };
-
-  return (
-    <div
-      ref={ref}
-      style={style}
-    >
-      {children}
-    </div>
-  );
-}
-
 // Parallax divider with animation
-function ParallaxDivider() {
+function SectionsDivider() {
   return (
     <Container size="lg" my={100}>
       <Box
-        className={styles.parallaxDivider}
+        className={styles.sectionsDivider}
       >
         <Box
-          className={styles.parallaxDividerInner}
+          className={styles.sectionsDividerInner}
         />
       </Box>
     </Container>
@@ -180,21 +111,15 @@ export default function IndexPage() {
       {/* Main content with scroll animations */}
       <Box>
         {/* Hero section */}
-        <ParallaxSection delay={0} offsetY={30} speed={0.2}>
           <HeroSection />
-        </ParallaxSection>
         {/* Animated divider */}
-        <ParallaxDivider />
+        <SectionsDivider />
         {/* Timeline section */}
-        <ParallaxSection delay={0.1} offsetY={60} speed={0.5}>
           <TimelineSection />
-        </ParallaxSection>
         {/* Animated divider */}
-        <ParallaxDivider />
+        <SectionsDivider />
         {/* Tech stack section */}
-        <ParallaxSection delay={0.2} offsetY={80} speed={0.7}>
           <TechStackSection />
-        </ParallaxSection>
         {/* Scroll progress indicator */}
         <div
           className={styles.scrollProgressIndicator}

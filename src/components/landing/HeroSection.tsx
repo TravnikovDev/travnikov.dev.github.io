@@ -20,10 +20,10 @@ interface FloatingElementProps {
   animationDuration?: number;
 }
 
-const FloatingElement: React.FC<FloatingElementProps> = ({ 
-  children, 
-  style = {}, 
-  animationDuration = 5 
+const FloatingElement: React.FC<FloatingElementProps> = ({
+  children,
+  style = {},
+  animationDuration = 5
 }) => (
   <Box
     style={{
@@ -35,55 +35,6 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
     {children}
   </Box>
 );
-
-// Animated component with hover effects
-const AnimatedBox = ({ children, delay = 0, style = {}, className = "" }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const elementRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
-      }
-    };
-  }, []);
-
-  return (
-    <div
-      ref={elementRef}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={className}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: `translateY(${isVisible ? 0 : '30px'})`,
-        transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
-        ...(isHovered && {
-          transform: 'translateY(-5px)',
-          transition: 'transform 0.3s ease',
-        }),
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-};
 
 // Main hero component with enhanced scroll effects
 const HeroSection = () => {
@@ -177,145 +128,134 @@ const HeroSection = () => {
                       h="100%"
                       justify="center"
                     >
-                      <AnimatedBox delay={0.2}>
-                        <Box mb="lg" className="shimmer">
-                          <Badge
-                            size="xl"
-                            radius="lg"
-                            variant="gradient"
-                            gradient={{ from: "primary", to: "secondary", deg: 45 }}
-                            className="animated-border"
-                            style={{
-                              textTransform: "none",
-                              padding: "12px 24px",
-                              fontFamily: '"Cabinet Grotesk", sans-serif',
-                              fontWeight: 700,
-                              fontSize: "1.1rem",
-                              letterSpacing: "-0.01em",
-                              color: "white",
-                              boxShadow: "var(--mantine-soft-shadow)",
-                              border: "1px solid rgba(255, 255, 255, 0.9)",
-                              transform: "translateZ(30px)",
-                            }}
-                          >
-                            Senior Frontend Developer
-                          </Badge>
-                        </Box>
-                      </AnimatedBox>
-
-                      <AnimatedBox delay={0.4}>
-                        <Title
-                          order={1}
-                          mb={{ base: "lg", sm: "2xl" }}
-                          className={styles.heroTitle}
-                          data-text="Roman Travnikov"
-                        >
-                          Roman
-                          <br />
-                          Travnikov
-                        </Title>
-                      </AnimatedBox>
-
-                      <AnimatedBox delay={0.6}>
-                        <Text
+                      <Box mb="lg" className="shimmer">
+                        <Badge
                           size="xl"
-                          mb={{ base: "xl", sm: "3.5rem" }}
-                          className={`hover-card ${styles.heroDescription}`}
+                          radius="lg"
+                          variant="gradient"
+                          gradient={{ from: "primary", to: "secondary", deg: 45 }}
+                          className="animated-border"
+                          style={{
+                            textTransform: "none",
+                            padding: "12px 24px",
+                            fontFamily: '"Cabinet Grotesk", sans-serif',
+                            fontWeight: 700,
+                            fontSize: "1.1rem",
+                            letterSpacing: "-0.01em",
+                            color: "white",
+                            boxShadow: "var(--mantine-soft-shadow)",
+                            border: "1px solid rgba(255, 255, 255, 0.9)",
+                            transform: "translateZ(30px)",
+                          }}
                         >
-                          I craft{" "}
-                          <Box
-                            component="span"
-                            fw={900}
-                            className={`highlight-blue ${styles.highlightBlue}`}
-                          >
-                            innovative
-                          </Box>{" "}
-                          and
-                          <Box
-                            component="span"
-                            fw={900}
-                            className={`highlight-royal ${styles.highlightRoyal}`}
-                          >
-                            {" "}
-                            high-performance
-                          </Box>{" "}
-                          user interfaces with 10+ years of experience. My expertise
-                          spans across{" "}
-                          <Box
-                            component="span"
-                            fw={700}
-                            className={styles.highlightReact}
-                          >
-                            React
-                          </Box>
-                          ,{" "}
-                          <Box
-                            component="span"
-                            fw={700}
-                            className={styles.highlightTypeScript}
-                          >
-                            TypeScript
-                          </Box>
-                          , and modern frontend technologies to create exceptional
-                          user experiences.
-                        </Text>
-                      </AnimatedBox>
+                          Senior Frontend Developer
+                        </Badge>
+                      </Box>
 
-                      <AnimatedBox delay={0.8}>
-                        <Group gap="xl" mt={{ base: 30, sm: 40 }}>
-                          <Button
-                            component={Link}
-                            to="/projects"
-                            size="xl"
-                            radius="xl"
-                            px={36}
-                            className={`animated-border hover-scale ${styles.heroButton}`}
-                          >
-                            View My Projects
-                          </Button>
-                          <Button
-                            component={Link}
-                            to="/contact"
-                            variant="outline"
-                            size="xl"
-                            radius="xl"
-                            px={36}
-                            className={`animated-border hover-scale ${styles.heroButtonOutline}`}
-                          >
-                            Get in Touch
-                          </Button>
-                        </Group>
-                      </AnimatedBox>
+                      <Title
+                        order={1}
+                        mb={{ base: "lg", sm: "2xl" }}
+                        className={styles.heroTitle}
+                        data-text="Roman Travnikov"
+                      >
+                        Roman
+                        <br />
+                        Travnikov
+                      </Title>
 
-                      <AnimatedBox delay={1}>
+                      <Text
+                        size="xl"
+                        mb={{ base: "xl", sm: "3.5rem" }}
+                        className={`hover-card ${styles.heroDescription}`}
+                      >
+                        I craft{" "}
                         <Box
-                          className={styles.availability}
+                          component="span"
+                          fw={900}
+                          className={`highlight-blue ${styles.highlightBlue}`}
                         >
-                          <Box
-                            className={styles.availabilityIndicator}
-                          />
-                          Available for new opportunities
+                          innovative
+                        </Box>{" "}
+                        and
+                        <Box
+                          component="span"
+                          fw={900}
+                          className={`highlight-royal ${styles.highlightRoyal}`}
+                        >
+                          {" "}
+                          high-performance
+                        </Box>{" "}
+                        user interfaces with 10+ years of experience. My expertise
+                        spans across{" "}
+                        <Box
+                          component="span"
+                          fw={700}
+                          className={styles.highlightReact}
+                        >
+                          React
                         </Box>
-                      </AnimatedBox>
+                        ,{" "}
+                        <Box
+                          component="span"
+                          fw={700}
+                          className={styles.highlightTypeScript}
+                        >
+                          TypeScript
+                        </Box>
+                        , and modern frontend technologies to create exceptional
+                        user experiences.
+                      </Text>
 
-                      <AnimatedBox delay={1.2}>
-                        <Group gap="md" className={styles.techStack}>
-                          {["React", "TypeScript", "Three.js", "Node.js"].map(
-                            (tech, i) => (
-                              <Badge
-                                key={tech}
-                                size="md"
-                                radius="md"
-                                variant="outline"
-                                color={i % 2 === 0 ? "primary" : "secondary"}
-                                className={styles.techBadge}
-                              >
-                                {tech}
-                              </Badge>
-                            )
-                          )}
-                        </Group>
-                      </AnimatedBox>
+                      <Group gap="xl" mt={{ base: 30, sm: 40 }}>
+                        <Button
+                          component={Link}
+                          to="/projects"
+                          size="xl"
+                          radius="xl"
+                          px={36}
+                          className={`animated-border hover-scale ${styles.heroButton}`}
+                        >
+                          View My Projects
+                        </Button>
+                        <Button
+                          component={Link}
+                          to="/contact"
+                          variant="outline"
+                          size="xl"
+                          radius="xl"
+                          px={36}
+                          className={`animated-border hover-scale ${styles.heroButtonOutline}`}
+                        >
+                          Get in Touch
+                        </Button>
+                      </Group>
+
+                      <Box
+                        className={styles.availability}
+                      >
+                        <Box
+                          className={styles.availabilityIndicator}
+                        />
+                        Available for new opportunities
+                      </Box>
+
+                      <Group gap="md" className={styles.techStack}>
+                        {["React", "TypeScript", "Three.js", "Node.js"].map(
+                          (tech, i) => (
+                            <Badge
+                              key={tech}
+                              size="md"
+                              radius="md"
+                              variant="outline"
+                              color={i % 2 === 0 ? "primary" : "secondary"}
+                              className={styles.techBadge}
+                            >
+                              {tech}
+                            </Badge>
+                          )
+                        )}
+                      </Group>
+
                     </Stack>
                   </Grid.Col>
                 </Grid>
@@ -370,34 +310,32 @@ const HeroSection = () => {
                         },
                       ].map((item, i) => (
                         <Grid.Col key={i} span={{ base: 12, md: 4 }}>
-                          <AnimatedBox delay={0.2 + i * 0.1}>
-                            <Link to={item.path} style={{ textDecoration: "none" }}>
-                              <Box
-                                className={styles.scrollItem}
-                                style={{
-                                  border: `2px solid ${item.color}20`,
-                                  "&:hover": {
-                                    border: `2px solid ${item.color}`,
-                                    boxShadow: `0 15px 40px ${item.color}20`,
-                                  },
-                                }}
+                          <Link to={item.path} style={{ textDecoration: "none" }}>
+                            <Box
+                              className={styles.scrollItem}
+                              style={{
+                                border: `2px solid ${item.color}20`,
+                                "&:hover": {
+                                  border: `2px solid ${item.color}`,
+                                  boxShadow: `0 15px 40px ${item.color}20`,
+                                },
+                              }}
+                            >
+                              <Text size="3xl" mb="md">
+                                {item.icon}
+                              </Text>
+                              <Title
+                                order={3}
+                                style={{ color: item.color, marginBottom: "1rem" }}
                               >
-                                <Text size="3xl" mb="md">
-                                  {item.icon}
-                                </Text>
-                                <Title
-                                  order={3}
-                                  style={{ color: item.color, marginBottom: "1rem" }}
-                                >
-                                  {item.title}
-                                </Title>
-                                <Text size="md" style={{ color: "#E3E7F1" }}>
-                                  Discover amazing {item.title.toLowerCase()} with
-                                  smooth scroll animations and interactive elements.
-                                </Text>
-                              </Box>
-                            </Link>
-                          </AnimatedBox>
+                                {item.title}
+                              </Title>
+                              <Text size="md" style={{ color: "#E3E7F1" }}>
+                                Discover amazing {item.title.toLowerCase()} with
+                                smooth scroll animations and interactive elements.
+                              </Text>
+                            </Box>
+                          </Link>
                         </Grid.Col>
                       ))}
                     </Grid>

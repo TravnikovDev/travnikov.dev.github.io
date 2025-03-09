@@ -66,14 +66,14 @@
   animation: gradientAnimation 10s linear infinite;
 }
 
-.parallaxDivider {
+.sectionsDivider {
   position: relative;
   height: 2px;
   background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
   margin: 50px 0;
 }
 
-.parallaxDividerInner {
+.sectionsDividerInner {
   position: absolute;
   top: -5px;
   left: 50%;

@@ -90,7 +90,7 @@ export default function DesktopNavigation() {
   }, []);
   
   return (
-    <Group gap="md" visibleFrom="sm">
+    <Group gap="md">
       <Logo />
       <div ref={navigationRef}>
         <Box

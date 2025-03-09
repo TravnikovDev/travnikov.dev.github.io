@@ -7,6 +7,6 @@ export const animatedGridPattern: string;
 export const gradientAnimation: string;
 export const animatedGradientLinesTop: string;
 export const animatedGradientLinesBottom: string;
-export const parallaxDivider: string;
-export const parallaxDividerInner: string;
+export const sectionsDivider: string;
+export const sectionsDividerInner: string;
 export const scrollProgressIndicator: string;

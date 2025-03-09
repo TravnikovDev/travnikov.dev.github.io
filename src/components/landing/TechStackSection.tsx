@@ -25,7 +25,7 @@ import * as styles from './TechStackSection.module.css';
 // Get icon by skill name
 const getSkillIcon = (name) => {
   const iconProps = { size: 28 };
-  
+
   switch (name.toLowerCase()) {
     case "react/next.js":
       return <FaReact {...iconProps} />;
@@ -197,65 +197,22 @@ const techData: TechCategory[] = [
   }
 ];
 
-// Animated component with intersection observer
-const AnimatedSection = ({ children, delay = 0, style = {}, className = "" }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
-      }
-    };
-  }, []);
-
-  return (
-    <div
-      ref={elementRef}
-      className={className}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: `translateY(${isVisible ? 0 : '30px'})`,
-        transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-};
-
 // Single skill card component with circular progress
 const SkillCard = ({ skill, index, categoryColor }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [progressValue, setProgressValue] = useState(0);
   const cardRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  
+
   // Responsive layout detection
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const checkMobile = () => {
         setIsMobile(window.innerWidth < 768);
       };
-      
+
       checkMobile();
       window.addEventListener('resize', checkMobile);
       return () => window.removeEventListener('resize', checkMobile);
@@ -266,7 +223,6 @@ const SkillCard = ({ skill, index, categoryColor }) => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
           // Animate progress
           const startTime = performance.now();
           const duration = 1500;
@@ -276,7 +232,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
           const animate = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            
+
             // Ease out function
             const easedProgress = 1 - Math.pow(1 - progress, 2);
             setProgressValue(startValue + (endValue - startValue) * easedProgress);
@@ -304,14 +260,12 @@ const SkillCard = ({ skill, index, categoryColor }) => {
       }
     };
   }, [skill.level, index]);
-  
+
   return (
     <div
       ref={cardRef}
       className={styles.skillCard}
       style={{
-        opacity: isVisible ? 1 : 0,
-        transform: `translateY(${isVisible ? 0 : '30px'})`,
         transition: `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`,
         height: "100%",
         perspective: "1000px"
@@ -325,16 +279,16 @@ const SkillCard = ({ skill, index, categoryColor }) => {
         style={{
           position: "relative",
           height: "100%",
-          background: isHovered 
-            ? `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.95))` 
+          background: isHovered
+            ? `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.95))`
             : `rgba(10, 15, 36, 0.8)`,
           backdropFilter: "blur(10px)",
           border: `2px solid ${isHovered ? skill.color : isMobile ? `${skill.color}50` : 'rgba(255, 255, 255, 0.1)'}`,
           transition: "all 0.4s ease",
           overflow: "hidden",
           cursor: "pointer",
-          boxShadow: isHovered 
-            ? `0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px ${skill.color}40` 
+          boxShadow: isHovered
+            ? `0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px ${skill.color}40`
             : "0 4px 20px rgba(0, 0, 0, 0.1)",
           transform: isHovered ? "translateY(-5px)" : "translateY(0)",
         }}
@@ -356,10 +310,10 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             transition: "opacity 0.3s ease"
           }}
         />
-        
+
         <Group align="flex-start" wrap="nowrap" gap={isMobile ? "lg" : "md"}>
           {/* Circular progress with animated counter */}
-          <Box 
+          <Box
             className={styles.circularProgress}
             style={{
               position: "relative",
@@ -370,11 +324,11 @@ const SkillCard = ({ skill, index, categoryColor }) => {
               thickness={isMobile ? 5 : 4}
               roundCaps
               label={
-                <Box 
+                <Box
                   className={styles.circularProgressLabel}
-                  style={{ 
-                    display: "flex", 
-                    alignItems: "center", 
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
                     justifyContent: "center",
                     flexDirection: "column",
                     gap: "2px"
@@ -408,7 +362,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                 { value: progressValue, color: skill.color, tooltip: `${skill.level}% proficiency` },
               ]}
             />
-            
+
             {/* Pulse effect background */}
             <Box
               className={styles.pulseEffect}
@@ -426,10 +380,10 @@ const SkillCard = ({ skill, index, categoryColor }) => {
               }}
             />
           </Box>
-          
+
           <Box style={{ flex: 1 }}>
             <Group justify="space-between" mb="xs">
-              <Text 
+              <Text
                 size={isMobile ? "lg" : "xl"}
                 fw={700}
                 className={styles.skillName}
@@ -442,9 +396,9 @@ const SkillCard = ({ skill, index, categoryColor }) => {
               >
                 {skill.name}
               </Text>
-              
-              <Badge 
-                color="dark" 
+
+              <Badge
+                color="dark"
                 variant="filled"
                 radius="sm"
                 size={isMobile ? "md" : "sm"}
@@ -461,11 +415,11 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                 {skill.experience}
               </Badge>
             </Group>
-            
-            <Text 
-              size={isMobile ? "md" : "sm"} 
-              color="#E3E7F1" 
-              mb="md" 
+
+            <Text
+              size={isMobile ? "md" : "sm"}
+              color="#E3E7F1"
+              mb="md"
               className={styles.skillDescription}
               style={{
                 maxHeight: isExpanded ? "none" : "3em",
@@ -477,8 +431,8 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             >
               {skill.description}
             </Text>
-            
-            <Badge 
+
+            <Badge
               leftSection={<Box size={isMobile ? 14 : 12}>📊</Box>}
               size={isMobile ? "md" : "sm"}
               className={styles.skillProjects}
@@ -493,7 +447,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             </Badge>
           </Box>
         </Group>
-        
+
         {/* Bottom decorative element */}
         <Box
           className={styles.bottomDecorativeElement}
@@ -542,7 +496,7 @@ export function TechStackSection() {
       const checkMobile = () => {
         setIsMobile(window.innerWidth < 768);
       };
-      
+
       checkMobile();
       window.addEventListener('resize', checkMobile);
       return () => window.removeEventListener('resize', checkMobile);
@@ -551,169 +505,101 @@ export function TechStackSection() {
 
   return (
     <Container ref={sectionRef} size="lg" py={isMobile ? "5rem" : "8rem"} id="skills">
-      <AnimatedSection>
-        {/* Section Title */}
+      {/* Section Title */}
+      <Box
+        className={styles.sectionTitle}
+        style={{
+          textAlign: "center",
+          marginBottom: isMobile ? "2.5rem" : "4rem"
+        }}
+      >
         <Box
-          className={styles.sectionTitle}
-          style={{
-            textAlign: "center",
-            marginBottom: isMobile ? "2.5rem" : "4rem"
-          }}
+          className={styles.sectionTitleInner}
         >
-          <Box
-            className={styles.sectionTitleInner}
-          >
-            <Title
-              order={2}
-              className={styles.sectionTitleText}
-              style={{
-                fontSize: isMobile ? "2.3rem" : "3rem"
-              }}
-            >
-              Technical Expertise
-            </Title>
-            
-            {/* Animated underline */}
-            <Box className={styles.animatedUnderline} />
-          </Box>
-          
-          <Text
-            size={isMobile ? "lg" : "xl"}
-            className={styles.sectionDescription}
+          <Title
+            order={2}
+            className={styles.sectionTitleText}
             style={{
-              padding: isMobile ? "0 1rem" : 0,
-              margin: isMobile ? "1.5rem auto 0" : "2rem auto 0"
+              fontSize: isMobile ? "2.3rem" : "3rem"
             }}
           >
-            A showcase of my technical proficiency across various domains of web development,
-            backed by years of hands-on experience.
-          </Text>
+            Technical Expertise
+          </Title>
+
+          {/* Animated underline */}
+          <Box className={styles.animatedUnderline} />
         </Box>
-        
-        <Stack gap={isMobile ? "md" : "xl"}>
-          {techData.map((category, idx) => (
-            <Box key={idx} className={styles.techCategory} style={{ marginBottom: isMobile ? "2rem" : "3rem" }}>
-              <AnimatedSection delay={idx * 0.2}>
-                <Paper
-                  p={isMobile ? "md" : "lg"}
-                  radius="lg"
-                  className={styles.techCategoryPaper}
-                  style={{
-                    marginBottom: isMobile ? "1.5rem" : "2rem",
-                    background: `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.8))`,
-                    backdropFilter: "blur(15px)",
-                    border: `2px solid ${category.color}40`,
-                    position: "relative",
-                    overflow: "hidden"
-                  }}
-                >
-                  {/* Category header content */}
-                  {isMobile ? (
-                    <Stack gap="md">
-                      <Group gap="md">
-                        <Box
-                          className={styles.categoryIcon}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "60px",
-                            height: "60px",
-                            borderRadius: "16px",
-                            background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
-                            color: "white",
-                            boxShadow: `0 5px 15px ${category.color}40`,
-                            fontSize: "1.7rem"
-                          }}
-                        >
-                          {category.icon}
-                        </Box>
-                        
-                        <Box style={{ flex: 1 }}>
-                          <Title
-                            order={3}
-                            className={styles.categoryTitle}
-                            style={{
-                              fontSize: "1.7rem",
-                              fontWeight: 800,
-                              marginBottom: "0.25rem",
-                              background: `linear-gradient(90deg, #fff, ${category.color})`,
-                              backgroundClip: "text",
-                              WebkitBackgroundClip: "text",
-                              WebkitTextFillColor: "transparent",
-                            }}
-                          >
-                            {category.name}
-                          </Title>
-                          
-                          <Badge
-                            size="lg"
-                            radius="md"
-                            variant="filled"
-                            className={styles.categoryBadge}
-                            style={{
-                              background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
-                              border: `1px solid ${category.color}40`,
-                              backdropFilter: "blur(5px)",
-                              padding: "0.4rem 0.8rem",
-                              fontSize: "0.9rem",
-                              fontWeight: 600
-                            }}
-                          >
-                            {category.skills.length} Skills
-                          </Badge>
-                        </Box>
-                      </Group>
-                      
-                      <Text color="#E3E7F1" size="md" className={styles.categoryDescription} style={{ fontSize: "1rem", lineHeight: 1.5 }}>
-                        {category.description}
-                      </Text>
-                    </Stack>
-                  ) : (
-                    <Group justify="space-between" align="center">
-                      <Group gap="md">
-                        <Box
-                          className={styles.categoryIcon}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "60px",
-                            height: "60px",
-                            borderRadius: "16px",
-                            background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
-                            color: "white",
-                            boxShadow: `0 5px 15px ${category.color}40`,
-                          }}
-                        >
-                          {category.icon}
-                        </Box>
-                        
-                        <Box>
-                          <Title
-                            order={3}
-                            className={styles.categoryTitle}
-                            style={{
-                              fontSize: "2rem",
-                              fontWeight: 800,
-                              marginBottom: "0.25rem",
-                              background: `linear-gradient(90deg, #fff, ${category.color})`,
-                              backgroundClip: "text",
-                              WebkitBackgroundClip: "text",
-                              WebkitTextFillColor: "transparent",
-                            }}
-                          >
-                            {category.name}
-                          </Title>
-                          
-                          <Text color="#E3E7F1" size="md" className={styles.categoryDescription}>
-                            {category.description}
-                          </Text>
-                        </Box>
-                      </Group>
-                      
+
+        <Text
+          size={isMobile ? "lg" : "xl"}
+          className={styles.sectionDescription}
+          style={{
+            padding: isMobile ? "0 1rem" : 0,
+            margin: isMobile ? "1.5rem auto 0" : "2rem auto 0"
+          }}
+        >
+          A showcase of my technical proficiency across various domains of web development,
+          backed by years of hands-on experience.
+        </Text>
+      </Box>
+
+      <Stack gap={isMobile ? "md" : "xl"}>
+        {techData.map((category, idx) => (
+          <Box key={idx} className={styles.techCategory} style={{ marginBottom: isMobile ? "2rem" : "3rem" }}>
+            <Paper
+              p={isMobile ? "md" : "lg"}
+              radius="lg"
+              className={styles.techCategoryPaper}
+              style={{
+                marginBottom: isMobile ? "1.5rem" : "2rem",
+                background: `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.8))`,
+                backdropFilter: "blur(15px)",
+                border: `2px solid ${category.color}40`,
+                position: "relative",
+                overflow: "hidden"
+              }}
+            >
+              {/* Category header content */}
+              {isMobile ? (
+                <Stack gap="md">
+                  <Group gap="md">
+                    <Box
+                      className={styles.categoryIcon}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "16px",
+                        background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
+                        color: "white",
+                        boxShadow: `0 5px 15px ${category.color}40`,
+                        fontSize: "1.7rem"
+                      }}
+                    >
+                      {category.icon}
+                    </Box>
+
+                    <Box style={{ flex: 1 }}>
+                      <Title
+                        order={3}
+                        className={styles.categoryTitle}
+                        style={{
+                          fontSize: "1.7rem",
+                          fontWeight: 800,
+                          marginBottom: "0.25rem",
+                          background: `linear-gradient(90deg, #fff, ${category.color})`,
+                          backgroundClip: "text",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                        }}
+                      >
+                        {category.name}
+                      </Title>
+
                       <Badge
-                        size="xl"
+                        size="lg"
                         radius="md"
                         variant="filled"
                         className={styles.categoryBadge}
@@ -721,31 +607,95 @@ export function TechStackSection() {
                           background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
                           border: `1px solid ${category.color}40`,
                           backdropFilter: "blur(5px)",
-                          padding: "0.5rem 1rem",
+                          padding: "0.4rem 0.8rem",
+                          fontSize: "0.9rem",
+                          fontWeight: 600
                         }}
                       >
                         {category.skills.length} Skills
                       </Badge>
-                    </Group>
-                  )}
-                </Paper>
-              </AnimatedSection>
+                    </Box>
+                  </Group>
 
-              <Grid gutter={isMobile ? "md" : "xl"}>
-                {category.skills.map((skill, index) => (
-                  <Grid.Col key={index} span={{ base: 12, md: 6, lg: 6 }}>
-                    <SkillCard 
-                      skill={skill} 
-                      index={index} 
-                      categoryColor={category.color} 
-                    />
-                  </Grid.Col>
-                ))}
-              </Grid>
-            </Box>
-          ))}
-        </Stack>
-      </AnimatedSection>
+                  <Text color="#E3E7F1" size="md" className={styles.categoryDescription} style={{ fontSize: "1rem", lineHeight: 1.5 }}>
+                    {category.description}
+                  </Text>
+                </Stack>
+              ) : (
+                <Group justify="space-between" align="center">
+                  <Group gap="md">
+                    <Box
+                      className={styles.categoryIcon}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "16px",
+                        background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
+                        color: "white",
+                        boxShadow: `0 5px 15px ${category.color}40`,
+                      }}
+                    >
+                      {category.icon}
+                    </Box>
+
+                    <Box>
+                      <Title
+                        order={3}
+                        className={styles.categoryTitle}
+                        style={{
+                          fontSize: "2rem",
+                          fontWeight: 800,
+                          marginBottom: "0.25rem",
+                          background: `linear-gradient(90deg, #fff, ${category.color})`,
+                          backgroundClip: "text",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                        }}
+                      >
+                        {category.name}
+                      </Title>
+
+                      <Text color="#E3E7F1" size="md" className={styles.categoryDescription}>
+                        {category.description}
+                      </Text>
+                    </Box>
+                  </Group>
+
+                  <Badge
+                    size="xl"
+                    radius="md"
+                    variant="filled"
+                    className={styles.categoryBadge}
+                    style={{
+                      background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
+                      border: `1px solid ${category.color}40`,
+                      backdropFilter: "blur(5px)",
+                      padding: "0.5rem 1rem",
+                    }}
+                  >
+                    {category.skills.length} Skills
+                  </Badge>
+                </Group>
+              )}
+            </Paper>
+
+            <Grid gutter={isMobile ? "md" : "xl"}>
+              {category.skills.map((skill, index) => (
+                <Grid.Col key={index} span={{ base: 12, md: 6, lg: 6 }}>
+                  <SkillCard
+                    skill={skill}
+                    index={index}
+                    categoryColor={category.color}
+                  />
+                </Grid.Col>
+              ))}
+            </Grid>
+          </Box>
+        ))}
+      </Stack>
     </Container>
   );
 }

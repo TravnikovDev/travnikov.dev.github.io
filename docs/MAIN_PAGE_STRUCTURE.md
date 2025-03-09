@@ -14,13 +14,13 @@ This document outlines the component hierarchy of the main page of travnikov.dev
         <HeroSection />
       </ParallaxSection>
       
-      <ParallaxDivider />
+      <sectionsDivider />
       
       <ParallaxSection>
         <TimelineSection />
       </ParallaxSection>
       
-      <ParallaxDivider />
+      <sectionsDivider />
       
       <ParallaxSection>
         <TechStackSection />
@@ -59,7 +59,7 @@ This document outlines the component hierarchy of the main page of travnikov.dev
   - Props: `delay`, `offsetY`, `speed` to control animation behavior
   - Uses Intersection Observer to trigger animations when elements come into view
 
-- **ParallaxDivider**: Visual divider between main content sections
+- **sectionsDivider**: Visual divider between main content sections
   - Creates a subtle animated separator between content sections
 
 - **HeroSection**: Main landing section with personal introduction
