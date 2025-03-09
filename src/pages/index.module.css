@@ -1,0 +1,96 @@
+.topGradientCircle {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(34, 144, 224, 0.3), rgba(34, 144, 224, 0));
+  border-radius: 50%;
+  z-index: -1;
+  animation: glowPulse 3s infinite;
+}
+
+.middleRightBlob {
+  position: absolute;
+  top: 50%;
+  right: -150px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(122, 82, 197, 0.5), rgba(122, 82, 197, 0));
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.bottomLeftBlob {
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(34, 144, 224, 0.3), rgba(34, 144, 224, 0));
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.animatedGridPattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 75%, transparent 75%, transparent);
+  background-size: 50px 50px;
+  z-index: -2;
+  animation: gradientAnimation 15s linear infinite;
+}
+
+.animatedGradientLinesTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
+  z-index: -1;
+  animation: gradientAnimation 10s linear infinite;
+}
+
+.animatedGradientLinesBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
+  z-index: -1;
+  animation: gradientAnimation 10s linear infinite;
+}
+
+.parallaxDivider {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
+  margin: 50px 0;
+}
+
+.parallaxDividerInner {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: rgba(34, 144, 224, 0.3);
+  border-radius: 50%;
+  animation: glowPulse 3s infinite;
+}
+
+.scrollProgressIndicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
+  transform-origin: left;
+  z-index: 9999;
+}

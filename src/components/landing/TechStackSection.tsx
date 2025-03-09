@@ -21,6 +21,7 @@ import {
   SiTypescript, SiThreedotjs, SiWebgl, SiGreensock,
   SiSvg, SiGraphql, SiPostgresql, SiMongodb
 } from "react-icons/si";
+import styles from './TechStackSection.module.css';
 
 // Animation keyframes
 const gradientShift = keyframes({
@@ -337,6 +338,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
   return (
     <div
       ref={cardRef}
+      className={styles.skillCard}
       style={{
         opacity: isVisible ? 1 : 0,
         transform: `translateY(${isVisible ? 0 : '30px'})`,
@@ -349,6 +351,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
         shadow="md"
         p={isMobile ? "lg" : "xl"}
         radius="lg"
+        className={styles.skillCardPaper}
         style={{
           position: "relative",
           height: "100%",
@@ -371,6 +374,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
       >
         {/* Gradient overlay effect */}
         <Box
+          className={styles.gradientOverlay}
           style={{
             position: "absolute",
             top: 0,
@@ -386,6 +390,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
         <Group align="flex-start" wrap="nowrap" gap={isMobile ? "lg" : "md"}>
           {/* Circular progress with animated counter */}
           <Box 
+            className={styles.circularProgress}
             style={{
               position: "relative",
               animation: (isHovered || isMobile) ? `${rotateRing} 10s linear infinite` : "none"
@@ -397,6 +402,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
               roundCaps
               label={
                 <Box 
+                  className={styles.circularProgressLabel}
                   style={{ 
                     display: "flex", 
                     alignItems: "center", 
@@ -406,6 +412,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                   }}
                 >
                   <Box
+                    className={styles.circularProgressIcon}
                     style={{
                       color: skill.color,
                       filter: (isHovered || isMobile) ? `drop-shadow(0 0 8px ${skill.color})` : "none",
@@ -418,6 +425,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                   <Text
                     fw={700}
                     size={isMobile ? "lg" : "xl"}
+                    className={styles.circularProgressText}
                     style={{
                       color: "#fff",
                       textShadow: (isHovered || isMobile) ? `0 0 8px ${skill.color}` : "none"
@@ -434,6 +442,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             
             {/* Pulse effect background */}
             <Box
+              className={styles.pulseEffect}
               style={{
                 position: "absolute",
                 top: "-5px",
@@ -455,6 +464,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
               <Text 
                 size={isMobile ? "lg" : "xl"}
                 fw={700}
+                className={styles.skillName}
                 style={{
                   color: skill.color,
                   transition: "all 0.3s ease",
@@ -470,6 +480,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                 variant="filled"
                 radius="sm"
                 size={isMobile ? "md" : "sm"}
+                className={styles.skillExperience}
                 style={{
                   background: `linear-gradient(135deg, ${skill.color}90, ${skill.color}50)`,
                   border: `1px solid ${skill.color}`,
@@ -487,6 +498,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
               size={isMobile ? "md" : "sm"} 
               color="#E3E7F1" 
               mb="md" 
+              className={styles.skillDescription}
               style={{
                 maxHeight: isExpanded ? "none" : "3em",
                 overflow: "hidden",
@@ -501,6 +513,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             <Badge 
               leftSection={<Box size={isMobile ? 14 : 12}>📊</Box>}
               size={isMobile ? "md" : "sm"}
+              className={styles.skillProjects}
               style={{
                 background: "rgba(255, 255, 255, 0.1)",
                 border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -515,6 +528,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
         
         {/* Bottom decorative element */}
         <Box
+          className={styles.bottomDecorativeElement}
           style={{
             position: "absolute",
             left: 0,
@@ -572,12 +586,14 @@ export function TechStackSection() {
       <AnimatedSection>
         {/* Section Title */}
         <Box
+          className={styles.sectionTitle}
           style={{
             textAlign: "center",
             marginBottom: isMobile ? "2.5rem" : "4rem",
           }}
         >
           <Box
+            className={styles.sectionTitleInner}
             style={{
               display: "inline-block",
               position: "relative"
@@ -585,6 +601,7 @@ export function TechStackSection() {
           >
             <Title
               order={2}
+              className={styles.sectionTitleText}
               style={{
                 fontSize: isMobile ? "2.3rem" : "3rem",
                 fontWeight: 800,
@@ -606,6 +623,7 @@ export function TechStackSection() {
             
             {/* Animated underline */}
             <Box
+              className={styles.animatedUnderline}
               style={{
                 position: "absolute",
                 height: "4px",
@@ -622,6 +640,7 @@ export function TechStackSection() {
           
           <Text
             size={isMobile ? "lg" : "xl"}
+            className={styles.sectionDescription}
             style={{
               maxWidth: "700px",
               margin: isMobile ? "1.5rem auto 0" : "2rem auto 0",
@@ -638,11 +657,12 @@ export function TechStackSection() {
         
         <Stack gap={isMobile ? "md" : "xl"}>
           {techData.map((category, idx) => (
-            <Box key={idx} style={{ marginBottom: isMobile ? "2rem" : "3rem" }}>
+            <Box key={idx} className={styles.techCategory} style={{ marginBottom: isMobile ? "2rem" : "3rem" }}>
               <AnimatedSection delay={idx * 0.2}>
                 <Paper
                   p={isMobile ? "md" : "lg"}
                   radius="lg"
+                  className={styles.techCategoryPaper}
                   style={{
                     marginBottom: isMobile ? "1.5rem" : "2rem",
                     background: `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.8))`,
@@ -657,6 +677,7 @@ export function TechStackSection() {
                     <Stack gap="md">
                       <Group gap="md">
                         <Box
+                          className={styles.categoryIcon}
                           style={{
                             display: "flex",
                             alignItems: "center",
@@ -677,6 +698,7 @@ export function TechStackSection() {
                         <Box style={{ flex: 1 }}>
                           <Title
                             order={3}
+                            className={styles.categoryTitle}
                             style={{
                               fontSize: "1.7rem",
                               fontWeight: 800,
@@ -694,6 +716,7 @@ export function TechStackSection() {
                             size="lg"
                             radius="md"
                             variant="filled"
+                            className={styles.categoryBadge}
                             style={{
                               background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
                               border: `1px solid ${category.color}40`,
@@ -708,7 +731,7 @@ export function TechStackSection() {
                         </Box>
                       </Group>
                       
-                      <Text color="#E3E7F1" size="md" style={{ fontSize: "1rem", lineHeight: 1.5 }}>
+                      <Text color="#E3E7F1" size="md" className={styles.categoryDescription} style={{ fontSize: "1rem", lineHeight: 1.5 }}>
                         {category.description}
                       </Text>
                     </Stack>
@@ -716,6 +739,7 @@ export function TechStackSection() {
                     <Group justify="space-between" align="center">
                       <Group gap="md">
                         <Box
+                          className={styles.categoryIcon}
                           style={{
                             display: "flex",
                             alignItems: "center",
@@ -735,6 +759,7 @@ export function TechStackSection() {
                         <Box>
                           <Title
                             order={3}
+                            className={styles.categoryTitle}
                             style={{
                               fontSize: "2rem",
                               fontWeight: 800,
@@ -748,7 +773,7 @@ export function TechStackSection() {
                             {category.name}
                           </Title>
                           
-                          <Text color="#E3E7F1" size="md">
+                          <Text color="#E3E7F1" size="md" className={styles.categoryDescription}>
                             {category.description}
                           </Text>
                         </Box>
@@ -758,6 +783,7 @@ export function TechStackSection() {
                         size="xl"
                         radius="md"
                         variant="filled"
+                        className={styles.categoryBadge}
                         style={{
                           background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
                           border: `1px solid ${category.color}40`,

@@ -15,6 +15,7 @@ import {
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
 import SocialLinks from "../components/shared/SocialLinks";
+import styles from './contact.module.css';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -88,17 +89,17 @@ export default function ContactPage() {
   return (
     <BaseLayout>
       <Container size="xl">
-        <Stack style={{ gap: "var(--mantine-spacing-xl)" }}>
+        <Stack className={styles.stack}>
           <Grid gutter="xl">
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <Stack align="center" p="md" style={{ gap: "var(--mantine-spacing-md)" }}>
-                <Title order={2} style={{ textAlign: "center" }}>
+              <Stack align="center" p="md" className={styles.stackInner}>
+                <Title order={2} className={styles.title}>
                   Get in Touch
                 </Title>
-                <Text style={{ textAlign: "center" }} size="lg">
+                <Text className={styles.text} size="lg">
                   Have a project in mind? Let's talk about it.
                 </Text>
-                <Stack style={{ gap: "var(--mantine-spacing-md)" }}>
+                <Stack className={styles.formStack}>
                   {submitted ? (
                     <Stack align="center" p="md">
                       <Title order={2} >
@@ -163,7 +164,7 @@ export default function ContactPage() {
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Paper shadow="md" p="xl" radius="md">
-                <Title order={2} mb="xl" style={{ textAlign: "center" }}>
+                <Title order={2} mb="xl" className={styles.title}>
                   Other Ways to Connect
                 </Title>
                 <Box py="xl">

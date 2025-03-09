@@ -3,6 +3,7 @@ import { Box, Title, Drawer, Stack, Button, Divider, Paper, Text } from "@mantin
 import { Link } from "gatsby";
 import Logo from "./Logo";
 import SocialLinks from "./SocialLinks";
+import styles from './MobileDrawer.module.css';
 
 interface MobileDrawerProps {
   opened: boolean;
@@ -18,49 +19,11 @@ export default function MobileDrawer({ opened, onClose }: MobileDrawerProps) {
       size="100%"
       title={<Logo />}
       withOverlay
-      styles={{
-        overlay: {
-          background: "rgba(10, 15, 36, 0.9)",
-          backdropFilter: "blur(10px)"
-        },
-        inner: {
-          background: "rgba(10, 15, 36, 0.95)",
-          backdropFilter: "blur(10px)",
-          fontSize: "20px", // Increased font size for better readability
-          overflow: "auto"  // Ensure scrolling works properly
-        },
-        header: {
-          padding: "20px", // More padding in header
-          marginBottom: "15px",
-          borderBottom: "1px solid rgba(61, 127, 255, 0.2)" // Visual separator
-        },
-        body: {
-          padding: "24px" // More padding in body for better touch targets
-        },
-        close: {
-          width: "44px", // Larger close button
-          height: "44px", // Larger close button
-          color: "#3D7FFF",
-          '&:hover': {
-            backgroundColor: "rgba(61, 127, 255, 0.15)"
-          }
-        }
-      }}
+      className={styles.drawer}
     >
       <Title
         order={2}
-        styles={{
-          root: {
-            background: "linear-gradient(45deg, #3D7FFF, #A64DFF)",
-            backgroundSize: "200% 200%",
-            animation: "gradient-shift 15s ease infinite",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            fontSize: "1.5rem",
-            fontWeight: 900,
-            letterSpacing: "-0.02em"
-          }
-        }}
+        className={styles.menuTitle}
       >
         Menu
       </Title>
@@ -68,15 +31,7 @@ export default function MobileDrawer({ opened, onClose }: MobileDrawerProps) {
       <Divider
         my="lg"
         labelPosition="center"
-        styles={{
-          root: {
-            opacity: 0.5
-          },
-          label: {
-            opacity: 0.7,
-            color: "#E3E7F1"
-          }
-        }}
+        className={styles.divider}
       />
 
       <Stack gap={20} mb={50}>
@@ -90,23 +45,8 @@ export default function MobileDrawer({ opened, onClose }: MobileDrawerProps) {
             key={item.path}
             shadow="md"
             radius="lg"
-            p={20} // Increased padding
-            styles={{
-              root: {
-                overflow: "hidden",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                transform: "translateZ(0)",
-                border: item.path === "/contact" ? 
-                  "3px solid rgba(166, 77, 255, 0.5)" : 
-                  "3px solid rgba(61, 127, 255, 0.3)",
-                marginBottom: 15,
-                boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)", // More visible shadow
-                "&:active": {
-                  transform: "scale(0.98)",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
-                }
-              }
-            }}
+            p={20}
+            className={styles.paper}
           >
             <Button
               component={Link}
@@ -118,25 +58,9 @@ export default function MobileDrawer({ opened, onClose }: MobileDrawerProps) {
               gradient={{ from: "#3D7FFF", to: "#A64DFF", deg: 45 }}
               color={item.path === "/contact" ? undefined : "blue"}
               onClick={onClose}
-              styles={{
-                root: {
-                  height: "5rem", // Even taller for better touch targets
-                  fontSize: "1.6rem", // Larger text
-                  fontWeight: 700,
-                  letterSpacing: "-0.01em",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)"
-                },
-                inner: {
-                  justifyContent: "flex-start", // Left-align content
-                  gap: "15px" // More space between icon and text
-                },
-                label: {
-                  display: "flex",
-                  alignItems: "center"
-                }
-              }}
+              className={styles.button}
             >
-              <span style={{ fontSize: "1.8rem", marginRight: "8px" }}>{item.icon}</span> {item.title}
+              <span className={styles.icon}>{item.icon}</span> {item.title}
             </Button>
           </Paper>
         ))}
@@ -147,27 +71,10 @@ export default function MobileDrawer({ opened, onClose }: MobileDrawerProps) {
         label="Let's Connect"
         labelPosition="center"
         size="sm"
-        styles={{
-          root: {
-            opacity: 0.5
-          },
-          label: {
-            opacity: 0.7,
-            color: "#E3E7F1",
-            fontSize: "0.875rem",
-            fontWeight: 500
-          }
-        }}
+        className={styles.divider}
       />
 
-      <Box 
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-          marginBottom: "30px"
-        }}
-      >
+      <Box className={styles.socialLinks}>
         {[
           { title: "GitHub", href: "https://github.com/TravnikovDev", icon: "🐙" },
           { title: "LinkedIn", href: "https://linkedin.com/in/travnikov", icon: "💼" },
@@ -182,27 +89,10 @@ export default function MobileDrawer({ opened, onClose }: MobileDrawerProps) {
             variant="light"
             size="lg"
             radius="xl"
-            styles={{
-              root: {
-                transition: "all 0.3s ease",
-                backgroundColor: "rgba(61, 127, 255, 0.1)",
-                border: "2px solid rgba(61, 127, 255, 0.2)",
-                boxShadow: "0 4px 20px rgba(61, 127, 255, 0.1)",
-                height: "4.5rem", // Taller for better touch targets
-                "&:active": {
-                  backgroundColor: "rgba(61, 127, 255, 0.25)",
-                  transform: "scale(0.98)",
-                  boxShadow: "0 2px 10px rgba(61, 127, 255, 0.2)"
-                }
-              },
-              inner: {
-                justifyContent: "flex-start",
-                paddingLeft: "15px"
-              }
-            }}
+            className={styles.socialButton}
           >
-            <Text styles={{ root: { fontSize: "1.8rem", fontWeight: 600 } }}>
-              <span style={{ fontSize: "2rem", marginRight: "15px" }}>{item.icon}</span> {item.title}
+            <Text className={styles.socialButtonText}>
+              <span className={styles.socialIcon}>{item.icon}</span> {item.title}
             </Text>
           </Button>
         ))}

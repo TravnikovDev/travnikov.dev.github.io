@@ -1,0 +1,247 @@
+.heroContainer {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroTarget {
+  position: relative;
+  z-index: 1;
+}
+
+.heroBox {
+  position: relative;
+  z-index: 2;
+}
+
+.heroBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 120, 240, 0.6), rgba(0, 120, 240, 0.3));
+  z-index: -1;
+}
+
+.heroText {
+  font-size: 10rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  z-index: -1;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+}
+
+.floatingElement {
+  position: absolute;
+  animation: float 5s ease-in-out infinite;
+  z-index: 2;
+}
+
+.floatingElementInner {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 120, 240, 0.6);
+  border-radius: 50%;
+}
+
+.megaTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.megaTitleText {
+  display: block;
+  font-size: 4rem;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.megaTitleTextLight {
+  display: block;
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.heroDescription {
+  font-size: 1.5rem;
+  color: white;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.highlightBlue {
+  color: #0078F0;
+}
+
+.highlightRoyal {
+  color: #4169E1;
+}
+
+.highlightReact {
+  color: #61DAFB;
+}
+
+.highlightTypeScript {
+  color: #3178C6;
+}
+
+.heroButton {
+  background: linear-gradient(135deg, #0078F0, #4169E1);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  transition: transform 0.3s ease;
+}
+
+.heroButton:hover {
+  transform: scale(1.05);
+}
+
+.heroButtonOutline {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  transition: transform 0.3s ease;
+}
+
+.heroButtonOutline:hover {
+  transform: scale(1.05);
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: white;
+  margin-top: 1rem;
+}
+
+.availabilityIndicator {
+  width: 10px;
+  height: 10px;
+  background: #00FF00;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.techStack {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.techBadge {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+}
+
+.scrollIndicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scrollText {
+  font-size: 1rem;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.scrollBox {
+  width: 30px;
+  height: 30px;
+  border: 2px solid white;
+  border-radius: 50%;
+  animation: bounce 2s infinite;
+}
+
+.scrollSection {
+  position: relative;
+  z-index: 2;
+}
+
+.scrollContent {
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.scrollTitle {
+  font-size: 2rem;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.scrollItem {
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floatingElementTop {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 120, 240, 0.6);
+  border-radius: 50%;
+  animation: float 5s ease-in-out infinite;
+}
+
+.floatingElementBottom {
+  position: absolute;
+  bottom: -50px;
+  right: 50%;
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 120, 240, 0.6);
+  border-radius: 50%;
+  animation: float 5s ease-in-out infinite;
+}

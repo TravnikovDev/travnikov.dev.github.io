@@ -13,6 +13,7 @@ import {
 import { keyframes } from "@emotion/react";
 import { Link } from "gatsby";
 import HeroAnimation from "../3d/HeroAnimation";
+import styles from './HeroSection.module.css';
 
 // Enhanced keyframes for animated elements
 const fadeInUp = keyframes({
@@ -144,203 +145,66 @@ const HeroSection = () => {
     <Container size="xl">
       <Box
         ref={containerRef}
-        style={{
-          position: "relative",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "visible", // Changed from 'hidden'
-          transform: "translate3d(0,0,0)", // Force GPU acceleration
-          willChange: "transform", // Optimize for animations
-          zIndex: 1, // Ensure content is above 3D scene
-        }}
+        className={styles.heroContainer}
       >
         <HeroAnimation />
 
         <Box
           ref={targetRef}
-          style={{
-            position: "relative",
-            width: "100%",
-            zIndex: 2, // Ensure content is above 3D scene
-            transform: "translate3d(0,0,0)", // Force GPU acceleration
-            background: "transparent",
-          }}
+          className={styles.heroTarget}
         >
           <Box
-            style={{
-              position: "relative",
-              marginTop: 0,
-              padding: 20,
-              overflow: "hidden",
-              minHeight: "100vh",
-              zIndex: 1,
-              "&::before": {
-                content: '""',
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0, 0, 0, 0.45)",
-                zIndex: -1,
-              },
-            }}
+            className={styles.heroBox}
           >
             <Box
-              style={{
-                width: "100%",
-                height: "100%",
-                borderRadius: "50%",
-                background: "radial-gradient(circle at center, #FF3D00 0%, #FF8A00 100%)",
-                filter: "blur(128px)",
-                animation: "pulse 4s ease-in-out infinite",
-              }}
+              className={styles.heroBackground}
             />
 
             <Text
-              style={{
-                fontSize: "clamp(3rem, 5vw, 5rem)", // Reduced size to fit screen
-                fontWeight: 700,
-                fontFamily: "Cabinet Grotesk, sans-serif",
-                letterSpacing: "-0.03em",
-                color: "#E3E7F1",
-                WebkitTextStroke: "1px rgba(255, 255, 255, 0.1)",
-                position: "absolute",
-                top: "20%", // Position more precisely 
-                left: "20%",
-                opacity: 0.5,
-                zIndex: 1, // Ensure correct layering
-              }}
+              className={styles.heroText}
             >
               FRONTEND
             </Text>
 
             <Box
               ref={targetRef}
-              style={{
-                position: "relative",
-                marginTop: 0,
-                padding: 0,
-                overflow: "visible",
-                minHeight: "100vh",
-                zIndex: 10, // Make sure all content is above the 3D scene
-                // Semi-transparent background to allow 3D scene to show through
-                "&::before": {
-                  content: '""',
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  background:
-                    "radial-gradient(circle at top right, rgba(10, 15, 36, 0.5), rgba(10, 15, 36, 0.3) 70%), radial-gradient(circle at bottom left, rgba(10, 15, 36, 0.5), rgba(10, 15, 36, 0.3) 70%)",
-                  zIndex: -1,
-                  pointerEvents: "none",
-                  backdropFilter: "blur(2px)",
-                },
-              }}
+              className={styles.heroContent}
             >
-              {/* The 3D scene is now fixed and positioned in its own component, 
-            so we don't need a container here. Just render it directly. */}
               <HeroAnimation />
 
               <Box
-                hiddenFrom="md"
-                style={{
-                  bottom: "20%",
-                  right: "5%",
-                  transform: "rotate(3deg)",
-                  position: "absolute",
-                  animation: `${float} 10s ease-in-out infinite`,
-                  zIndex: 2,
-                }}
+                className={styles.floatingElement}
               >
                 <Box
-                  style={{
-                    width: "80px",
-                    height: "80px",
-                    borderRadius: "50%",
-                    background:
-                      "radial-gradient(circle at 30% 30%, rgba(61, 127, 255, 0.4), transparent 70%)",
-                    filter: "blur(10px)",
-                    animation: `${pulseGlow} 4s infinite alternate`,
-                  }}
+                  className={styles.floatingElementInner}
                 />
               </Box>
 
-              {/* Main content with enhanced parallax */}
               <Container
                 size="xl"
                 py={{ base: "xl", sm: "2xl" }}
                 mt={{ base: 50, sm: 80 }}
               >
-                {/* Ultra dramatic mega title text effect that animates on scroll */}
                 <div
+                  className={styles.megaTitle}
                   style={{
-                    position: "absolute",
-                    top: "-15vh",
-                    left: "-15vw",
-                    right: 0,
-                    zIndex: -1,
                     transform: titleTransform,
-                    transformOrigin: "left center",
-                    perspective: "1200px",
-                    transition: "transform 0.1s linear",
                   }}
                 >
                   <Text
-                    style={{
-                      fontSize: "clamp(6rem, 12vw, 16rem)", // Reduced size to fit screen
-                      fontWeight: 900,
-                      fontFamily: '"Monument Extended", "Clash Display", sans-serif',
-                      letterSpacing: "-0.07em",
-                      color: "transparent",
-                      WebkitTextStroke: "2px rgba(61, 127, 255, 0.2)", // Increased opacity for visibility
-                      position: "absolute",
-                      lineHeight: 0.75,
-                      textTransform: "uppercase",
-                      whiteSpace: "nowrap",
-                      pointerEvents: "none",
-                      // Improved visibility with stronger gradient
-                      background:
-                        "linear-gradient(to bottom, rgba(61, 127, 255, 0.15) 0%, rgba(61, 127, 255, 0.08) 100%)",
-                      WebkitBackgroundClip: "text",
-                      // Stronger text shadow for better visibility
-                      textShadow:
-                        "0 0 50px rgba(61, 127, 255, 0.2), 0 0 100px rgba(166, 77, 255, 0.15)",
-                      transform: "rotateZ(-2deg)",
-                    }}
+                    className={styles.megaTitleText}
                   >
                     TRAVNIKOV
                   </Text>
 
-                  {/* Second layer for enhanced depth effect - light theme version */}
                   <Text
-                    style={{
-                      fontSize: "clamp(6rem, 12vw, 16rem)", // Match front layer size
-                      fontWeight: 900,
-                      fontFamily: '"Monument Extended", "Clash Display", sans-serif',
-                      letterSpacing: "-0.07em",
-                      color: "transparent",
-                      WebkitTextStroke: "1px rgba(61, 127, 255, 0.15)", // Increased opacity
-                      position: "absolute",
-                      lineHeight: 0.75,
-                      textTransform: "uppercase",
-                      whiteSpace: "nowrap",
-                      pointerEvents: "none",
-                      top: "0.5vh",
-                      left: "0.5vw",
-                      filter: "blur(6px)", // Reduced blur
-                      opacity: 0.5, // Increased opacity
-                      transform: "rotateZ(-2deg)",
-                    }}
+                    className={styles.megaTitleTextLight}
                   >
                     TRAVNIKOV
                   </Text>
                 </div>
 
-                {/* Main content grid with enhanced parallax */}
                 <Grid gutter={{ base: 40, sm: 80 }} align="center">
-                  {/* Left content column with enhanced typography and effects */}
                   <Grid.Col span={{ base: 12, md: 6 }} order={{ base: 2, md: 1 }}>
                     <Stack
                       gap="xl"
@@ -349,25 +213,23 @@ const HeroSection = () => {
                     >
                       <AnimatedBox delay={0.2}>
                         <Box mb="lg" className="shimmer">
-                          {" "}
-                          {/* Add shimmer effect */}
                           <Badge
                             size="xl"
-                            radius="lg" // Larger radius
+                            radius="lg"
                             variant="gradient"
                             gradient={{ from: "primary", to: "secondary", deg: 45 }}
-                            className="animated-border" // Add animated border
+                            className="animated-border"
                             style={{
                               textTransform: "none",
-                              padding: "12px 24px", // Larger padding
+                              padding: "12px 24px",
                               fontFamily: '"Cabinet Grotesk", sans-serif',
                               fontWeight: 700,
-                              fontSize: "1.1rem", // Larger text
+                              fontSize: "1.1rem",
                               letterSpacing: "-0.01em",
-                              color: "white", // White text for contrast
+                              color: "white",
                               boxShadow: "var(--mantine-soft-shadow)",
                               border: "1px solid rgba(255, 255, 255, 0.9)",
-                              transform: "translateZ(30px)", // 3D effect
+                              transform: "translateZ(30px)",
                             }}
                           >
                             Senior Frontend Developer
@@ -379,34 +241,8 @@ const HeroSection = () => {
                         <Title
                           order={1}
                           mb={{ base: "lg", sm: "2xl" }}
-                          style={{
-                            fontSize: "clamp(3.5rem, 8vw, 6rem)", // Reduced size
-                            lineHeight: 0.9, // Slightly more readable
-                            // Direct color instead of transparent with gradient
-                            color: "#FFFFFF", // Pure white for maximum visibility
-                            fontWeight: 900,
-                            fontFamily: '"Monument Extended", "Clash Display", sans-serif',
-                            letterSpacing: "-0.03em", // Less tight letters for readability
-                            // Add text stroke for visibility
-                            WebkitTextStroke: "1px rgba(61, 127, 255, 0.5)",
-                            // Add strong text shadow for better visibility
-                            textShadow: "0 0 15px rgba(61, 127, 255, 0.6), 0 0 30px rgba(61, 127, 255, 0.3)",
-                            position: "relative",
-                            zIndex: 5, // Ensure it's above other elements
-                            
-                            // Add a subtle background behind text for contrast
-                            "&::before": {
-                              content: '""',
-                              position: "absolute",
-                              inset: -15,
-                              background: "radial-gradient(circle, rgba(10, 15, 36, 0.6) 0%, transparent 70%)",
-                              borderRadius: "8px",
-                              filter: "blur(5px)",
-                              opacity: 0.8,
-                              zIndex: -1,
-                            }
-                          }}
-                          data-text="Roman Travnikov" // For the stroke effect pseudo-element
+                          className={styles.heroTitle}
+                          data-text="Roman Travnikov"
                         >
                           Roman
                           <br />
@@ -419,49 +255,14 @@ const HeroSection = () => {
                           size="xl"
                           mb={{ base: "xl", sm: "3.5rem" }}
                           className="hover-card"
-                          style={{
-                            lineHeight: 1.8, // Slightly reduced for better fitting
-                            maxWidth: "650px",
-                            color: "#FFFFFF", // Pure white for visibility
-                            fontSize: "1.4rem", // Slightly smaller for better fitting
-                            fontFamily: '"Cabinet Grotesk", sans-serif',
-                            letterSpacing: "-0.01em",
-                            position: "relative",
-                            padding: "1.2rem 1.5rem", // Adjusted padding
-                            borderRadius: "0.5rem",
-                            background: "rgba(10, 15, 36, 0.8)", // Stronger background for contrast
-                            backdropFilter: "blur(10px)",
-                            border: "2px solid rgba(61, 127, 255, 0.3)", // Blue border for visibility
-                            boxShadow: "0 0 20px rgba(61, 127, 255, 0.2)", // Glow effect
-                            zIndex: 5, // Ensure it's above other elements
-
-                            // Add subtle highlight background - blue for light theme
-                            "&::before": {
-                              content: '""',
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              bottom: 0,
-                              width: "5px",
-                              background: "var(--mantine-primary-gradient)",
-                              borderRadius: "2px 0 0 2px",
-                              opacity: 0.7, // More visible
-                            },
-                          }}
+                          className={styles.heroDescription}
                         >
                           I craft{" "}
                           <Box
                             component="span"
                             className="highlight-blue"
                             fw={900}
-                            style={{
-                              color: "#3D7FFF",
-                              position: "relative",
-                              padding: "0 5px",
-                              transformStyle: "preserve-3d",
-                              display: "inline-block",
-                              transform: "translateZ(5px) skewX(-5deg)", // Skew for dynamic effect
-                            }}
+                            className={styles.highlightBlue}
                           >
                             innovative
                           </Box>{" "}
@@ -470,14 +271,7 @@ const HeroSection = () => {
                             component="span"
                             className="highlight-royal"
                             fw={900}
-                            style={{
-                              color: "#A64DFF",
-                              position: "relative",
-                              padding: "0 5px",
-                              transformStyle: "preserve-3d",
-                              display: "inline-block",
-                              transform: "translateZ(5px) skewX(-5deg)", // Skew for dynamic effect
-                            }}
+                            className={styles.highlightRoyal}
                           >
                             {" "}
                             high-performance
@@ -487,13 +281,7 @@ const HeroSection = () => {
                           <Box
                             component="span"
                             fw={700}
-                            style={{
-                              color: "#3D7FFF",
-                              textDecoration: "underline",
-                              textDecorationColor: "rgba(61, 127, 255, 0.3)",
-                              textDecorationThickness: "2px",
-                              textUnderlineOffset: "3px",
-                            }}
+                            className={styles.highlightReact}
                           >
                             React
                           </Box>
@@ -501,13 +289,7 @@ const HeroSection = () => {
                           <Box
                             component="span"
                             fw={700}
-                            style={{
-                              color: "#A64DFF",
-                              textDecoration: "underline",
-                              textDecorationColor: "rgba(166, 77, 255, 0.3)",
-                              textDecorationThickness: "2px",
-                              textUnderlineOffset: "3px",
-                            }}
+                            className={styles.highlightTypeScript}
                           >
                             TypeScript
                           </Box>
@@ -518,8 +300,6 @@ const HeroSection = () => {
 
                       <AnimatedBox delay={0.8}>
                         <Group gap="xl" mt={{ base: 30, sm: 40 }}>
-                          {" "}
-                          {/* Increased top margin */}
                           <Button
                             component={Link}
                             to="/projects"
@@ -527,28 +307,7 @@ const HeroSection = () => {
                             radius="xl"
                             px={36}
                             className="animated-border hover-scale"
-                            style={{
-                              background: "linear-gradient(90deg, #3D7FFF, #00B8D9)",
-                              backgroundSize: "300% 100%",
-                              animation: `${shimmer} 8s ease-in-out infinite`,
-                              height: "68px",
-                              fontSize: "1.2rem",
-                              fontWeight: 700,
-                              fontFamily: '"Cabinet Grotesk", sans-serif',
-                              letterSpacing: "-0.01em",
-                              border: "2px solid rgba(255, 255, 255, 0.3)", // Brighter border
-                              color: "#FFFFFF", // Ensure text is visible
-                              boxShadow:
-                                "0 10px 30px rgba(0, 0, 0, 0.3), 0 0 30px rgba(61, 127, 255, 0.5)", // Stronger glow
-                              position: "relative",
-                              overflow: "hidden",
-                              transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                              "&:hover": {
-                                transform: "translateY(-5px)",
-                                boxShadow:
-                                  "0 15px 40px rgba(0, 0, 0, 0.4), 0 0 40px rgba(61, 127, 255, 0.6)",
-                              },
-                            }}
+                            className={styles.heroButton}
                           >
                             View My Projects
                           </Button>
@@ -560,272 +319,143 @@ const HeroSection = () => {
                             className="animated-border hover-scale"
                             radius="xl"
                             px={36}
-                            style={{
-                              borderWidth: 2,
-                              height: "68px",
-                              fontSize: "1.2rem",
-                              fontWeight: 700,
-                              fontFamily: '"Cabinet Grotesk", sans-serif',
-                              letterSpacing: "-0.01em",
-                              backgroundColor: "rgba(10, 15, 36, 0.8)", // Darker background for contrast
-                              background: "rgba(10, 15, 36, 0.05)",
-                              transform: "translateY(-5px)",
-                              boxShadow:
-                                "0 15px 40px rgba(0, 0, 0, 0.2), 0 0 25px rgba(166, 77, 255, 0.3)",
-                            }}
+                            className={styles.heroButtonOutline}
                           >
-                          Get in Touch
-                        </Button>
-                      </Group>
-                    </AnimatedBox>
+                            Get in Touch
+                          </Button>
+                        </Group>
+                      </AnimatedBox>
 
-                    <AnimatedBox delay={1}>
-                      <Box
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "12px",
-                          color: "rgba(255, 255, 255, 0.75)",
-                          fontSize: "1rem",
-                          fontFamily: '"Cabinet Grotesk", sans-serif',
-                          padding: "10px 20px",
-                          background: "rgba(10, 15, 36, 0.03)",
-                          backdropFilter: "blur(10px)",
-                          borderRadius: "30px",
-                          border: "1px solid rgba(10, 15, 36, 0.05)",
-                          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
-                          maxWidth: "fit-content",
-                          marginTop: "2rem",
-                        }}
-                      >
+                      <AnimatedBox delay={1}>
                         <Box
-                          style={{
-                            width: "10px",
-                            height: "10px",
-                            borderRadius: "50%",
-                            background: "#3D7FFF",
-                            boxShadow: "0 0 15px #3D7FFF",
-                            animation: `${pulseGlow} 2s infinite, ${bounce} 4s infinite`,
-                          }}
-                        />
-                        Available for new opportunities
-                      </Box>
-                    </AnimatedBox>
+                          className={styles.availability}
+                        >
+                          <Box
+                            className={styles.availabilityIndicator}
+                          />
+                          Available for new opportunities
+                        </Box>
+                      </AnimatedBox>
 
-                    <AnimatedBox delay={1.2}>
-                      <Group gap="md" style={{ marginTop: "1rem" }}>
-                        {["React", "TypeScript", "Three.js", "Node.js"].map(
-                          (tech, i) => (
-                            <Badge
-                              key={tech}
-                              size="md"
-                              radius="md"
-                              variant="outline"
-                              color={i % 2 === 0 ? "primary" : "secondary"}
-                              style={{
-                                background: "rgba(10, 15, 36, 0.03)",
-                                backdropFilter: "blur(5px)",
-                                border: "1px solid rgba(10, 15, 36, 0.1)",
-                                padding: "8px 12px",
-                                fontFamily: '"Cabinet Grotesk", sans-serif',
-                                animation: `${float} ${
-                                  6 + i
-                                }s ease-in-out infinite`,
-                              }}
-                            >
-                              {tech}
-                            </Badge>
-                          )
-                        )}
-                      </Group>
-                    </AnimatedBox>
-                  </Stack>
-                </Grid.Col>
+                      <AnimatedBox delay={1.2}>
+                        <Group gap="md" className={styles.techStack}>
+                          {["React", "TypeScript", "Three.js", "Node.js"].map(
+                            (tech, i) => (
+                              <Badge
+                                key={tech}
+                                size="md"
+                                radius="md"
+                                variant="outline"
+                                color={i % 2 === 0 ? "primary" : "secondary"}
+                                className={styles.techBadge}
+                              >
+                                {tech}
+                              </Badge>
+                            )
+                          )}
+                        </Group>
+                      </AnimatedBox>
+                    </Stack>
+                  </Grid.Col>
+                </Grid>
+              </Container>
 
-                {/* 3D animation column with enhanced effects */}
-                {/* Removed separate Grid.Col for the 3D animation - it's now a background */}
-              </Grid>
-            </Container>
+              <Box
+                className={styles.scrollIndicator}
+              >
+                <Text
+                  size="sm"
+                  className={styles.scrollText}
+                >
+                  Scroll Down
+                </Text>
+                <Box
+                  className={styles.scrollBox}
+                />
+              </Box>
 
-            {/* Scroll indicator with animation */}
-            <Box
-              style={{
-                position: "absolute",
-                bottom: "5vh",
-                left: "50%",
-                transform: "translateX(-50%)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "8px",
-                animation: `${fadeInUp} 1s ease-out 2s both`,
-              }}
-            >
-              <Text
-                size="sm"
+              <div
+                className={styles.scrollSection}
                 style={{
-                  color: "#E3E7F1",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
+                  transform: `translateY(${scrollY}px)`,
                 }}
               >
-                Scroll Down
-              </Text>
-              <Box
-                style={{
-                  width: "30px",
-                  height: "50px",
-                  border: "2px solid rgba(61, 127, 255, 0.3)",
-                  borderRadius: "20px",
-                  position: "relative",
-
-                  "&::before": {
-                    content: '""',
-                    position: "absolute",
-                    top: "8px",
-                    left: "50%",
-                    width: "6px",
-                    height: "6px",
-                    backgroundColor: "rgba(61, 127, 255, 0.8)",
-                    borderRadius: "50%",
-                    transform: "translateX(-50%)",
-                    animation: `${bounce} 2s infinite`,
-                  },
-                }}
-              />
-            </Box>
-
-            {/* New section that appears on scroll with dynamic parallax effects */}
-            <div
-              style={{
-                opacity: 1,
-                transform: `translateY(${scrollY}px)`,
-                width: "100%",
-                paddingTop: "50vh",
-                paddingBottom: "10vh",
-                position: "relative",
-              }}
-            >
-              <Container size="xl">
-                <Box
-                  className="animated-border"
-                  style={{
-                    padding: "3rem",
-                    backgroundColor: "rgba(10, 15, 36, 1)",
-                    borderRadius: "1rem",
-                    position: "relative",
-                    zIndex: 10,
-                    boxShadow: "var(--mantine-soft-shadow)",
-                  }}
-                >
-                  <Title
-                    order={2}
-                    mb="xl"
-                    className="shimmer"
-                    style={{
-                      color: "#E3E7F1",
-                      fontFamily: '"Clash Display", sans-serif',
-                      fontSize: "3rem",
-                      maxWidth: "800px",
-                    }}
+                <Container size="xl">
+                  <Box
+                    className="animated-border"
+                    className={styles.scrollContent}
                   >
-                    Continue exploring more immersive experiences
-                  </Title>
+                    <Title
+                      order={2}
+                      mb="xl"
+                      className="shimmer"
+                      className={styles.scrollTitle}
+                    >
+                      Continue exploring more immersive experiences
+                    </Title>
 
-                  <Grid gutter={40}>
-                    {[
-                      {
-                        title: "Projects",
-                        icon: "💻",
-                        color: "#3D7FFF",
-                        path: "/projects",
-                      },
-                      { title: "Blog", icon: "📝", color: "#A64DFF", path: "/blog" },
-                      {
-                        title: "Experiments",
-                        icon: "🧪",
-                        color: "#00F0FF",
-                        path: "/experiments",
-                      },
-                    ].map((item, i) => (
-                      <Grid.Col key={i} span={{ base: 12, md: 4 }}>
-                        <AnimatedBox delay={0.2 + i * 0.1}>
-                          <Link to={item.path} style={{ textDecoration: "none" }}>
-                            <Box
-                              style={{
-                                padding: "2rem",
-                                borderRadius: "1rem",
-                                backgroundColor: "rgba(10, 15, 36, 1)",
-                                boxShadow: "0 10px 30px rgba(61, 127, 255, 0.1)",
-                                border: `2px solid ${item.color}20`,
-                                transition: "all 0.3s ease",
-                                "&:hover": {
-                                  transform: "translateY(-8px)",
-                                  border: `2px solid ${item.color}`,
-                                  boxShadow: `0 15px 40px ${item.color}20`,
-                                },
-                              }}
-                            >
-                              <Text size="3xl" mb="md">
-                                {item.icon}
-                              </Text>
-                              <Title
-                                order={3}
-                                style={{ color: item.color, marginBottom: "1rem" }}
+                    <Grid gutter={40}>
+                      {[
+                        {
+                          title: "Projects",
+                          icon: "💻",
+                          color: "#3D7FFF",
+                          path: "/projects",
+                        },
+                        { title: "Blog", icon: "📝", color: "#A64DFF", path: "/blog" },
+                        {
+                          title: "Experiments",
+                          icon: "🧪",
+                          color: "#00F0FF",
+                          path: "/experiments",
+                        },
+                      ].map((item, i) => (
+                        <Grid.Col key={i} span={{ base: 12, md: 4 }}>
+                          <AnimatedBox delay={0.2 + i * 0.1}>
+                            <Link to={item.path} style={{ textDecoration: "none" }}>
+                              <Box
+                                className={styles.scrollItem}
+                                style={{
+                                  border: `2px solid ${item.color}20`,
+                                  "&:hover": {
+                                    border: `2px solid ${item.color}`,
+                                    boxShadow: `0 15px 40px ${item.color}20`,
+                                  },
+                                }}
                               >
-                                {item.title}
-                              </Title>
-                              <Text size="md" style={{ color: "#E3E7F1" }}>
-                                Discover amazing {item.title.toLowerCase()} with
-                                smooth scroll animations and interactive elements.
-                              </Text>
-                            </Box>
-                          </Link>
-                        </AnimatedBox>
-                      </Grid.Col>
-                    ))}
-                  </Grid>
-                </Box>
+                                <Text size="3xl" mb="md">
+                                  {item.icon}
+                                </Text>
+                                <Title
+                                  order={3}
+                                  style={{ color: item.color, marginBottom: "1rem" }}
+                                >
+                                  {item.title}
+                                </Title>
+                                <Text size="md" style={{ color: "#E3E7F1" }}>
+                                  Discover amazing {item.title.toLowerCase()} with
+                                  smooth scroll animations and interactive elements.
+                                </Text>
+                              </Box>
+                            </Link>
+                          </AnimatedBox>
+                        </Grid.Col>
+                      ))}
+                    </Grid>
+                  </Box>
 
-                {/* Additional parallax floating elements */}
-                <Box
-                  style={{
-                    position: "absolute",
-                    top: "20%",
-                    right: "5%",
-                    width: "150px",
-                    height: "150px",
-                    borderRadius: "50%",
-                    background: "var(--mantine-blue-gradient)",
-                    filter: "blur(60px)",
-                    opacity: 0.4,
-                    animation: `${float} 10s infinite ease-in-out`,
-                    zIndex: 1,
-                  }}
-                />
+                  <Box
+                    className={styles.floatingElementTop}
+                  />
 
-                <Box
-                  style={{
-                    position: "absolute",
-                    bottom: "10%",
-                    left: "10%",
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50%",
-                    background: "var(--mantine-tertiary-gradient)",
-                    filter: "blur(40px)",
-                    opacity: 0.3,
-                    animation: `${float} 8s infinite ease-in-out reverse`,
-                    zIndex: 1,
-                  }}
-                />
-              </Container>
-            </div>
+                  <Box
+                    className={styles.floatingElementBottom}
+                  />
+                </Container>
+              </div>
+            </Box>
           </Box>
         </Box>
-      </Box>
       </Box>
     </Container>
   );

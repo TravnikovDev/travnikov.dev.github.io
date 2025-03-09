@@ -5,6 +5,7 @@ import { useLocation } from "@reach/router";
 import { useColorScheme } from "@mantine/hooks";
 import Logo from "./Logo";
 import { keyframes } from "@emotion/react";
+import styles from './DesktopNavigation.module.css';
 
 // Custom keyframes for nav items with more pronounced effect
 const glitchEffect = keyframes({
@@ -81,37 +82,18 @@ const NavItem = ({ label, path, isActive }) => {
   return (
     <div
       ref={itemRef}
-      style={{
-        position: 'relative',
-        transform: `scale(${hovered ? 1.05 : 1})`,
-        transition: 'transform 0.3s ease'
-      }}
+      className={styles.navItem}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       <UnstyledButton
         component={Link}
         to={path}
-        style={{
-          position: 'relative',
-          color: '#fff',
-          padding: '8px 16px',
-          textDecoration: 'none',
-          fontSize: '16px',
-          fontWeight: 500,
-          letterSpacing: '0.5px',
-          background: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          zIndex: 2,
-        }}
+        className={styles.navButton}
       >
         <div
           ref={textRef}
-          style={{
-            transform: `translateY(${hovered ? -3 : 0}px)`,
-            transition: 'transform 0.3s ease'
-          }}
+          className={styles.navText}
         >
           {label}
         </div>
@@ -119,12 +101,10 @@ const NavItem = ({ label, path, isActive }) => {
 
       <div
         ref={underlineRef}
+        className={styles.navUnderline}
         style={{
-          position: 'absolute',
-          bottom: '-2px',
           left: isActive ? '0%' : hovered ? '5%' : '50%',
           width: isActive ? '100%' : hovered ? '90%' : '0%',
-          height: '2px',
           opacity: isActive || hovered ? 1 : 0,
           background: isActive 
             ? 'linear-gradient(90deg, #3D7FFF, #A64DFF)'
@@ -132,24 +112,14 @@ const NavItem = ({ label, path, isActive }) => {
           boxShadow: isActive 
             ? '0 0 15px rgba(61, 127, 255, 0.8), 0 0 30px rgba(166, 77, 255, 0.5)'
             : 'none',
-          transition: 'all 0.4s ease'
         }}
       />
 
       <div
         ref={glowRef}
+        className={styles.navGlow}
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '120%',
-          height: '130%',
-          background: 'radial-gradient(ellipse at center, rgba(61, 127, 255, 0.2) 0%, transparent 70%)',
           opacity: hovered ? 0.8 : 0,
-          transition: 'opacity 0.3s ease',
-          pointerEvents: 'none',
-          zIndex: 1
         }}
       />
     </div>
@@ -190,51 +160,7 @@ export default function DesktopNavigation() {
       <Logo />
       <div ref={navigationRef}>
         <Box
-          style={{
-            background: "rgba(10, 15, 36, 0.7)",
-            backdropFilter: "blur(15px)",
-            borderRadius: "16px", 
-            padding: "8px 12px",
-            border: "2px solid rgba(61, 127, 255, 0.3)",
-            animation: `${panelGlow} 3s infinite ease-in-out`,
-            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(61, 127, 255, 0.3)",
-            position: "relative",
-            overflow: "hidden",
-            
-            // Add glowing line effect
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "2px",
-              background: "linear-gradient(90deg, transparent, rgba(61, 127, 255, 0.8), transparent)",
-              animation: "slideRight 4s infinite ease-in-out",
-            },
-            
-            // Add bottom glowing line
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "2px",
-              background: "linear-gradient(90deg, transparent, rgba(166, 77, 255, 0.8), transparent)",
-              animation: "slideLeft 4s infinite ease-in-out",
-            },
-            
-            "@keyframes slideRight": {
-              "0%": { transform: "translateX(-100%)" },
-              "100%": { transform: "translateX(100%)" },
-            },
-            
-            "@keyframes slideLeft": {
-              "0%": { transform: "translateX(100%)" },
-              "100%": { transform: "translateX(-100%)" },
-            }
-          }}
+          className={styles.navBox}
         >
           <Group gap="xs">
             {navItems.map((link) => (

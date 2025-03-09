@@ -1,6 +1,7 @@
 import React from "react";
 import { Group, ActionIcon, MantineSize } from "@mantine/core";
 import SocialLinkIcon from "./SocialLinkIcon";
+import styles from './SocialLinks.module.css';
 
 interface SocialLinksProps {
   size?: MantineSize;
@@ -29,7 +30,7 @@ export default function SocialLinks({ size = "md" }: SocialLinksProps) {
   ];
 
   return (
-    <Group gap={size === "sm" ? "xs" : "md"}>
+    <Group gap={size === "sm" ? "xs" : "md"} className={styles.socialLinks}>
       {socialLinks.map((link) => (
         <ActionIcon
           key={link.url}
@@ -40,13 +41,7 @@ export default function SocialLinks({ size = "md" }: SocialLinksProps) {
           variant="light"
           radius="xl"
           size={size}
-          style={{
-            backgroundColor: "rgba(61, 127, 255, 0.1)",
-            "&:hover": {
-              backgroundColor: "rgba(61, 127, 255, 0.15)",
-              transform: "translateY(-2px)"
-            }
-          }}
+          className={styles.actionIcon}
         >
           <SocialLinkIcon {...link} />
         </ActionIcon>

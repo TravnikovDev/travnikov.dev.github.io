@@ -3,6 +3,7 @@ import { graphql, PageProps } from 'gatsby';
 import { Title, Text, Stack, Container, Group, Badge, Divider } from '@mantine/core';
 import BaseLayout from '../layouts/BaseLayout';
 import { SEO } from '../utils/seo/SEO';
+import styles from './BlogTemplate.module.css';
 
 interface BlogTemplateProps extends PageProps {
   data: {
@@ -29,7 +30,7 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
   return (
     <BaseLayout>
       <Container size="md" py="xl">
-        <Stack style={{ gap: "var(--mantine-spacing-xl)" }}>
+        <Stack className={styles.blogStack}>
           <Title order={1}>{articleData.frontmatter.title}</Title>
           <Group>
             <Text size="sm" color="dimmed">{date}</Text>
