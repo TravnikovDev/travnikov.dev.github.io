@@ -7,6 +7,7 @@ import { TimelineSection } from "../components/landing/TimelineSection";
 import { TechStackSection } from "../components/landing/TechStackSection";
 import { Box, Container } from "@mantine/core";
 import { keyframes } from "@emotion/react";
+import styles from './index.module.css';
 
 // Background animation effects
 const gradientAnimation = keyframes({
@@ -48,107 +49,39 @@ function ParallaxBackground() {
     <>
       {/* Top gradient circle - moves faster on scroll */}
       <div
+        className={styles.topGradientCircle}
         style={{
           opacity: opacity1,
           transform: `translateY(${y1}px)`,
-          position: "absolute",
-          top: "5%",
-          left: "10%",
-          width: "40vw",
-          height: "40vw",
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle at center, rgba(34, 144, 224, 0.15) 0%, rgba(36, 43, 64, 0) 70%)",
-          filter: "blur(60px)",
-          zIndex: -1,
-          pointerEvents: "none",
         }}
       />
       {/* Middle right blob - moves medium speed */}
       <div
+        className={styles.middleRightBlob}
         style={{
-          position: "absolute",
-          top: "40%",
-          right: "5%",
-          width: "25vw",
-          height: "25vw",
-          borderRadius: "70% 30% 40% 60% / 60% 30% 70% 40%",
-          background:
-            "radial-gradient(circle at center, rgba(132, 34, 224, 0.12) 0%, rgba(36, 43, 64, 0) 70%)",
-          filter: "blur(50px)",
-          zIndex: -1,
-          pointerEvents: "none",
-          animation: `${glowPulse} 10s infinite ease-in-out`,
           transform: `translateY(${y2}px) scale(${scale1}) rotate(${rotate1}deg)`,
         }}
       />
       {/* Bottom left blob - moves slower */}
       <div
+        className={styles.bottomLeftBlob}
         style={{
-          position: "absolute",
-          bottom: "5%",
-          left: "5%",
-          width: "30vw",
-          height: "30vw",
-          borderRadius: "60% 40% 30% 70% / 50% 60% 40% 50%",
-          background:
-            "radial-gradient(circle at center, rgba(240, 31, 36, 0.08) 0%, rgba(36, 43, 64, 0) 70%)",
-          filter: "blur(60px)",
-          zIndex: -1,
-          pointerEvents: "none",
           transform: `translateY(${y3}px)`,
         }}
       />
       {/* Animated grid pattern */}
       <div
+        className={styles.animatedGridPattern}
         style={{
           opacity: opacity2,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `
-            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "50px 50px",
-          zIndex: -1,
-          pointerEvents: "none",
         }}
       />
       {/* Animated gradient lines */}
       <div
-        style={{
-          position: "absolute",
-          top: "25%",
-          left: 0,
-          right: 0,
-          height: "2px",
-          background:
-            "linear-gradient(90deg, transparent, var(--mantine-color-primary-6), var(--mantine-color-secondary-6), transparent)",
-          backgroundSize: "400% 400%",
-          animation: `${gradientAnimation} 15s ease infinite`,
-          zIndex: -1,
-          opacity: 0.5,
-          pointerEvents: "none",
-        }}
+        className={styles.animatedGradientLinesTop}
       />
       <div
-        style={{
-          position: "absolute",
-          top: "75%",
-          left: 0,
-          right: 0,
-          height: "1px",
-          background:
-            "linear-gradient(90deg, transparent, var(--mantine-color-secondary-6), var(--mantine-color-primary-6), transparent)",
-          backgroundSize: "400% 400%",
-          animation: `${gradientAnimation} 18s ease infinite reverse`,
-          zIndex: -1,
-          opacity: 0.3,
-          pointerEvents: "none",
-        }}
+        className={styles.animatedGradientLinesBottom}
       />
     </>
   );
@@ -228,25 +161,10 @@ function ParallaxDivider() {
   return (
     <Container size="lg" my={100}>
       <Box
-        style={{
-          position: "relative",
-          height: "3px",
-          width: "100%",
-          background: "rgba(255, 255, 255, 0.05)",
-          overflow: "hidden",
-        }}
+        className={styles.parallaxDivider}
       >
         <Box
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            height: "100%",
-            width: "30%",
-            background:
-              "linear-gradient(90deg, transparent, var(--mantine-color-primary-6), var(--mantine-color-secondary-6), transparent)",
-            animation: `${gradientAnimation} 4s ease infinite`,
-          }}
+          className={styles.parallaxDividerInner}
         />
       </Box>
     </Container>
@@ -292,16 +210,9 @@ export default function IndexPage() {
         </ParallaxSection>
         {/* Scroll progress indicator */}
         <div
+          className={styles.scrollProgressIndicator}
           style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "3px",
-            background: "var(--mantine-primary-gradient)",
             transform: `scaleX(${scrollProgress})`,
-            transformOrigin: "0%",
-            zIndex: 1000,
           }}
         />
       </Box>

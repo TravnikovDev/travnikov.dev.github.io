@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
+import styles from './blog.module.css';
 
 interface BlogPageProps extends PageProps {
   data: {
@@ -46,7 +47,7 @@ export default function BlogPage({ data }: BlogPageProps) {
           </Text>
         </Box>
 
-        <Stack style={{ gap: "var(--mantine-spacing-xl)" }}>
+        <Stack className={styles.articleStack}>
           {articles.length > 0
             ? articles.map((article) => {
                 const date = new Date(article.frontmatter.date).toLocaleDateString(
@@ -62,7 +63,7 @@ export default function BlogPage({ data }: BlogPageProps) {
                   <Link
                     key={article.id}
                     to={`/blog/${article.frontmatter.slug}`}
-                    style={{ textDecoration: "none", color: "inherit" }}
+                    className={styles.articleLink}
                   >
                     <Card shadow="sm" padding="lg" radius="md" withBorder>
                       <Group align="flex-start" gap="xl">
@@ -96,10 +97,7 @@ export default function BlogPage({ data }: BlogPageProps) {
                     <Box 
                       w={200} 
                       h={150} 
-                      style={{ 
-                        backgroundColor: "var(--mantine-color-gray-2)",
-                        borderRadius: "var(--mantine-radius-md)"
-                      }} 
+                      className={styles.placeholderBox}
                     />
                     <Box>
                       <Text size="sm" c="dimmed" mb="xs">

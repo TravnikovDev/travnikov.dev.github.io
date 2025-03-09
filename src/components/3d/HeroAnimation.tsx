@@ -22,6 +22,7 @@ import FloatingCodeBlock from "./FloatingCodeBlock";
 import { TerminalBlock } from "./TerminalBlock";
 import ReactLogo from "./ReactLogo";
 import Particles from "./Particles";
+import styles from './HeroAnimation.module.css';
 
 function Scene() {
   const sceneRef = useRef<Group>(null);
@@ -302,41 +303,7 @@ export default function HeroAnimation() {
     <Box
       w="100vw"
       h="100vh"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        overflow: "hidden",
-        transform: "translateZ(0)",
-        zIndex: -1, // Changed from 1 to -1 to ensure it stays behind content
-        pointerEvents: "none",
-        "&:after": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background:
-            "radial-gradient(circle at center, rgba(10,15,36,0.3) 0%, rgba(10,15,36,0.5) 100%)", // Adjusted opacity
-          pointerEvents: "none",
-          zIndex: 1,
-        },
-        "&:before": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "50%",
-          background:
-            "linear-gradient(to bottom, rgba(10,15,36,0.5) 0%, rgba(10,15,36,0) 100%)", // Adjusted opacity
-          zIndex: 1,
-          pointerEvents: "none",
-        },
-      }}
+      className={styles.heroAnimation}
     >
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
