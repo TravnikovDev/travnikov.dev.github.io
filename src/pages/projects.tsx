@@ -23,9 +23,7 @@ interface ProjectsPageProps extends PageProps {
           title: string;
           slug: string;
           description: string;
-          featuredImage: {
-            publicURL: string;
-          };
+          featuredImage: string;
           category: string;
         };
       }[];
@@ -64,7 +62,7 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
                   {project.frontmatter.featuredImage && (
                     <Card.Section>
                       <Image
-                        src={project.frontmatter.featuredImage.publicURL}
+                        src={project.frontmatter.featuredImage}
                         height={160}
                         alt={project.frontmatter.title}
                       />
@@ -127,9 +125,7 @@ export const query = graphql`
           title
           slug
           description
-          featuredImage {
-            publicURL
-          }
+          featuredImage
           category
         }
       }

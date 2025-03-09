@@ -17,7 +17,9 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "prepare": "husky && husky install",
+    "pre-commit": "npm run typecheck && npm run build"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -55,9 +57,11 @@
     "@types/three": "^0.162.0",
     "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
+    "husky": "^8.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "lint-staged": "^15.4.3",
     "postcss": "^8.4.35",
     "ts-jest": "^29.2.6",
     "typescript": "^5.5.3"

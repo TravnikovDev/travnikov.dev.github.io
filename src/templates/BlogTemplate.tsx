@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, PageProps } from 'gatsby';
-import { Image, Title, Text, Stack, Container, Group, Badge, Box, Divider } from '@mantine/core';
+import { Title, Text, Stack, Container, Group, Badge, Divider } from '@mantine/core';
 import BaseLayout from '../layouts/BaseLayout';
 import { SEO } from '../utils/seo/SEO';
 
@@ -10,9 +10,8 @@ interface BlogTemplateProps extends PageProps {
       frontmatter: {
         title: string;
         date: string;
-        category: string;
         tags: string[];
-        author: string;
+        excerpt: string;
       };
       html: string;
     };
@@ -33,10 +32,7 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
         <Stack style={{ gap: "var(--mantine-spacing-xl)" }}>
           <Title order={1}>{articleData.frontmatter.title}</Title>
           <Group>
-            <Text size="sm" color="dimmed">
-              By {articleData.frontmatter.author} • {date}
-            </Text>
-            <Badge size="lg">{articleData.frontmatter.category}</Badge>
+            <Text size="sm" color="dimmed">{date}</Text>
           </Group>
           <Divider />
           <div dangerouslySetInnerHTML={{ __html: articleData.html }} />
@@ -60,7 +56,7 @@ export function Head({ data }: BlogTemplateProps) {
   return (
     <SEO
       title={articleData.frontmatter.title}
-      description={articleData.html.substring(0, 160)}
+      description={articleData.frontmatter.excerpt}
     />
   );
 }
@@ -71,9 +67,8 @@ export const query = graphql`
       frontmatter {
         title
         date
-        category
         tags
-        author
+        excerpt
       }
       html
     }

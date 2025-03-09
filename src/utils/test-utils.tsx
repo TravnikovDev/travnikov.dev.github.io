@@ -5,7 +5,7 @@ import { MantineProvider, AppShell } from '@mantine/core';
 function render(ui: React.ReactElement, options = {}) {
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
-      <MantineProvider theme={{ colorScheme: 'dark', defaultColorScheme: 'dark' }}>
+      <MantineProvider defaultColorScheme="dark">
         <AppShell>
           {children}
         </AppShell>

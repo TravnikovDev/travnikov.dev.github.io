@@ -22,9 +22,7 @@ interface BlogPageProps extends PageProps {
           date: string;
           slug: string;
           excerpt: string;
-          featuredImage: {
-            publicURL: string;
-          };
+          featuredImage: string;
         };
       }[];
     };
@@ -69,7 +67,7 @@ export default function BlogPage({ data }: BlogPageProps) {
                       <Group align="flex-start" gap="xl">
                         {article.frontmatter.featuredImage && (
                           <Image
-                            src={article.frontmatter.featuredImage.publicURL}
+                            src={article.frontmatter.featuredImage}
                             width={200}
                             height={150}
                             alt={article.frontmatter.title}
@@ -134,7 +132,7 @@ export function Head() {
 
 export const query = graphql`
   query {
-    allMarkdownRemark {
+    allMarkdownRemark(filter: { frontmatter: { template: { eq: "blog" } } }) {
       nodes {
         id
         frontmatter {
@@ -142,9 +140,7 @@ export const query = graphql`
           date
           slug
           excerpt
-          featuredImage {
-            publicURL
-          }
+          featuredImage
         }
       }
     }

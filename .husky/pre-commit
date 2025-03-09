@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running type check..."
+npm run typecheck || exit 1
+
+echo "Running build verification..."
+npm run build || exit 1

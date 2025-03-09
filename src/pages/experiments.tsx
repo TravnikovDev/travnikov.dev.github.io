@@ -25,9 +25,7 @@ interface ExperimentsPageProps extends PageProps {
           title: string;
           slug: string;
           description: string;
-          featuredImage: {
-            publicURL: string;
-          };
+          featuredImage: string;
           technologies: string[];
         };
         html: string;
@@ -65,7 +63,7 @@ export default function ExperimentsPage({ data }: ExperimentsPageProps) {
                 {experiment.frontmatter.featuredImage && (
                   <Card.Section>
                     <Image
-                      src={experiment.frontmatter.featuredImage.publicURL}
+                      src={experiment.frontmatter.featuredImage}
                       height={200}
                       alt={experiment.frontmatter.title}
                     />
@@ -159,9 +157,7 @@ export const query = graphql`
           title
           slug
           description
-          featuredImage {
-            publicURL
-          }
+          featuredImage
           technologies
         }
         html

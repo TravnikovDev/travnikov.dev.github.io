@@ -1,6 +1,7 @@
 ---
 title: "Building Performant React Applications"
 date: "2025-02-15"
+template: "blog"
 slug: "building-performant-react-applications"
 excerpt: "Learn strategies and best practices for optimizing React applications to achieve better performance and user experience."
 featuredImage: "/blog/react-performance.jpg"

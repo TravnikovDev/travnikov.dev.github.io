@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { MantineProvider as Provider, createTheme, CSSVariablesResolver } from "@mantine/core";
 import "@mantine/core/styles.css";
 

@@ -1,5 +1,18 @@
 import { GatsbyNode } from 'gatsby';
 import path from 'path';
+import { createFilePath } from 'gatsby-source-filesystem';
+
+export const onCreateNode: GatsbyNode['onCreateNode'] = ({ node, getNode, actions }) => {
+  const { createNodeField } = actions;
+  if (node.internal.type === 'MarkdownRemark') {
+    const slug = createFilePath({ node, getNode, basePath: 'content' });
+    createNodeField({
+      node,
+      name: 'slug',
+      value: slug,
+    });
+  }
+};
 
 export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
