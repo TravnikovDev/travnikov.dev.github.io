@@ -3,7 +3,7 @@ import { HeadFC, Link, PageProps } from "gatsby";
 import { Box, Title, Text, Button, Center, Stack } from "@mantine/core";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
-import styles from './404.module.css';
+import * as styles from './404.module.css';
 
 const NotFound = (_props: PageProps) => (
   <BaseLayout>

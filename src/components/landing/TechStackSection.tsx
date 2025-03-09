@@ -11,7 +11,6 @@ import {
   Badge,
   RingProgress,
 } from "@mantine/core";
-import { keyframes } from "@emotion/react";
 import { theme } from "../../theme";
 import { useColorScheme } from "@mantine/hooks";
 import {
@@ -21,36 +20,7 @@ import {
   SiTypescript, SiThreedotjs, SiWebgl, SiGreensock,
   SiSvg, SiGraphql, SiPostgresql, SiMongodb
 } from "react-icons/si";
-import styles from './TechStackSection.module.css';
-
-// Animation keyframes
-const gradientShift = keyframes({
-  "0%": { backgroundPosition: "0% 50%" },
-  "50%": { backgroundPosition: "100% 50%" },
-  "100%": { backgroundPosition: "0% 50%" }
-});
-
-const glowPulse = keyframes({
-  "0%": { boxShadow: "0 0 5px rgba(0, 0, 0, 0.1), 0 0 10px rgba(61, 127, 255, 0.2)" },
-  "50%": { boxShadow: "0 0 10px rgba(0, 0, 0, 0.2), 0 0 20px rgba(61, 127, 255, 0.4)" },
-  "100%": { boxShadow: "0 0 5px rgba(0, 0, 0, 0.1), 0 0 10px rgba(61, 127, 255, 0.2)" }
-});
-
-const float = keyframes({
-  "0%": { transform: "translateY(0px)" },
-  "50%": { transform: "translateY(-10px)" },
-  "100%": { transform: "translateY(0px)" }
-});
-
-const shimmer = keyframes({
-  "0%": { backgroundPosition: "-200% 0" },
-  "100%": { backgroundPosition: "200% 0" }
-});
-
-const rotateRing = keyframes({
-  "0%": { transform: "rotate(0deg)" },
-  "100%": { transform: "rotate(360deg)" }
-});
+import * as styles from './TechStackSection.module.css';
 
 // Get icon by skill name
 const getSkillIcon = (name) => {
@@ -393,7 +363,6 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             className={styles.circularProgress}
             style={{
               position: "relative",
-              animation: (isHovered || isMobile) ? `${rotateRing} 10s linear infinite` : "none"
             }}
           >
             <RingProgress
@@ -453,7 +422,6 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                 background: `radial-gradient(circle, ${skill.color}10 0%, transparent 70%)`,
                 opacity: isHovered || isMobile ? 1 : 0,
                 transition: "opacity 0.3s ease",
-                animation: (isHovered || isMobile) ? `${glowPulse} 2s infinite ease-in-out` : "none",
                 zIndex: -1
               }}
             />
@@ -615,7 +583,6 @@ export function TechStackSection() {
                 letterSpacing: "-0.02em",
                 textAlign: "center",
                 backgroundSize: "200% 100%",
-                animation: `${shimmer} 10s linear infinite`
               }}
             >
               Technical Expertise
@@ -633,7 +600,6 @@ export function TechStackSection() {
                 width: "60%",
                 borderRadius: "2px",
                 boxShadow: "0 2px 10px rgba(61, 127, 255, 0.5)",
-                animation: `${shimmer} 10s linear infinite`
               }}
             />
           </Box>
@@ -688,7 +654,6 @@ export function TechStackSection() {
                             background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
                             color: "white",
                             boxShadow: `0 5px 15px ${category.color}40`,
-                            animation: `${float} ${3 + idx}s infinite ease-in-out`,
                             fontSize: "1.7rem"
                           }}
                         >
@@ -750,7 +715,6 @@ export function TechStackSection() {
                             background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
                             color: "white",
                             boxShadow: `0 5px 15px ${category.color}40`,
-                            animation: `${float} ${3 + idx}s infinite ease-in-out`
                           }}
                         >
                           {category.icon}

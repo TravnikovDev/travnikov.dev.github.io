@@ -3,7 +3,7 @@ import { Box, Title, Drawer, Stack, Button, Divider, Paper, Text } from "@mantin
 import { Link } from "gatsby";
 import Logo from "./Logo";
 import SocialLinks from "./SocialLinks";
-import styles from './MobileDrawer.module.css';
+import * as styles from './MobileDrawer.module.css';
 
 interface MobileDrawerProps {
   opened: boolean;

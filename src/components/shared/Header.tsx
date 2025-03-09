@@ -1,21 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import { AppShellHeader, Container, Group, Box } from "@mantine/core";
 import DesktopNavigation from "./DesktopNavigation";
-import { keyframes } from "@emotion/react";
-import styles from './Header.module.css';
+import * as styles from './Header.module.css';
 
 interface HeaderProps {}
-
-const glowPulse = keyframes({
-  "0%": { boxShadow: "0 0 10px rgba(61, 127, 255, 0.2), 0 0 20px rgba(61, 127, 255, 0.1)" },
-  "50%": { boxShadow: "0 0 15px rgba(61, 127, 255, 0.3), 0 0 30px rgba(61, 127, 255, 0.15)" },
-  "100%": { boxShadow: "0 0 10px rgba(61, 127, 255, 0.2), 0 0 20px rgba(61, 127, 255, 0.1)" }
-});
-
-const scanlineEffect = keyframes({
-  "0%": { transform: "translateY(-100%)" },
-  "100%": { transform: "translateY(100%)" }
-});
 
 const Header: React.FC<HeaderProps> = () => {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -73,46 +61,31 @@ const Header: React.FC<HeaderProps> = () => {
   }, []);
   
   return (
-    <div
-      ref={headerRef}
-      className={styles.header}
-    >
-      <AppShellHeader
-        className={styles.appShellHeader}
-      >
-        <Box 
-          className={styles.box}
-        >
-          <div
-            ref={gradientRef}
-            className={styles.gradient}
-          />
-          <Box
-            className={styles.topBorder}
-          />
-          <Box
-            className={styles.bottomBorder}
-          />
-          <div
-            ref={highlightRef}
-            className={styles.highlight}
-          />
-          <Box
-            className={styles.scanline}
-          />
-        </Box>
-        <Container size="xl" className={styles.container}>
-          <div ref={navRef}>
-            <Group justify="space-between" h="100%" py={15}>
-              <Group>
-                {/* Burger menu removed since we don't have drawer props */}
-              </Group>
-              <DesktopNavigation />
+    <AppShellHeader className={styles.appShellHeader}>
+      <Box className={styles.box}>
+        <div
+          ref={gradientRef}
+          className={styles.gradient}
+        />
+        <Box className={styles.topBorder} />
+        <Box className={styles.bottomBorder} />
+        <div
+          ref={highlightRef}
+          className={styles.highlight}
+        />
+        <Box className={styles.scanline} />
+      </Box>
+      <Container size="xl" className={styles.container}>
+        <div ref={navRef}>
+          <Group justify="space-between" h="100%" py={15}>
+            <Group>
+              {/* Burger menu removed since we don't have drawer props */}
             </Group>
-          </div>
-        </Container>
-      </AppShellHeader>
-    </div>
+            <DesktopNavigation />
+          </Group>
+        </div>
+      </Container>
+    </AppShellHeader>
   );
 };
 

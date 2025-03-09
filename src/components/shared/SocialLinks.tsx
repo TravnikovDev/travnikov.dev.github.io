@@ -1,7 +1,7 @@
 import React from "react";
 import { Group, ActionIcon, MantineSize } from "@mantine/core";
 import SocialLinkIcon from "./SocialLinkIcon";
-import styles from './SocialLinks.module.css';
+import * as styles from './SocialLinks.module.css';
 
 interface SocialLinksProps {
   size?: MantineSize;

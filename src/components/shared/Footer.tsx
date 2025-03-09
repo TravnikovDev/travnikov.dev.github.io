@@ -3,7 +3,7 @@ import { Container, AppShellFooter, Box, Text, Anchor, useMantineTheme } from "@
 import { Link } from "gatsby";
 import SocialLinks from "./SocialLinks";
 import { useMediaQuery } from '@mantine/hooks';
-import styles from './Footer.module.css';
+import * as styles from './Footer.module.css';
 
 const Footer: React.FC = () => {
   const theme = useMantineTheme();

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Container, Title, Text, Box, Group, Badge, ActionIcon, Button } from "@mantine/core";
 import { FaBriefcase, FaLaptopCode, FaCode, FaServer } from "react-icons/fa";
-import styles from './TimelineSection.module.css';
+import * as styles from './TimelineSection.module.css';
 
 // Timeline item interface with extended properties
 interface TimelineItem {

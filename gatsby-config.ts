@@ -21,6 +21,7 @@ const config: GatsbyConfig = {
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     `gatsby-transformer-remark`,
+    'gatsby-plugin-dts-css-modules',
     {
       resolve: `gatsby-source-filesystem`,
       options: {

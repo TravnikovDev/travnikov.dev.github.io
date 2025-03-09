@@ -15,7 +15,7 @@ import {
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
 import SocialLinks from "../components/shared/SocialLinks";
-import styles from './contact.module.css';
+import * as styles from './contact.module.css';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);

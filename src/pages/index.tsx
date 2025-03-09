@@ -6,20 +6,7 @@ import HeroSection from "../components/landing/HeroSection";
 import { TimelineSection } from "../components/landing/TimelineSection";
 import { TechStackSection } from "../components/landing/TechStackSection";
 import { Box, Container } from "@mantine/core";
-import { keyframes } from "@emotion/react";
-import styles from './index.module.css';
-
-// Background animation effects
-const gradientAnimation = keyframes({
-  "0%": { backgroundPosition: "0% 50%" },
-  "50%": { backgroundPosition: "100% 50%" },
-  "100%": { backgroundPosition: "0% 50%" },
-});
-const glowPulse = keyframes({
-  "0%": { opacity: 0.5 },
-  "50%": { opacity: 0.8 },
-  "100%": { opacity: 0.5 },
-});
+import * as styles from './index.module.css';
 
 // Simple parallax component with standard React
 function ParallaxBackground() {
@@ -46,7 +33,7 @@ function ParallaxBackground() {
   const rotate1 = scrollY / 1000 * 15; // Equivalent to transform [0, 1000] to [0, 15]
   
   return (
-    <>
+    <Box style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1, width: "100%", height: "100%" }}>
       {/* Top gradient circle - moves faster on scroll */}
       <div
         className={styles.topGradientCircle}
@@ -83,7 +70,7 @@ function ParallaxBackground() {
       <div
         className={styles.animatedGradientLinesBottom}
       />
-    </>
+    </Box>
   );
 }
 

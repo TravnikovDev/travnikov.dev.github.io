@@ -4,73 +4,7 @@ import { Link } from "gatsby";
 import { useLocation } from "@reach/router";
 import { useColorScheme } from "@mantine/hooks";
 import Logo from "./Logo";
-import { keyframes } from "@emotion/react";
-import styles from './DesktopNavigation.module.css';
-
-// Custom keyframes for nav items with more pronounced effect
-const glitchEffect = keyframes({
-  "0%": { 
-    textShadow: "0.1em 0 0 rgba(255, 0, 0, 0.95), -0.1em -0.05em 0 rgba(0, 255, 0, 0.95), -0.05em 0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(0.03em, -0.04em, 0)",
-    opacity: 0.8
-  },
-  "14%": { 
-    textShadow: "0.1em 0 0 rgba(255, 0, 0, 0.95), -0.1em -0.05em 0 rgba(0, 255, 0, 0.95), -0.05em 0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(0, 0, 0)",
-    opacity: 1
-  },
-  "15%": { 
-    textShadow: "-0.1em -0.05em 0 rgba(255, 0, 0, 0.95), 0.05em 0.05em 0 rgba(0, 255, 0, 0.95), -0.1em -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(-0.05em, 0.05em, 0)",
-    opacity: 0.9
-  },
-  "35%": {
-    textShadow: "-0.1em -0.05em 0 rgba(255, 0, 0, 0.95), 0.05em 0.05em 0 rgba(0, 255, 0, 0.95), -0.1em -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(0.08em, -0.03em, 0)",
-    opacity: 1
-  },
-  "40%": {
-    textShadow: "-0.1em -0.05em 0 rgba(255, 0, 0, 0.95), 0.05em 0.05em 0 rgba(0, 255, 0, 0.95), -0.1em -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(0, 0, 0)",
-    opacity: 0.8
-  },
-  "49%": { 
-    textShadow: "-0.1em -0.05em 0 rgba(255, 0, 0, 0.95), 0.05em 0.05em 0 rgba(0, 255, 0, 0.95), -0.1em -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(-0.04em, 0, 0)",
-    opacity: 1
-  },
-  "50%": { 
-    textShadow: "0.05em 0.1em 0 rgba(255, 0, 0, 0.95), 0.1em 0 0 rgba(0, 255, 0, 0.95), 0 -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(0.04em, 0, 0)",
-    opacity: 0.9
-  },
-  "70%": {
-    textShadow: "0.05em 0.1em 0 rgba(255, 0, 0, 0.95), 0.1em 0 0 rgba(0, 255, 0, 0.95), 0 -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(0, -0.06em, 0)",
-    opacity: 1
-  },
-  "75%": {
-    textShadow: "0.05em 0.1em 0 rgba(255, 0, 0, 0.95), 0.1em 0 0 rgba(0, 255, 0, 0.95), 0 -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(0, 0, 0)",
-    opacity: 0.8
-  },
-  "99%": { 
-    textShadow: "0.05em 0.1em 0 rgba(255, 0, 0, 0.95), 0.1em 0 0 rgba(0, 255, 0, 0.95), 0 -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(-0.05em, 0, 0)",
-    opacity: 1
-  },
-  "100%": { 
-    textShadow: "-0.05em 0 0 rgba(255, 0, 0, 0.95), -0.05em -0.05em 0 rgba(0, 255, 0, 0.95), -0.05em -0.1em 0 rgba(0, 0, 255, 0.95)",
-    transform: "translate3d(0, 0, 0)",
-    opacity: 0.9
-  }
-});
-
-const panelGlow = keyframes({
-  "0%": { boxShadow: "0 0 5px rgba(61, 127, 255, 0.2), 0 0 10px rgba(61, 127, 255, 0.1), 0 0 15px rgba(61, 127, 255, 0.05)" },
-  "50%": { boxShadow: "0 0 10px rgba(61, 127, 255, 0.3), 0 0 20px rgba(61, 127, 255, 0.15), 0 0 30px rgba(61, 127, 255, 0.1)" },
-  "100%": { boxShadow: "0 0 5px rgba(61, 127, 255, 0.2), 0 0 10px rgba(61, 127, 255, 0.1), 0 0 15px rgba(61, 127, 255, 0.05)" }
-});
+import * as styles from './DesktopNavigation.module.css';
 
 const NavItem = ({ label, path, isActive }) => {
   const [hovered, setHovered] = useState(false);

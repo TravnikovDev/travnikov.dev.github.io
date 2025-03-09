@@ -11,7 +11,6 @@ import {
   Sphere,
 } from "@react-three/drei";
 import { Box } from "@mantine/core";
-import { keyframes } from "@emotion/react";
 import * as THREE from "three";
 import { Group, Vector3, MathUtils } from "three";
 import AnimatedBlob from "./AnimatedBlob";
@@ -22,7 +21,7 @@ import FloatingCodeBlock from "./FloatingCodeBlock";
 import { TerminalBlock } from "./TerminalBlock";
 import ReactLogo from "./ReactLogo";
 import Particles from "./Particles";
-import styles from './HeroAnimation.module.css';
+import * as styles from './HeroAnimation.module.css';
 
 function Scene() {
   const sceneRef = useRef<Group>(null);
@@ -291,12 +290,6 @@ function Scene() {
     </>
   );
 }
-
-const glowPulse = keyframes({
-  "0%": { boxShadow: "0 0 20px rgba(34, 144, 224, 0.3)" },
-  "50%": { boxShadow: "0 0 30px rgba(122, 82, 197, 0.5)" },
-  "100%": { boxShadow: "0 0 20px rgba(34, 144, 224, 0.3)" },
-});
 
 export default function HeroAnimation() {
   return (

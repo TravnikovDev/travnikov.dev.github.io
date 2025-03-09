@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text } from "@mantine/core";
 import { Link } from "gatsby";
-import styles from './SocialLinkIcon.module.css';
+import * as styles from './SocialLinkIcon.module.css';
 
 interface SocialLinkIconProps {
   icon: string;

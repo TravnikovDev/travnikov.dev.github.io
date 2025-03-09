@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text } from "@mantine/core";
 import { Link } from "gatsby";
-import styles from './Logo.module.css';
+import * as styles from './Logo.module.css';
 
 const Logo: React.FC = () => {
   return (

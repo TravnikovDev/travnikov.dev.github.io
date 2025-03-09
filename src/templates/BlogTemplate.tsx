@@ -3,7 +3,7 @@ import { graphql, PageProps } from 'gatsby';
 import { Title, Text, Stack, Container, Group, Badge, Divider } from '@mantine/core';
 import BaseLayout from '../layouts/BaseLayout';
 import { SEO } from '../utils/seo/SEO';
-import styles from './BlogTemplate.module.css';
+import * as styles from './BlogTemplate.module.css';
 
 interface BlogTemplateProps extends PageProps {
   data: {

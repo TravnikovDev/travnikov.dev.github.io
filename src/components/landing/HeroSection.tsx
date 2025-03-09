@@ -10,43 +10,10 @@ import {
   Box,
   Badge,
 } from "@mantine/core";
-import { keyframes } from "@emotion/react";
 import { Link } from "gatsby";
 import HeroAnimation from "../3d/HeroAnimation";
-import styles from './HeroSection.module.css';
+import * as styles from './HeroSection.module.css';
 
-// Enhanced keyframes for animated elements
-const fadeInUp = keyframes({
-  "0%": { opacity: 0, transform: "translateY(50px)" },
-  "100%": { opacity: 1, transform: "translateY(0)" },
-});
-
-const pulseGlow = keyframes({
-  "0%": { boxShadow: "0 0 0 0 rgba(0, 120, 240, 0.6)" },
-  "50%": { boxShadow: "0 0 25px 8px rgba(0, 120, 240, 0.25)" },
-  "100%": { boxShadow: "0 0 0 0 rgba(0, 120, 240, 0.6)" },
-});
-
-const shimmer = keyframes({
-  "0%": { backgroundPosition: "300% 0" },
-  "100%": { backgroundPosition: "-300% 0" },
-});
-
-const bounce = keyframes({
-  "0%, 100%": { transform: "translateY(0)" },
-  "50%": { transform: "translateY(-10px)" },
-});
-
-// Parallax floating keyframes
-const float = keyframes({
-  "0%": { transform: "translateY(0px) translateX(0px)" },
-  "25%": { transform: "translateY(-10px) translateX(5px)" },
-  "50%": { transform: "translateY(0px) translateX(10px)" },
-  "75%": { transform: "translateY(10px) translateX(5px)" },
-  "100%": { transform: "translateY(0px) translateX(0px)" },
-});
-
-// Add FloatingElement component
 interface FloatingElementProps {
   children: React.ReactNode;
   style?: React.CSSProperties;
@@ -61,7 +28,6 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
   <Box
     style={{
       position: "absolute",
-      animation: `${float} ${animationDuration}s ease-in-out infinite`,
       zIndex: 2,
       ...style,
     }}
@@ -254,24 +220,21 @@ const HeroSection = () => {
                         <Text
                           size="xl"
                           mb={{ base: "xl", sm: "3.5rem" }}
-                          className="hover-card"
-                          className={styles.heroDescription}
+                          className={`hover-card ${styles.heroDescription}`}
                         >
                           I craft{" "}
                           <Box
                             component="span"
-                            className="highlight-blue"
                             fw={900}
-                            className={styles.highlightBlue}
+                            className={`highlight-blue ${styles.highlightBlue}`}
                           >
                             innovative
                           </Box>{" "}
                           and
                           <Box
                             component="span"
-                            className="highlight-royal"
                             fw={900}
-                            className={styles.highlightRoyal}
+                            className={`highlight-royal ${styles.highlightRoyal}`}
                           >
                             {" "}
                             high-performance
@@ -306,8 +269,7 @@ const HeroSection = () => {
                             size="xl"
                             radius="xl"
                             px={36}
-                            className="animated-border hover-scale"
-                            className={styles.heroButton}
+                            className={`animated-border hover-scale ${styles.heroButton}`}
                           >
                             View My Projects
                           </Button>
@@ -316,10 +278,9 @@ const HeroSection = () => {
                             to="/contact"
                             variant="outline"
                             size="xl"
-                            className="animated-border hover-scale"
                             radius="xl"
                             px={36}
-                            className={styles.heroButtonOutline}
+                            className={`animated-border hover-scale ${styles.heroButtonOutline}`}
                           >
                             Get in Touch
                           </Button>
@@ -382,14 +343,12 @@ const HeroSection = () => {
               >
                 <Container size="xl">
                   <Box
-                    className="animated-border"
-                    className={styles.scrollContent}
+                    className={`animated-border ${styles.scrollContent}`}
                   >
                     <Title
                       order={2}
                       mb="xl"
-                      className="shimmer"
-                      className={styles.scrollTitle}
+                      className={`shimmer ${styles.scrollTitle}`}
                     >
                       Continue exploring more immersive experiences
                     </Title>

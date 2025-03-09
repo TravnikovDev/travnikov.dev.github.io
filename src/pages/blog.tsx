@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
-import styles from './blog.module.css';
+import * as styles from './blog.module.css';
 
 interface BlogPageProps extends PageProps {
   data: {
