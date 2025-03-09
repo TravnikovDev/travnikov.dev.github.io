@@ -64,8 +64,6 @@ const HeroSection = () => {
         ref={containerRef}
         className={styles.heroContainer}
       >
-        <HeroAnimation />
-
         <Box
           ref={targetRef}
           className={styles.heroTarget}
@@ -87,8 +85,6 @@ const HeroSection = () => {
               ref={targetRef}
               className={styles.heroContent}
             >
-              <HeroAnimation />
-
               <Box
                 className={styles.floatingElement}
               >

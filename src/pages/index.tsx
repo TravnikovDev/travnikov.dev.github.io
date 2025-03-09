@@ -6,73 +6,8 @@ import HeroSection from "../components/landing/HeroSection";
 import { TimelineSection } from "../components/landing/TimelineSection";
 import { TechStackSection } from "../components/landing/TechStackSection";
 import { Box, Container } from "@mantine/core";
+import HeroAnimation from "../components/3d/HeroAnimation";
 import * as styles from './index.module.css';
-
-// Simple parallax component with standard React
-function ParallaxBackground() {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  // Calculate transform values based on scroll position
-  const y1 = scrollY * -0.2; // Equivalent to transform [0, 1000] to [0, -200]
-  const y2 = scrollY * -0.1; // Equivalent to transform [0, 1000] to [0, -100] 
-  const y3 = scrollY * -0.05; // Equivalent to transform [0, 1000] to [0, -50]
-  const opacity1 = Math.max(0, 1 - scrollY / 300); // Equivalent to transform [0, 300] to [1, 0]
-  const opacity2 = Math.max(0, 0.7 - scrollY / 500 * 0.7); // Equivalent to transform [0, 500] to [0.7, 0]
-  const scale1 = 1 + scrollY / 500 * 0.2; // Equivalent to transform [0, 500] to [1, 1.2]
-  const rotate1 = scrollY / 1000 * 15; // Equivalent to transform [0, 1000] to [0, 15]
-  
-  return (
-    <Box style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1, width: "100%", height: "100%" }}>
-      {/* Top gradient circle - moves faster on scroll */}
-      <div
-        className={styles.topGradientCircle}
-        style={{
-          opacity: opacity1,
-          transform: `translateY(${y1}px)`,
-        }}
-      />
-      {/* Middle right blob - moves medium speed */}
-      <div
-        className={styles.middleRightBlob}
-        style={{
-          transform: `translateY(${y2}px) scale(${scale1}) rotate(${rotate1}deg)`,
-        }}
-      />
-      {/* Bottom left blob - moves slower */}
-      <div
-        className={styles.bottomLeftBlob}
-        style={{
-          transform: `translateY(${y3}px)`,
-        }}
-      />
-      {/* Animated grid pattern */}
-      <div
-        className={styles.animatedGridPattern}
-        style={{
-          opacity: opacity2,
-        }}
-      />
-      {/* Animated gradient lines */}
-      <div
-        className={styles.animatedGradientLinesTop}
-      />
-      <div
-        className={styles.animatedGradientLinesBottom}
-      />
-    </Box>
-  );
-}
 
 // Parallax divider with animation
 function SectionsDivider() {
@@ -106,20 +41,22 @@ export default function IndexPage() {
 
   return (
     <BaseLayout>
-      {/* Dynamic background elements with parallax */}
-      <ParallaxBackground />
+      {/* Dynamic 3D background with parallax */}
+      <Box style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}>
+        <HeroAnimation />
+      </Box>
       {/* Main content with scroll animations */}
       <Box>
         {/* Hero section */}
-          <HeroSection />
+        <HeroSection />
         {/* Animated divider */}
         <SectionsDivider />
         {/* Timeline section */}
-          <TimelineSection />
+        <TimelineSection />
         {/* Animated divider */}
         <SectionsDivider />
         {/* Tech stack section */}
-          <TechStackSection />
+        <TechStackSection />
         {/* Scroll progress indicator */}
         <div
           className={styles.scrollProgressIndicator}
