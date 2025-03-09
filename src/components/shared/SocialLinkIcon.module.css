@@ -1,0 +1,12 @@
+.socialLinkIcon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.socialLinkIcon:hover {
+  color: #1da1f2;
+}

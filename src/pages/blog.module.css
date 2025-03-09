@@ -1,0 +1,13 @@
+.articleStack {
+  gap: 1.5rem;
+}
+
+.articleLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.placeholderBox {
+  background-color: #f0f0f0;
+  border-radius: 0.5rem;
+}

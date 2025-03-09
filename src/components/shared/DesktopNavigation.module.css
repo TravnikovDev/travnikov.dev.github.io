@@ -1,0 +1,49 @@
+.navItem {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.navButton {
+  text-decoration: none;
+  color: inherit;
+}
+
+.navText {
+  font-size: 1.2em;
+  font-weight: bold;
+  animation: glitchEffect 1.5s infinite;
+}
+
+.navUnderline {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  transition: all 0.3s ease;
+}
+
+.navGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 5px;
+  animation: panelGlow 2s infinite;
+  transition: opacity 0.3s ease;
+}
+
+.navBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}

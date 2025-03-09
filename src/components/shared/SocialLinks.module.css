@@ -1,0 +1,12 @@
+.socialLinks {
+  display: flex;
+  gap: 16px;
+}
+
+.actionIcon {
+  transition: transform 0.2s ease;
+}
+
+.actionIcon:hover {
+  transform: scale(1.1);
+}
