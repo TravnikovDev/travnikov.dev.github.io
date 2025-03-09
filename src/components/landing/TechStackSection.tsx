@@ -294,6 +294,25 @@ const SkillCard = ({ skill, index, categoryColor }) => {
   const progressValue = useMotionValue(0);
   const roundedValue = useTransform(progressValue, value => Math.round(value));
   
+  // Responsive layout detection
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    // Check if we're in the browser and update the mobile state
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      
+      // Check on mount
+      checkMobile();
+      
+      // Update on resize
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
+  
   useEffect(() => {
     if (isInView) {
       controls.start("visible");
@@ -339,10 +358,10 @@ const SkillCard = ({ skill, index, categoryColor }) => {
       variants={itemVariants}
       initial="hidden"
       animate={controls}
-      whileHover="hover"
+      whileHover={!isMobile ? "hover" : undefined}
       whileTap="tap"
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+      onHoverStart={() => !isMobile && setIsHovered(true)}
+      onHoverEnd={() => !isMobile && setIsHovered(false)}
       onClick={() => setIsExpanded(!isExpanded)}
       style={{
         height: "100%",
@@ -351,7 +370,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
     >
       <Paper
         shadow="md"
-        p="xl"
+        p={isMobile ? "lg" : "xl"}
         radius="lg"
         style={{
           position: "relative",
@@ -360,7 +379,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             ? `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.95))` 
             : `rgba(10, 15, 36, 0.8)`,
           backdropFilter: "blur(10px)",
-          border: `1px solid ${isHovered ? skill.color : 'rgba(255, 255, 255, 0.1)'}`,
+          border: `2px solid ${isHovered ? skill.color : isMobile ? `${skill.color}50` : 'rgba(255, 255, 255, 0.1)'}`,
           transition: "all 0.4s ease",
           overflow: "hidden",
           cursor: "pointer",
@@ -377,24 +396,24 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             top: 0,
             left: 0,
             right: 0,
-            height: "5px",
+            height: isMobile ? "8px" : "5px",
             background: `linear-gradient(90deg, transparent, ${skill.color}, transparent)`,
-            opacity: isHovered ? 1 : 0.5,
+            opacity: isHovered || isMobile ? 1 : 0.5,
             transition: "opacity 0.3s ease"
           }}
         />
         
-        <Group align="flex-start" wrap="nowrap">
+        <Group align="flex-start" wrap="nowrap" gap={isMobile ? "lg" : "md"}>
           {/* Circular progress with animated counter */}
           <Box 
             style={{
               position: "relative",
-              animation: isHovered ? `${rotateRing} 10s linear infinite` : "none"
+              animation: (isHovered || isMobile) ? `${rotateRing} 10s linear infinite` : "none"
             }}
           >
             <RingProgress
-              size={110}
-              thickness={4}
+              size={isMobile ? 90 : 110}
+              thickness={isMobile ? 5 : 4}
               roundCaps
               label={
                 <Box 
@@ -409,18 +428,19 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                   <Box
                     style={{
                       color: skill.color,
-                      filter: isHovered ? `drop-shadow(0 0 8px ${skill.color})` : "none",
-                      transition: "filter 0.3s ease"
+                      filter: (isHovered || isMobile) ? `drop-shadow(0 0 8px ${skill.color})` : "none",
+                      transition: "filter 0.3s ease",
+                      fontSize: isMobile ? "1.3rem" : undefined
                     }}
                   >
                     {getSkillIcon(skill.name)}
                   </Box>
                   <Text
                     fw={700}
-                    size="xl"
+                    size={isMobile ? "lg" : "xl"}
                     style={{
                       color: "#fff",
-                      textShadow: isHovered ? `0 0 8px ${skill.color}` : "none"
+                      textShadow: (isHovered || isMobile) ? `0 0 8px ${skill.color}` : "none"
                     }}
                   >
                     <motion.span>{roundedValue}</motion.span>%
@@ -432,7 +452,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
               ]}
             />
             
-            {/* Pulse effect background */}
+            {/* Pulse effect background - always visible on mobile for better appearance */}
             <Box
               style={{
                 position: "absolute",
@@ -442,9 +462,9 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                 bottom: "-5px",
                 borderRadius: "50%",
                 background: `radial-gradient(circle, ${skill.color}10 0%, transparent 70%)`,
-                opacity: isHovered ? 1 : 0,
+                opacity: isHovered || isMobile ? 1 : 0,
                 transition: "opacity 0.3s ease",
-                animation: isHovered ? `${glowPulse} 2s infinite ease-in-out` : "none",
+                animation: (isHovered || isMobile) ? `${glowPulse} 2s infinite ease-in-out` : "none",
                 zIndex: -1
               }}
             />
@@ -453,12 +473,13 @@ const SkillCard = ({ skill, index, categoryColor }) => {
           <Box style={{ flex: 1 }}>
             <Group justify="space-between" mb="xs">
               <Text 
-                size="xl" 
+                size={isMobile ? "lg" : "xl"}
                 fw={700}
                 style={{
                   color: skill.color,
                   transition: "all 0.3s ease",
-                  textShadow: isHovered ? `0 0 10px ${skill.color}80` : "none"
+                  textShadow: (isHovered || isMobile) ? `0 0 10px ${skill.color}80` : "none",
+                  fontSize: isMobile ? "1.2rem" : undefined
                 }}
               >
                 {skill.name}
@@ -468,26 +489,41 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                 color="dark" 
                 variant="filled"
                 radius="sm"
+                size={isMobile ? "md" : "sm"}
                 style={{
                   background: `linear-gradient(135deg, ${skill.color}90, ${skill.color}50)`,
                   border: `1px solid ${skill.color}`,
-                  boxShadow: isHovered ? `0 0 10px ${skill.color}60` : "none",
-                  transition: "all 0.3s ease"
+                  boxShadow: (isHovered || isMobile) ? `0 0 10px ${skill.color}60` : "none",
+                  transition: "all 0.3s ease",
+                  padding: isMobile ? "0.4rem 0.7rem" : undefined,
+                  fontSize: isMobile ? "0.9rem" : undefined
                 }}
               >
                 {skill.experience}
               </Badge>
             </Group>
             
-            <Text size="md" color="#E3E7F1" mb="md" lineClamp={isExpanded ? 0 : 2}>
+            <Text 
+              size={isMobile ? "md" : "sm"} 
+              color="#E3E7F1" 
+              mb="md" 
+              lineClamp={isExpanded ? 0 : 2}
+              style={{
+                fontSize: isMobile ? "1rem" : undefined,
+                fontWeight: isMobile ? 400 : undefined
+              }}
+            >
               {skill.description}
             </Text>
             
             <Badge 
-              leftSection={<Box size={12}>📊</Box>}
+              leftSection={<Box size={isMobile ? 14 : 12}>📊</Box>}
+              size={isMobile ? "md" : "sm"}
               style={{
                 background: "rgba(255, 255, 255, 0.1)",
-                border: "1px solid rgba(255, 255, 255, 0.2)"
+                border: "1px solid rgba(255, 255, 255, 0.2)",
+                padding: isMobile ? "0.5rem 0.8rem" : undefined,
+                fontSize: isMobile ? "0.9rem" : undefined
               }}
             >
               {skill.projects}+ Projects
@@ -502,7 +538,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             left: 0,
             bottom: 0,
             width: `${skill.level}%`,
-            height: "2px",
+            height: isMobile ? "3px" : "2px",
             background: `linear-gradient(90deg, ${skill.color}70, transparent)`,
             transition: "all 0.3s ease"
           }}
@@ -518,6 +554,25 @@ const CategoryHeader = ({ category, index }) => {
   const isInView = useInView(headerRef, { once: false, amount: 0.3 });
   const controls = useAnimation();
   
+  // Responsive layout detection
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    // Check if we're in the browser and update the mobile state
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      
+      // Check on mount
+      checkMobile();
+      
+      // Update on resize
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
+  
   useEffect(() => {
     if (isInView) {
       controls.start("visible");
@@ -532,13 +587,13 @@ const CategoryHeader = ({ category, index }) => {
       variants={titleVariants}
     >
       <Paper
-        p="md"
+        p={isMobile ? "md" : "lg"}
         radius="lg"
         style={{
-          marginBottom: "2rem",
+          marginBottom: isMobile ? "1.5rem" : "2rem",
           background: `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.8))`,
           backdropFilter: "blur(15px)",
-          border: `1px solid ${category.color}40`,
+          border: `2px solid ${category.color}40`,
           position: "relative",
           overflow: "hidden"
         }}
@@ -559,61 +614,124 @@ const CategoryHeader = ({ category, index }) => {
           }}
         />
         
-        <Group justify="space-between" align="center">
-          <Group gap="md">
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "60px",
-                height: "60px",
-                borderRadius: "16px",
-                background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
-                color: "white",
-                boxShadow: `0 5px 15px ${category.color}40`,
-                animation: `${float} ${3 + index}s infinite ease-in-out`
-              }}
-            >
-              {category.icon}
-            </Box>
-            
-            <Box>
-              <Title
-                order={3}
+        {isMobile ? (
+          // Mobile layout - stacked for better readability
+          <Stack gap="md">
+            <Group gap="md">
+              <Box
                 style={{
-                  fontSize: "2rem",
-                  fontWeight: 800,
-                  marginBottom: "0.25rem",
-                  background: `linear-gradient(90deg, #fff, ${category.color})`,
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "16px",
+                  background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
+                  color: "white",
+                  boxShadow: `0 5px 15px ${category.color}40`,
+                  animation: `${float} ${3 + index}s infinite ease-in-out`,
+                  fontSize: "1.7rem"
                 }}
               >
-                {category.name}
-              </Title>
+                {category.icon}
+              </Box>
               
-              <Text color="#E3E7F1" size="md">
-                {category.description}
-              </Text>
-            </Box>
+              <Box style={{ flex: 1 }}>
+                <Title
+                  order={3}
+                  style={{
+                    fontSize: "1.7rem",
+                    fontWeight: 800,
+                    marginBottom: "0.25rem",
+                    background: `linear-gradient(90deg, #fff, ${category.color})`,
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  {category.name}
+                </Title>
+                
+                <Badge
+                  size="lg"
+                  radius="md"
+                  variant="filled"
+                  style={{
+                    background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
+                    border: `1px solid ${category.color}40`,
+                    backdropFilter: "blur(5px)",
+                    padding: "0.4rem 0.8rem",
+                    fontSize: "0.9rem",
+                    fontWeight: 600
+                  }}
+                >
+                  {category.skills.length} Skills
+                </Badge>
+              </Box>
+            </Group>
+            
+            <Text color="#E3E7F1" size="md" style={{ fontSize: "1rem", lineHeight: 1.5 }}>
+              {category.description}
+            </Text>
+          </Stack>
+        ) : (
+          // Desktop layout - horizontal with more space
+          <Group justify="space-between" align="center">
+            <Group gap="md">
+              <Box
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "16px",
+                  background: `linear-gradient(135deg, ${category.color}, ${category.color}80)`,
+                  color: "white",
+                  boxShadow: `0 5px 15px ${category.color}40`,
+                  animation: `${float} ${3 + index}s infinite ease-in-out`
+                }}
+              >
+                {category.icon}
+              </Box>
+              
+              <Box>
+                <Title
+                  order={3}
+                  style={{
+                    fontSize: "2rem",
+                    fontWeight: 800,
+                    marginBottom: "0.25rem",
+                    background: `linear-gradient(90deg, #fff, ${category.color})`,
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  {category.name}
+                </Title>
+                
+                <Text color="#E3E7F1" size="md">
+                  {category.description}
+                </Text>
+              </Box>
+            </Group>
+            
+            <Badge
+              size="xl"
+              radius="md"
+              variant="filled"
+              style={{
+                background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
+                border: `1px solid ${category.color}40`,
+                backdropFilter: "blur(5px)",
+                padding: "0.5rem 1rem",
+              }}
+            >
+              {category.skills.length} Skills
+            </Badge>
           </Group>
-          
-          <Badge
-            size="xl"
-            radius="md"
-            variant="filled"
-            style={{
-              background: `linear-gradient(135deg, ${category.color}40, ${category.color}10)`,
-              border: `1px solid ${category.color}40`,
-              backdropFilter: "blur(5px)",
-              padding: "0.5rem 1rem",
-            }}
-          >
-            {category.skills.length} Skills
-          </Badge>
-        </Group>
+        )}
       </Paper>
     </motion.div>
   );
@@ -630,14 +748,33 @@ export function TechStackSection() {
   // Parallax and animation effects - keeping elements visible
   const titleY = useTransform(scrollYProgress, [0, 0.1], [20, 0]);
   
+  // Responsive layout detection
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    // Check if we're in the browser and update the mobile state
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      
+      // Check on mount
+      checkMobile();
+      
+      // Update on resize
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
+  
   return (
-    <Container ref={sectionRef} size="lg" py="8rem" id="skills">
+    <Container ref={sectionRef} size="lg" py={isMobile ? "5rem" : "8rem"} id="skills">
       <motion.div variants={containerVariants} initial="hidden" animate="visible">
         {/* Animated Section Title */}
         <motion.div
           style={{
             textAlign: "center",
-            marginBottom: "4rem",
+            marginBottom: isMobile ? "2.5rem" : "4rem",
             opacity: 1, // Always visible
             y: titleY
           }}
@@ -652,7 +789,7 @@ export function TechStackSection() {
             <Title
               order={2}
               style={{
-                fontSize: "3rem",
+                fontSize: isMobile ? "2.3rem" : "3rem",
                 fontWeight: 800,
                 marginBottom: "1rem",
                 background: "linear-gradient(135deg, #3D7FFF, #A64DFF)",
@@ -688,12 +825,14 @@ export function TechStackSection() {
           </motion.div>
           
           <Text
-            size="xl"
+            size={isMobile ? "lg" : "xl"}
             style={{
               maxWidth: "700px",
-              margin: "2rem auto 0",
+              margin: isMobile ? "1.5rem auto 0" : "2rem auto 0",
               lineHeight: 1.6,
-              color: "#E3E7F1"
+              color: "#E3E7F1",
+              fontSize: isMobile ? "1.1rem" : undefined,
+              padding: isMobile ? "0 1rem" : 0
             }}
           >
             A showcase of my technical proficiency across various domains of web development,
@@ -701,12 +840,12 @@ export function TechStackSection() {
           </Text>
         </motion.div>
         
-        <Stack gap="xl">
+        <Stack gap={isMobile ? "md" : "xl"}>
           {techData.map((category, idx) => (
-            <Box key={idx} style={{ marginBottom: "3rem" }}>
+            <Box key={idx} style={{ marginBottom: isMobile ? "2rem" : "3rem" }}>
               <CategoryHeader category={category} index={idx} />
               
-              <Grid gutter="xl">
+              <Grid gutter={isMobile ? "md" : "xl"}>
                 {category.skills.map((skill, index) => (
                   <Grid.Col key={index} span={{ base: 12, md: 6, lg: 6 }}>
                     <SkillCard 
