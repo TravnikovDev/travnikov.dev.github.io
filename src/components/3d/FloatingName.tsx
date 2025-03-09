@@ -180,24 +180,24 @@ function FloatingName() {
           ref={frontTextRef}
           font="/fonts/Inter_Bold.json"
           size={0.8}
-          height={0.2}
-          curveSegments={32}
+          height={0.25}
+          curveSegments={64}  // Higher resolution for sharper text
           bevelEnabled
-          bevelThickness={0.05}
-          bevelSize={0.04}
+          bevelThickness={0.04}
+          bevelSize={0.03}
           bevelOffset={0}
-          bevelSegments={10}
+          bevelSegments={16}  // More segments for smoother edges
           position={[-3.2, 0, 0]}
         >
           TRAVNIKOV
           <meshStandardMaterial
             ref={materialRef}
-            color="#E3E7F1"
-            roughness={0.05}
-            metalness={0.9}
-            emissive="#3D7FFF"
-            emissiveIntensity={0.8}
-            envMapIntensity={1.5}
+            color="#FFFFFF"  // Pure white for better contrast
+            roughness={0.15}  // Less roughness for sharper appearance
+            metalness={0.95}  // Higher metalness for more reflection
+            emissive="#4D8AFF"  // Slightly brighter blue
+            emissiveIntensity={0.6}  // Less emission for reduced blur
+            envMapIntensity={2.0}  // More environment reflection
           />
         </Text3D>
         

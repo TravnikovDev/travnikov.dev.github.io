@@ -6,9 +6,9 @@ import { FaBriefcase, FaLaptopCode, FaCode, FaServer, FaBrain } from "react-icon
 
 // Animation keyframes
 const glowEffect = keyframes({
-  "0%": { boxShadow: "0 0 10px rgba(61, 127, 255, 0.2), 0 0 20px rgba(61, 127, 255, 0.1)" },
-  "50%": { boxShadow: "0 0 15px rgba(61, 127, 255, 0.4), 0 0 30px rgba(61, 127, 255, 0.2)" },
-  "100%": { boxShadow: "0 0 10px rgba(61, 127, 255, 0.2), 0 0 20px rgba(61, 127, 255, 0.1)" }
+  "0%": { boxShadow: "0 0 15px rgba(61, 127, 255, 0.4), 0 0 30px rgba(61, 127, 255, 0.2), 0 0 45px rgba(61, 127, 255, 0.1)" },
+  "50%": { boxShadow: "0 0 25px rgba(61, 127, 255, 0.7), 0 0 50px rgba(61, 127, 255, 0.4), 0 0 75px rgba(61, 127, 255, 0.2)" },
+  "100%": { boxShadow: "0 0 15px rgba(61, 127, 255, 0.4), 0 0 30px rgba(61, 127, 255, 0.2), 0 0 45px rgba(61, 127, 255, 0.1)" }
 });
 
 const scanlineEffect = keyframes({
@@ -215,31 +215,36 @@ const TimelineCard = ({ item, index }) => {
         onClick={() => setIsExpanded(!isExpanded)}
         style={{
           transformStyle: "preserve-3d",
-          cursor: "pointer"
+          cursor: "pointer",
+          position: "relative"
         }}
         animate={{
-          rotateX: isHovered ? 2 : 0,
-          rotateY: isHovered ? -5 : 0,
-          z: isHovered ? 20 : 0
+          rotateX: isHovered ? 8 : 0,
+          rotateY: isHovered ? -15 : 0,
+          z: isHovered ? 50 : 0,
+          scale: isHovered ? 1.05 : 1,
+          y: isHovered ? -15 : 0
         }}
         transition={{
           type: "spring",
-          stiffness: 300,
+          stiffness: 400,
           damping: 15
         }}
       >
         <Box
           style={{
             position: "relative",
-            padding: "1.5rem",
-            background: `rgba(10, 15, 36, 0.7)`,
-            backdropFilter: "blur(10px)",
+            padding: "1.8rem",
+            background: `rgba(10, 15, 36, ${isHovered ? '0.85' : '0.7'})`,
+            backdropFilter: "blur(15px)",
             borderRadius: "1rem",
-            border: `1px solid ${color.border}`,
-            boxShadow: isHovered ? `0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px ${color.glow}` : "0 4px 20px rgba(0, 0, 0, 0.1)",
-            transition: "all 0.3s ease",
+            border: `2px solid ${isHovered ? color.primary : color.border}`,
+            boxShadow: isHovered 
+              ? `0 20px 60px rgba(0, 0, 0, 0.3), 0 0 30px ${color.glow}, 0 0 60px ${color.glow}40` 
+              : "0 8px 30px rgba(0, 0, 0, 0.15)",
+            transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
             overflow: "hidden",
-            transform: isHovered ? "translateY(-5px)" : "translateY(0)",
+            transform: isHovered ? "translateY(-8px)" : "translateY(0)",
             transformStyle: "preserve-3d",
             
             // Animated highlight
@@ -255,18 +260,18 @@ const TimelineCard = ({ item, index }) => {
               transition: "opacity 0.3s ease"
             },
             
-            // Scanline effect
+            // Enhanced scanline effect
             "&::after": {
               content: '""',
               position: "absolute",
               top: 0,
               left: 0,
               right: 0,
-              height: "10px",
-              background: `linear-gradient(90deg, transparent, ${color.primary}22, transparent)`,
-              opacity: isHovered ? 0.5 : 0,
-              filter: "blur(1px)",
-              animation: isHovered ? `${scanlineEffect} 1.5s linear infinite` : "none",
+              height: "20px",
+              background: `linear-gradient(90deg, transparent, ${color.primary}80, transparent)`,
+              opacity: isHovered ? 0.7 : 0,
+              filter: "blur(2px)",
+              animation: isHovered ? `${scanlineEffect} 1.2s linear infinite` : "none",
               zIndex: 1
             }
           }}
@@ -559,7 +564,7 @@ export function TimelineSection() {
 
         {/* 3D Timeline Container */}
         <Box style={{ position: "relative", perspective: "1000px" }}>
-          {/* Animated central timeline line */}
+          {/* Enhanced animated central timeline line */}
           <motion.div
             variants={lineVariants}
             style={{
@@ -567,16 +572,48 @@ export function TimelineSection() {
               left: "50%",
               top: "20px",
               bottom: "20px",
-              width: "5px",
+              width: "8px",
               background: "linear-gradient(180deg, #3D7FFF, rgba(166, 77, 255, 0.8), rgba(0, 184, 217, 0.8))",
               transform: "translateX(-50%)",
               borderRadius: "5px",
               zIndex: 0,
-              boxShadow: "0 0 20px rgba(61, 127, 255, 0.5)",
+              boxShadow: "0 0 30px rgba(61, 127, 255, 0.7), 0 0 60px rgba(166, 77, 255, 0.4)",
               transformOrigin: "top",
               animation: `${glowEffect} 3s infinite ease-in-out`
             }}
           />
+          
+          {/* Pulsing particles along the timeline */}
+          {[0.2, 0.4, 0.6, 0.8].map((position, i) => (
+            <motion.div
+              key={i}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ 
+                scale: [0.6, 1.2, 0.6], 
+                opacity: [0.4, 0.8, 0.4] 
+              }}
+              transition={{ 
+                duration: 3,
+                delay: i * 0.5,
+                repeat: Infinity,
+                ease: "easeInOut" 
+              }}
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: `${position * 100}%`,
+                width: "15px",
+                height: "15px",
+                borderRadius: "50%",
+                background: i % 2 === 0 ? "#3D7FFF" : "#A64DFF",
+                transform: "translateX(-50%)",
+                zIndex: 1,
+                boxShadow: i % 2 === 0 
+                  ? "0 0 20px rgba(61, 127, 255, 0.8), 0 0 40px rgba(61, 127, 255, 0.4)" 
+                  : "0 0 20px rgba(166, 77, 255, 0.8), 0 0 40px rgba(166, 77, 255, 0.4)"
+              }}
+            />
+          ))}
           
           {/* Timeline Items with alternating sides */}
           <Box style={{ position: "relative", zIndex: 1 }}>

@@ -126,23 +126,39 @@ function Scene() {
       ribbon3: { ref: ribbon3Ref, factor: 0.5 }
     };
     
-    // Apply parallax movement
+    // Apply more pronounced parallax movement
     Object.entries(refs).forEach(([key, { ref, factor }]) => {
       if (ref.current && initialPositions.current[key]) {
         const initial = initialPositions.current[key];
         
-        // Move in Y direction based on scroll
-        ref.current.position.y = initial.y + (scrollProgress * factor * -4);
+        // Move in Y direction based on scroll with stronger effect
+        ref.current.position.y = initial.y + (scrollProgress * factor * -10);
         
-        // Add some X movement for additional effect
-        ref.current.position.x = initial.x + (Math.sin(scrollProgress * Math.PI * 2) * factor * 0.5);
+        // Add more pronounced X movement
+        ref.current.position.x = initial.x + (Math.sin(scrollProgress * Math.PI * 2) * factor * 2.0);
         
-        // Rotate slightly based on scroll
+        // Move in Z direction for depth
+        ref.current.position.z = initial.z + (Math.cos(scrollProgress * Math.PI) * factor * 3.0);
+        
+        // More dramatic rotation based on scroll
         ref.current.rotation.z = MathUtils.lerp(
           ref.current.rotation.z, 
-          scrollProgress * factor * 0.1, 
+          scrollProgress * factor * 0.4, 
           0.05
         );
+        
+        // Add Y-axis rotation for more dynamic movement
+        ref.current.rotation.y = MathUtils.lerp(
+          ref.current.rotation.y,
+          scrollProgress * factor * 0.3 * (key.includes('blob') ? 1 : -1),
+          0.05
+        );
+        
+        // Scale elements based on scroll for additional effect
+        if (ref.current.scale) {
+          const scaleFactor = 1 + (Math.sin(scrollProgress * Math.PI) * 0.2 * factor);
+          ref.current.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        }
       }
     });
     

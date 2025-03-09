@@ -7,28 +7,62 @@ import { motion } from "framer-motion";
 import Logo from "./Logo";
 import { keyframes } from "@emotion/react";
 
-// Custom keyframes for nav items
+// Custom keyframes for nav items with more pronounced effect
 const glitchEffect = keyframes({
   "0%": { 
-    textShadow: "0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em 0.05em 0 rgba(0, 0, 255, 0.75)" 
+    textShadow: "0.1em 0 0 rgba(255, 0, 0, 0.95), -0.1em -0.05em 0 rgba(0, 255, 0, 0.95), -0.05em 0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(0.03em, -0.04em, 0)",
+    opacity: 0.8
   },
   "14%": { 
-    textShadow: "0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em 0.05em 0 rgba(0, 0, 255, 0.75)" 
+    textShadow: "0.1em 0 0 rgba(255, 0, 0, 0.95), -0.1em -0.05em 0 rgba(0, 255, 0, 0.95), -0.05em 0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(0, 0, 0)",
+    opacity: 1
   },
   "15%": { 
-    textShadow: "-0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75)" 
+    textShadow: "-0.1em -0.05em 0 rgba(255, 0, 0, 0.95), 0.05em 0.05em 0 rgba(0, 255, 0, 0.95), -0.1em -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(-0.05em, 0.05em, 0)",
+    opacity: 0.9
+  },
+  "35%": {
+    textShadow: "-0.1em -0.05em 0 rgba(255, 0, 0, 0.95), 0.05em 0.05em 0 rgba(0, 255, 0, 0.95), -0.1em -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(0.08em, -0.03em, 0)",
+    opacity: 1
+  },
+  "40%": {
+    textShadow: "-0.1em -0.05em 0 rgba(255, 0, 0, 0.95), 0.05em 0.05em 0 rgba(0, 255, 0, 0.95), -0.1em -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(0, 0, 0)",
+    opacity: 0.8
   },
   "49%": { 
-    textShadow: "-0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75)" 
+    textShadow: "-0.1em -0.05em 0 rgba(255, 0, 0, 0.95), 0.05em 0.05em 0 rgba(0, 255, 0, 0.95), -0.1em -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(-0.04em, 0, 0)",
+    opacity: 1
   },
   "50%": { 
-    textShadow: "0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75)" 
+    textShadow: "0.05em 0.1em 0 rgba(255, 0, 0, 0.95), 0.1em 0 0 rgba(0, 255, 0, 0.95), 0 -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(0.04em, 0, 0)",
+    opacity: 0.9
+  },
+  "70%": {
+    textShadow: "0.05em 0.1em 0 rgba(255, 0, 0, 0.95), 0.1em 0 0 rgba(0, 255, 0, 0.95), 0 -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(0, -0.06em, 0)",
+    opacity: 1
+  },
+  "75%": {
+    textShadow: "0.05em 0.1em 0 rgba(255, 0, 0, 0.95), 0.1em 0 0 rgba(0, 255, 0, 0.95), 0 -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(0, 0, 0)",
+    opacity: 0.8
   },
   "99%": { 
-    textShadow: "0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75)" 
+    textShadow: "0.05em 0.1em 0 rgba(255, 0, 0, 0.95), 0.1em 0 0 rgba(0, 255, 0, 0.95), 0 -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(-0.05em, 0, 0)",
+    opacity: 1
   },
   "100%": { 
-    textShadow: "-0.025em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em -0.05em 0 rgba(0, 0, 255, 0.75)" 
+    textShadow: "-0.05em 0 0 rgba(255, 0, 0, 0.95), -0.05em -0.05em 0 rgba(0, 255, 0, 0.95), -0.05em -0.1em 0 rgba(0, 0, 255, 0.95)",
+    transform: "translate3d(0, 0, 0)",
+    opacity: 0.9
   }
 });
 
@@ -53,17 +87,24 @@ const NavItem = ({ label, path, isActive }) => {
   const underlineVariants = {
     initial: { width: 0, opacity: 0, x: "50%" },
     hover: { 
-      width: "80%", 
+      width: "90%", 
       opacity: 1, 
-      x: "10%",
-      transition: { duration: 0.3, ease: "easeOut" }
+      x: "5%",
+      height: "4px",
+      background: "linear-gradient(90deg, #3D7FFF, #A64DFF)",
+      boxShadow: "0 0 10px rgba(61, 127, 255, 0.8), 0 0 20px rgba(166, 77, 255, 0.4)",
+      transition: { 
+        duration: 0.4, 
+        ease: [0.43, 0.13, 0.23, 0.96] // Custom easing for smoother motion
+      }
     },
     active: {
       width: "100%",
       opacity: 1,
       x: "0%",
+      height: "4px",
       background: "linear-gradient(90deg, #3D7FFF, #A64DFF)",
-      height: "3px"
+      boxShadow: "0 0 15px rgba(61, 127, 255, 0.8), 0 0 30px rgba(166, 77, 255, 0.5)"
     }
   };
 
@@ -193,12 +234,49 @@ export default function DesktopNavigation() {
       >
         <Box
           style={{
-            background: "rgba(10, 15, 36, 0.6)",
-            backdropFilter: "blur(10px)",
-            borderRadius: "12px", 
-            padding: "5px",
-            border: "1px solid rgba(61, 127, 255, 0.1)",
-            animation: `${panelGlow} 3s infinite ease-in-out`
+            background: "rgba(10, 15, 36, 0.7)",
+            backdropFilter: "blur(15px)",
+            borderRadius: "16px", 
+            padding: "8px 12px",
+            border: "2px solid rgba(61, 127, 255, 0.3)",
+            animation: `${panelGlow} 3s infinite ease-in-out`,
+            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(61, 127, 255, 0.3)",
+            position: "relative",
+            overflow: "hidden",
+            
+            // Add glowing line effect
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "2px",
+              background: "linear-gradient(90deg, transparent, rgba(61, 127, 255, 0.8), transparent)",
+              animation: "slideRight 4s infinite ease-in-out",
+            },
+            
+            // Add bottom glowing line
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "2px",
+              background: "linear-gradient(90deg, transparent, rgba(166, 77, 255, 0.8), transparent)",
+              animation: "slideLeft 4s infinite ease-in-out",
+            },
+            
+            "@keyframes slideRight": {
+              "0%": { transform: "translateX(-100%)" },
+              "100%": { transform: "translateX(100%)" },
+            },
+            
+            "@keyframes slideLeft": {
+              "0%": { transform: "translateX(100%)" },
+              "100%": { transform: "translateX(-100%)" },
+            }
           }}
         >
           <Group gap="xs">
