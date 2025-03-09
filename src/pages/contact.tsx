@@ -10,6 +10,7 @@ import {
   Container,
   Paper,
   Stack,
+  Grid,
 } from "@mantine/core";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
@@ -86,88 +87,96 @@ export default function ContactPage() {
 
   return (
     <BaseLayout>
-      <Container size="md" py="xl">
-        <Stack spacing="xl">
-          <Box>
-            <Title order={1} mb="md">
-              Contact Me
-            </Title>
-            <Text size="lg" mb="xl">
-              Have a project in mind or want to discuss opportunities? Feel free
-              to reach out!
-            </Text>
-          </Box>
-
-          <Paper shadow="md" p="xl" radius="md" withBorder>
-            {submitted ? (
-              <Stack align="center" spacing="md" p="md">
-                <Title order={2} align="center">
-                  Message Sent!
+      <Container size="xl">
+        <Stack style={{ gap: "var(--mantine-spacing-xl)" }}>
+          <Grid gutter="xl">
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Stack align="center" p="md" style={{ gap: "var(--mantine-spacing-md)" }}>
+                <Title order={2} style={{ textAlign: "center" }}>
+                  Get in Touch
                 </Title>
-                <Text align="center" size="lg">
-                  Thank you for your message. I'll get back to you as soon as
-                  possible.
+                <Text style={{ textAlign: "center" }} size="lg">
+                  Have a project in mind? Let's talk about it.
                 </Text>
-                <Button onClick={() => setSubmitted(false)}>
-                  Send Another Message
-                </Button>
-              </Stack>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <Stack spacing="md">
-                  <TextInput
-                    label="Name"
-                    name="name"
-                    placeholder="Your name"
-                    required
-                    value={formValues.name}
-                    onChange={handleChange}
-                    error={errors.name}
-                  />
-                  <TextInput
-                    label="Email"
-                    name="email"
-                    placeholder="your.email@example.com"
-                    required
-                    value={formValues.email}
-                    onChange={handleChange}
-                    error={errors.email}
-                  />
-                  <TextInput
-                    label="Subject"
-                    name="subject"
-                    placeholder="Subject of your message"
-                    required
-                    value={formValues.subject}
-                    onChange={handleChange}
-                    error={errors.subject}
-                  />
-                  <Textarea
-                    label="Message"
-                    name="message"
-                    placeholder="Your message here..."
-                    minRows={5}
-                    required
-                    value={formValues.message}
-                    onChange={handleChange}
-                    error={errors.message}
-                  />
-                  <Button type="submit" size="lg" fullWidth mt="md">
-                    Send Message
-                  </Button>
+                <Stack style={{ gap: "var(--mantine-spacing-md)" }}>
+                  {submitted ? (
+                    <Stack align="center" p="md">
+                      <Title order={2} >
+                        Message Sent!
+                      </Title>
+                      <Text size="lg">
+                        Thank you for your message. I'll get back to you as soon as
+                        possible.
+                      </Text>
+                      <Button onClick={() => setSubmitted(false)}>
+                        Send Another Message
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <form onSubmit={handleSubmit}>
+                      <Stack>
+                        <TextInput
+                          label="Name"
+                          name="name"
+                          placeholder="Your name"
+                          required
+                          value={formValues.name}
+                          onChange={handleChange}
+                          error={errors.name}
+                        />
+                        <TextInput
+                          label="Email"
+                          name="email"
+                          placeholder="your.email@example.com"
+                          required
+                          value={formValues.email}
+                          onChange={handleChange}
+                          error={errors.email}
+                        />
+                        <TextInput
+                          label="Subject"
+                          name="subject"
+                          placeholder="Subject of your message"
+                          required
+                          value={formValues.subject}
+                          onChange={handleChange}
+                          error={errors.subject}
+                        />
+                        <Textarea
+                          label="Message"
+                          name="message"
+                          placeholder="Your message here..."
+                          minRows={5}
+                          required
+                          value={formValues.message}
+                          onChange={handleChange}
+                          error={errors.message}
+                        />
+                        <Button type="submit" size="lg" fullWidth mt="md">
+                          Send Message
+                        </Button>
+                      </Stack>
+                    </form>
+                  )}
                 </Stack>
-              </form>
-            )}
-          </Paper>
-
-          <Box py="xl">
-            <Title order={2} mb="xl" align="center">
-              Connect with me on social media
-            </Title>
-            <Group justify="center">
-              <SocialLinks size="xl" />
-            </Group>
-          </Box>
+              </Stack>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Paper shadow="md" p="xl" radius="md">
+                <Title order={2} mb="xl" style={{ textAlign: "center" }}>
+                  Other Ways to Connect
+                </Title>
+                <Box py="xl">
+                  <Title order={2} mb="xl">
+                    Connect with me on social media
+                  </Title>
+                  <Group justify="center">
+                    <SocialLinks size="xl" />
+                  </Group>
+                </Box>
+              </Paper>
+            </Grid.Col>
+          </Grid>
         </Stack>
       </Container>
     </BaseLayout>

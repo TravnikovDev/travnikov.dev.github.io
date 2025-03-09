@@ -1,428 +1,303 @@
 import React, { useState } from "react";
 import {
-  SimpleGrid,
-  Paper,
+  Container,
   Title,
   Text,
-  Container,
-  Center,
-  Group,
-  Box,
-  Tooltip,
+  Grid,
+  Paper,
   Progress,
-  useMantineTheme,
+  Group,
+  Stack,
+  Tooltip,
 } from "@mantine/core";
-import { keyframes } from "@emotion/react";
+import { motion } from "framer-motion";
+import { theme } from "../../theme";
+import { useColorScheme } from "@mantine/hooks";
 
-interface TechItem {
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
+
+interface TechSkill {
   name: string;
-  icon: string;
-  category: "frontend" | "tools" | "backend";
-  proficiency: number; // 0-100
+  level: number;
   color: string;
-  description: string;
+  experience: string;
+  projects: number;
 }
 
-// Animation keyframes
-const float = keyframes({
-  "0%": { transform: "translateY(0px)" },
-  "50%": { transform: "translateY(-10px)" },
-  "100%": { transform: "translateY(0px)" },
-});
+interface TechCategory {
+  name: string;
+  color: string;
+  skills: TechSkill[];
+}
 
-const rotate = keyframes({
-  "0%": { transform: "rotate(0deg)" },
-  "100%": { transform: "rotate(360deg)" },
-});
-
-const pulse = keyframes({
-  "0%": { opacity: 0.6 },
-  "50%": { opacity: 1 },
-  "100%": { opacity: 0.6 },
-});
-
-// This would ideally come from Strapi CMS
-const techStack: TechItem[] = [
+const techData: TechCategory[] = [
   {
-    name: "React",
-    icon: "⚛️",
-    category: "frontend",
-    proficiency: 95,
-    color: "#61DAFB",
-    description:
-      "Expert level with 7+ years of experience building complex applications and custom hooks.",
+    name: "Frontend Development",
+    color: "#3E98C7",
+    skills: [
+      {
+        name: "React/Next.js",
+        level: 95,
+        color: "#61DAFB",
+        experience: "8+ years",
+        projects: 50,
+      },
+      {
+        name: "TypeScript",
+        level: 90,
+        color: "#3178C6",
+        experience: "5+ years",
+        projects: 40,
+      },
+      {
+        name: "JavaScript",
+        level: 95,
+        color: "#F7DF1E",
+        experience: "10+ years",
+        projects: 100,
+      },
+      {
+        name: "HTML/CSS",
+        level: 90,
+        color: "#E34F26",
+        experience: "10+ years",
+        projects: 100,
+      },
+    ],
   },
   {
-    name: "TypeScript",
-    icon: "🔷",
-    category: "frontend",
-    proficiency: 90,
-    color: "#3178C6",
-    description:
-      "Strong typing skills with experience in complex type definitions and generics.",
+    name: "Creative Development",
+    color: "#7A52C5",
+    skills: [
+      {
+        name: "Three.js",
+        level: 85,
+        color: "#049EF4",
+        experience: "3+ years",
+        projects: 15,
+      },
+      {
+        name: "WebGL",
+        level: 80,
+        color: "#990000",
+        experience: "3+ years",
+        projects: 10,
+      },
+      {
+        name: "GSAP",
+        level: 85,
+        color: "#88CE02",
+        experience: "4+ years",
+        projects: 20,
+      },
+      {
+        name: "SVG Animation",
+        level: 80,
+        color: "#FFB13B",
+        experience: "5+ years",
+        projects: 25,
+      },
+    ],
   },
   {
-    name: "JavaScript",
-    icon: "🟨",
-    category: "frontend",
-    proficiency: 98,
-    color: "#F7DF1E",
-    description:
-      "Expert knowledge of ES6+ features, async patterns, and performance optimization.",
-  },
-  {
-    name: "HTML5",
-    icon: "🔶",
-    category: "frontend",
-    proficiency: 95,
-    color: "#E34F26",
-    description:
-      "Semantic HTML expert with focus on accessibility and SEO best practices.",
-  },
-  {
-    name: "CSS3",
-    icon: "🔵",
-    category: "frontend",
-    proficiency: 92,
-    color: "#1572B6",
-    description:
-      "Advanced CSS including animations, Grid, Flexbox, and CSS variables.",
-  },
-  {
-    name: "Redux",
-    icon: "🔄",
-    category: "frontend",
-    proficiency: 88,
-    color: "#764ABC",
-    description:
-      "Extensive experience with Redux, Redux-Toolkit, and middleware patterns.",
-  },
-  {
-    name: "Next.js",
-    icon: "▲",
-    category: "frontend",
-    proficiency: 85,
-    color: "#000000",
-    description:
-      "Built several production applications with SSR, ISR, and API routes.",
-  },
-  {
-    name: "Gatsby",
-    icon: "💜",
-    category: "frontend",
-    proficiency: 80,
-    color: "#663399",
-    description:
-      "Created multiple high-performance static sites with GraphQL data layer.",
-  },
-  {
-    name: "Git",
-    icon: "📊",
-    category: "tools",
-    proficiency: 92,
-    color: "#F05032",
-    description:
-      "Advanced knowledge of Git workflows, rebasing, and conflict resolution.",
-  },
-  {
-    name: "Webpack",
-    icon: "📦",
-    category: "tools",
-    proficiency: 85,
-    color: "#8DD6F9",
-    description:
-      "Custom configurations for optimization, code splitting, and performance.",
-  },
-  {
-    name: "Node.js",
-    icon: "🟢",
-    category: "backend",
-    proficiency: 82,
-    color: "#339933",
-    description:
-      "Created APIs, middleware, and server-side applications with Express.",
-  },
-  {
-    name: "GraphQL",
-    icon: "🔺",
-    category: "backend",
-    proficiency: 78,
-    color: "#E10098",
-    description:
-      "Designed schemas, resolvers, and integrated with various data sources.",
+    name: "Backend Development",
+    color: "#3E98C7",
+    skills: [
+      {
+        name: "Node.js",
+        level: 85,
+        color: "#339933",
+        experience: "6+ years",
+        projects: 30,
+      },
+      {
+        name: "GraphQL",
+        level: 80,
+        color: "#E535AB",
+        experience: "3+ years",
+        projects: 15,
+      },
+      {
+        name: "PostgreSQL",
+        level: 75,
+        color: "#336791",
+        experience: "5+ years",
+        projects: 20,
+      },
+      {
+        name: "MongoDB",
+        level: 80,
+        color: "#47A248",
+        experience: "4+ years",
+        projects: 15,
+      },
+    ],
   },
 ];
 
-// Group tech stack by category
-const frontendTech = techStack.filter((tech) => tech.category === "frontend");
-const toolsTech = techStack.filter((tech) => tech.category === "tools");
-const backendTech = techStack.filter((tech) => tech.category === "backend");
-
-export default function TechStackSection() {
-  const [hoveredTech, setHoveredTech] = useState<string | null>(null);
-  const theme = useMantineTheme();
-
+export function TechStackSection() {
+  const colorScheme = useColorScheme();
   return (
-    <Box py="xl" my="xl">
-      <Container size="lg">
-        <Title
-          order={2}
-          align="center"
-          mb="md"
-          sx={(theme) => ({
-            position: "relative",
-            display: "inline-block",
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              bottom: -10,
-              left: "30%",
-              right: "30%",
-              height: 4,
-              borderRadius: 2,
-              background: "linear-gradient(90deg, #3E98C7 0%, #7A52C5 100%)",
-            },
-          })}
-        >
-          My Tech Stack
-        </Title>
+    <Container size="lg" py="6rem" style={{backgroundColor: "var(--mantine-color-dark-6)",
+      color: "#fff"}}>
+      <motion.div variants={containerVariants} initial="hidden" animate="visible">
+        <Stack align="center" gap="xl">
+          <Title
+            order={2}
+            ta="center"
+            mb="md"
+            style={{ color: "#fff",}}
+            styles={(theme) => ({
+              root: {
+                position: "relative",
+                display: "inline-block",
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  bottom: -10,
+                  left: "25%",
+                  right: "25%",
+                  height: 4,
+                  borderRadius: 2,
+                  background: `linear-gradient(90deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[6]})`,
+                },
+              },
+            })}
+          >
+            Technical Expertise
+          </Title>
 
-        <Text
-          align="center"
-          mb="xl"
-          size="lg"
-          sx={{
-            maxWidth: "700px",
-            margin: "0 auto 32px",
-            lineHeight: 1.6,
-          }}
-        >
-          Technologies and tools I've mastered over my 10+ year journey
-        </Text>
+          <Text
+            ta="center"
+            mb="xl"
+            size="lg"
+            maw={800}
+            style={{ color: "var(--mantine-color-dark-0)"}}
+            styles={{
+              root: {
+                maxWidth: "800px",
+                margin: "0 auto",
+                lineHeight: 1.8,
+              },
+            }}
+          >
+            A comprehensive overview of my technical skills and proficiency levels.
+            Each skill is backed by years of practical experience and numerous successful projects.
+          </Text>
 
-        {/* Frontend Technologies */}
-        <Title order={3} mb="md" mt="xl" color="#3E98C7">
-          Frontend Development
-        </Title>
-        <SimpleGrid
-          cols={{ base: 2, sm: 3, md: 4 }}
-          spacing={{ base: "md", sm: "lg" }}
-          mb="xl"
-        >
-          {frontendTech.map((tech, index) => (
-            <Tooltip
-              key={index}
-              label={
-                <Box p="xs">
-                  <Text fw={700} mb={5}>
-                    {tech.name}
-                  </Text>
-                  <Text size="sm" mb={10}>
-                    {tech.description}
-                  </Text>
-                  <Progress
-                    value={tech.proficiency}
-                    color={tech.color}
-                    size="sm"
-                    radius="xl"
-                    animate
-                  />
-                  <Text size="xs" align="right" mt={5}>
-                    {tech.proficiency}% proficiency
-                  </Text>
-                </Box>
-              }
-              color="dark"
-              width={250}
-              position="top"
-              withArrow
-              transitionProps={{ duration: 200 }}
-            >
-              <Paper
-                shadow="sm"
-                p="md"
-                withBorder
-                radius="md"
-                sx={(theme) => ({
-                  transition: "all 0.3s ease",
-                  cursor: "pointer",
-                  background:
-                    hoveredTech === tech.name
-                      ? `linear-gradient(135deg, ${theme.fn.rgba(
-                          tech.color,
-                          0.2
-                        )} 0%, ${theme.fn.rgba(tech.color, 0.1)} 100%)`
-                      : theme.colorScheme === "dark"
-                      ? theme.colors.dark[6]
-                      : theme.white,
-                  borderColor:
-                    hoveredTech === tech.name ? tech.color : undefined,
-                  transform:
-                    hoveredTech === tech.name
-                      ? "translateY(-8px) scale(1.03)"
-                      : "translateY(0)",
-                  boxShadow:
-                    hoveredTech === tech.name
-                      ? `0 10px 20px ${theme.fn.rgba(tech.color, 0.2)}`
-                      : theme.shadows.sm,
-                  animation:
-                    hoveredTech === tech.name
-                      ? `${float} 3s ease infinite`
-                      : "none",
-                })}
-                onMouseEnter={() => setHoveredTech(tech.name)}
-                onMouseLeave={() => setHoveredTech(null)}
-              >
-                <Center>
-                  <Group spacing="sm">
-                    <Text
-                      size="xl"
-                      sx={{
-                        fontSize: hoveredTech === tech.name ? "2rem" : "1.5rem",
-                        transition: "all 0.3s ease",
-                        animation:
-                          hoveredTech === tech.name
-                            ? `${rotate} 5s linear infinite`
-                            : "none",
-                        display: "inline-block",
-                      }}
-                    >
-                      {tech.icon}
-                    </Text>
-                    <Text
-                      size="lg"
-                      fw={600}
-                      sx={{
-                        transition: "all 0.3s ease",
-                        color:
-                          hoveredTech === tech.name ? tech.color : undefined,
-                      }}
-                    >
-                      {tech.name}
-                    </Text>
-                  </Group>
-                </Center>
-
-                {/* Show proficiency bar on hover */}
-                {hoveredTech === tech.name && (
-                  <Box mt="md">
-                    <Progress
-                      value={tech.proficiency}
-                      color={tech.color}
-                      size="sm"
-                      radius="xl"
-                      animate
-                      label={`${tech.proficiency}%`}
-                      sx={{ animation: `${pulse} 2s ease infinite` }}
-                    />
-                  </Box>
-                )}
-              </Paper>
-            </Tooltip>
-          ))}
-        </SimpleGrid>
-
-        {/* Tools & Backend Technologies */}
-        <SimpleGrid cols={2} spacing="xl" mt="xl">
-          <Box>
-            <Title order={3} mb="md" color="#7A52C5">
-              Development Tools
-            </Title>
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-              {toolsTech.map((tech, index) => (
-                <Tooltip
-                  key={index}
-                  label={tech.description}
-                  color="dark"
-                  position="top"
-                  withArrow
+          <Grid gutter="xl">
+            {techData.map((category, idx) => (
+              <Grid.Col key={idx} span={{ base: 12, md: 12 }}>
+                <Title
+                  order={3}
+                  mb="md"
+                  c={category.color}
+                  styles={{
+                    root: {
+                      fontSize: "1.8rem",
+                      marginBottom: "1.5rem",
+                    },
+                  }}
                 >
-                  <Paper
-                    shadow="sm"
-                    p="md"
-                    withBorder
-                    radius="md"
-                    sx={{
-                      transition: "all 0.3s ease",
-                      cursor: "pointer",
-                      "&:hover": {
-                        transform: "translateY(-5px)",
-                        boxShadow: theme.shadows.md,
-                        borderColor: tech.color,
-                      },
-                    }}
-                  >
-                    <Group justify="space-between">
-                      <Group>
-                        <Text size="lg">{tech.icon}</Text>
-                        <Text size="md" fw={500}>
-                          {tech.name}
-                        </Text>
-                      </Group>
-                      <Progress
-                        value={tech.proficiency}
-                        color={tech.color}
-                        size="xs"
-                        radius="xl"
-                        style={{ width: 60 }}
-                      />
-                    </Group>
-                  </Paper>
-                </Tooltip>
-              ))}
-            </SimpleGrid>
-          </Box>
+                  {category.name}
+                </Title>
 
-          <Box>
-            <Title order={3} mb="md" color="#3E98C7">
-              Backend Knowledge
-            </Title>
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-              {backendTech.map((tech, index) => (
-                <Tooltip
-                  key={index}
-                  label={tech.description}
-                  color="dark"
-                  position="top"
-                  withArrow
-                >
-                  <Paper
-                    shadow="sm"
-                    p="md"
-                    withBorder
-                    radius="md"
-                    sx={{
-                      transition: "all 0.3s ease",
-                      cursor: "pointer",
-                      "&:hover": {
-                        transform: "translateY(-5px)",
-                        boxShadow: theme.shadows.md,
-                        borderColor: tech.color,
-                      },
-                    }}
-                  >
-                    <Group justify="space-between">
-                      <Group>
-                        <Text size="lg">{tech.icon}</Text>
-                        <Text size="md" fw={500}>
-                          {tech.name}
-                        </Text>
-                      </Group>
-                      <Progress
-                        value={tech.proficiency}
-                        color={tech.color}
-                        size="xs"
-                        radius="xl"
-                        style={{ width: 60 }}
-                      />
-                    </Group>
-                  </Paper>
-                </Tooltip>
-              ))}
-            </SimpleGrid>
-          </Box>
-        </SimpleGrid>
-      </Container>
-    </Box>
+                <Grid gutter="xl">
+                  {category.skills.map((skill, index) => (
+                    <Grid.Col key={index} span={{ base: 12, sm: 6 }}>
+                      <Tooltip
+                        label={
+                          <div>
+                            <strong>Experience:</strong> {skill.experience}
+                            <br />
+                            <strong>Projects:</strong> {skill.projects}+
+                          </div>
+                        }
+                        color="dark"
+                        w={250}
+                        position="top"
+                        transitionProps={{ duration: 200 }}
+                        withArrow
+                      >
+                        <Paper
+                          shadow="sm"
+                          p="md"
+                          withBorder
+                          radius="md"
+                          styles={(theme) => ({
+                            root: {
+                              transition: "all 0.3s ease",
+                              cursor: "pointer",
+                              background:
+                                colorScheme === "dark"
+                                  ? theme.colors.dark[8]
+                                  : theme.white,
+                              borderColor:
+                                colorScheme === "dark"
+                                  ? theme.colors.dark[4]
+                                  : theme.colors.gray[3],
+                              transform: "translateY(0)",
+                              boxShadow: theme.shadows.sm,
+                              animation: "fadeIn 0.5s ease forwards",
+                              "&:hover": {
+                                transform: "translateY(-5px)",
+                                boxShadow: theme.shadows.lg,
+                                borderColor: skill.color,
+                              },
+                            },
+                          })}
+                        >
+                          <Group justify="space-between" mb={5}>
+                            <Text
+                              size="lg"
+                              fw={700}
+                              styles={{
+                                root: {
+                                  transition: "color 0.3s ease",
+                                  color: skill.color,
+                                },
+                              }}
+                            >
+                              {skill.name}
+                            </Text>
+                          </Group>
+
+                          <Progress
+                            value={skill.level}
+                            color={skill.color}
+                            size="sm"
+                            radius="xl"
+                            animated
+                            style={{animation: "slideIn 1s ease forwards"}}
+                          />
+                        </Paper>
+                      </Tooltip>
+                    </Grid.Col>
+                  ))}
+                </Grid>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Stack>
+      </motion.div>
+    </Container>
   );
 }

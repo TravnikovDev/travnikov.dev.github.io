@@ -30,7 +30,7 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
   return (
     <BaseLayout>
       <Container size="md" py="xl">
-        <Stack spacing="xl">
+        <Stack style={{ gap: "var(--mantine-spacing-xl)" }}>
           <Title order={1}>{articleData.frontmatter.title}</Title>
           <Group>
             <Text size="sm" color="dimmed">

@@ -1,25 +1,28 @@
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, Text3D } from "@react-three/drei";
+import * as THREE from "three";
+import { Group, MeshStandardMaterial } from "three";
 
 function FloatingName() {
-  const textRef = useRef();
-  const materialRef = useRef();
+  const textRef = useRef<Group>(null);
+  const materialRef = useRef<MeshStandardMaterial>(null);
+  const initialY = useRef<number>(0);
 
   useFrame(({ clock }) => {
-    if (textRef.current) {
-      const t = clock.getElapsedTime();
+    if (!textRef.current || !materialRef.current) return;
 
-      textRef.current.position.y = Math.sin(t * 0.5) * 0.15;
+    const t = clock.getElapsedTime();
 
-      // Update position based on scroll
-      const scrollY = window.scrollY || window.pageYOffset;
-      textRef.current.position.y += scrollY * 0.001;
+    // Smooth floating animation
+    textRef.current.position.y = (initialY.current || 0) + Math.sin(t * 0.5) * 0.15;
 
-      if (materialRef.current) {
-        materialRef.current.emissiveIntensity = 0.8 + Math.sin(t * 2) * 0.2;
-      }
-    }
+    // Update position based on scroll with smooth lerping
+    const targetY = (window.scrollY || window.pageYOffset) * 0.001;
+    initialY.current = THREE.MathUtils.lerp(initialY.current || 0, targetY, 0.1);
+
+    // Smooth material animation
+    materialRef.current.emissiveIntensity = 0.8 + Math.sin(t * 2) * 0.2;
   });
 
   return (
@@ -38,16 +41,14 @@ function FloatingName() {
           position={[-3.2, 0, 0]}
         >
           TRAVNIKOV
-          <meshPhysicalMaterial
+          <meshStandardMaterial
             ref={materialRef}
             color="#E3E7F1"
             roughness={0.05}
             metalness={0.9}
             emissive="#E3E7F1"
             emissiveIntensity={0.8}
-            clearcoat={1.0}
-            clearcoatRoughness={0.1}
-            reflectivity={1}
+            envMapIntensity={1.5}
           />
         </Text3D>
       </group>

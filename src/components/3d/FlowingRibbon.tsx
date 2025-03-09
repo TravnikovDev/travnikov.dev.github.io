@@ -1,72 +1,104 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { Group, BufferGeometry, Vector3, ColorRepresentation, BufferAttribute } from "three";
 
-function FlowingRibbon({ color = "#3D7FFF", width = 0.1, points = 100, length = 10 }) {
-  const ribbon = useRef();
+interface FlowingRibbonProps {
+  color?: ColorRepresentation;
+  width?: number;
+  length?: number;
+  segments?: number;
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  scale?: number | [number, number, number];
+}
 
-  const [positions, setPositions] = useState(() => {
-    const positions = new Float32Array(points * 3);
-    for (let i = 0; i < points; i++) {
-      const i3 = i * 3;
-      const t = i / points;
+export function FlowingRibbon({
+  color = "#3D7FFF",
+  width = 0.1,
+  length = 10,
+  segments = 50,
+  position = [0, 0, 0],
+  rotation = [0, 0, 0],
+  scale = 1
+}: FlowingRibbonProps) {
+  const groupRef = useRef<Group>(null);
+  const geometryRef = useRef<BufferGeometry>(null);
+  const phase = useRef(0);
+  const initialY = useRef(position[1]);
 
-      positions[i3] = (t - 0.5) * length; // x
-      positions[i3 + 1] = 0; // y
-      positions[i3 + 2] = 0; // z
+  // Generate initial curve points with proper typing
+  const points = useMemo(() => {
+    const pts: Vector3[] = [];
+    for (let i = 0; i < segments; i++) {
+      const t = (i / segments) * Math.PI * 2;
+      pts.push(new Vector3(
+        Math.sin(t) * width,
+        (i / segments) * length - length / 2,
+        Math.cos(t) * width
+      ));
     }
-    return positions;
-  });
+    return pts;
+  }, [segments, width, length]);
 
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
+    if (!geometryRef.current) return;
 
-    if (ribbon.current) {
-      const positions = ribbon.current.geometry.attributes.position.array;
+    phase.current += 0.01;
+    const positions = geometryRef.current.attributes.position as BufferAttribute;
 
-      for (let i = 0; i < points; i++) {
-        const i3 = i * 3;
-        const idx = i / points;
+    for (let i = 0; i < segments; i++) {
+      const t = (i / segments) * Math.PI * 2;
+      const y = (i / segments) * length - length / 2;
+      
+      // Update x and z positions with wave motion
+      const x = Math.sin(t + phase.current) * width;
+      const z = Math.cos(t + phase.current) * width;
+      
+      positions.setXYZ(i, x, y, z);
+    }
 
-        // Wave motion effect
-        positions[i3 + 1] = Math.sin(idx * 8 + t * 1.5) * 0.4; // y
-        positions[i3 + 2] = Math.cos(idx * 6 + t) * 0.3; // z
-      }
+    positions.needsUpdate = true;
 
-      ribbon.current.geometry.attributes.position.needsUpdate = true;
-
-      // Update position based on scroll
+    // Update position based on scroll
+    if (groupRef.current) {
       const scrollY = window.scrollY || window.pageYOffset;
-      ribbon.current.position.y = scrollY * 0.001;
+      groupRef.current.position.y = initialY.current + scrollY * 0.001;
     }
   });
 
+  const scaleVector = useMemo(() => {
+    if (typeof scale === 'number') {
+      return [scale, scale, scale] as const;
+    }
+    return scale;
+  }, [scale]);
+
   return (
-    <mesh ref={ribbon}>
-      <tubeGeometry
-        args={[
-          new THREE.CatmullRomCurve3(
-            Array.from({ length: points }, (_, i) => {
-              const t = i / points;
-              return new THREE.Vector3((t - 0.5) * length, 0, 0);
-            })
-          ),
-          points,
-          width,
-          8,
-          false,
-        ]}
-      />
-      <meshPhysicalMaterial
-        color={color}
-        roughness={0.2}
-        metalness={0.8}
-        emissive={color}
-        emissiveIntensity={0.5}
-        transparent
-        opacity={0.8}
-      />
-    </mesh>
+    <group 
+      ref={groupRef} 
+      position={position}
+      rotation={rotation}
+      scale={scaleVector}
+    >
+      <line>
+        <bufferGeometry ref={geometryRef}>
+          <bufferAttribute
+            attach="attributes-position"
+            count={segments}
+            array={new Float32Array(segments * 3)}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <lineBasicMaterial
+          color={new THREE.Color(color)}
+          linewidth={2}
+          opacity={0.6}
+          transparent
+          toneMapped={false}
+        />
+      </line>
+    </group>
   );
 }
 

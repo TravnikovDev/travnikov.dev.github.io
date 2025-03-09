@@ -1,18 +1,17 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { graphql } from "gatsby";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
-import TimelineSection from "../components/landing/TimelineSection";
-import TechStackSection from "../components/landing/TechStackSection";
-import { Box, Divider, Container, Text, Title } from "@mantine/core";
+import { TimelineSection } from "../components/landing/TimelineSection";
+import { TechStackSection } from "../components/landing/TechStackSection";
+import { Box, Container } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import {
   motion,
   useScroll,
   useTransform,
   useSpring,
-  MotionValue,
 } from "framer-motion";
 
 // Background animation effects
@@ -198,7 +197,7 @@ function ParallaxDivider() {
   return (
     <Container size="lg" my={100}>
       <Box
-        sx={{
+        style={{
           position: "relative",
           height: "3px",
           width: "100%",
@@ -207,7 +206,7 @@ function ParallaxDivider() {
         }}
       >
         <Box
-          sx={{
+          style={{
             position: "absolute",
             top: 0,
             left: 0,

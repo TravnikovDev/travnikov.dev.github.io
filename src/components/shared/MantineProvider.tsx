@@ -1,35 +1,23 @@
-import React from "react";
-import { createTheme, MantineProvider as Provider } from "@mantine/core";
+import { ReactNode } from "react";
+import { MantineProvider as Provider, createTheme, CSSVariablesResolver } from "@mantine/core";
 import "@mantine/core/styles.css";
 
 // Enhanced theme with bolder colors, better contrasts, and funky typography
 const theme = createTheme({
-  primaryColor: "primary",
+  primaryColor: "blue",
   colors: {
     // Updated color palette to include specified dark-but-vibrant colors
     primary: [
       "#0A0F24", // 0 - Deep Navy
       "#12183A", // 1 - Midnight Blue
-      "#E3E7F1", // 2 - Soft White
-      "#3D7FFF", // 3 - Electric Blue
-      "#A64DFF", // 4 - Cyber Purple
-      "#00F0FF", // 5 - Neon Cyan
-    ],
-    secondary: [
-      "#0A0F24", // 0 - Deep Navy
-      "#12183A", // 1 - Midnight Blue
-      "#E3E7F1", // 2 - Soft White
-      "#3D7FFF", // 3 - Electric Blue
-      "#A64DFF", // 4 - Cyber Purple
-      "#00F0FF", // 5 - Neon Cyan
-    ],
-    accent: [
-      "#0A0F24", // 0 - Deep Navy
-      "#12183A", // 1 - Midnight Blue
-      "#E3E7F1", // 2 - Soft White
-      "#3D7FFF", // 3 - Electric Blue
-      "#A64DFF", // 4 - Cyber Purple
-      "#00F0FF", // 5 - Neon Cyan
+      "#1D2E70", // 2 - Royal Blue - added
+      "#2A45A5", // 3 - Blue - added
+      "#3D7FFF", // 4 - Electric Blue
+      "#56A0FF", // 5 - Lighter Blue - added
+      "#A64DFF", // 6 - Cyber Purple
+      "#C283FF", // 7 - Light Purple - added
+      "#00F0FF", // 8 - Neon Cyan
+      "#72F7FF", // 9 - Light Cyan - added
     ],
     gray: [
       "#F9FAFC", // 0 - Almost white
@@ -55,15 +43,15 @@ const theme = createTheme({
       '"Monument Extended", "Clash Display", "Druk Wide", "Chillax", "PP Neue Montreal", system-ui, sans-serif',
     fontWeight: "900", // Maximum boldness
     sizes: {
-      h1: { fontSize: "7rem", lineHeight: "1", letterSpacing: "-0.04em" }, // GIGANTIC
-      h2: { fontSize: "5rem", lineHeight: "1.05", letterSpacing: "-0.035em" }, // ENORMOUS
-      h3: { fontSize: "3.2rem", lineHeight: "1.1", letterSpacing: "-0.03em" }, // HUGE
-      h4: { fontSize: "2.2rem", lineHeight: "1.2", letterSpacing: "-0.02em" }, // Very large
-      h5: { fontSize: "1.6rem", lineHeight: "1.25", letterSpacing: "-0.015em" }, // Large
+      h1: { fontSize: "7rem", lineHeight: "1" }, // GIGANTIC
+      h2: { fontSize: "5rem", lineHeight: "1.05" }, // ENORMOUS
+      h3: { fontSize: "3.2rem", lineHeight: "1.1" }, // HUGE
+      h4: { fontSize: "2.2rem", lineHeight: "1.2" }, // Very large
+      h5: { fontSize: "1.6rem", lineHeight: "1.25" }, // Large
     },
   },
   // Increased radius for more modern look
-  defaultRadius: "lg",
+  defaultRadius: "md",
   defaultGradient: { from: "primary.3", to: "primary.4", deg: 45 }, // Updated gradient
   components: {
     Button: {
@@ -76,12 +64,9 @@ const theme = createTheme({
           fontWeight: 700, // Bolder text
           fontSize: "1.1rem", // Slightly larger
           letterSpacing: "-0.01em",
-          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)", // Stronger shadow
           transition: "all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)", // More playful animation
           "&:hover": {
             transform: "translateY(-5px) scale(1.02)", // More dramatic hover effect
-            boxShadow:
-              "0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 120, 240, 0.3)",
           },
         },
       },
@@ -98,12 +83,10 @@ const theme = createTheme({
       },
       styles: {
         root: {
-          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
           transition:
             "transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease",
           "&:hover": {
             transform: "translateY(-5px)",
-            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)",
           },
         },
       },
@@ -118,52 +101,6 @@ const theme = createTheme({
       },
     },
   },
-  // Enhanced CSS variables for more vivid gradients and effects
-  cssVariablesResolver: (theme) => ({
-    variables: {
-      // Updated gradients to use specified colors
-      "--mantine-primary-gradient":
-        "linear-gradient(45deg, var(--mantine-color-primary-3), var(--mantine-color-primary-4))",
-      "--mantine-secondary-gradient":
-        "linear-gradient(45deg, var(--mantine-color-primary-4), var(--mantine-color-primary-5))",
-      "--mantine-tertiary-gradient":
-        "linear-gradient(45deg, var(--mantine-color-primary-5), var(--mantine-color-primary-3))",
-
-      // SUPER VIBRANT animated gradients for dark theme
-      "--mantine-animated-gradient":
-        "linear-gradient(90deg, #3D7FFF, #A64DFF, #00F0FF, #3D7FFF)",
-      "--mantine-blue-gradient":
-        "linear-gradient(45deg, #3D7FFF, #A64DFF, #00F0FF, #3D7FFF)",
-      "--mantine-dramatic-gradient":
-        "radial-gradient(circle at top left, #3D7FFF, #A64DFF, #00F0FF)",
-      "--mantine-shine-gradient":
-        "linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)",
-
-      // Refined shadows and glows for dark theme
-      "--mantine-glow-shadow": "0 10px 30px rgba(61, 127, 255, 0.2)",
-      "--mantine-royal-glow": "0 10px 30px rgba(166, 77, 255, 0.2)",
-      "--mantine-gold-glow": "0 10px 30px rgba(0, 240, 255, 0.2)",
-      "--mantine-soft-shadow": "0 20px 80px -20px rgba(57, 72, 94, 0.25)",
-      "--mantine-card-shadow": "0 10px 40px -10px rgba(57, 72, 94, 0.3)",
-
-      // Spacing variables for consistent layout
-      "--mantine-section-spacing": "6rem",
-      "--mantine-card-spacing": "2rem",
-
-      // Ultra transparent page background to let 3D scene show through
-      "--mantine-page-bg": "transparent",
-
-      // Z-index layers
-      "--mantine-z-navbar": "1000",
-      "--mantine-z-overlay": "900",
-      "--mantine-z-modal": "1100",
-    },
-    light: {},
-    dark: {
-      // Enhanced dark theme variables
-      "--mantine-color-body": "#0F1015",
-    },
-  }),
   // Dramatically increased spacing for maximum breathing room
   spacing: {
     xs: "1rem", // +60%
@@ -176,13 +113,57 @@ const theme = createTheme({
   },
 });
 
+// TypeScript fix: Define the cssVariablesResolver separately with correct typing
+const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
+  variables: {
+    // Updated gradients to use specified colors
+    "--mantine-primary-gradient":
+      "linear-gradient(45deg, var(--mantine-color-primary-3), var(--mantine-color-primary-4))",
+    "--mantine-secondary-gradient":
+      "linear-gradient(45deg, var(--mantine-color-primary-4), var(--mantine-color-primary-5))",
+    "--mantine-animated-gradient":
+      "linear-gradient(90deg, #3D7FFF, #A64DFF, #00F0FF, #3D7FFF)",
+    "--mantine-blue-gradient":
+      "linear-gradient(45deg, #3D7FFF, #A64DFF, #00F0FF, #3D7FFF)",
+    "--mantine-dramatic-gradient":
+      "radial-gradient(circle at top left, #3D7FFF, #A64DFF, #00F0FF)",
+    "--mantine-shine-gradient":
+      "linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)",
+
+    // Refined shadows and glows for dark theme
+    "--mantine-glow-shadow": "0 10px 30px rgba(61, 127, 255, 0.2)",
+    "--mantine-royal-glow": "0 10px 30px rgba(166, 77, 255, 0.2)",
+    "--mantine-gold-glow": "0 10px 30px rgba(0, 240, 255, 0.2)",
+    "--mantine-soft-shadow": "0 20px 80px -20px rgba(57, 72, 94, 0.25)",
+    "--mantine-card-shadow": "0 10px 40px -10px rgba(57, 72, 94, 0.3)",
+
+    // Spacing variables for consistent layout
+    "--mantine-section-spacing": "6rem",
+    "--mantine-card-spacing": "2rem",
+
+    // Ultra transparent page background to let 3D scene show through
+    "--mantine-page-bg": "transparent",
+  },
+  light: {},
+  dark: {
+    // Enhanced dark theme variables
+    "--mantine-color-body": "#0F1015",
+  },
+});
+
+// Create the final theme with all our customizations
+const finalTheme = {
+  ...theme,
+  cssVariablesResolver,
+};
+
 interface MantineProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function MantineProvider({ children }: MantineProviderProps) {
   return (
-    <Provider theme={theme} defaultColorScheme="dark">
+    <Provider theme={finalTheme} defaultColorScheme="dark">
       {children}
     </Provider>
   );

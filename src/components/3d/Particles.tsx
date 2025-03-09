@@ -1,73 +1,66 @@
-import React, { useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
+import { Points } from "@react-three/drei";
 import * as THREE from "three";
-import { Points, PointMaterial } from "@react-three/drei";
+import { Points as ThreePoints, BufferAttribute, Vector3 } from "three";
 
-function Particles({ count = 300, mouse }) {
-  const points = useRef();
-  const [positions, setPositions] = useState(() => {
-    const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
+interface ParticlesProps {
+  count?: number;
+  size?: number;
+  color?: THREE.ColorRepresentation;
+  speed?: number;
+  spread?: number;
+}
 
+function Particles({
+  count = 1000,
+  size = 0.015,
+  color = "#3D7FFF",
+  speed = 0.3,
+  spread = 1.5
+}: ParticlesProps) {
+  const points = useRef<ThreePoints>(null);
+  const particleColor = new THREE.Color(color);
+
+  // Generate particles with initial random positions
+  const [positions, velocities] = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const vel = new Float32Array(count * 3);
+    
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      const radius = 3.5;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = radius * Math.cos(phi);
-
-      const t = i / count;
-      colors[i3] = 0.1 + 0.5 * t;
-      colors[i3 + 1] = 0.2;
-      colors[i3 + 2] = 0.8 - 0.3 * t;
+      pos[i3] = (Math.random() - 0.5) * spread * 2;
+      pos[i3 + 1] = (Math.random() - 0.5) * spread * 2;
+      pos[i3 + 2] = (Math.random() - 0.5) * spread * 2;
+      
+      vel[i3] = (Math.random() - 0.5) * 0.01;
+      vel[i3 + 1] = (Math.random() - 0.5) * 0.01;
+      vel[i3 + 2] = (Math.random() - 0.5) * 0.01;
     }
-
-    return { positions, colors };
-  });
-
-  const animationRef = useRef({ time: 0 });
+    
+    return [pos, vel];
+  }, [count, spread]);
 
   useFrame(({ clock }) => {
-    const elapsed = clock.getElapsedTime();
-    animationRef.current.time = elapsed;
+    if (!points.current) return;
 
-    const positions = points.current.geometry.attributes.position.array;
+    const positionArray = points.current.geometry.attributes.position.array as Float32Array;
+    const time = clock.getElapsedTime() * speed;
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
+      
+      // Update positions with velocities and time-based motion
+      positionArray[i3] += velocities[i3] * Math.cos(time + i);
+      positionArray[i3 + 1] += velocities[i3 + 1] * Math.sin(time + i);
+      positionArray[i3 + 2] += velocities[i3 + 2] * Math.cos(time + i);
 
-      const x = positions[i3];
-      const y = positions[i3 + 1];
-      const z = positions[i3 + 2];
-
-      const factor = 0.1;
-      const speed = 0.4;
-
-      positions[i3] +=
-        Math.sin(elapsed * speed + i) *
-        factor *
-        (0.5 + Math.sin(elapsed * 0.1) * 0.5);
-      positions[i3 + 1] +=
-        Math.cos(elapsed * speed + i) *
-        factor *
-        (0.5 + Math.sin(elapsed * 0.1) * 0.5);
-
-      const mouseX = mouse.current[0];
-      const mouseY = mouse.current[1];
-      const distanceToMouse = Math.sqrt(
-        Math.pow(x - mouseX * 5, 2) + Math.pow(y - mouseY * 5, 2)
-      );
-
-      if (distanceToMouse < 1.5) {
-        const repulsionStrength = 0.02 / (distanceToMouse + 0.1);
-        const repulsionX = (x - mouseX * 5) * repulsionStrength;
-        const repulsionY = (y - mouseY * 5) * repulsionStrength;
-
-        positions[i3] += repulsionX;
-        positions[i3 + 1] += repulsionY;
+      // Boundary check and reset
+      for (let j = 0; j < 3; j++) {
+        const idx = i3 + j;
+        if (Math.abs(positionArray[idx]) > spread) {
+          positionArray[idx] *= -0.9;
+        }
       }
     }
 
@@ -75,19 +68,22 @@ function Particles({ count = 300, mouse }) {
   });
 
   return (
-    <Points
-      ref={points}
-      positions={positions.positions}
-      colors={positions.colors}
-      stride={3}
-    >
-      <PointMaterial
+    <Points ref={points} limit={count}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={count}
+          array={positions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        size={size}
+        color={particleColor}
         transparent
-        vertexColors
-        size={6}
-        sizeAttenuation={true}
+        opacity={0.6}
+        sizeAttenuation
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
       />
     </Points>
   );

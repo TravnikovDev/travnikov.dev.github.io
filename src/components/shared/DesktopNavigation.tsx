@@ -2,12 +2,14 @@ import React from "react";
 import { Group, Button } from "@mantine/core";
 import { motion } from "framer-motion";
 import { Link } from "gatsby";
-import { NavItem } from "./types";
 import { isActive } from "./utils";
 import { glowPulse } from "./AnimationKeyframes";
 import { navItems } from "./NavItems";
+import { useColorScheme } from "@mantine/hooks";
+import { theme } from "../../theme";
 
 const DesktopNavigation: React.FC = () => {
+  const colorScheme = useColorScheme();
   return (
     <Group gap="lg" visibleFrom="md">
       {navItems.map((item, index) => (
@@ -27,11 +29,11 @@ const DesktopNavigation: React.FC = () => {
             to={item.path}
             variant={isActive(item.path) ? "light" : "subtle"}
             size="md"
-            sx={(theme) => ({
+            style={{
               position: "relative",
               color: isActive(item.path)
                 ? `var(--mantine-color-${item.color}-5)`
-                : theme.colorScheme === "dark"
+                : colorScheme === "dark"
                 ? theme.colors.dark[0]
                 : theme.colors.gray[7],
               fontWeight: 700, // Bolder
@@ -82,7 +84,7 @@ const DesktopNavigation: React.FC = () => {
                 opacity: 0.7,
                 transform: "scaleX(1)",
               },
-            })}
+            }}
           >
             {item.label}
           </Button>
@@ -112,7 +114,7 @@ const DesktopNavigation: React.FC = () => {
           radius="xl"
           size="md"
           px={30} // More horizontal padding
-          sx={{
+          style={{
             height: 48, // Taller
             fontSize: "1.1rem", // Larger text
             fontWeight: 700, // Bolder

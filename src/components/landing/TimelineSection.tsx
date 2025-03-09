@@ -1,267 +1,176 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Timeline,
-  Text,
-  Title,
-  Container,
-  Box,
-  Paper,
-  Badge,
-  Transition,
-} from "@mantine/core";
-import { keyframes } from "@emotion/react";
+import { Container, Title, Timeline, Text, Box } from "@mantine/core";
+import { motion } from "framer-motion";
 
-interface CareerItem {
-  year: string;
+interface TimelineItem {
+  date: string;
   title: string;
   company: string;
   description: string;
   skills: string[];
-  index: number;
+  color: "blue" | "violet";
 }
 
-// This would ideally come from Strapi CMS
-const careerData: CareerItem[] = [
+const timelineData: TimelineItem[] = [
   {
-    year: "2023-Present",
+    date: "2020 - Present",
     title: "Senior Frontend Developer",
-    company: "Example Company",
-    description:
-      "Leading the frontend development team, implementing advanced React patterns and optimizing performance. Introduced micro-frontend architecture and improved core web vitals by 40%.",
-    skills: [
-      "React",
-      "TypeScript",
-      "Micro-Frontends",
-      "Performance Optimization",
-    ],
-    index: 0,
+    company: "Tech Company",
+    description: "Leading development of scalable web applications using React, TypeScript, and Three.js",
+    skills: ["React", "TypeScript", "Three.js", "WebGL", "Node.js"],
+    color: "blue"
   },
   {
-    year: "2020-2023",
+    date: "2018 - 2020",
     title: "Frontend Developer",
-    company: "Tech Solutions Inc.",
-    description:
-      "Worked on large-scale web applications using React, TypeScript, and modern state management. Developed reusable component libraries and implemented CI/CD pipelines.",
-    skills: ["React", "TypeScript", "Redux", "Component Libraries"],
-    index: 1,
-  },
-  {
-    year: "2018-2020",
-    title: "Web Developer",
     company: "Digital Agency",
-    description:
-      "Developed responsive websites and interactive UIs for clients across various industries. Collaborated with designers to create pixel-perfect implementations.",
-    skills: ["JavaScript", "HTML/CSS", "UI/UX", "Responsive Design"],
-    index: 2,
+    description: "Developed interactive web experiences and performant user interfaces",
+    skills: ["React", "JavaScript", "CSS3", "WebGL"],
+    color: "violet"
   },
   {
-    year: "2015-2018",
-    title: "Junior Developer",
-    company: "Startup Ventures",
-    description:
-      "Started my journey as a web developer, focusing on HTML, CSS, and JavaScript fundamentals. Built and maintained various client websites.",
-    skills: ["HTML", "CSS", "JavaScript", "jQuery"],
-    index: 3,
-  },
+    date: "2015 - 2018",
+    title: "Full Stack Developer",
+    company: "Startup",
+    description: "Built full-stack applications using modern web technologies",
+    skills: ["Node.js", "React", "MongoDB", "Express"],
+    color: "blue"
+  }
 ];
 
-// Animation keyframes
-const fadeInRight = keyframes({
-  "0%": { opacity: 0, transform: "translateX(20px)" },
-  "100%": { opacity: 1, transform: "translateX(0)" },
-});
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2
+    }
+  }
+};
 
-const fadeInScale = keyframes({
-  "0%": { opacity: 0, transform: "scale(0.9)" },
-  "100%": { opacity: 1, transform: "scale(1)" },
-});
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1
+  }
+};
 
-export default function TimelineSection() {
-  const [activeItem, setActiveItem] = useState<number | null>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
-
-  // Check if an element is in viewport
-  const isInViewport = (element: HTMLElement): boolean => {
-    const rect = element.getBoundingClientRect();
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <=
-        (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  };
-
-  // Handle scroll events to check if timeline is in view
-  useEffect(() => {
-    const handleScroll = () => {
-      if (timelineRef.current && isInViewport(timelineRef.current)) {
-        // Start animation sequence for timeline items
-        const animationInterval = setInterval(() => {
-          setActiveItem((prevActive) => {
-            const nextActive = prevActive === null ? 0 : prevActive + 1;
-            if (nextActive >= careerData.length) {
-              clearInterval(animationInterval);
-              return prevActive;
-            }
-            return nextActive;
-          });
-        }, 800);
-
-        // Cleanup interval
-        return () => clearInterval(animationInterval);
-      }
-    };
-
-    // Initial check and add scroll listener
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-
-    // Cleanup
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+export function TimelineSection() {
   return (
-    <Box py="xl" my="xl" ref={timelineRef}>
-      <Container size="lg">
+    <Container size="lg" py="6rem">
+      <motion.div variants={containerVariants} initial="hidden" animate="visible">
         <Title
           order={2}
-          align="center"
+          ta="center"
           mb="xl"
-          sx={(theme) => ({
+          style={{
             position: "relative",
             display: "inline-block",
             "&::after": {
               content: '""',
               position: "absolute",
               bottom: -10,
-              left: "30%",
-              right: "30%",
+              left: "25%",
+              right: "25%",
               height: 4,
               borderRadius: 2,
-              background: "linear-gradient(90deg, #3E98C7 0%, #7A52C5 100%)",
-            },
-          })}
+              background: "var(--mantine-primary-gradient)"
+            }
+          }}
         >
-          My Career Journey
+          Career Journey
         </Title>
 
-        <Timeline active={careerData.length - 1} bulletSize={28} lineWidth={3}>
-          {careerData.map((item, index) => (
+        <Timeline active={timelineData.length - 1} bulletSize={24} lineWidth={2}>
+          {timelineData.map((item, index) => (
             <Timeline.Item
               key={index}
-              title={
-                <Transition
-                  mounted={activeItem !== null && activeItem >= item.index}
-                  transition="slide-right"
-                  duration={500}
-                  timingFunction="ease"
-                >
-                  {(styles) => (
-                    <Title
-                      order={4}
-                      style={styles}
-                      sx={{
-                        fontWeight: 700,
-                        color: "#3E98C7",
-                      }}
-                    >
-                      {item.title}
-                    </Title>
-                  )}
-                </Transition>
-              }
               bullet={
                 <Box
-                  sx={(theme) => ({
-                    width: 28,
-                    height: 28,
+                  style={{
+                    width: 40,
+                    height: 40,
                     borderRadius: "50%",
-                    background:
-                      activeItem !== null && activeItem >= item.index
-                        ? "linear-gradient(90deg, #3E98C7 0%, #7A52C5 100%)"
-                        : theme.colors.gray[4],
+                    background: "var(--mantine-primary-gradient)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    transition: "all 0.3s ease",
-                    transform:
-                      activeItem !== null && activeItem >= item.index
-                        ? "scale(1.2)"
-                        : "scale(1)",
-                    boxShadow:
-                      activeItem !== null && activeItem >= item.index
-                        ? "0 0 10px rgba(62, 152, 199, 0.5)"
-                        : "none",
-                  })}
+                    transition: "transform 0.3s ease",
+                    transform: "scale(1)",
+                    boxShadow: "var(--mantine-shadow-sm)",
+                    "&:hover": {
+                      transform: "scale(1.1)",
+                      boxShadow: "var(--mantine-shadow-md)"
+                    }
+                  }}
                 >
-                  <Box
-                    sx={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: "50%",
-                      background: "#fff",
-                    }}
-                  />
+                  <Text c="white" size="xl">
+                    🚀
+                  </Text>
                 </Box>
               }
-              lineVariant={
-                activeItem !== null && activeItem >= item.index
-                  ? "solid"
-                  : "dashed"
+              title={
+                <Box
+                  style={{
+                    width: "fit-content",
+                    padding: "1rem 1.5rem",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    backdropFilter: "blur(10px)",
+                    borderRadius: "1rem",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 6px 40px rgba(0, 0, 0, 0.15)"
+                    }
+                  }}
+                >
+                  <Title order={4} style={{ fontWeight: 700, color: item.color === "blue" ? "#3D7FFF" : "#A64DFF" }}>
+                    {item.title}
+                  </Title>
+                  <Text size="sm" c="dimmed">{item.date}</Text>
+                </Box>
               }
             >
-              <Transition
-                mounted={activeItem !== null && activeItem >= item.index}
-                transition="fade"
-                duration={600}
-                timingFunction="ease"
-              >
-                {(styles) => (
-                  <Paper
-                    p="md"
-                    radius="md"
-                    shadow="sm"
-                    withBorder
-                    style={{
-                      ...styles,
-                      animation: `${fadeInScale} 0.5s ease forwards`,
-                      transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                      "&:hover": {
-                        transform: "translateY(-5px)",
-                        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
-                      },
-                    }}
-                  >
-                    <Text fw={600} color="dimmed" mb={4} size="sm">
-                      {item.year} • {item.company}
-                    </Text>
-                    <Text mb="md">{item.description}</Text>
-                    <Box>
-                      {item.skills.map((skill, i) => (
-                        <Badge
-                          key={i}
-                          mr={6}
-                          mb={6}
-                          variant="light"
-                          color={i % 2 === 0 ? "blue" : "violet"}
-                          sx={{
-                            animation: `${fadeInRight} 0.3s ease forwards`,
-                            animationDelay: `${i * 0.1 + 0.3}s`,
-                            opacity: 0,
-                          }}
-                        >
-                          {skill}
-                        </Badge>
-                      ))}
+              <Box pl="md">
+                <Text size="lg" mb="xs">
+                  {item.company}
+                </Text>
+                <Text size="md" c="dimmed" mb="md">
+                  {item.description}
+                </Text>
+                <Box>
+                  {item.skills.map((skill, i) => (
+                    <Box
+                      key={i}
+                      component="span"
+                      mr={8}
+                      mb={8}
+                      variant="light"
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 12px",
+                        borderRadius: "4px",
+                        fontSize: "12px",
+                        backgroundColor: item.color === "blue" ? "rgba(61, 127, 255, 0.1)" : "rgba(166, 77, 255, 0.1)",
+                        color: item.color === "blue" ? "#3D7FFF" : "#A64DFF",
+                        border: `1px solid ${item.color === "blue" ? "rgba(61, 127, 255, 0.2)" : "rgba(166, 77, 255, 0.2)"}`,
+                        animation: "fadeIn 0.5s ease forwards",
+                        animationDelay: `${i * 0.1}s`,
+                        opacity: 0
+                      }}
+                    >
+                      {skill}
                     </Box>
-                  </Paper>
-                )}
-              </Transition>
+                  ))}
+                </Box>
+              </Box>
             </Timeline.Item>
           ))}
         </Timeline>
-      </Container>
-    </Box>
+      </motion.div>
+    </Container>
   );
 }

@@ -7,19 +7,20 @@ import { SEO } from "../utils/seo/SEO";
 const NotFound = (_props: PageProps) => (
   <BaseLayout>
     <Center h="60vh">
-      <Stack align="center" spacing="md">
-        <Title order={1} size="h1">
-          404
+      <Stack align="center" style={{ gap: "var(--mantine-spacing-md)" }}>
+        <Title order={1} size="3rem">
+          404: Page Not Found
         </Title>
-        <Title order={2} size="h3">
-          Page Not Found
-        </Title>
-        <Text size="lg" align="center" maw={500}>
-          Oops! The page you're looking for doesn't exist or has been moved.
+        <Text
+          size="lg"
+          style={{ textAlign: "center", maxWidth: "500px" }}
+        >
+          Oops! The page you are looking for does not exist. It might have been
+          moved or deleted.
         </Text>
         <Box mt="md">
           <Button component={Link} to="/" size="lg">
-            Back to Home
+            Go back home
           </Button>
         </Box>
       </Stack>

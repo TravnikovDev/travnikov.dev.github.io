@@ -1,22 +1,33 @@
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei";
+import { Group } from "three";
 
-function FloatingCodeBlock({ position, rotation, scale = 1 }) {
-  const blockRef = useRef();
+interface FloatingCodeBlockProps {
+  position: [number, number, number];
+  rotation: [number, number, number];
+  scale?: number;
+}
+
+function FloatingCodeBlock({ 
+  position, 
+  rotation, 
+  scale = 1 
+}: FloatingCodeBlockProps) {
+  const blockRef = useRef<Group>(null);
 
   useFrame(({ clock }) => {
+    if (!blockRef.current) return;
+    
     const t = clock.getElapsedTime();
 
     // Gentle floating animation
-    if (blockRef.current) {
-      blockRef.current.position.y = position[1] + Math.sin(t * 0.4 + 2) * 0.15;
-      blockRef.current.rotation.z = rotation[2] + Math.sin(t * 0.3) * 0.05;
+    blockRef.current.position.y = position[1] + Math.sin(t * 0.4 + 2) * 0.15;
+    blockRef.current.rotation.z = rotation[2] + Math.sin(t * 0.3) * 0.05;
 
-      // Update position based on scroll
-      const scrollY = window.scrollY || window.pageYOffset;
-      blockRef.current.position.y += scrollY * 0.001;
-    }
+    // Update position based on scroll
+    const scrollY = window.scrollY || window.pageYOffset;
+    blockRef.current.position.y += scrollY * 0.001;
   });
 
   return (

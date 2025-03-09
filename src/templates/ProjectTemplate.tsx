@@ -25,7 +25,7 @@ export default function ProjectTemplate({ data }: ProjectTemplateProps) {
   return (
     <BaseLayout>
       <Container size="md" py="xl">
-        <Stack spacing="xl">
+        <Stack style={{ gap: "var(--mantine-spacing-xl)" }}>
           <Title order={1}>{projectData.frontmatter.title}</Title>
           <Group>
             <Badge size="lg">{projectData.frontmatter.category}</Badge>

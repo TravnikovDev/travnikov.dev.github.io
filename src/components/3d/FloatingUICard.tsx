@@ -1,78 +1,110 @@
-import React, { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { RoundedBox } from "@react-three/drei";
+import { Text } from "@react-three/drei";
+import * as THREE from "three";
+import { Group, ColorRepresentation, Vector3 } from "three";
 
-function FloatingUICard({ position, rotation, scale = 1, color = "#0078F0" }) {
-  const cardRef = useRef();
-  const contentRef = useRef();
+interface FloatingUICardProps {
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  scale?: number | [number, number, number];
+  color?: ColorRepresentation;
+}
+
+export function FloatingUICard({
+  position = [0, 0, 0],
+  rotation = [0, 0, 0],
+  scale = 1,
+  color = "#3D7FFF"
+}: FloatingUICardProps) {
+  const groupRef = useRef<Group>(null);
+  const initialY = useRef(position[1]);
+  const materialColor = new THREE.Color(color);
+
+  const scaleVector = useMemo(() => {
+    if (typeof scale === 'number') {
+      return [scale, scale, scale] as const;
+    }
+    return scale;
+  }, [scale]);
 
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-
-    // Gentle floating animation
-    if (cardRef.current) {
-      cardRef.current.position.y = position[1] + Math.sin(t * 0.5) * 0.1;
-      cardRef.current.rotation.x = rotation[0] + Math.sin(t * 0.3) * 0.03;
-      cardRef.current.rotation.y = rotation[1] + Math.sin(t * 0.4) * 0.03;
-
-      // Update position based on scroll
+    if (groupRef.current) {
+      const t = clock.getElapsedTime();
+      
+      // Floating animation with initial position preservation
       const scrollY = window.scrollY || window.pageYOffset;
-      cardRef.current.position.y += scrollY * 0.001;
-    }
-
-    // Pulse content
-    if (contentRef.current) {
-      contentRef.current.scale.x = 1 + Math.sin(t * 0.5) * 0.02;
-      contentRef.current.scale.y = 1 + Math.sin(t * 0.5) * 0.02;
+      groupRef.current.position.y = initialY.current + Math.sin(t) * 0.1 + scrollY * 0.001;
+      
+      // Slight rotation
+      groupRef.current.rotation.x = rotation[0] + Math.sin(t * 0.5) * 0.02;
+      groupRef.current.rotation.y = rotation[1] + Math.cos(t * 0.5) * 0.02;
     }
   });
 
   return (
-    <group ref={cardRef} position={position} rotation={rotation} scale={scale}>
-      {/* Card body */}
-      <RoundedBox
-        args={[1.6, 0.9, 0.05]}
-        radius={0.1}
-        smoothness={10}
-        castShadow
-        receiveShadow
-      >
+    <group ref={groupRef} position={position} rotation={rotation} scale={scaleVector}>
+      {/* Main card */}
+      <mesh>
+        <planeGeometry args={[2, 1.2]} />
         <meshPhysicalMaterial
-          color="#1A1E2A"
-          roughness={0.3}
-          metalness={0.5}
+          color="#0A0F24"
+          roughness={0.2}
+          metalness={0.8}
           clearcoat={1}
           clearcoatRoughness={0.2}
-          envMapIntensity={2}
         />
-      </RoundedBox>
+      </mesh>
 
-      {/* UI content */}
-      <group ref={contentRef} position={[0, 0, 0.03]}>
-        {/* Header bar */}
-        <mesh position={[0, 0.35, 0]}>
-          <planeGeometry args={[1.4, 0.15]} />
-          <meshBasicMaterial color={color} transparent opacity={0.9} />
+      {/* Header */}
+      <mesh position={[0, 0.4, 0.01]}>
+        <planeGeometry args={[1.8, 0.3]} />
+        <meshPhysicalMaterial
+          color={color}
+          roughness={0.3}
+          metalness={0.7}
+          clearcoat={1}
+          clearcoatRoughness={0.2}
+          opacity={0.1}
+          transparent
+        />
+      </mesh>
+
+      {/* Content blocks */}
+      {[-0.1, -0.3].map((y, i) => (
+        <mesh key={i} position={[0, y, 0.01]}>
+          <planeGeometry args={[1.8, 0.15]} />
+          <meshPhysicalMaterial
+            color={materialColor}
+            roughness={0.3}
+            metalness={0.7}
+            clearcoat={1}
+            clearcoatRoughness={0.2}
+            opacity={0.05}
+            transparent
+          />
         </mesh>
+      ))}
 
-        {/* Content blocks */}
-        {[...Array(3)].map((_, i) => (
-          <mesh key={i} position={[0, 0.15 - i * 0.2, 0]}>
-            <planeGeometry args={[1.4, 0.1]} />
-            <meshBasicMaterial
-              color="white"
-              transparent
-              opacity={0.1 + 0.05 * Math.abs(1 - i)}
-            />
-          </mesh>
-        ))}
+      {/* Text */}
+      <Text
+        position={[-0.8, 0.4, 0.02]}
+        fontSize={0.12}
+        color={color}
+        anchorX="left"
+        anchorY="middle"
+        font="/fonts/Inter_Bold.json"
+      >
+        UI Component
+      </Text>
 
-        {/* Button */}
-        <mesh position={[0.45, -0.3, 0]}>
-          <planeGeometry args={[0.3, 0.12]} />
-          <meshBasicMaterial color={color} transparent opacity={0.9} />
+      {/* Small decorative elements */}
+      {[0.6, 0.8].map((x, i) => (
+        <mesh key={i} position={[x, 0.4, 0.02]}>
+          <circleGeometry args={[0.04]} />
+          <meshBasicMaterial color={materialColor} opacity={0.5} transparent />
         </mesh>
-      </group>
+      ))}
     </group>
   );
 }

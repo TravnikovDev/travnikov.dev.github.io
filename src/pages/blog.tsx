@@ -1,4 +1,3 @@
-import React from "react";
 import { graphql, Link, PageProps } from "gatsby";
 import {
   Card,
@@ -9,7 +8,6 @@ import {
   Container,
   Box,
   Stack,
-  Divider,
 } from "@mantine/core";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
@@ -49,7 +47,7 @@ export default function BlogPage({ data }: BlogPageProps) {
           </Text>
         </Box>
 
-        <Stack spacing="xl">
+        <Stack style={{ gap: "var(--mantine-spacing-xl)" }}>
           {articles.length > 0
             ? articles.map((article) => {
                 const date = new Date(article.frontmatter.date).toLocaleDateString(
@@ -96,7 +94,14 @@ export default function BlogPage({ data }: BlogPageProps) {
               [1, 2, 3, 4].map((i) => (
                 <Card key={i} shadow="sm" padding="lg" radius="md" withBorder>
                   <Group align="flex-start" gap="xl">
-                    <Box w={200} h={150} bg="gray.2" radius="md" />
+                    <Box 
+                      w={200} 
+                      h={150} 
+                      style={{ 
+                        backgroundColor: "var(--mantine-color-gray-2)",
+                        borderRadius: "var(--mantine-radius-md)"
+                      }} 
+                    />
                     <Box>
                       <Text size="sm" c="dimmed" mb="xs">
                         January 1, 2023

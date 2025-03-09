@@ -1,73 +1,48 @@
-import React, { useRef, useMemo, useState, useLayoutEffect } from "react";
-import { Canvas, useFrame, extend } from "@react-three/fiber";
+import { useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
-  Float,
-  Text3D,
-  OrbitControls,
-  Sphere,
-  MeshDistortMaterial,
   Environment,
   ContactShadows,
-  PointMaterial,
-  Points,
   Cloud,
-  RoundedBox,
 } from "@react-three/drei";
 import { Box } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import * as THREE from "three";
+import { Group } from "three";
 import AnimatedBlob from "./AnimatedBlob";
 import FloatingName from "./FloatingName";
 import FlowingRibbon from "./FlowingRibbon";
 import FloatingUICard from "./FloatingUICard";
 import FloatingCodeBlock from "./FloatingCodeBlock";
-import TerminalBlock from "./TerminalBlock";
+import { TerminalBlock } from "./TerminalBlock";
 import ReactLogo from "./ReactLogo";
+import Particles from "./Particles";
 
 function Scene() {
-  const mouse = useRef([0, 0]);
-  const sceneRef = useRef();
+  const sceneRef = useRef<Group>(null);
+  const lastScrollY = useRef(0);
 
-  useFrame(({ clock, mouse: sceneMouse }) => {
-    if (sceneRef.current) {
-      sceneRef.current.rotation.y = THREE.MathUtils.lerp(
-        sceneRef.current.rotation.y || 0,
-        sceneMouse.x * 0.2 || 0,
-        0.05
-      );
-      sceneRef.current.rotation.x = THREE.MathUtils.lerp(
-        sceneRef.current.rotation.x || 0,
-        -sceneMouse.y * 0.1 || 0,
-        0.05
-      );
+  useFrame(() => {
+    if (!sceneRef.current) return;
 
-      // Update position based on scroll
-      const scrollY = window.scrollY || window.pageYOffset;
-      sceneRef.current.position.y = scrollY * 0.001;
-    }
+    const currentScrollY = window.scrollY || window.pageYOffset;
+    const scrollDelta = currentScrollY - lastScrollY.current;
+    lastScrollY.current = currentScrollY;
+
+    // Apply scroll-based rotation to entire scene
+    sceneRef.current.rotation.y += scrollDelta * 0.0005;
   });
 
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight
-        position={[5, 8, 5]}
-        intensity={1.8}
-        castShadow
-        shadow-mapSize={[1024, 1024]}
-        color="#FFFFFF"
-      />
-      <spotLight
-        position={[0, 5, 0]}
-        angle={0.5}
-        penumbra={1}
-        intensity={1.2}
-        castShadow
-        color="#FFFFFF"
-      />
-      <pointLight position={[5, -2, 3]} color="#2050FF" intensity={1} />
-      <pointLight position={[-3, 2, -3]} color="#0077FF" intensity={1} />
+      {/* Lighting setup */}
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} intensity={0.5} castShadow />
+      <pointLight position={[0, 5, 0]} intensity={0.5} />
+      <pointLight position={[-2, -5, -2]} color="#3D7FFF" intensity={0.8} />
       <pointLight position={[2, -5, 2]} color="#FFAC00" intensity={0.6} />
+
+      {/* Main scene content */}
       <group ref={sceneRef} position={[0, 0, 0]}>
         <FloatingUICard
           position={[1.8, 0, -1]}
@@ -92,9 +67,12 @@ function Scene() {
           scale={0.8}
         />
         <ReactLogo position={[0, 1.3, -1.5]} scale={1.2} />
+        
         <group position={[0, 0, 0]}>
           <FloatingName />
         </group>
+
+        {/* Animated blobs with different properties */}
         <AnimatedBlob
           position={[2.2, -0.8, -1]}
           color="#3D7FFF"
@@ -114,6 +92,8 @@ function Scene() {
           speed={1.5}
           complexity={2}
         />
+
+        {/* Flowing ribbons */}
         <group position={[0, 1.5, -2]} rotation={[0.2, 0.5, 0.1]}>
           <FlowingRibbon color="#3D7FFF" width={0.06} length={12} />
         </group>
@@ -124,61 +104,25 @@ function Scene() {
           <FlowingRibbon color="#00F0FF" width={0.03} length={8} />
         </group>
       </group>
-      <Cloud
-        position={[0, 0, -10]}
-        opacity={0.4}
-        speed={0.08}
-        width={20}
-        depth={2.5}
-        segments={25}
+
+      {/* Environment elements */}
+      <Cloud 
+        scale={4} 
+        opacity={0.1} 
+        speed={0.4} 
+        segments={20} 
+        position={[0, 0, -5]}
       />
-      <Environment preset="night" background={false} blur={0.8} />
+      <Particles count={1000} color="#3D7FFF" />
       <ContactShadows
-        position={[0, -1.8, 0]}
-        opacity={0.8}
-        width={18}
-        height={18}
-        blur={2.5}
-        far={3.5}
+        opacity={0.4}
+        scale={10}
+        blur={2}
+        far={10}
+        resolution={256}
         color="#000000"
       />
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        minPolarAngle={Math.PI / 3.5}
-        maxPolarAngle={Math.PI / 1.8}
-        dampingFactor={0.08}
-        rotateSpeed={0.03}
-        autoRotate
-        autoRotateSpeed={0.3}
-      />
-      <mesh
-        visible={false}
-        onPointerMove={(e) => {
-          mouse.current = [e.point.x / 5, e.point.y / 5];
-        }}
-      >
-        <planeGeometry args={[50, 50]} />
-        <meshBasicMaterial transparent opacity={0} />
-      </mesh>
-      <group position={[0, 2, -5]}>
-        {[...Array(3)].map((_, i) => {
-          const angle = (i / 3) * Math.PI * 2;
-          const rad = 3;
-          return (
-            <spotLight
-              key={i}
-              position={[Math.cos(angle) * rad, Math.sin(angle) * rad, 5]}
-              angle={0.15}
-              distance={15}
-              penumbra={1}
-              intensity={0.4}
-              color={i === 0 ? "#0077FF" : i === 1 ? "#2050FF" : "#FFAC00"}
-              castShadow={false}
-            />
-          );
-        })}
-      </group>
+      <Environment preset="city" />
     </>
   );
 }
@@ -192,9 +136,9 @@ const glowPulse = keyframes({
 export default function HeroAnimation() {
   return (
     <Box
+      w="100vw"
+      h="100vh"
       style={{
-        width: "100vw",
-        height: "100vh",
         position: "fixed",
         top: 0,
         left: 0,

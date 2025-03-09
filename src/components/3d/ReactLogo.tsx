@@ -1,70 +1,55 @@
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
+import { Group, Vector3 } from "three";
 
-function ReactLogo({ position, scale = 1 }) {
-  const groupRef = useRef();
+interface ReactLogoProps {
+  position: [number, number, number];
+  scale?: number;
+}
+
+function ReactLogo({ position = [0, 0, 0], scale = 1 }: ReactLogoProps) {
+  const groupRef = useRef<Group>(null);
+  const initialPosition = useRef<Vector3>(new Vector3(...position));
 
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
     if (groupRef.current) {
+      const t = clock.getElapsedTime();
+
       groupRef.current.rotation.y = t * 0.3;
       groupRef.current.rotation.z = Math.sin(t * 0.3) * 0.2;
-      groupRef.current.position.y = position[1] + Math.sin(t * 0.5) * 0.1;
+      groupRef.current.position.y = initialPosition.current.y + Math.sin(t * 0.5) * 0.1;
+
+      // Hover effect with proper scale handling
+      const hoverScale = scale * (1 + Math.sin(t * 2) * 0.1);
+      groupRef.current.scale.setScalar(hoverScale);
     }
   });
 
-  const handlePointerOver = () => {
-    if (groupRef.current) {
-      groupRef.current.scale.set(scale * 1.2, scale * 1.2, scale * 1.2);
-    }
-  };
-
-  const handlePointerOut = () => {
-    if (groupRef.current) {
-      groupRef.current.scale.set(scale, scale, scale);
-    }
-  };
-
   return (
-    <group
-      ref={groupRef}
-      position={position}
-      scale={scale}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-    >
-      {/* Center dot */}
-      <mesh castShadow>
-        <sphereGeometry args={[0.12, 32, 32]} />
-        <meshPhysicalMaterial
-          color="#0077FF" // Light theme blue
-          roughness={0.1}
-          metalness={0.8}
-          emissive="#0077FF"
-          emissiveIntensity={0.5}
-        />
+    <group ref={groupRef} position={position}>
+      {/* Outer ellipse */}
+      <mesh rotation={[0, 0, Math.PI / 3]}>
+        <torusGeometry args={[1, 0.1, 16, 100]} />
+        <meshStandardMaterial color="#61DAFB" metalness={0.8} roughness={0.2} />
       </mesh>
 
-      {/* Orbits */}
-      {[...Array(3)].map((_, i) => {
-        const angle = (i / 3) * Math.PI;
-        return (
-          <group key={i} rotation={[angle, angle * 2, angle / 2]}>
-            <mesh>
-              <torusGeometry args={[0.4, 0.02, 16, 30]} />
-              <meshPhysicalMaterial
-                color="#0077FF" // Light theme blue
-                roughness={0.3}
-                metalness={0.7}
-                emissive="#0077FF"
-                emissiveIntensity={0.4} // Slightly more intense for light theme
-                transparent
-                opacity={0.7}
-              />
-            </mesh>
-          </group>
-        );
-      })}
+      {/* Middle ellipse */}
+      <mesh rotation={[0, 0, -Math.PI / 3]}>
+        <torusGeometry args={[1, 0.1, 16, 100]} />
+        <meshStandardMaterial color="#61DAFB" metalness={0.8} roughness={0.2} />
+      </mesh>
+
+      {/* Inner ellipse */}
+      <mesh>
+        <torusGeometry args={[1, 0.1, 16, 100]} />
+        <meshStandardMaterial color="#61DAFB" metalness={0.8} roughness={0.2} />
+      </mesh>
+
+      {/* Center dot */}
+      <mesh>
+        <sphereGeometry args={[0.2, 32, 32]} />
+        <meshStandardMaterial color="#61DAFB" metalness={0.8} roughness={0.2} />
+      </mesh>
     </group>
   );
 }
