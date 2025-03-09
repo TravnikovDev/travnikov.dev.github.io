@@ -18,8 +18,8 @@ const SocialLinkIcon: React.FC<SocialLinkIconProps> = ({
 }) => {
   return (
     <Box className={styles.socialLinkIcon}>
-      <Link
-        to={url}
+      <a
+        href={url}
         target="_blank"
         rel="noopener noreferrer"
         className={styles.link}
@@ -32,7 +32,7 @@ const SocialLinkIcon: React.FC<SocialLinkIconProps> = ({
             {name}
           </Text>
         )}
-      </Link>
+      </a>
     </Box>
   );
 };
