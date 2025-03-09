@@ -1,5 +1,4 @@
-import React from "react";
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   Environment,
@@ -15,7 +14,6 @@ import { Box } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import * as THREE from "three";
 import { Group, Vector3, MathUtils } from "three";
-import { gsap } from "gsap";
 import AnimatedBlob from "./AnimatedBlob";
 import FloatingName from "./FloatingName";
 import FlowingRibbon from "./FlowingRibbon";
@@ -30,6 +28,8 @@ function Scene() {
   const scrollData = useScroll();
   const { viewport } = useThree();
   const objectsRef = useRef<THREE.Group[]>([]);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const targetRotation = useRef({ x: 0, y: 0 });
   
   // Create references for each object to animate
   const uiCard1Ref = useRef<THREE.Group>(null);
@@ -71,39 +71,26 @@ function Scene() {
         initialPositions.current[key] = ref.current.position.clone();
       }
     });
-    
-    // Setup entrance animation
-    gsap.fromTo(
-      Object.values(refs).filter(ref => ref.current).map(ref => ref.current!),
-      { 
-        y: (i) => i * 10 - 20,
-        opacity: 0,
-        scale: 0.5
-      },
-      { 
-        y: (i, target) => {
-          const key = Object.keys(refs).find(k => refs[k].current === target);
-          return key && initialPositions.current[key] ? initialPositions.current[key].y : 0;
-        },
-        opacity: 1,
-        scale: (i, target) => {
-          if (target === uiCard1Ref.current) return 1.2;
-          if (target === uiCard2Ref.current) return 0.9;
-          if (target === terminalRef.current) return 0.8;
-          if (target === reactLogoRef.current) return 1.2;
-          if (target === blob1Ref.current) return 1.2;
-          if (target === blob2Ref.current) return 1;
-          if (target === blob3Ref.current) return 0.7;
-          return 1;
-        },
-        duration: 2,
-        stagger: 0.06,
-        ease: "power3.out"
-      }
-    );
   }, []);
 
-  useFrame(() => {
+  // Handle mouse movement
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+      const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+      
+      mousePos.current = { x: mouseX, y: mouseY };
+      targetRotation.current = {
+        x: mouseY * 0.05,
+        y: mouseX * 0.05
+      };
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useFrame((state, delta) => {
     if (!sceneRef.current) return;
     
     // Get scroll progress (0 to 1)
@@ -132,13 +119,25 @@ function Scene() {
         const initial = initialPositions.current[key];
         
         // Move in Y direction based on scroll with controlled effect
-        ref.current.position.y = initial.y + (scrollProgress * factor * -5);
+        ref.current.position.y = MathUtils.lerp(
+          ref.current.position.y,
+          initial.y + (scrollProgress * factor * -5),
+          0.1
+        );
         
         // Add more pronounced X movement
-        ref.current.position.x = initial.x + (Math.sin(scrollProgress * Math.PI * 2) * factor * 1.0);
+        ref.current.position.x = MathUtils.lerp(
+          ref.current.position.x,
+          initial.x + (Math.sin(scrollProgress * Math.PI * 2) * factor * 1.0),
+          0.1
+        );
         
         // Move in Z direction for depth but not too extreme
-        ref.current.position.z = initial.z + (Math.cos(scrollProgress * Math.PI) * factor * 1.5);
+        ref.current.position.z = MathUtils.lerp(
+          ref.current.position.z,
+          initial.z + (Math.cos(scrollProgress * Math.PI) * factor * 1.5),
+          0.1
+        );
         
         // Subtle rotation based on scroll
         ref.current.rotation.z = MathUtils.lerp(
@@ -154,47 +153,26 @@ function Scene() {
           0.05
         );
         
-        // Keep elements at full visibility
-        // Skip material opacity adjustment since type checking doesn't recognize this
-        
         // Scale elements based on scroll for additional effect but less extreme
-        if (ref.current.scale) {
-          // Limit scale changes to be more subtle
-          const scaleFactor = 1 + (Math.sin(scrollProgress * Math.PI) * 0.1 * factor);
-          ref.current.scale.set(scaleFactor, scaleFactor, scaleFactor);
-        }
+        const targetScale = 1 + (Math.sin(scrollProgress * Math.PI) * 0.1 * factor);
+        ref.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
       }
     });
     
-    // Rotate entire scene slightly based on scroll
-    sceneRef.current.rotation.y = MathUtils.lerp(
-      sceneRef.current.rotation.y,
-      scrollProgress * 0.15,
-      0.05
-    );
+    // Rotate entire scene based on mouse position with smooth interpolation
+    if (sceneRef.current) {
+      sceneRef.current.rotation.x = MathUtils.lerp(
+        sceneRef.current.rotation.x,
+        targetRotation.current.x,
+        0.1
+      );
+      sceneRef.current.rotation.y = MathUtils.lerp(
+        sceneRef.current.rotation.y,
+        targetRotation.current.y,
+        0.1
+      );
+    }
   });
-  
-  // Mouse movement effect
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!sceneRef.current) return;
-      
-      // Calculate mouse position relative to center of screen
-      const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-      
-      // Apply subtle tilt to scene based on mouse position
-      gsap.to(sceneRef.current.rotation, {
-        x: mouseY * 0.05,
-        y: mouseX * 0.05,
-        duration: 1,
-        ease: "power2.out"
-      });
-    };
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   return (
     <>
@@ -208,6 +186,8 @@ function Scene() {
 
       {/* Main scene content with enhanced parallax */}
       <group ref={sceneRef} position={[0, 0, 0]}>
+        <FloatingName ref={nameRef} />
+        
         <group ref={uiCard1Ref}>
           <FloatingUICard
             position={[1.8, 0, -1]}
@@ -244,11 +224,6 @@ function Scene() {
         
         <group ref={reactLogoRef}>
           <ReactLogo position={[0, 1.3, -1.5]} scale={1.2} />
-        </group>
-        
-        {/* Centered name with its own ref for special parallax */}
-        <group ref={nameRef} position={[0, 0, 0]}>
-          <FloatingName />
         </group>
 
         {/* Animated blobs with different properties */}
@@ -291,21 +266,6 @@ function Scene() {
         
         <group ref={ribbon3Ref} position={[1.5, 0.5, -2.5]} rotation={[0.1, -0.4, 0.2]}>
           <FlowingRibbon color="#00F0FF" width={0.03} length={8} />
-        </group>
-        
-        {/* New floating 3D text elements */}
-        <group position={[-3, 2, -3]} rotation={[0.1, 0.3, 0]}>
-          <mesh>
-            <sphereGeometry args={[0.2, 16, 16]} />
-            <meshStandardMaterial color="#FF3D00" emissive="#FF3D00" emissiveIntensity={0.5} />
-          </mesh>
-        </group>
-        
-        <group position={[3, -2, -4]} rotation={[0.1, -0.2, 0]}>
-          <mesh>
-            <sphereGeometry args={[0.3, 16, 16]} />
-            <meshStandardMaterial color="#00F0FF" emissive="#00F0FF" emissiveIntensity={0.3} />
-          </mesh>
         </group>
       </group>
 
@@ -351,7 +311,7 @@ export default function HeroAnimation() {
         overflow: "hidden",
         transform: "translateZ(0)",
         zIndex: 1,
-        pointerEvents: "none", // Make the canvas non-blocking for scroll
+        pointerEvents: "none",
         "&:after": {
           content: '""',
           position: "absolute",
@@ -396,16 +356,10 @@ export default function HeroAnimation() {
           width: "100%",
         }}
       >
-        {/* ScrollControls make the 3D scene aware of page scrolling */}
         <ScrollControls pages={3} damping={0.3} distance={1}>
-          {/* Main 3D scene content */}
           <Scene />
-          
-          {/* Allow scrolling but don't render any content */}
           <Scroll html style={{ display: 'none' }} />
         </ScrollControls>
-        
-        {/* Post-processing effects can be added here */}
       </Canvas>
     </Box>
   );

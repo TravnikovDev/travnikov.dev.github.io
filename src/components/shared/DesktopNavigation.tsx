@@ -5,7 +5,6 @@ import { useLocation } from "@reach/router";
 import { useColorScheme } from "@mantine/hooks";
 import Logo from "./Logo";
 import { keyframes } from "@emotion/react";
-import gsap from "gsap";
 
 // Custom keyframes for nav items with more pronounced effect
 const glitchEffect = keyframes({
@@ -79,85 +78,14 @@ const NavItem = ({ label, path, isActive }) => {
   const textRef = useRef(null);
   const glowRef = useRef(null);
   
-  // Handle hover animations with GSAP
-  useEffect(() => {
-    if (hovered) {
-      gsap.to(textRef.current, {
-        y: -3,
-        duration: 0.3,
-        ease: "back.out(1.7)"
-      });
-      
-      gsap.to(underlineRef.current, {
-        width: "90%",
-        opacity: 1,
-        left: "5%",
-        duration: 0.4,
-        ease: "power2.out"
-      });
-      
-      gsap.to(glowRef.current, {
-        opacity: 0.8,
-        duration: 0.3
-      });
-      
-      gsap.to(itemRef.current, {
-        scale: 1.05,
-        duration: 0.3,
-        ease: "back.out(1.7)"
-      });
-    } else {
-      gsap.to(textRef.current, {
-        y: 0,
-        duration: 0.3
-      });
-      
-      if (!isActive) {
-        gsap.to(underlineRef.current, {
-          width: 0,
-          opacity: 0,
-          left: "50%",
-          duration: 0.3
-        });
-      }
-      
-      gsap.to(glowRef.current, {
-        opacity: 0,
-        duration: 0.3
-      });
-      
-      gsap.to(itemRef.current, {
-        scale: 1,
-        duration: 0.3
-      });
-    }
-  }, [hovered, isActive]);
-  
-  // Apply active state with GSAP
-  useEffect(() => {
-    if (isActive) {
-      gsap.to(underlineRef.current, {
-        width: "100%",
-        opacity: 1,
-        left: "0%",
-        duration: 0.4,
-        background: "linear-gradient(90deg, #3D7FFF, #A64DFF)",
-        boxShadow: "0 0 15px rgba(61, 127, 255, 0.8), 0 0 30px rgba(166, 77, 255, 0.5)"
-      });
-    } else {
-      gsap.to(underlineRef.current, {
-        width: 0,
-        opacity: 0,
-        left: "50%",
-        duration: 0.4
-      });
-    }
-  }, [isActive]);
-  
   return (
     <div
       ref={itemRef}
-      style={{ position: "relative" }}
+      style={{
+        position: 'relative',
+        transform: `scale(${hovered ? 1.05 : 1})`,
+        transition: 'transform 0.3s ease'
+      }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -165,81 +93,65 @@ const NavItem = ({ label, path, isActive }) => {
         component={Link}
         to={path}
         style={{
-          position: "relative",
-          padding: "10px 24px",
-          borderRadius: "8px",
+          position: 'relative',
+          color: '#fff',
+          padding: '8px 16px',
+          textDecoration: 'none',
+          fontSize: '16px',
+          fontWeight: 500,
+          letterSpacing: '0.5px',
+          background: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
           zIndex: 2,
-          background: isActive ? "rgba(61, 127, 255, 0.1)" : "transparent",
-          overflow: "hidden",
-          border: isActive ? "1px solid rgba(61, 127, 255, 0.3)" : "1px solid transparent",
-          transition: "all 0.3s ease"
         }}
       >
-        {/* Glow effect behind text */}
-        <div 
-          ref={glowRef}
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "radial-gradient(circle at center, rgba(61, 127, 255, 0.15), transparent 70%)",
-            zIndex: -1,
-            opacity: 0
-          }}
-        />
-        
-        {/* Main text */}
-        <div ref={textRef}>
-          <Text
-            style={{
-              color: isActive ? "#3D7FFF" : "#E3E7F1",
-              fontWeight: 700,
-              fontSize: "1.1rem",
-              letterSpacing: "0.02em",
-              fontFamily: '"Cabinet Grotesk", sans-serif',
-              animation: hovered ? `${glitchEffect} 1.5s infinite` : "none",
-              textShadow: isActive ? "0 0 8px rgba(61, 127, 255, 0.5)" : "none",
-            }}
-          >
-            {label}
-          </Text>
-        </div>
-        
-        {/* Animated underline */}
         <div
-          ref={underlineRef}
+          ref={textRef}
           style={{
-            position: "absolute",
-            bottom: "6px",
-            left: "50%",
-            height: "2px",
-            width: isActive ? "100%" : "0",
-            opacity: isActive ? 1 : 0,
-            background: "linear-gradient(90deg, #3D7FFF, transparent)",
-            borderRadius: "4px",
-            zIndex: 1
-          }}
-        />
-      </UnstyledButton>
-      
-      {/* Notification badge for active items */}
-      {isActive && (
-        <Badge 
-          color="primary" 
-          size="xs" 
-          variant="filled"
-          radius="xl"
-          style={{
-            position: "absolute",
-            top: "-5px",
-            right: "-5px",
-            zIndex: 3,
-            animation: `${panelGlow} 2s infinite ease-in-out`,
-            border: "1px solid rgba(61, 127, 255, 0.5)"
+            transform: `translateY(${hovered ? -3 : 0}px)`,
+            transition: 'transform 0.3s ease'
           }}
         >
-          •
-        </Badge>
-      )}
+          {label}
+        </div>
+      </UnstyledButton>
+
+      <div
+        ref={underlineRef}
+        style={{
+          position: 'absolute',
+          bottom: '-2px',
+          left: isActive ? '0%' : hovered ? '5%' : '50%',
+          width: isActive ? '100%' : hovered ? '90%' : '0%',
+          height: '2px',
+          opacity: isActive || hovered ? 1 : 0,
+          background: isActive 
+            ? 'linear-gradient(90deg, #3D7FFF, #A64DFF)'
+            : 'currentColor',
+          boxShadow: isActive 
+            ? '0 0 15px rgba(61, 127, 255, 0.8), 0 0 30px rgba(166, 77, 255, 0.5)'
+            : 'none',
+          transition: 'all 0.4s ease'
+        }}
+      />
+
+      <div
+        ref={glowRef}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '120%',
+          height: '130%',
+          background: 'radial-gradient(ellipse at center, rgba(61, 127, 255, 0.2) 0%, transparent 70%)',
+          opacity: hovered ? 0.8 : 0,
+          transition: 'opacity 0.3s ease',
+          pointerEvents: 'none',
+          zIndex: 1
+        }}
+      />
     </div>
   );
 };
@@ -258,10 +170,19 @@ export default function DesktopNavigation() {
 
   // Animate navigation on mount
   useEffect(() => {
-    gsap.fromTo(navigationRef.current,
-      { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 0.5 }
-    );
+    if (navigationRef.current) {
+      navigationRef.current.style.opacity = '0';
+      navigationRef.current.style.transform = 'translateY(-20px)';
+      
+      // Trigger animation after mount
+      requestAnimationFrame(() => {
+        if (navigationRef.current) {
+          navigationRef.current.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          navigationRef.current.style.opacity = '1';
+          navigationRef.current.style.transform = 'translateY(0)';
+        }
+      });
+    }
   }, []);
   
   return (

@@ -12,6 +12,10 @@ This document lists libraries that are prohibited from use in this project.
    - Reason: Modern JavaScript provides native alternatives to most lodash functions
    - Alternative suggestions: Use native JavaScript array/object methods (e.g., map, filter, reduce, Object.entries, etc.) or more efficent libraries like ramda js
 
+3. **gsap**
+   - Reason: Project focuses on 3D animations using Three.js
+   - Alternative suggestions: Use @react-three/fiber and @react-three/drei for animations
+
 ## Guidelines
 
 When developing new features or modifying existing code:

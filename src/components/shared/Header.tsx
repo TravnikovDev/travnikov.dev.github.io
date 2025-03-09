@@ -41,15 +41,6 @@ const Header: React.FC<HeaderProps> = () => {
         gradientRef.current.style.setProperty('--x', `${x * 100}%`);
         gradientRef.current.style.setProperty('--y', `${y * 100}%`);
       }
-      
-      // Update highlight position
-      if (highlightRef.current) {
-        gsap.to(highlightRef.current, {
-          x: `${(x * 200) - 50}%`,
-          duration: 0.5,
-          ease: "power1.out"
-        });
-      }
     };
     
     window.addEventListener('mousemove', handleMouseMove);
@@ -58,17 +49,25 @@ const Header: React.FC<HeaderProps> = () => {
 
   // Animation for the navigation on mount
   useEffect(() => {
-    if (navRef.current) {
-      gsap.fromTo(navRef.current, 
-        { opacity: 0, y: -20 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.6, 
-          delay: 0.1,
-          ease: "power2.out"
+    if (headerRef.current && highlightRef.current && navRef.current) {
+      // Initial styles
+      highlightRef.current.style.opacity = '0';
+      navRef.current.style.opacity = '0';
+      navRef.current.style.transform = 'translateY(-20px)';
+
+      // Trigger animations after mount
+      requestAnimationFrame(() => {
+        if (highlightRef.current) {
+          highlightRef.current.style.transition = 'opacity 0.5s ease';
+          highlightRef.current.style.opacity = '1';
         }
-      );
+
+        if (navRef.current) {
+          navRef.current.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          navRef.current.style.opacity = '1';
+          navRef.current.style.transform = 'translateY(0)';
+        }
+      });
     }
   }, []);
   
