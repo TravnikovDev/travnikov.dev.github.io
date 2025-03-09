@@ -491,6 +491,25 @@ export function TimelineSection() {
   // Parallax and animation effects - keeping elements visible
   const titleY = useTransform(scrollYProgress, [0, 0.1], [20, 0]);
   
+  // Responsive layout detection
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    // Check if we're in the browser and update the mobile state
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      
+      // Check on mount
+      checkMobile();
+      
+      // Update on resize
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
+  
   return (
     <Container size="lg" py="8rem" ref={containerRef}>
       <motion.div variants={containerVariants} initial="hidden" animate="visible">
@@ -498,7 +517,7 @@ export function TimelineSection() {
         <motion.div
           style={{
             textAlign: "center",
-            marginBottom: "4rem",
+            marginBottom: "3rem", // Reduced margin for mobile
             opacity: 1, // Always visible
             y: titleY
           }}
@@ -513,7 +532,7 @@ export function TimelineSection() {
             <Title
               order={2}
               style={{
-                fontSize: "3rem",
+                fontSize: isMobile ? "2.3rem" : "3rem", // Smaller on mobile
                 fontWeight: 800,
                 marginBottom: "1rem",
                 background: "linear-gradient(135deg, #3D7FFF, #A64DFF)",
@@ -549,127 +568,295 @@ export function TimelineSection() {
           </motion.div>
           
           <Text
-            size="xl"
+            size={isMobile ? "lg" : "xl"}
             c="dimmed"
             style={{
               maxWidth: "700px",
               margin: "0 auto",
-              lineHeight: 1.6
+              lineHeight: 1.6,
+              fontSize: isMobile ? "1.1rem" : undefined
             }}
           >
             My professional path in creating exceptional digital experiences
           </Text>
         </motion.div>
 
-        {/* 3D Timeline Container */}
-        <Box style={{ position: "relative", perspective: "1000px" }}>
-          {/* Enhanced animated central timeline line */}
-          <motion.div
-            variants={lineVariants}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "20px",
-              bottom: "20px",
-              width: "8px",
-              background: "linear-gradient(180deg, #3D7FFF, rgba(166, 77, 255, 0.8), rgba(0, 184, 217, 0.8))",
-              transform: "translateX(-50%)",
-              borderRadius: "5px",
-              zIndex: 0,
-              boxShadow: "0 0 30px rgba(61, 127, 255, 0.7), 0 0 60px rgba(166, 77, 255, 0.4)",
-              transformOrigin: "top",
-              animation: `${glowEffect} 3s infinite ease-in-out`
+        {/* Mobile Card Layout */}
+        {isMobile ? (
+          <Box 
+            style={{ 
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.5rem"
             }}
-          />
-          
-          {/* Pulsing particles along the timeline */}
-          {[0.2, 0.4, 0.6, 0.8].map((position, i) => (
+          >
+            {timelineData.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  delay: index * 0.2,
+                  duration: 0.5
+                }}
+              >
+                <Box 
+                  style={{ 
+                    padding: "1.5rem",
+                    background: "rgba(10, 15, 36, 0.7)",
+                    borderRadius: "1rem", 
+                    border: `3px solid ${
+                      item.color === "blue" ? "rgba(61, 127, 255, 0.3)" : 
+                      item.color === "violet" ? "rgba(166, 77, 255, 0.3)" : 
+                      "rgba(0, 184, 217, 0.3)"
+                    }`,
+                    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
+                    position: "relative",
+                    overflow: "hidden"
+                  }}
+                >
+                  {/* Top date badge - Larger for mobile */}
+                  <Badge
+                    variant="filled"
+                    color={item.color}
+                    size="lg"
+                    radius="md"
+                    style={{
+                      position: "absolute",
+                      top: "1rem",
+                      right: "1rem",
+                      background: `linear-gradient(135deg, 
+                        ${item.color === "blue" ? "#3D7FFF" : item.color === "violet" ? "#A64DFF" : "#00B8D9"}, 
+                        ${item.color === "blue" ? "#0D47A1" : item.color === "violet" ? "#6A1B9A" : "#00838F"})`,
+                      border: `1px solid ${
+                        item.color === "blue" ? "rgba(61, 127, 255, 0.3)" : 
+                        item.color === "violet" ? "rgba(166, 77, 255, 0.3)" : 
+                        "rgba(0, 184, 217, 0.3)"
+                      }`,
+                      padding: "0.6rem 1.2rem",
+                      fontSize: "1rem",
+                      fontWeight: 600
+                    }}
+                  >
+                    {item.date}
+                  </Badge>
+                  
+                  {/* Title and Company - Larger text for mobile */}
+                  <Group align="flex-start" mb="md">
+                    <Box
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "12px",
+                        background: `linear-gradient(135deg, 
+                          ${item.color === "blue" ? "#3D7FFF" : item.color === "violet" ? "#A64DFF" : "#00B8D9"}, 
+                          ${item.color === "blue" ? "#0D47A1" : item.color === "violet" ? "#6A1B9A" : "#00838F"})`,
+                        color: "white",
+                        boxShadow: `0 5px 15px ${
+                          item.color === "blue" ? "rgba(61, 127, 255, 0.5)" : 
+                          item.color === "violet" ? "rgba(166, 77, 255, 0.5)" : 
+                          "rgba(0, 184, 217, 0.5)"
+                        }`,
+                        marginRight: "1rem",
+                        fontSize: "1.5rem"
+                      }}
+                    >
+                      {item.icon}
+                    </Box>
+                    
+                    <Box style={{ flex: 1 }}>
+                      <Title 
+                        order={3} 
+                        mb={5}
+                        style={{ 
+                          color: item.color === "blue" ? "#3D7FFF" : item.color === "violet" ? "#A64DFF" : "#00B8D9", 
+                          fontWeight: 700,
+                          fontSize: "1.8rem",
+                          letterSpacing: "-0.01em"
+                        }}
+                      >
+                        {item.title}
+                      </Title>
+                      
+                      <Text 
+                        size="lg" 
+                        fw={600}
+                        style={{
+                          color: "#E3E7F1",
+                          fontSize: "1.2rem"
+                        }}
+                      >
+                        {item.company}
+                      </Text>
+                    </Box>
+                  </Group>
+                  
+                  {/* Description - Larger text for mobile */}
+                  <Text 
+                    size="md" 
+                    mb="lg"
+                    style={{
+                      color: "rgba(227, 231, 241, 0.9)",
+                      lineHeight: 1.6,
+                      fontSize: "1.1rem",
+                      fontWeight: 400
+                    }}
+                  >
+                    {item.description}
+                  </Text>
+                  
+                  {/* Skills - Larger, more visible on mobile */}
+                  <Box
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "10px"
+                    }}
+                  >
+                    {item.skills.slice(0, 4).map((skill, i) => (
+                      <Badge
+                        key={i}
+                        variant="dot"
+                        size="lg"
+                        radius="sm"
+                        color={item.color}
+                        style={{
+                          padding: "0.7rem 1rem",
+                          background: item.color === "blue" ? "rgba(61, 127, 255, 0.1)" : 
+                                    item.color === "violet" ? "rgba(166, 77, 255, 0.1)" : 
+                                    "rgba(0, 184, 217, 0.1)",
+                          borderColor: item.color === "blue" ? "rgba(61, 127, 255, 0.3)" : 
+                                    item.color === "violet" ? "rgba(166, 77, 255, 0.3)" : 
+                                    "rgba(0, 184, 217, 0.3)",
+                          color: item.color === "blue" ? "#3D7FFF" : 
+                                item.color === "violet" ? "#A64DFF" : 
+                                "#00B8D9",
+                          fontSize: "0.95rem",
+                          fontWeight: 600
+                        }}
+                      >
+                        {skill}
+                      </Badge>
+                    ))}
+                  </Box>
+                </Box>
+              </motion.div>
+            ))}
+          </Box>
+        ) : (
+          // Desktop Timeline Container - Original Layout
+          <Box style={{ position: "relative", perspective: "1000px" }}>
+            {/* Enhanced animated central timeline line */}
             <motion.div
-              key={i}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ 
-                scale: [0.6, 1.2, 0.6], 
-                opacity: [0.4, 0.8, 0.4] 
-              }}
-              transition={{ 
-                duration: 3,
-                delay: i * 0.5,
-                repeat: Infinity,
-                ease: "easeInOut" 
-              }}
+              variants={lineVariants}
               style={{
                 position: "absolute",
                 left: "50%",
-                top: `${position * 100}%`,
-                width: "15px",
-                height: "15px",
-                borderRadius: "50%",
-                background: i % 2 === 0 ? "#3D7FFF" : "#A64DFF",
+                top: "20px",
+                bottom: "20px",
+                width: "8px",
+                background: "linear-gradient(180deg, #3D7FFF, rgba(166, 77, 255, 0.8), rgba(0, 184, 217, 0.8))",
                 transform: "translateX(-50%)",
-                zIndex: 1,
-                boxShadow: i % 2 === 0 
-                  ? "0 0 20px rgba(61, 127, 255, 0.8), 0 0 40px rgba(61, 127, 255, 0.4)" 
-                  : "0 0 20px rgba(166, 77, 255, 0.8), 0 0 40px rgba(166, 77, 255, 0.4)"
+                borderRadius: "5px",
+                zIndex: 0,
+                boxShadow: "0 0 30px rgba(61, 127, 255, 0.7), 0 0 60px rgba(166, 77, 255, 0.4)",
+                transformOrigin: "top",
+                animation: `${glowEffect} 3s infinite ease-in-out`
               }}
             />
-          ))}
-          
-          {/* Timeline Items with alternating sides */}
-          <Box style={{ position: "relative", zIndex: 1 }}>
-            {timelineData.map((item, index) => (
-              <Box
-                key={index}
-                style={{
-                  display: "flex",
-                  justifyContent: index % 2 === 0 ? "flex-start" : "flex-end",
-                  marginBottom: "4rem",
-                  paddingRight: index % 2 === 0 ? "52%" : "0",
-                  paddingLeft: index % 2 === 1 ? "52%" : "0",
-                  position: "relative"
+            
+            {/* Pulsing particles along the timeline */}
+            {[0.2, 0.4, 0.6, 0.8].map((position, i) => (
+              <motion.div
+                key={i}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ 
+                  scale: [0.6, 1.2, 0.6], 
+                  opacity: [0.4, 0.8, 0.4] 
                 }}
-              >
-                {/* Timeline node (circle on the central line) */}
-                <motion.div
-                  variants={logoVariants}
-                  style={{
-                    position: "absolute",
-                    left: "50%",
-                    top: "30px",
-                    width: "24px",
-                    height: "24px",
-                    borderRadius: "50%",
-                    backgroundColor: item.color === "blue" ? "#3D7FFF" : item.color === "violet" ? "#A64DFF" : "#00B8D9",
-                    transform: "translateX(-50%)",
-                    boxShadow: `0 0 0 6px #0A0F24, 0 0 20px ${item.color === "blue" ? "rgba(61, 127, 255, 0.7)" : 
-                                item.color === "violet" ? "rgba(166, 77, 255, 0.7)" : "rgba(0, 184, 217, 0.7)"}`,
-                    zIndex: 2,
-                    animation: `${glowEffect} 2s infinite ease-in-out`
-                  }}
-                />
-                
-                {/* Connecting line to card */}
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: "10%" }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                  style={{
-                    position: "absolute",
-                    top: "42px",
-                    height: "2px",
-                    background: item.color === "blue" ? "#3D7FFF" : item.color === "violet" ? "#A64DFF" : "#00B8D9",
-                    left: index % 2 === 0 ? "40%" : "unset",
-                    right: index % 2 === 1 ? "40%" : "unset",
-                  }}
-                />
-                
-                {/* The actual card (using 80% width) */}
-                <Box style={{ width: "80%" }}>
-                  <TimelineCard item={item} index={index} />
-                </Box>
-              </Box>
+                transition={{ 
+                  duration: 3,
+                  delay: i * 0.5,
+                  repeat: Infinity,
+                  ease: "easeInOut" 
+                }}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: `${position * 100}%`,
+                  width: "15px",
+                  height: "15px",
+                  borderRadius: "50%",
+                  background: i % 2 === 0 ? "#3D7FFF" : "#A64DFF",
+                  transform: "translateX(-50%)",
+                  zIndex: 1,
+                  boxShadow: i % 2 === 0 
+                    ? "0 0 20px rgba(61, 127, 255, 0.8), 0 0 40px rgba(61, 127, 255, 0.4)" 
+                    : "0 0 20px rgba(166, 77, 255, 0.8), 0 0 40px rgba(166, 77, 255, 0.4)"
+                }}
+              />
             ))}
+            
+            {/* Timeline Items with alternating sides */}
+            <Box style={{ position: "relative", zIndex: 1 }}>
+              {timelineData.map((item, index) => (
+                <Box
+                  key={index}
+                  style={{
+                    display: "flex",
+                    justifyContent: index % 2 === 0 ? "flex-start" : "flex-end",
+                    marginBottom: "4rem",
+                    paddingRight: index % 2 === 0 ? "52%" : "0",
+                    paddingLeft: index % 2 === 1 ? "52%" : "0",
+                    position: "relative"
+                  }}
+                >
+                  {/* Timeline node (circle on the central line) */}
+                  <motion.div
+                    variants={logoVariants}
+                    style={{
+                      position: "absolute",
+                      left: "50%",
+                      top: "30px",
+                      width: "24px",
+                      height: "24px",
+                      borderRadius: "50%",
+                      backgroundColor: item.color === "blue" ? "#3D7FFF" : item.color === "violet" ? "#A64DFF" : "#00B8D9",
+                      transform: "translateX(-50%)",
+                      boxShadow: `0 0 0 6px #0A0F24, 0 0 20px ${item.color === "blue" ? "rgba(61, 127, 255, 0.7)" : 
+                                  item.color === "violet" ? "rgba(166, 77, 255, 0.7)" : "rgba(0, 184, 217, 0.7)"}`,
+                      zIndex: 2,
+                      animation: `${glowEffect} 2s infinite ease-in-out`
+                    }}
+                  />
+                  
+                  {/* Connecting line to card */}
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: "10%" }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    style={{
+                      position: "absolute",
+                      top: "42px",
+                      height: "2px",
+                      background: item.color === "blue" ? "#3D7FFF" : item.color === "violet" ? "#A64DFF" : "#00B8D9",
+                      left: index % 2 === 0 ? "40%" : "unset",
+                      right: index % 2 === 1 ? "40%" : "unset",
+                    }}
+                  />
+                  
+                  {/* The actual card (using 80% width) */}
+                  <Box style={{ width: "80%" }}>
+                    <TimelineCard item={item} index={index} />
+                  </Box>
+                </Box>
+              ))}
+            </Box>
           </Box>
-        </Box>
+        )}
       </motion.div>
     </Container>
   );
