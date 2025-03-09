@@ -23,3 +23,34 @@
 .homeLink:active {
   text-decoration: underline;
 }
+
+.center {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stack {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  color: var(--mantine-primary-color-6);
+}
+
+.text {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  min-width: 200px;
+}

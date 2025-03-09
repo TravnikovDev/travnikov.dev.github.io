@@ -23,3 +23,277 @@
   text-align: center;
   max-width: 600px;
 }
+
+.timelineCard {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+}
+
+.timelineCardBox {
+  padding: 1rem;
+  border-radius: var(--mantine-radius-md);
+}
+
+.timelineBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.timelineIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.timelineCompany {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.timelineDescription {
+  margin: 1rem 0;
+}
+
+.timelineAchievements {
+  margin-top: 1rem;
+}
+
+.timelineAchievementsBox {
+  padding: 0.5rem;
+}
+
+.timelineAchievementDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.timelineAchievementText {
+  line-height: 1.4;
+}
+
+.timelineSkill {
+  display: inline-flex;
+  align-items: center;
+  margin: 0.25rem;
+}
+
+.timelineSkillBadge {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.timelineShowMore {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.timelineShowMoreIcon {
+  margin-left: 0.5rem;
+}
+
+.timelineTitleContainer {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.timelineTitleInner {
+  display: inline-block;
+  position: relative;
+}
+
+.timelineTitleText {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.timelineUnderline {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+.timelineDescriptionText {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.timelineCardContainer {
+  width: 100%;
+  position: relative;
+}
+
+.timelineMobileNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.timelineMobileBadge {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.timelineMobileNavIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.timelineDesktopStepper {
+  display: none;
+  position: relative;
+  margin: 2rem 0;
+}
+
+.timelineBar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--mantine-color-gray-3);
+  transform: translateY(-50%);
+}
+
+.timelineProgress {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  background: var(--mantine-primary-color-6);
+  transform: translateY(-50%);
+  transition: width 0.3s ease;
+}
+
+.timelineStepPoint {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--mantine-color-gray-2);
+  border: 2px solid var(--mantine-color-gray-3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.timelineStepPointInner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mantine-primary-color-6);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.timelineMainCard {
+  padding: 1.5rem;
+  border-radius: var(--mantine-radius-lg);
+  margin-top: 1rem;
+}
+
+.timelineMainBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.timelineMainIcon {
+  width: 48px;
+  height: 48px;
+}
+
+.timelineMainTitle {
+  font-size: 1.75rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.timelineMainCompany {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.timelineMainDescriptionBox {
+  margin: 1.5rem 0;
+}
+
+.timelineMainDescriptionText {
+  line-height: 1.6;
+}
+
+.timelineMainAchievementsTitle {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.timelineMainAchievementsBox {
+  padding: 0.5rem;
+}
+
+.timelineMainAchievementDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+}
+
+.timelineMainAchievementText {
+  line-height: 1.5;
+}
+
+.timelineMainSkillsTitle {
+  font-size: 1.25rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.timelineMainSkillsBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.timelineMainSkillBadge {
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.timelineNavButton {
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glowEffect {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .timelineDesktopStepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

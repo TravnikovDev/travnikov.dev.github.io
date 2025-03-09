@@ -1,5 +1,6 @@
 .drawer {
-  padding: 20px;
+  min-width: 300px;
+  padding: var(--mantine-spacing-md);
 }
 
 .menuTitle {
@@ -43,4 +44,10 @@
 
 .socialIcon {
   margin-right: 10px;
+}
+
+.header {
+  padding-bottom: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-md);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
 }

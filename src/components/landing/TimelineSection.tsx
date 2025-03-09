@@ -183,7 +183,7 @@ const TimelineCard = ({ item, index }) => {
               <Title 
                 order={3} 
                 mb={5}
-                className={styles.timelineTitle}
+                className={styles.timelineItemTitle}
                 style={{ 
                   color: color.primary, 
                   textShadow: isHovered ? `0 0 8px ${color.glow}` : "none",
@@ -222,7 +222,7 @@ const TimelineCard = ({ item, index }) => {
             <Box 
               className={styles.timelineAchievementsBox}
             >
-              <Title order={5} mb="sm" className={styles.timelineAchievementsTitle}>
+              <Title order={5} mb="sm" className={styles.timelineMainAchievementsTitle}>
                 Key Achievements
               </Title>
               

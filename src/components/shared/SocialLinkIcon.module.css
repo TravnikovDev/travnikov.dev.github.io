@@ -10,3 +10,26 @@
 .socialLinkIcon:hover {
   color: #1da1f2;
 }
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.name {
+  margin-left: 8px;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
