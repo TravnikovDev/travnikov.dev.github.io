@@ -495,6 +495,104 @@ export const onRenderBody = ({ setHeadComponents }) => {
           * {
             -webkit-tap-highlight-color: transparent;
           }
+          
+          /* Matrix glitch effect for interactive elements */
+          .matrix-glitch-hover {
+            position: relative;
+            transition: all 0.3s ease;
+          }
+          
+          .matrix-glitch-hover::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 65, 0.1) 50%, transparent 70%);
+            background-size: 200% 200%;
+            animation: none;
+            transition: all 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+          }
+          
+          .matrix-glitch-hover:hover {
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+            color: #00FF41;
+          }
+          
+          .matrix-glitch-hover:hover::before {
+            opacity: 1;
+            animation: matrixGlitchBg 1.5s linear infinite;
+          }
+          
+          @keyframes matrixGlitchBg {
+            0% {
+              background-position: 200% 0;
+            }
+            100% {
+              background-position: -200% 0;
+            }
+          }
+          
+          /* Matrix glitch text effect */
+          .matrix-glitch-text {
+            animation: matrixTextGlitch 0.2s infinite;
+            text-shadow: 
+              0.05em 0 0 rgba(0, 255, 65, 0.4),
+              -0.05em -0.025em 0 rgba(0, 255, 65, 0.4),
+              -0.025em 0.05em 0 rgba(0, 255, 65, 0.4);
+          }
+          
+          @keyframes matrixTextGlitch {
+            0% {
+              text-shadow: 
+                0.05em 0 0 rgba(0, 255, 65, 0.4),
+                -0.05em -0.025em 0 rgba(0, 255, 65, 0.4),
+                -0.025em 0.05em 0 rgba(0, 255, 65, 0.4);
+            }
+            15% {
+              text-shadow: 
+                -0.05em -0.025em 0 rgba(0, 255, 65, 0.4),
+                0.025em 0.025em 0 rgba(0, 255, 65, 0.4),
+                -0.05em -0.05em 0 rgba(0, 255, 65, 0.4);
+            }
+            50% {
+              text-shadow: 
+                0.025em 0.05em 0 rgba(0, 255, 65, 0.4),
+                0.05em 0 0 rgba(0, 255, 65, 0.4),
+                0 -0.05em 0 rgba(0, 255, 65, 0.4);
+            }
+          }
+          
+          /* Matrix-style scrollbar */
+          ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+          }
+          
+          ::-webkit-scrollbar-track {
+            background: #000000;
+          }
+          
+          ::-webkit-scrollbar-thumb {
+            background: #00FF41;
+            border-radius: 4px;
+          }
+          
+          ::-webkit-scrollbar-thumb:hover {
+            background: #00CC33;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+          }
+          
+          /* Matrix selection style */
+          ::selection {
+            background: rgba(0, 255, 65, 0.3);
+            color: #FFFFFF;
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
+          }
         `,
       }}
     />,

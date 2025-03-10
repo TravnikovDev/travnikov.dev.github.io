@@ -1,28 +1,58 @@
 .navItem {
   position: relative;
-  display: inline-block;
-  margin: 0 10px;
-  padding: 5px 0;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 15px;
+  padding: 8px 12px;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  border-radius: 4px;
 }
 
 .navButton {
   text-decoration: none;
-  color: inherit;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
 }
 
 .navText {
-  font-size: 1.2em;
-  font-weight: bold;
-  animation: glitchEffect 1.5s infinite;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navText::before {
+  content: '>';
+  position: absolute;
+  left: -15px;
+  opacity: 0;
+  color: #00FF41;
+  transition: all 0.3s ease;
+}
+
+.navItem:hover .navText::before {
+  opacity: 1;
+  transform: translateX(-5px);
+}
+
+.navItem:hover .navButton {
+  color: #00FF41;
 }
 
 .navUnderline {
   position: absolute;
   bottom: 0;
+  left: 50%;
+  width: 0;
   height: 2px;
+  background: linear-gradient(90deg, transparent, #00FF41, transparent);
   transition: all 0.3s ease;
+}
+
+.navItem:hover .navUnderline {
+  width: 100%;
+  left: 0;
 }
 
 .navGlow {
@@ -31,9 +61,49 @@
   left: 0;
   right: 0;
   bottom: 0;
-  border-radius: 5px;
-  animation: panelGlow 2s infinite;
+  border-radius: 4px;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 65, 0.15), transparent);
+  opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.navItem:hover .navGlow {
+  opacity: 1;
+}
+
+@keyframes glitchEffect {
+  0% {
+    text-shadow: none;
+  }
+  20% {
+    text-shadow: 0 0 4px rgba(0, 255, 65, 0.7);
+  }
+  21% {
+    text-shadow: -2px 0 #00FF41;
+  }
+  25% {
+    text-shadow: none;
+  }
+  40% {
+    text-shadow: 2px 0 #00FF41;
+  }
+  41% {
+    text-shadow: none;
+  }
+  50% {
+    text-shadow: none;
+  }
+  90% {
+    text-shadow: -1px 0 #00FF41;
+  }
+  91% {
+    text-shadow: none;
+  }
+}
+
+.navItem:hover .navText {
+  animation: glitchEffect 2s infinite;
 }
 
 .navBox {

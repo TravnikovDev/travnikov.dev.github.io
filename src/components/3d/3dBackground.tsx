@@ -293,8 +293,6 @@ function Scene() {
         ))}
       </group>
       
-      {/* Add the Matrix glitch effect - moved to be rendered last */}
-      {/* <MatrixGlitch intensity={0.2} color={matrixGreen} /> */}
       
       {/* Dark environment to match Matrix theme */}
       <color attach="background" args={["#000000"]} />

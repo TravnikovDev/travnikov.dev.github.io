@@ -16,6 +16,7 @@ const config: GatsbyConfig = {
     siteLanguage: `en`,
     author: `Roman Travnikov`,
   },
+  jsxRuntime: 'automatic',
   trailingSlash: `always`,
   plugins: [
     `gatsby-plugin-sharp`,
@@ -41,12 +42,6 @@ const config: GatsbyConfig = {
       options: {
         name: `experiments`,
         path: `${__dirname}/src/content/experiments`,
-      },
-    },
-    {
-      resolve: `gatsby-plugin-mdx`,
-      options: {
-        gatsbyRemarkPlugins: [],
       },
     },
     {

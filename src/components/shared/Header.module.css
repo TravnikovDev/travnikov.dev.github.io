@@ -8,9 +8,11 @@
   width: 100%;
   top: 0;
   z-index: 1000;
-  background: transparent;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+  height: 60px;
 }
 
 .box {
@@ -29,8 +31,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(61, 127, 255, 0.2), transparent);
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 65, 0.1), transparent);
   transition: background 0.2s ease;
+  mix-blend-mode: screen;
 }
 
 .topBorder {
@@ -39,7 +42,13 @@
   left: 0;
   width: 100%;
   height: 1px;
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 65, 0.2),
+    rgba(0, 255, 65, 0.2),
+    transparent
+  );
 }
 
 .bottomBorder {
@@ -48,7 +57,13 @@
   left: 0;
   width: 100%;
   height: 1px;
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 65, 0.2),
+    rgba(0, 255, 65, 0.2),
+    transparent
+  );
 }
 
 .highlight {
@@ -57,8 +72,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.05);
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 65, 0.05), transparent);
   pointer-events: none;
+  mix-blend-mode: screen;
 }
 
 .scanline {
@@ -67,12 +83,33 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.05) 50%);
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 50%,
+    rgba(0, 255, 65, 0.015) 50%,
+    rgba(0, 255, 65, 0.015) 100%
+  );
   background-size: 100% 4px;
-  animation: scanlineEffect 2s linear infinite;
+  animation: scanlineEffect 6s linear infinite;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@keyframes scanlineEffect {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(4px);
+  }
 }
 
 .container {
   position: relative;
   z-index: 20;
+  padding: 0 2rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
