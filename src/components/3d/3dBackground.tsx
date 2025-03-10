@@ -4,19 +4,37 @@ import {
   Environment,
   ContactShadows,
   Cloud,
-  Box,
-  OrbitControls,
-  Sphere,
   Torus,
+  Sphere,
 } from '@react-three/drei';
 import * as THREE from 'three';
-import { Group, Vector3, MathUtils } from 'three';
+import { Group, MathUtils } from 'three';
 import * as styles from './3dBackground.module.css';
+// import FloatingCodeBlock from './FloatingCodeBlock';
+// import FloatingName from './FloatingName';
+// import { FloatingUICard } from './FloatingUICard';
+// import { FlowingRibbon } from './FlowingRibbon';
+// import ReactLogo from './ReactLogo';
+// import { TerminalBlock } from './TerminalBlock';
 
 // Type for position that accepts both THREE.Vector3 and position tuples
 type Position = [number, number, number];
+type Rotation = [number, number, number];
 
-// A simple floating cube element
+// Define types for the component configurations
+type ComponentConfig = {
+  Component: React.ComponentType<any>;
+  props: {
+    position: Position;
+    rotation?: Rotation;
+    scale?: number;
+    color?: string;
+    width?: number;
+    length?: number;
+  };
+  side: 'left' | 'right';
+};
+
 const FloatingElement = ({ 
   position = [0, 0, 0] as Position, 
   color = "#3D7FFF", 
@@ -203,40 +221,75 @@ function Scene() {
   const mousePos = useRef({ x: 0, y: 0 });
   const targetRotation = useRef({ x: 0, y: 0 });
   const scrollPos = useRef(0);
-  
-  // Create references for each object to animate
-  const blob1Ref = useRef<THREE.Group>(null);
-  const blob2Ref = useRef<THREE.Group>(null);
-  const blob3Ref = useRef<THREE.Group>(null);
-  const ribbon1Ref = useRef<THREE.Group>(null);
-  const ribbon2Ref = useRef<THREE.Group>(null);
-  const ribbon3Ref = useRef<THREE.Group>(null);
-  const reactLogoRef = useRef<THREE.Group>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera>(null);
-  
-  // Store initial positions for parallax effect
-  const initialPositions = useRef<{[key: string]: Vector3}>({});
-  
-  // Setup initial positions and scroll handler
-  useEffect(() => {
-    const refs = {
-      blob1: blob1Ref,
-      blob2: blob2Ref,
-      blob3: blob3Ref,
-      ribbon1: ribbon1Ref,
-      ribbon2: ribbon2Ref,
-      ribbon3: ribbon3Ref,
-      reactLogo: reactLogoRef
-    };
-    
-    // Store initial positions
-    Object.entries(refs).forEach(([key, ref]) => {
-      if (ref.current) {
-        initialPositions.current[key] = ref.current.position.clone();
-      }
-    });
 
-    // Handle scroll
+  // Configuration for component spacing - adjusted for better visibility
+  const config = {
+    spacing: 8, // Increased vertical spacing
+    sideOffset: 4, // Slightly increased side offset
+    scrollSpeed: 1, // Increased scroll speed for more dramatic effect
+    totalHeight: 40, // Total height of the scene
+  };
+
+  // Define components with adjusted positions
+  const components: ComponentConfig[] = [
+    {
+      // Component: FloatingName,
+      Component: FloatingElement,
+      props: { 
+        position: [-config.sideOffset, 0, -2] as Position
+      },
+      side: 'left'
+    },
+    {
+      Component: ReactLogo,
+      props: { 
+        position: [config.sideOffset, -config.spacing, -2] as Position, 
+        scale: 1.5
+      },
+      side: 'right'
+    },
+    {
+      // Component: FloatingUICard,
+      Component: AnimatedBlob,
+      props: { 
+        position: [-config.sideOffset, -config.spacing * 2, -2] as Position, 
+        color: "#3D7FFF",
+        rotation: [0.1, -0.1, 0] as Rotation
+      },
+      side: 'left'
+    },
+    {
+      // Component: FloatingCodeBlock,
+      Component: FloatingElement,
+      props: { 
+        position: [config.sideOffset, -config.spacing * 3, -2] as Position, 
+        rotation: [-0.1, 0.1, 0] as Rotation
+      },
+      side: 'right'
+    },
+    {
+      Component: FlowingRibbon,
+      props: { 
+        position: [-config.sideOffset, -config.spacing * 4, -2] as Position,
+        rotation: [0, 0, 0.1] as Rotation,
+        color: "#A64DFF", 
+        width: 0.05, 
+        length: 8 
+      },
+      side: 'left'
+    },
+    {
+      // Component: TerminalBlock,
+      Component: ReactLogo,
+      props: { 
+        position: [config.sideOffset, -config.spacing * 5, -2] as Position,
+        rotation: [0.1, -0.1, 0] as Rotation
+      },
+      side: 'right'
+    }
+  ];
+
+  useEffect(() => {
     const handleScroll = () => {
       scrollPos.current = window.scrollY;
     };
@@ -244,8 +297,7 @@ function Scene() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
-  // Handle mouse movement
+
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
@@ -253,161 +305,74 @@ function Scene() {
       
       mousePos.current = { x: mouseX, y: mouseY };
       targetRotation.current = {
-        x: mouseY * 0.05,
-        y: mouseX * 0.05
+        x: mouseY * 0.1, // Subtle rotation effect
+        y: mouseX * 0.1,
       };
     };
     
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-  
-  useFrame((state, delta) => {
+
+  useFrame((state) => {
     if (!sceneRef.current) return;
-    
-    // Calculate scroll progress (normalized between 0 and 1)
+
+    // Calculate scroll progress
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const scrollProgress = Math.min(Math.max(scrollPos.current / maxScroll, 0), 1);
     
-    // Update camera position based on scroll
+    // Update camera position for smooth vertical movement
     if (state.camera) {
-      state.camera.position.z = 5 + scrollProgress * 2; // Move camera back as user scrolls
-      state.camera.position.y = scrollProgress * -1; // Move camera down slightly
-      state.camera.rotation.x = scrollProgress * 0.2; // Tilt camera up/down
-    }
-
-    // Parallax effect: move objects based on scroll
-    const refs = {
-      blob1: { ref: blob1Ref, factor: 1.1 },
-      blob2: { ref: blob2Ref, factor: 0.9 },
-      blob3: { ref: blob3Ref, factor: 1.3 },
-      ribbon1: { ref: ribbon1Ref, factor: 0.7 },
-      ribbon2: { ref: ribbon2Ref, factor: 1.4 },
-      ribbon3: { ref: ribbon3Ref, factor: 0.5 },
-      reactLogo: { ref: reactLogoRef, factor: 0.6 }
-    };
-    
-    // Apply parallax movement
-    Object.entries(refs).forEach(([key, { ref, factor }]) => {
-      if (ref.current && initialPositions.current[key]) {
-        const initial = initialPositions.current[key];
-        
-        // Move in Y direction based on scroll with controlled effect
-        ref.current.position.y = MathUtils.lerp(
-          ref.current.position.y,
-          initial.y + (scrollProgress * factor * -5),
-          0.1
-        );
-        
-        // Add X movement based on scroll
-        ref.current.position.x = MathUtils.lerp(
-          ref.current.position.x,
-          initial.x + (Math.sin(scrollProgress * Math.PI * 2) * factor * 1.0),
-          0.1
-        );
-        
-        // Move in Z direction for depth
-        ref.current.position.z = MathUtils.lerp(
-          ref.current.position.z,
-          initial.z + (Math.cos(scrollProgress * Math.PI) * factor * 1.5),
-          0.1
-        );
-
-        // Add rotation based on scroll
-        ref.current.rotation.y = scrollProgress * Math.PI * factor;
-      }
-    });
-    
-    // Rotate entire scene based on mouse position with smooth interpolation
-    if (sceneRef.current) {
-      sceneRef.current.rotation.x = MathUtils.lerp(
-        sceneRef.current.rotation.x,
-        targetRotation.current.x,
+      // Move camera from top to bottom
+      state.camera.position.y = MathUtils.lerp(
+        state.camera.position.y,
+        config.spacing * 2 - (scrollProgress * config.totalHeight),
         0.1
       );
-      sceneRef.current.rotation.y = MathUtils.lerp(
-        sceneRef.current.rotation.y,
-        targetRotation.current.y,
-        0.1
-      );
+      
+      // Keep camera at fixed distance
+      state.camera.position.z = 8;
+      
+      // Slight tilt based on scroll
+      state.camera.rotation.x = scrollProgress * 0.2;
     }
+
+    // Apply subtle scene rotation based on mouse movement
+    sceneRef.current.rotation.y = MathUtils.lerp(
+      sceneRef.current.rotation.y,
+      targetRotation.current.y * 0.3,
+      0.1
+    );
   });
-  
+
   return (
     <>
       {/* Enhanced lighting setup */}
       <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 5, 5] as Position} intensity={0.6} castShadow />
+      <directionalLight position={[5, 5, 5] as Position} intensity={0.8} castShadow />
       <pointLight position={[0, 5, 0] as Position} intensity={0.6} />
       <pointLight position={[-2, -5, -2] as Position} color="#3D7FFF" intensity={1.0} />
       <pointLight position={[2, -5, 2] as Position} color="#FF3D00" intensity={0.8} />
-      <pointLight position={[0, 0, 3] as Position} color="#FFFFFF" intensity={0.5} />
 
-      {/* Main scene content with enhanced parallax */}
-      <group ref={sceneRef} position={[0, 0, 0] as Position}>
-        {/* React Logo */}
-        <group ref={reactLogoRef}>
-          <ReactLogo position={[0, 1.3, -1.5] as Position} scale={1.2} />
-        </group>
-        
-        {/* Animated blobs */}
-        <group ref={blob1Ref}>
-          <AnimatedBlob
-            position={[2.2, -0.8, -1] as Position}
-            color="#3D7FFF"
-            scale={1.2}
-            speed={0.8}
-          />
-        </group>
-        
-        <group ref={blob2Ref}>
-          <AnimatedBlob
-            position={[-2.3, 0.9, -2] as Position}
-            color="#A64DFF"
-            scale={1}
-            speed={1.2}
-          />
-        </group>
-        
-        <group ref={blob3Ref}>
-          <AnimatedBlob
-            position={[0.3, -1.8, -3] as Position}
-            color="#00F0FF"
-            scale={0.7}
-            speed={1.5}
-          />
-        </group>
-        
-        {/* Floating elements */}
-        <FloatingElement position={[1.8, 0, -1] as Position} color="#0077FF" scale={0.5} />
-        <FloatingElement position={[-1.5, 0.6, -2] as Position} color="#2050FF" scale={0.6} />
-        
-        {/* Flowing ribbons with refs for parallax */}
-        <group ref={ribbon1Ref} position={[0, 1.5, -2] as Position} rotation={[0.2, 0.5, 0.1]}>
-          <FlowingRibbon color="#3D7FFF" width={0.06} length={12} />
-        </group>
-        
-        <group ref={ribbon2Ref} position={[-1, -1, -1.5] as Position} rotation={[-0.3, -0.2, 0.3]}>
-          <FlowingRibbon color="#A64DFF" width={0.04} length={10} />
-        </group>
-        
-        <group ref={ribbon3Ref} position={[1.5, 0.5, -2.5] as Position} rotation={[0.1, -0.4, 0.2]}>
-          <FlowingRibbon color="#00F0FF" width={0.03} length={8} />
-        </group>
+      {/* Main scene content */}
+      <group ref={sceneRef}>
+        {components.map(({ Component, props, side }, index) => (
+          <Component key={index} {...props} />
+        ))}
       </group>
 
-      {/* Enhanced environment elements */}
+      {/* Environment and effects */}
       <Cloud 
         scale={4} 
         opacity={0.15} 
         speed={0.4} 
         segments={20} 
-        position={[0, 0, -5] as Position}
+        position={[0, 0, -10] as Position}
       />
-      <SimpleParticles count={1000} color="#3D7FFF" />
+      <SimpleParticles count={2000} color="#3D7FFF" spread={20} />
       <ContactShadows
-        opacity={0.5}
-        scale={12}
+        opacity={0.3}
+        scale={30}
         blur={2}
         far={10}
         resolution={256}
@@ -423,7 +388,12 @@ export default function ThreeDBackground() {
   return (
     <div className={styles.backgroundContainer}>
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 75 }}
+        camera={{ 
+          position: [0, 2, 8], // Adjusted initial camera position
+          fov: 60, // Narrower field of view for better depth
+          near: 0.1,
+          far: 100
+        }}
         dpr={[1, 2]}
         gl={{
           antialias: true,
