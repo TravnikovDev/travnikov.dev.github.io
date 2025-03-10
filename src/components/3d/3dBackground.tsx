@@ -3,7 +3,6 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
   Environment,
   ContactShadows,
-  Cloud,
   Torus,
   Sphere,
 } from '@react-three/drei';
@@ -12,6 +11,9 @@ import { Group, MathUtils } from 'three';
 import * as styles from './3dBackground.module.css';
 import FloatingCodeBlock from './FloatingCodeBlock';
 import FloatingName from './FloatingName';
+import MatrixRain from './MatrixRain';
+import MatrixFruit from './MatrixFruit';
+import MatrixGlitch from './MatrixGlitch';
 
 // Type for position that accepts both THREE.Vector3 and position tuples
 type Position = [number, number, number];
@@ -25,76 +27,18 @@ type ComponentConfig = {
     rotation?: Rotation;
     scale?: number;
     color?: string;
+    fruitType?: string;
     width?: number;
     length?: number;
+    speed?: number;
   };
   side: 'left' | 'right';
 };
 
-const FloatingElement = ({ 
-  position = [0, 0, 0] as Position, 
-  color = "#3D7FFF", 
-  scale = 1, 
-  speed = 1 
-}) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const initialY = useRef(position[1]);
-  
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      const time = clock.getElapsedTime() * speed;
-      // Simple floating animation
-      meshRef.current.position.y = initialY.current + Math.sin(time * 0.5) * 0.5;
-      // Gentle rotation
-      meshRef.current.rotation.x = Math.sin(time * 0.3) * 0.2;
-      meshRef.current.rotation.y = time * 0.2;
-    }
-  });
-  
-  return (
-    <mesh ref={meshRef} position={position as any} scale={scale}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={color} metalness={0.5} roughness={0.2} />
-    </mesh>
-  );
-};
-
-// A simple blob-like sphere with animation
-const AnimatedBlob = ({ 
-  position = [0, 0, 0] as Position, 
-  color = "#3D7FFF", 
-  scale = 1, 
-  speed = 1 
-}) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const initialY = useRef(position[1]);
-  
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      const time = clock.getElapsedTime() * speed;
-      // Floating animation
-      meshRef.current.position.y = initialY.current + Math.sin(time * 0.4) * 0.3;
-      // Gentle rotation
-      meshRef.current.rotation.x = Math.sin(time * 0.2) * 0.3;
-      meshRef.current.rotation.y = time * 0.1;
-      // Pulse scale
-      const pulse = 1 + Math.sin(time * 0.5) * 0.1;
-      meshRef.current.scale.set(scale * pulse, scale * pulse, scale * pulse);
-    }
-  });
-  
-  return (
-    <mesh ref={meshRef} position={position as any}>
-      <sphereGeometry args={[1, 32, 32]} />
-      <meshStandardMaterial color={color} metalness={0.2} roughness={0.6} />
-    </mesh>
-  );
-};
-
-// A simple flowing ribbon (box with animation)
+// A simple flowing ribbon (box with animation) - Kept but modified for Matrix style
 const FlowingRibbon = ({ 
   position = [0, 0, 0] as Position, 
-  color = "#3D7FFF", 
+  color = "#00FF41", 
   width = 0.2, 
   length = 5 
 }) => {
@@ -114,50 +58,13 @@ const FlowingRibbon = ({
   return (
     <mesh ref={meshRef} position={position as any} scale={[length, width, 0.1]}>
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={color} metalness={0.4} roughness={0.3} />
+      <meshBasicMaterial color={color} wireframe={true} />
     </mesh>
   );
 };
 
-// Create a simple React logo representation
-const ReactLogo = ({ 
-  position = [0, 0, 0] as Position, 
-  scale = 1 
-}) => {
-  const groupRef = useRef<THREE.Group>(null);
-  
-  useFrame(({ clock }) => {
-    if (groupRef.current) {
-      // Rotate the React logo
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.2;
-    }
-  });
-  
-  return (
-    <group ref={groupRef} position={position as any} scale={scale}>
-      {/* Center sphere */}
-      <Sphere args={[0.5, 16, 16]}>
-        <meshStandardMaterial color="#61DAFB" metalness={0.8} roughness={0.2} />
-      </Sphere>
-      
-      {/* Electron orbits */}
-      <Torus args={[1.25, 0.06, 16, 100]} rotation={[Math.PI/2, 0, 0]}>
-        <meshStandardMaterial color="#61DAFB" metalness={0.7} roughness={0.3} />
-      </Torus>
-      
-      <Torus args={[1.25, 0.06, 16, 100]} rotation={[Math.PI/6, Math.PI/3, 0]}>
-        <meshStandardMaterial color="#61DAFB" metalness={0.7} roughness={0.3} />
-      </Torus>
-      
-      <Torus args={[1.25, 0.06, 16, 100]} rotation={[-Math.PI/6, -Math.PI/3, 0]}>
-        <meshStandardMaterial color="#61DAFB" metalness={0.7} roughness={0.3} />
-      </Torus>
-    </group>
-  );
-};
-
-// Simple particles system
-const SimpleParticles = ({ count = 500, size = 0.03, color = "#3D7FFF", spread = 10 }) => {
+// Simple particles system with Matrix colors
+const MatrixParticles = ({ count = 500, size = 0.03, color = "#00FF41", spread = 10 }) => {
   // Generate particles positions
   const particles = useMemo(() => {
     const temp = [];
@@ -218,40 +125,50 @@ function Scene() {
   const targetRotation = useRef({ x: 0, y: 0 });
   const scrollPos = useRef(0);
 
-  // Configuration for component spacing - adjusted for better visibility
+  // Configuration for component spacing - adjusted for Matrix theme
   const config = {
-    spacing: 8, // Increased vertical spacing
-    sideOffset: 4, // Slightly increased side offset
-    scrollSpeed: 1, // Increased scroll speed for more dramatic effect
+    spacing: 8, // Vertical spacing between components
+    sideOffset: 4, // Side offset for components
+    scrollSpeed: 1, // Scroll speed for camera movement
     totalHeight: 40, // Total height of the scene
   };
 
-  // Define components with adjusted positions
+  // The Matrix green color
+  const matrixGreen = "#00FF41";
+  const matrixDarkGreen = "#0D7A29";
+
+  // Define components with adjusted positions - now using MatrixFruit components
   const components: ComponentConfig[] = [
     {
-      Component: FloatingCodeBlock,
+      Component: MatrixFruit,
       props: { 
         position: [-config.sideOffset, 0, -2] as Position,
-        rotation: [0, 0, 0] as Rotation  // Add explicit rotation
+        rotation: [0, 0, 0] as Rotation,
+        fruitType: 'banana',
+        color: matrixGreen,
+        scale: 1.2,
+        speed: 0.8
       },
       side: 'left'
     },
     {
-      // Component: ReactLogo,
       Component: FloatingName,
       props: { 
         position: [config.sideOffset, -config.spacing, -2] as Position, 
-        scale: 1.5
+        scale: 1.5,
+        color: matrixGreen
       },
       side: 'right'
     },
     {
-      // Component: FloatingUICard,
-      Component: ReactLogo,
+      Component: MatrixFruit,
       props: { 
         position: [-config.sideOffset, -config.spacing * 2, -2] as Position, 
-        color: "#3D7FFF",
-        rotation: [0.1, -0.1, 0] as Rotation
+        color: matrixGreen,
+        rotation: [0.1, -0.1, 0] as Rotation,
+        fruitType: 'eggplant',
+        scale: 1.3,
+        speed: 0.7
       },
       side: 'left'
     },
@@ -260,27 +177,33 @@ function Scene() {
       props: { 
         position: [-config.sideOffset, -config.spacing * 4, -2] as Position,
         rotation: [0, 0, 0.1] as Rotation,
-        color: "#A64DFF", 
+        color: matrixGreen, 
         width: 0.05, 
         length: 8 
       },
       side: 'left'
     },
     {
-      // Component: FloatingCodeBlock,
-      Component: FloatingElement,
+      Component: MatrixFruit,
       props: { 
         position: [config.sideOffset, -config.spacing * 3, -2] as Position, 
-        rotation: [-0.1, 0.1, 0] as Rotation
+        rotation: [-0.1, 0.1, 0] as Rotation,
+        fruitType: 'apple',
+        color: matrixGreen,
+        scale: 1.1,
+        speed: 1
       },
       side: 'right'
     },
     {
-      // Component: TerminalBlock,
-      Component: ReactLogo,
+      Component: MatrixFruit,
       props: { 
         position: [config.sideOffset, -config.spacing * 5, -2] as Position,
-        rotation: [0.1, -0.1, 0] as Rotation
+        rotation: [0.1, -0.1, 0] as Rotation,
+        fruitType: 'orange',
+        color: matrixGreen,
+        scale: 1.2,
+        speed: 0.9
       },
       side: 'right'
     }
@@ -344,12 +267,14 @@ function Scene() {
 
   return (
     <>
-      {/* Enhanced lighting setup */}
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 5, 5] as Position} intensity={0.8} castShadow />
-      <pointLight position={[0, 5, 0] as Position} intensity={0.6} />
-      <pointLight position={[-2, -5, -2] as Position} color="#3D7FFF" intensity={1.0} />
-      <pointLight position={[2, -5, 2] as Position} color="#FF3D00" intensity={0.8} />
+      {/* Matrix-themed lighting setup */}
+      <ambientLight intensity={0.2} />
+      <directionalLight color={matrixGreen} position={[5, 5, 5] as Position} intensity={0.4} />
+      <pointLight color={matrixGreen} position={[0, 5, 0] as Position} intensity={0.3} />
+      <pointLight color={matrixGreen} position={[-2, -5, -2] as Position} intensity={0.5} />
+      
+      {/* Add the Matrix glitch effect */}
+      <MatrixGlitch intensity={0.15} color={matrixGreen} />
 
       {/* Main scene content */}
       <group ref={sceneRef}>
@@ -358,24 +283,21 @@ function Scene() {
         ))}
       </group>
 
-      {/* Environment and effects */}
-      <Cloud 
-        scale={4} 
-        opacity={0.15} 
-        speed={0.4} 
-        segments={20} 
-        position={[0, 0, -10] as Position}
+      {/* Matrix rain effect replacing Cloud */}
+      <MatrixRain 
+        count={1500} 
+        opacity={0.6} 
+        speed={0.8} 
+        spread={30} 
+        position={[0, 0, -15]} 
+        color={matrixGreen}
       />
-      <SimpleParticles count={2000} color="#3D7FFF" spread={20} />
-      <ContactShadows
-        opacity={0.3}
-        scale={30}
-        blur={2}
-        far={10}
-        resolution={256}
-        color="#000000"
-      />
-      <Environment preset="city" />
+      
+      {/* Matrix particles */}
+      <MatrixParticles count={2000} color={matrixGreen} spread={20} />
+      
+      {/* Dark environment to match Matrix theme */}
+      <color attach="background" args={["#000000"]} />
     </>
   );
 }
@@ -384,6 +306,12 @@ function Scene() {
 export default function ThreeDBackground() {
   return (
     <div className={styles.backgroundContainer}>
+      {/* Add matrix scanline effect */}
+      <div className={styles.scanline}></div>
+      
+      {/* Add matrix overlay grid effect */}
+      <div className={styles.matrixOverlay}></div>
+      
       <Canvas
         camera={{ 
           position: [0, 2, 8], // Adjusted initial camera position
@@ -396,7 +324,7 @@ export default function ThreeDBackground() {
           antialias: true,
           alpha: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.2,
+          toneMappingExposure: 0.8, // Darker exposure for Matrix feel
           outputColorSpace: THREE.SRGBColorSpace,
         }}
         shadows
@@ -408,6 +336,7 @@ export default function ThreeDBackground() {
           width: "100%",
           height: "100%",
           pointerEvents: "none",
+          backgroundColor: "#000000", // Black background
         }}
       >
         <Scene />

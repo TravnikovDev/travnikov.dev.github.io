@@ -2,9 +2,8 @@ import React, { useRef, useState, useEffect, forwardRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Float, Text3D, useGLTF, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
-import { Group, MeshStandardMaterial, Vector3 } from "three";
 
-const FloatingName = forwardRef<THREE.Group>((props, ref) => {
+const FloatingName = forwardRef<THREE.Group>((props: { position?: [number, number, number]; scale?: number; color?: string }, ref) => {
   const textRef = useRef<THREE.Mesh>();
   const frontTextRef = useRef<THREE.Mesh>(null);
   const glowTextRef = useRef<THREE.Mesh>(null);
@@ -20,6 +19,7 @@ const FloatingName = forwardRef<THREE.Group>((props, ref) => {
   const targetScale = useRef(new THREE.Vector3(1, 1, 1));
   const targetPosition = useRef(new THREE.Vector3(0, 0, 0));
   const targetRotation = useRef(new THREE.Euler(0, 0, 0));
+  const matrixColor = props.color || "#00FF41"; // Use the provided color or default to Matrix green
 
   // Initial position
   useEffect(() => {
@@ -101,6 +101,7 @@ const FloatingName = forwardRef<THREE.Group>((props, ref) => {
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         scale={[1, 1, 1]}
+        position={props.position || [0, 0, 0]}
       >
         {/* Main text */}
         <Text3D
@@ -119,11 +120,11 @@ const FloatingName = forwardRef<THREE.Group>((props, ref) => {
           TRAVNIKOV
           <meshStandardMaterial
             ref={materialRef}
-            color="#FFFFFF"  // Pure white for better contrast
+            color="#FFFFFF"  // Pure white base for the text
             roughness={0.15}  // Less roughness for sharper appearance
             metalness={0.95}  // Higher metalness for more reflection
-            emissive="#4D8AFF"  // Slightly brighter blue
-            emissiveIntensity={0.6}  // Less emission for reduced blur
+            emissive={matrixColor}  // Matrix green glow
+            emissiveIntensity={0.8}  // Enhanced emission for Matrix feel
             envMapIntensity={2.0}  // More environment reflection
           />
         </Text3D>
@@ -145,10 +146,10 @@ const FloatingName = forwardRef<THREE.Group>((props, ref) => {
           TRAVNIKOV
           <meshStandardMaterial
             ref={glowMaterialRef}
-            color="#3D7FFF"
+            color={matrixColor}
             roughness={1}
             metalness={0}
-            emissive="#3D7FFF"
+            emissive={matrixColor}
             emissiveIntensity={1}
             transparent
             opacity={0.3}
@@ -160,7 +161,7 @@ const FloatingName = forwardRef<THREE.Group>((props, ref) => {
           <sphereGeometry args={[1, 32, 32]} />
           <MeshDistortMaterial
             ref={distortMaterialRef}
-            color="#3D7FFF"
+            color={matrixColor}
             speed={2}
             distort={0.2}
             transparent
@@ -169,8 +170,8 @@ const FloatingName = forwardRef<THREE.Group>((props, ref) => {
         </mesh>
         
         {/* Small glowy accent lights */}
-        <pointLight position={[-3, 0, 2]} color="#3D7FFF" intensity={5} distance={4} />
-        <pointLight position={[0, 0, 2]} color="#FFFFFF" intensity={3} distance={4} />
+        <pointLight position={[-3, 0, 2]} color={matrixColor} intensity={5} distance={4} />
+        <pointLight position={[0, 0, 2]} color={matrixColor} intensity={3} distance={4} />
       </group>
     </Float>
   );
