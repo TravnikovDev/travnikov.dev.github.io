@@ -46,17 +46,18 @@ export default function IndexPage() {
       
       {/* Main content with scroll animations */}
       <Box className={styles.mainContent}>
-        {/* Hero section */}
-        <HeroSection />
-        {/* Animated divider */}
-        <SectionsDivider />
-        {/* Timeline section */}
-        <TimelineSection />
-        {/* Animated divider */}
-        <SectionsDivider />
-        {/* Tech stack section */}
-        <TechStackSection />
-        {/* Scroll progress indicator */}
+        <section>
+          <HeroSection />
+        </section>
+
+        <section className={styles.sectionRight}>
+          <TimelineSection />
+        </section>
+
+        <section>
+          <TechStackSection />
+        </section>
+
         <div
           className={styles.scrollProgressIndicator}
           style={{

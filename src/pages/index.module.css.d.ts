@@ -12,3 +12,4 @@ export const sectionsDividerInner: string;
 export const dividerAnimation: string;
 export const scrollProgressIndicator: string;
 export const mainContent: string;
+export const sectionRight: string;

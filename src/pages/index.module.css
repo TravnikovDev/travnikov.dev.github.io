@@ -1,3 +1,8 @@
+:root {
+  --dark-bg: rgba(15, 15, 15, 0.95);
+  --spacing: 350px;
+}
+
 .topGradientCircle {
   position: absolute;
   top: -200px;
@@ -72,6 +77,8 @@
   background-color: rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
+  grid-column: 2 / span 9;
+  margin-bottom: var(--spacing);
 }
 
 .sectionsDividerInner {
@@ -80,6 +87,8 @@
   width: 30%;
   background: linear-gradient(90deg, transparent, #3D7FFF, #A64DFF, transparent);
   animation: dividerAnimation 3s infinite linear;
+  background: var(--dark-bg);
+  padding: 1rem;
 }
 
 .scrollProgressIndicator {
@@ -92,6 +101,11 @@
   transform-origin: left;
   z-index: 100;
   box-shadow: 0 0 10px rgba(166, 77, 255, 0.6);
+  top: 0;
+  right: 0;
+  background: white;
+  transform-origin: 0%;
+  z-index: 1000;
 }
 
 .mainContent {
@@ -100,6 +114,28 @@
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
+  width: 100vw;
+  color: white;
+  z-index: 99;
+  position: absolute;
+  width: 100%;
+  margin: 0px auto;
+  padding: 120px 0px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+section {
+  grid-column: 2 / 8;
+  padding: 2rem;
+  background: var(--dark-bg);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  margin-bottom: var(--spacing);
+}
+
+.sectionRight {
+  grid-column: 6 / 12;
 }
 
 @keyframes glowPulse {

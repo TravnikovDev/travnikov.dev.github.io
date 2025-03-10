@@ -4,9 +4,6 @@ import {
   Environment,
   ContactShadows,
   Cloud,
-  useScroll,
-  ScrollControls,
-  Scroll,
   Box,
   OrbitControls,
   Sphere,
@@ -202,10 +199,10 @@ const SimpleParticles = ({ count = 500, size = 0.03, color = "#3D7FFF", spread =
 // Main Scene component for the 3D background
 function Scene() {
   const sceneRef = useRef<Group>(null);
-  const scrollData = useScroll();
   const { viewport } = useThree();
   const mousePos = useRef({ x: 0, y: 0 });
   const targetRotation = useRef({ x: 0, y: 0 });
+  const scrollPos = useRef(0);
   
   // Create references for each object to animate
   const blob1Ref = useRef<THREE.Group>(null);
@@ -215,11 +212,12 @@ function Scene() {
   const ribbon2Ref = useRef<THREE.Group>(null);
   const ribbon3Ref = useRef<THREE.Group>(null);
   const reactLogoRef = useRef<THREE.Group>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   
   // Store initial positions for parallax effect
   const initialPositions = useRef<{[key: string]: Vector3}>({});
   
-  // Setup initial positions when component mounts
+  // Setup initial positions and scroll handler
   useEffect(() => {
     const refs = {
       blob1: blob1Ref,
@@ -237,6 +235,14 @@ function Scene() {
         initialPositions.current[key] = ref.current.position.clone();
       }
     });
+
+    // Handle scroll
+    const handleScroll = () => {
+      scrollPos.current = window.scrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
   // Handle mouse movement
@@ -259,11 +265,18 @@ function Scene() {
   useFrame((state, delta) => {
     if (!sceneRef.current) return;
     
-    // Get scroll progress (0 to 1)
-    const scrollProgress = scrollData.offset;
+    // Calculate scroll progress (normalized between 0 and 1)
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollProgress = Math.min(Math.max(scrollPos.current / maxScroll, 0), 1);
     
+    // Update camera position based on scroll
+    if (state.camera) {
+      state.camera.position.z = 5 + scrollProgress * 2; // Move camera back as user scrolls
+      state.camera.position.y = scrollProgress * -1; // Move camera down slightly
+      state.camera.rotation.x = scrollProgress * 0.2; // Tilt camera up/down
+    }
+
     // Parallax effect: move objects based on scroll
-    // Each object will move at different rates for a layered effect
     const refs = {
       blob1: { ref: blob1Ref, factor: 1.1 },
       blob2: { ref: blob2Ref, factor: 0.9 },
@@ -299,6 +312,9 @@ function Scene() {
           initial.z + (Math.cos(scrollProgress * Math.PI) * factor * 1.5),
           0.1
         );
+
+        // Add rotation based on scroll
+        ref.current.rotation.y = scrollProgress * Math.PI * factor;
       }
     });
     
@@ -427,10 +443,7 @@ export default function ThreeDBackground() {
           pointerEvents: "none",
         }}
       >
-        <ScrollControls pages={3} damping={0.3} distance={1}>
-          <Scene />
-          <Scroll html />
-        </ScrollControls>
+        <Scene />
       </Canvas>
     </div>
   );
