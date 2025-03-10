@@ -26,7 +26,7 @@ function SectionsDivider() {
 
 export default function IndexPage() {
   const [scrollProgress, setScrollProgress] = useState(0);
-
+  
   // Handle scroll events for progress indicator
   useEffect(() => {
     const handleScroll = () => {
@@ -34,11 +34,11 @@ export default function IndexPage() {
       const progress = Math.min(1, Math.max(0, window.scrollY / totalHeight));
       setScrollProgress(progress);
     };
-
+    
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
+  
   return (
     <BaseLayout>
       {/* Dynamic 3D background with parallax */}

@@ -55,7 +55,7 @@ export function TerminalBlock({
         color="#3D7FFF"
         anchorX="left"
         anchorY="middle"
-        font="/fonts/JetBrainsMono-Bold.woff"
+        font="fonts/Inter_Bold.json"
       >
         $ npm install
       </Text>
@@ -66,7 +66,7 @@ export function TerminalBlock({
         color="#00F0FF"
         anchorX="left"
         anchorY="middle"
-        font="/fonts/JetBrainsMono-Bold.woff"
+        font="/fonts/Inter_Bold.json"
       >
         Installing dependencies...
       </Text>

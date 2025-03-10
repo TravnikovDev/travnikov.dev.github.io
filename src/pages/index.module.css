@@ -67,40 +67,39 @@
 }
 
 .sectionsDivider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
   position: relative;
-  height: 2px;
-  background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
-  margin: 50px 0;
+  overflow: hidden;
 }
 
 .sectionsDividerInner {
   position: absolute;
-  top: -5px;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  background: rgba(34, 144, 224, 0.3);
-  border-radius: 50%;
-  animation: glowPulse 3s infinite;
+  height: 100%;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, #3D7FFF, #A64DFF, transparent);
+  animation: dividerAnimation 3s infinite linear;
 }
 
 .scrollProgressIndicator {
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3D7FFF, #A64DFF);
   width: 100%;
-  height: 5px;
-  background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
   transform-origin: left;
-  z-index: 9999;
+  z-index: 100;
+  box-shadow: 0 0 10px rgba(166, 77, 255, 0.6);
 }
 
 .mainContent {
   position: relative;
-  z-index: 10;
-  pointer-events: auto;
-  overflow-y: auto;
+  z-index: 1;
   width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 @keyframes glowPulse {
@@ -122,4 +121,19 @@
   100% {
     background-position: 100% 100%;
   }
+}
+
+@keyframes dividerAnimation {
+  0% {
+    left: -30%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Ensures text is readable over the 3D background */
+h1, h2, h3, h4, h5, h6, p {
+  position: relative;
+  z-index: 2;
 }

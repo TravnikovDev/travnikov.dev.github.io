@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { AppShell } from "@mantine/core";
 import Footer from "../components/shared/Footer";
 import Header from "../components/shared/Header";
