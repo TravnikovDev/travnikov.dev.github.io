@@ -285,16 +285,16 @@ function Scene() {
 
       {/* Matrix rain effect replacing Cloud */}
       <MatrixRain 
-        count={1500} 
+        count={2500} 
         opacity={0.6} 
-        speed={0.8} 
+        speed={3} 
         spread={30} 
         position={[0, 0, -15]} 
         color={matrixGreen}
       />
       
       {/* Matrix particles */}
-      <MatrixParticles count={2000} color={matrixGreen} spread={20} />
+      <MatrixParticles count={3000} color={matrixGreen} spread={20} />
       
       {/* Dark environment to match Matrix theme */}
       <color attach="background" args={["#000000"]} />

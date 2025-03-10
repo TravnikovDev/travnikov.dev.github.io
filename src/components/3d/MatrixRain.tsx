@@ -81,7 +81,7 @@ export default function MatrixRain({
         ref={instancedMeshRef} 
         args={[null, null, count]}
       >
-        <planeGeometry args={[0.3, 0.3]} />
+        <planeGeometry args={[0.1, 0.3]} />
         <meshBasicMaterial 
           color={color}
           transparent={true}
