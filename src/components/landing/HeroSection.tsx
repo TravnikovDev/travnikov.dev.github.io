@@ -11,7 +11,6 @@ import {
   Badge,
 } from "@mantine/core";
 import { Link } from "gatsby";
-import HeroAnimation from "../3d/HeroAnimation";
 import * as styles from './HeroSection.module.css';
 
 interface FloatingElementProps {

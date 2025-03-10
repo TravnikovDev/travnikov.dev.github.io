@@ -10,3 +10,4 @@ export const animatedGradientLinesBottom: string;
 export const sectionsDivider: string;
 export const sectionsDividerInner: string;
 export const scrollProgressIndicator: string;
+export const mainContent: string;

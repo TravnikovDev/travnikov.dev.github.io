@@ -21,8 +21,9 @@ import FloatingCodeBlock from "./FloatingCodeBlock";
 import { TerminalBlock } from "./TerminalBlock";
 import ReactLogo from "./ReactLogo";
 import Particles from "./Particles";
-import * as styles from './HeroAnimation.module.css';
+import * as styles from './3dBackground.module.css';
 
+// Scene setup for the 3D background
 function Scene() {
   const sceneRef = useRef<Group>(null);
   const scrollData = useScroll();
@@ -291,13 +292,10 @@ function Scene() {
   );
 }
 
-export default function HeroAnimation() {
+// Main component with proper fullscreen fixed positioning
+export default function ThreeDBackground() {
   return (
-    <Box
-      w="100vw"
-      h="100vh"
-      className={styles.heroAnimation}
-    >
+    <div className={styles.backgroundContainer}>
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         dpr={[1, 2]}
@@ -305,23 +303,26 @@ export default function HeroAnimation() {
           antialias: true,
           alpha: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.2, // Slightly reduced exposure
+          toneMappingExposure: 1.2,
           outputColorSpace: THREE.SRGBColorSpace,
         }}
         shadows
         style={{
-          position: "absolute", // Added to ensure proper stacking
-          touchAction: "none",
-          willChange: "transform",
-          height: "100%",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          zIndex: -1,
           width: "100%",
+          height: "100%",
+          pointerEvents: "none",
         }}
       >
         <ScrollControls pages={3} damping={0.3} distance={1}>
           <Scene />
-          <Scroll html style={{ display: 'none' }} />
+          {/* This empty Scroll html component connects to the DOM scroll events */}
+          <Scroll html />
         </ScrollControls>
       </Canvas>
-    </Box>
+    </div>
   );
 }

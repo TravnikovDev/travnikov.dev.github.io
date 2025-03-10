@@ -6,7 +6,7 @@ import HeroSection from "../components/landing/HeroSection";
 import { TimelineSection } from "../components/landing/TimelineSection";
 import { TechStackSection } from "../components/landing/TechStackSection";
 import { Box, Container } from "@mantine/core";
-import HeroAnimation from "../components/3d/HeroAnimation";
+import ThreeDBackground from "../components/3d/3dBackground";
 import * as styles from './index.module.css';
 
 // Parallax divider with animation
@@ -42,11 +42,10 @@ export default function IndexPage() {
   return (
     <BaseLayout>
       {/* Dynamic 3D background with parallax */}
-      <Box style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}>
-        <HeroAnimation />
-      </Box>
+      <ThreeDBackground />
+      
       {/* Main content with scroll animations */}
-      <Box>
+      <Box className={styles.mainContent}>
         {/* Hero section */}
         <HeroSection />
         {/* Animated divider */}
