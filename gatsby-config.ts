@@ -19,10 +19,8 @@ const config: GatsbyConfig = {
   jsxRuntime: 'automatic',
   trailingSlash: `always`,
   plugins: [
-    `gatsby-plugin-sharp`,
-    `gatsby-transformer-sharp`,
-    `gatsby-transformer-remark`,
     'gatsby-plugin-dts-css-modules',
+    'gatsby-transformer-remark',
     {
       resolve: `gatsby-source-filesystem`,
       options: {
