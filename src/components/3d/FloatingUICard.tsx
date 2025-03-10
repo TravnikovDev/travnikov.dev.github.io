@@ -3,7 +3,7 @@ import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import * as THREE from "three";
-import { Group, ColorRepresentation, Vector3 } from "three";
+import { Group, ColorRepresentation } from "three";
 
 interface FloatingUICardProps {
   position?: [number, number, number];
@@ -37,7 +37,7 @@ export function FloatingUICard({
       const scrollY = window.scrollY || window.pageYOffset;
       groupRef.current.position.y = initialY.current + Math.sin(t) * 0.1 + scrollY * 0.001;
       
-      // Slight rotation
+      // Gentle rotation
       groupRef.current.rotation.x = rotation[0] + Math.sin(t * 0.5) * 0.02;
       groupRef.current.rotation.y = rotation[1] + Math.cos(t * 0.5) * 0.02;
     }

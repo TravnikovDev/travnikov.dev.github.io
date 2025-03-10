@@ -10,12 +10,8 @@ import {
 import * as THREE from 'three';
 import { Group, MathUtils } from 'three';
 import * as styles from './3dBackground.module.css';
-// import FloatingCodeBlock from './FloatingCodeBlock';
-// import FloatingName from './FloatingName';
-// import { FloatingUICard } from './FloatingUICard';
-// import { FlowingRibbon } from './FlowingRibbon';
-// import ReactLogo from './ReactLogo';
-// import { TerminalBlock } from './TerminalBlock';
+import FloatingCodeBlock from './FloatingCodeBlock';
+import FloatingName from './FloatingName';
 
 // Type for position that accepts both THREE.Vector3 and position tuples
 type Position = [number, number, number];
@@ -233,15 +229,16 @@ function Scene() {
   // Define components with adjusted positions
   const components: ComponentConfig[] = [
     {
-      // Component: FloatingName,
-      Component: FloatingElement,
+      Component: FloatingCodeBlock,
       props: { 
-        position: [-config.sideOffset, 0, -2] as Position
+        position: [-config.sideOffset, 0, -2] as Position,
+        rotation: [0, 0, 0] as Rotation  // Add explicit rotation
       },
       side: 'left'
     },
     {
-      Component: ReactLogo,
+      // Component: ReactLogo,
+      Component: FloatingName,
       props: { 
         position: [config.sideOffset, -config.spacing, -2] as Position, 
         scale: 1.5
@@ -250,22 +247,13 @@ function Scene() {
     },
     {
       // Component: FloatingUICard,
-      Component: AnimatedBlob,
+      Component: ReactLogo,
       props: { 
         position: [-config.sideOffset, -config.spacing * 2, -2] as Position, 
         color: "#3D7FFF",
         rotation: [0.1, -0.1, 0] as Rotation
       },
       side: 'left'
-    },
-    {
-      // Component: FloatingCodeBlock,
-      Component: FloatingElement,
-      props: { 
-        position: [config.sideOffset, -config.spacing * 3, -2] as Position, 
-        rotation: [-0.1, 0.1, 0] as Rotation
-      },
-      side: 'right'
     },
     {
       Component: FlowingRibbon,
@@ -277,6 +265,15 @@ function Scene() {
         length: 8 
       },
       side: 'left'
+    },
+    {
+      // Component: FloatingCodeBlock,
+      Component: FloatingElement,
+      props: { 
+        position: [config.sideOffset, -config.spacing * 3, -2] as Position, 
+        rotation: [-0.1, 0.1, 0] as Rotation
+      },
+      side: 'right'
     },
     {
       // Component: TerminalBlock,

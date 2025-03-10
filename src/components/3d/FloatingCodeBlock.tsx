@@ -5,16 +5,17 @@ import { Group } from "three";
 
 interface FloatingCodeBlockProps {
   position: [number, number, number];
-  rotation: [number, number, number];
+  rotation?: [number, number, number]; // Make rotation optional
   scale?: number;
 }
 
 function FloatingCodeBlock({ 
   position, 
-  rotation, 
+  rotation = [0, 0, 0], // Add default value
   scale = 1 
 }: FloatingCodeBlockProps) {
   const blockRef = useRef<Group>(null);
+  const initialY = useRef(position[1]); // Store initial Y position
 
   useFrame(({ clock }) => {
     if (!blockRef.current) return;
@@ -22,7 +23,8 @@ function FloatingCodeBlock({
     const t = clock.getElapsedTime();
 
     // Gentle floating animation
-    blockRef.current.position.y = position[1] + Math.sin(t * 0.4 + 2) * 0.15;
+    blockRef.current.position.y = initialY.current + Math.sin(t * 0.4 + 2) * 0.15;
+    // Safe access to rotation since we have a default value
     blockRef.current.rotation.z = rotation[2] + Math.sin(t * 0.3) * 0.05;
 
     // Update position based on scroll
