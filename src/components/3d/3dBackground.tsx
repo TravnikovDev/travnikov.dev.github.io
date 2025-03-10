@@ -273,28 +273,28 @@ function Scene() {
       <pointLight color={matrixGreen} position={[0, 5, 0] as Position} intensity={0.3} />
       <pointLight color={matrixGreen} position={[-2, -5, -2] as Position} intensity={0.5} />
       
-      {/* Add the Matrix glitch effect */}
-      <MatrixGlitch intensity={0.15} color={matrixGreen} />
-
-      {/* Main scene content */}
-      <group ref={sceneRef}>
-        {components.map(({ Component, props, side }, index) => (
-          <Component key={index} {...props} />
-        ))}
-      </group>
-
-      {/* Matrix rain effect replacing Cloud */}
+      {/* Matrix rain effect in the background */}
       <MatrixRain 
-        count={2500} 
+        count={1500} 
         opacity={0.6} 
-        speed={3} 
+        speed={0.8} 
         spread={30} 
         position={[0, 0, -15]} 
         color={matrixGreen}
       />
       
       {/* Matrix particles */}
-      <MatrixParticles count={3000} color={matrixGreen} spread={20} />
+      <MatrixParticles count={2000} color={matrixGreen} spread={20} />
+      
+      {/* Main scene content */}
+      <group ref={sceneRef}>
+        {components.map(({ Component, props, side }, index) => (
+          <Component key={index} {...props} />
+        ))}
+      </group>
+      
+      {/* Add the Matrix glitch effect - moved to be rendered last */}
+      {/* <MatrixGlitch intensity={0.2} color={matrixGreen} /> */}
       
       {/* Dark environment to match Matrix theme */}
       <color attach="background" args={["#000000"]} />
@@ -324,7 +324,7 @@ export default function ThreeDBackground() {
           antialias: true,
           alpha: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 0.8, // Darker exposure for Matrix feel
+          toneMappingExposure: 0.7, // Slightly darker exposure for more contrast with Matrix effect
           outputColorSpace: THREE.SRGBColorSpace,
         }}
         shadows

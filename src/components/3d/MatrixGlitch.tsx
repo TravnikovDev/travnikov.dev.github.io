@@ -83,14 +83,14 @@ export default function MatrixGlitch({
 }: MatrixGlitchProps) {
   const materialRef = useRef<any>();
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock, camera }) => {
     if (materialRef.current) {
       materialRef.current.time = clock.getElapsedTime();
     }
   });
 
   return (
-    <mesh position={[0, 0, 9.9]}>
+    <mesh position={[0, 0, -5]}>
       <planeGeometry args={[50, 50]} />
       <matrixGlitchMaterial 
         ref={materialRef} 
