@@ -21,6 +21,7 @@ export const heroButton: string;
 export const heroButtonOutline: string;
 export const availability: string;
 export const availabilityIndicator: string;
+export const pulse: string;
 export const techStack: string;
 export const techBadge: string;
 export const scrollIndicator: string;

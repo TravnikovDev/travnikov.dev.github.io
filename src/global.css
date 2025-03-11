@@ -1,0 +1,172 @@
+/* Global styles for improved typography and readability */
+
+/* Base font sizing */
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: "JetBrains Mono", monospace, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #0A0A1A;
+}
+
+/* Improved heading readability */
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+/* Paragraph spacing */
+p {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+/* Links and buttons */
+a {
+  color: #21E6C1; /* Electric cyan */
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+a:hover {
+  color: #FF61A6; /* Sunset pink */
+  text-shadow: 0 0 8px rgba(255, 97, 166, 0.4);
+}
+
+/* Consistent text alignment */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+/* Text effects - use these classes sparingly */
+.text-neon {
+  color: #FF61A6; /* Sunset pink */
+  text-shadow: 0 0 8px rgba(255, 97, 166, 0.7), 0 0 15px rgba(255, 97, 166, 0.5);
+}
+
+.text-neon-cyan {
+  color: #21E6C1; /* Electric cyan */
+  text-shadow: 0 0 8px rgba(33, 230, 193, 0.7), 0 0 15px rgba(33, 230, 193, 0.5);
+}
+
+/* Readability helpers for smaller screens */
+@media (max-width: 48em) { /* sm breakpoint */
+  html {
+    font-size: 15px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  h4 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 30em) { /* xs breakpoint */
+  html {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+  
+  h4 {
+    font-size: 1.125rem;
+  }
+  
+  /* Ensure minimum body text size on mobile */
+  p, li, td, th {
+    font-size: 1.1rem; /* Slightly larger on mobile for readability */
+  }
+  
+  /* Reduce neon effect on small screens for better readability */
+  .text-neon, .text-neon-cyan {
+    text-shadow: 0 0 4px rgba(255, 97, 166, 0.5);
+  }
+}
+
+/* Grid helpers for consistent alignment */
+.container-centered {
+  width: 83.333%; /* 10/12 columns */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Vertical spacing helpers */
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mb-5 { margin-bottom: 3rem; }
+
+/* Responsive image handling */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Grid system for consistent vertical alignment */
+.vertical-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Vaporwave-style container with subtle grid background */
+.vaporwave-container {
+  background: rgba(20, 27, 65, 0.4);
+  background-image: 
+    linear-gradient(rgba(21, 230, 193, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(21, 230, 193, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 97, 166, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}

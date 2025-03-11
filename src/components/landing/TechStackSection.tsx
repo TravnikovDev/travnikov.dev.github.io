@@ -504,62 +504,54 @@ export function TechStackSection() {
   }, []);
 
   return (
-    <Container ref={sectionRef} size="lg" py={isMobile ? "5rem" : "8rem"} id="skills">
-      {/* Section Title */}
-      <Box
-        className={styles.sectionTitle}
-        style={{
-          textAlign: "center",
-          marginBottom: isMobile ? "2.5rem" : "4rem"
-        }}
-      >
-        <Box
-          className={styles.sectionTitleInner}
-        >
-          <Title
-            order={2}
-            className={styles.sectionTitleText}
+    <Container size="xl" className={styles.techStackSection}>
+      <Stack gap="xl">
+        <div className={styles.sectionTitle}>
+          <Box
+            className={styles.sectionTitle}
             style={{
-              fontSize: isMobile ? "2.3rem" : "3rem"
+              textAlign: "center",
+              marginBottom: isMobile ? "2.5rem" : "4rem"
             }}
           >
-            Technical Expertise
-          </Title>
+            <Box
+              className={styles.sectionTitleInner}
+            >
+              <Title
+                order={2}
+                className={styles.sectionTitleText}
+                style={{
+                  fontSize: isMobile ? "2.3rem" : "3rem"
+                }}
+              >
+                Technical Expertise
+              </Title>
 
-          {/* Animated underline */}
-          <Box className={styles.animatedUnderline} />
-        </Box>
+              {/* Animated underline */}
+              <Box className={styles.animatedUnderline} />
+            </Box>
 
-        <Text
-          size={isMobile ? "lg" : "xl"}
-          className={styles.sectionDescription}
-          style={{
-            padding: isMobile ? "0 1rem" : 0,
-            margin: isMobile ? "1.5rem auto 0" : "2rem auto 0"
-          }}
-        >
-          A showcase of my technical proficiency across various domains of web development,
-          backed by years of hands-on experience.
-        </Text>
-      </Box>
-
-      <Stack gap={isMobile ? "md" : "xl"}>
-        {techData.map((category, idx) => (
-          <Box key={idx} className={styles.techCategory} style={{ marginBottom: isMobile ? "2rem" : "3rem" }}>
-            <Paper
-              p={isMobile ? "md" : "lg"}
-              radius="lg"
-              className={styles.techCategoryPaper}
+            <Text
+              size={isMobile ? "lg" : "xl"}
+              className={styles.sectionDescription}
               style={{
-                marginBottom: isMobile ? "1.5rem" : "2rem",
-                background: `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.8))`,
-                backdropFilter: "blur(15px)",
-                border: `2px solid ${category.color}40`,
-                position: "relative",
-                overflow: "hidden"
+                padding: isMobile ? "0 1rem" : 0,
+                margin: isMobile ? "1.5rem auto 0" : "2rem auto 0"
               }}
             >
-              {/* Category header content */}
+              A showcase of my technical proficiency across various domains of web development,
+              backed by years of hands-on experience.
+            </Text>
+          </Box>
+        </div>
+
+        {techData.map((category, index) => (
+          <Box key={index} mb="xl">
+            <Paper
+              p="xl"
+              radius="md"
+              className={styles.techCategoryPaper}
+            >
               {isMobile ? (
                 <Stack gap="md">
                   <Group gap="md">
@@ -684,7 +676,7 @@ export function TechStackSection() {
 
             <Grid gutter={isMobile ? "md" : "xl"}>
               {category.skills.map((skill, index) => (
-                <Grid.Col key={index} span={{ base: 12, md: 6, lg: 6 }}>
+                <Grid.Col key={index} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
                   <SkillCard
                     skill={skill}
                     index={index}

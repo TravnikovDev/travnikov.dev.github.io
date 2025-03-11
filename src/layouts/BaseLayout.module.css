@@ -2,8 +2,30 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: linear-gradient(to bottom, #141B41, #281154, #0A0A1A); /* Vaporwave gradient */
+  overflow-x: hidden;
 }
 
 .main {
   flex: 1;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 70px; /* Account for fixed header */
+  padding-bottom: 60px; /* Account for footer space */
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .main {
+    width: 100%;
+    padding: 65px 0 60px; /* Smaller top padding on mobile */
+  }
+}
+
+@media (max-width: 30em) { /* xs breakpoint */
+  .main {
+    padding: 55px 0 60px; /* Even smaller padding on extra small screens */
+  }
 }

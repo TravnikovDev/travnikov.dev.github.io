@@ -1,12 +1,26 @@
 .socialLinks {
   display: flex;
-  gap: 16px;
+  gap: 20px;
 }
 
 .actionIcon {
-  transition: transform 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  position: relative;
 }
 
 .actionIcon:hover {
-  transform: scale(1.1);
+  transform: translateY(-5px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 48em) {
+  .socialLinks {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 30em) {
+  .socialLinks {
+    gap: 12px;
+  }
 }

@@ -9,3 +9,4 @@ export const highlight: string;
 export const scanline: string;
 export const scanlineEffect: string;
 export const container: string;
+export const headerGroup: string;

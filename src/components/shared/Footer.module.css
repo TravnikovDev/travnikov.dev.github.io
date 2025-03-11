@@ -1,6 +1,8 @@
 .footer {
-  background-color: #f8f9fa;
-  border-top: 1px solid #e9ecef;
+  background: rgba(17, 16, 36, 0.75); /* Vaporwave dark navy/purple background */
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 97, 166, 0.2); /* Sunset pink border */
+  box-shadow: 0 0 20px rgba(21, 230, 193, 0.1); /* Electric cyan glow */
 }
 
 .footerContent {
@@ -8,11 +10,28 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
+  max-width: 83.333%; /* 10/12 columns */
+  margin: 0 auto; /* Center the container */
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .footerContent {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+  }
 }
 
 .footerText {
   font-size: 0.875rem;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "JetBrains Mono", monospace;
+}
+
+@media (max-width: 30em) { /* xs breakpoint */
+  .footerText {
+    font-size: 0.75rem;
+  }
 }
 
 .mobileNav {
@@ -20,12 +39,15 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff;
-  border-top: 1px solid #e9ecef;
+  background: rgba(17, 16, 36, 0.85); /* Match header background */
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 97, 166, 0.2);
   display: flex;
   justify-content: space-around;
-  padding: 0.5rem 0;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  padding: 0.3rem 0;
+  height: 45px; /* Reduced height */
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
 .navItem {
@@ -33,15 +55,19 @@
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.7rem;
 }
 
 .navIcon {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  margin-bottom: 2px;
 }
 
 .navText {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500; /* Thicker font for readability */
 }
 
 .navItemHighlighted {
@@ -49,15 +75,19 @@
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  color: #007bff;
+  color: #FF61A6; /* Sunset pink for highlighted item */
 }
 
 .navIconHighlighted {
-  font-size: 1.5rem;
-  color: #007bff;
+  font-size: 1.2rem;
+  color: #FF61A6;
+  margin-bottom: 2px;
+  text-shadow: 0 0 8px rgba(255, 97, 166, 0.7);
 }
 
 .navTextHighlighted {
-  font-size: 0.75rem;
-  color: #007bff;
+  font-size: 0.65rem;
+  color: #FF61A6;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500;
 }

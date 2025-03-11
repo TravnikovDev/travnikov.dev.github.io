@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Box, Group, Text, Button, UnstyledButton, Badge } from "@mantine/core";
+import { Box, Group, UnstyledButton } from "@mantine/core";
 import { Link } from "gatsby";
 import { useLocation } from "@reach/router";
 import { useColorScheme } from "@mantine/hooks";
@@ -32,7 +32,6 @@ const NavItem = ({ label, path, isActive }) => {
           {label}
         </div>
       </UnstyledButton>
-
       <div
         ref={underlineRef}
         className={styles.navUnderline}
@@ -41,14 +40,13 @@ const NavItem = ({ label, path, isActive }) => {
           width: isActive ? '100%' : hovered ? '90%' : '0%',
           opacity: isActive || hovered ? 1 : 0,
           background: isActive 
-            ? 'linear-gradient(90deg, #3D7FFF, #A64DFF)'
+            ? 'linear-gradient(90deg, #21E6C1, #FF61A6)' // Vaporwave colors (cyan to pink)
             : 'currentColor',
           boxShadow: isActive 
-            ? '0 0 15px rgba(61, 127, 255, 0.8), 0 0 30px rgba(166, 77, 255, 0.5)'
+            ? '0 0 15px rgba(33, 230, 193, 0.8), 0 0 30px rgba(255, 97, 166, 0.5)'
             : 'none',
         }}
       />
-
       <div
         ref={glowRef}
         className={styles.navGlow}
@@ -71,12 +69,12 @@ export default function DesktopNavigation() {
     { label: "Experiments", path: "/experiments" },
     { label: "Contact", path: "/contact" },
   ];
-
+  
   // Animate navigation on mount
   useEffect(() => {
     if (navigationRef.current) {
       navigationRef.current.style.opacity = '0';
-      navigationRef.current.style.transform = 'translateY(-20px)';
+      navigationRef.current.style.transform = 'translateY(-10px)';
       
       // Trigger animation after mount
       requestAnimationFrame(() => {
@@ -90,13 +88,11 @@ export default function DesktopNavigation() {
   }, []);
   
   return (
-    <Group gap="md">
+    <Group gap="md" className={styles.navigationGroup}>
       <Logo />
       <div ref={navigationRef}>
-        <Box
-          className={styles.navBox}
-        >
-          <Group gap="xs">
+        <Box className={styles.navBox}>
+          <Group gap="xs" className={styles.navLinksGroup}>
             {navItems.map((link) => (
               <NavItem 
                 key={link.path} 

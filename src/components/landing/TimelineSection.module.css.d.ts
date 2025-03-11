@@ -26,6 +26,7 @@ export const timelineTitleContainer: string;
 export const timelineTitleInner: string;
 export const timelineTitleText: string;
 export const timelineUnderline: string;
+export const shimmer: string;
 export const timelineDescriptionText: string;
 export const timelineCardContainer: string;
 export const timelineMobileNav: string;

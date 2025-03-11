@@ -19,7 +19,7 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
       <AppShell.Main className={styles.main}>
         {children}
       </AppShell.Main>
-
+      
       <Footer />
     </AppShell>
   );

@@ -290,35 +290,18 @@ export function TimelineSection() {
   };
 
   return (
-    <Container size="lg" py={isMobile ? "4rem" : "8rem"}>
-      {/* Animated Section Title */}
-      <div
-        className={styles.timelineTitleContainer}
-      >
-        <div
-          className={styles.timelineTitleInner}
-        >
-          <Title
-            order={2}
-            className={styles.timelineTitleText}
-          >
-            Career Journey
+    <Container size="xl" className={styles.timelineSection}>
+      <Box className={styles.timelineTitleContainer}>
+        <Box className={styles.timelineTitleInner}>
+          <Title order={2} className={styles.timelineTitleText}>
+            Professional Journey
           </Title>
-
-          {/* Animated underline */}
-          <div
-            className={styles.timelineUnderline}
-          />
-        </div>
-
-        <Text
-          size={isMobile ? "lg" : "xl"}
-          c="dimmed"
-          className={styles.timelineDescriptionText}
-        >
-          My professional path in creating exceptional digital experiences
+          <Box className={styles.timelineUnderline} />
+        </Box>
+        <Text className={styles.timelineDescriptionText}>
+          Exploring my career path and key milestones in software development
         </Text>
-      </div>
+      </Box>
 
       {/* Mobile-First Card Layout (used for all devices) */}
       <Box

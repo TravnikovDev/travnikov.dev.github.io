@@ -8,11 +8,19 @@
   width: 100%;
   top: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(17, 16, 36, 0.75); /* Vaporwave dark navy/purple background */
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
-  height: 60px;
+  border-bottom: 1px solid rgba(255, 97, 166, 0.2); /* Sunset pink instead of matrix green */
+  box-shadow: 0 0 20px rgba(21, 230, 193, 0.1); /* Electric cyan glow */
+  height: 50px; /* Reduced from 60px */
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .appShellHeader {
+    height: 40px; /* Even smaller on mobile */
+    background: rgba(17, 16, 36, 0.65); /* More transparent on mobile */
+  }
 }
 
 .box {
@@ -31,7 +39,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 65, 0.1), transparent);
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(21, 230, 193, 0.1), transparent); /* Electric cyan instead of green */
   transition: background 0.2s ease;
   mix-blend-mode: screen;
 }
@@ -45,8 +53,8 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(0, 255, 65, 0.2),
-    rgba(0, 255, 65, 0.2),
+    rgba(255, 97, 166, 0.2), /* Sunset pink */
+    rgba(21, 230, 193, 0.2), /* Electric cyan */
     transparent
   );
 }
@@ -60,8 +68,8 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(0, 255, 65, 0.2),
-    rgba(0, 255, 65, 0.2),
+    rgba(255, 122, 0, 0.2), /* Orange neon */
+    rgba(255, 97, 166, 0.2), /* Sunset pink */
     transparent
   );
 }
@@ -72,7 +80,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 65, 0.05), transparent);
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(21, 230, 193, 0.05), transparent); /* Electric cyan */
   pointer-events: none;
   mix-blend-mode: screen;
 }
@@ -87,12 +95,12 @@
     to bottom,
     transparent,
     transparent 50%,
-    rgba(0, 255, 65, 0.015) 50%,
-    rgba(0, 255, 65, 0.015) 100%
+    rgba(255, 97, 166, 0.01) 50%,
+    rgba(21, 230, 193, 0.01) 100%
   );
   background-size: 100% 4px;
   animation: scanlineEffect 6s linear infinite;
-  opacity: 0.5;
+  opacity: 0.3; /* Reduced opacity */
   pointer-events: none;
 }
 
@@ -108,8 +116,34 @@
 .container {
   position: relative;
   z-index: 20;
-  padding: 0 2rem;
+  padding: 0 1rem; /* Reduced padding */
   height: 100%;
   display: flex;
   align-items: center;
+  max-width: 83.333%; /* 10/12 columns */
+  margin: 0 auto; /* Center the container */
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.5rem; /* Even smaller padding on mobile */
+  }
+}
+
+.headerGroup {
+  width: 100%;
+  padding: 0;
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .headerGroup {
+    justify-content: center !important; /* Center on mobile */
+  }
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .container {
+    padding: 0 0.5rem; /* Even smaller padding on mobile */
+    max-width: 95%; /* Slightly wider on mobile */
+  }
 }

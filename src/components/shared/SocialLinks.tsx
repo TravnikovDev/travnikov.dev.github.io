@@ -13,19 +13,19 @@ export default function SocialLinks({ size = "md" }: SocialLinksProps) {
       name: "GitHub",
       url: "https://github.com/TravnikovDev",
       icon: "🐙",
-      hoverColor: "#3D7FFF"
+      hoverColor: "#21E6C1" // Electric cyan - vaporwave
     },
     {
       name: "LinkedIn",
       url: "https://linkedin.com/in/travnikov",
       icon: "💼",
-      hoverColor: "#0077FF"
+      hoverColor: "#FF61A6" // Sunset pink - vaporwave
     },
     {
       name: "Twitter",
       url: "https://twitter.com/TravnikovDev",
       icon: "🐦",
-      hoverColor: "#00F0FF"
+      hoverColor: "#FF7A00" // Orange neon - vaporwave
     }
   ];
 
@@ -38,7 +38,7 @@ export default function SocialLinks({ size = "md" }: SocialLinksProps) {
           href={link.url}
           target="_blank"
           rel="noopener noreferrer"
-          variant="light"
+          variant="transparent"
           radius="xl"
           size={size}
           className={styles.actionIcon}

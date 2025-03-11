@@ -9,12 +9,49 @@
   border-radius: 4px;
 }
 
+/* Responsive adjustments using Mantine breakpoints */
+@media (max-width: 64em) { /* md breakpoint */
+  .navItem {
+    margin: 0 10px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .navItem {
+    margin: 0 6px;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 30em) { /* xs breakpoint */
+  .navItem {
+    margin: 0 4px;
+    padding: 3px 6px;
+  }
+}
+
 .navButton {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.95rem;
   letter-spacing: 0.5px;
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .navButton {
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+  }
+}
+
+@media (max-width: 30em) { /* xs breakpoint */
+  .navButton {
+    font-size: 0.75rem;
+    letter-spacing: 0.2px;
+    font-weight: 500; /* Thicker font for better readability on mobile */
+  }
 }
 
 .navText {
@@ -27,7 +64,7 @@
   position: absolute;
   left: -15px;
   opacity: 0;
-  color: #00FF41;
+  color: #21E6C1; /* Electric cyan instead of green */
   transition: all 0.3s ease;
 }
 
@@ -36,8 +73,14 @@
   transform: translateX(-5px);
 }
 
+@media (max-width: 48em) { /* sm breakpoint */
+  .navText::before {
+    display: none; /* Don't show this effect on smaller screens */
+  }
+}
+
 .navItem:hover .navButton {
-  color: #00FF41;
+  color: #FF61A6; /* Sunset pink instead of green */
 }
 
 .navUnderline {
@@ -46,13 +89,18 @@
   left: 50%;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #00FF41, transparent);
+  background: linear-gradient(90deg, transparent, #FF61A6, transparent);
   transition: all 0.3s ease;
 }
 
 .navItem:hover .navUnderline {
   width: 100%;
   left: 0;
+}
+
+.navItemCompact:hover .navUnderline {
+  width: 90%;
+  left: 5%;
 }
 
 .navGlow {
@@ -62,10 +110,16 @@
   right: 0;
   bottom: 0;
   border-radius: 4px;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 65, 0.15), transparent);
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 97, 166, 0.15), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .navGlow {
+    display: none; /* Hide glow effect on smaller screens for better performance */
+  }
 }
 
 .navItem:hover .navGlow {
@@ -77,16 +131,16 @@
     text-shadow: none;
   }
   20% {
-    text-shadow: 0 0 4px rgba(0, 255, 65, 0.7);
+    text-shadow: 0 0 4px rgba(33, 230, 193, 0.7);
   }
   21% {
-    text-shadow: -2px 0 #00FF41;
+    text-shadow: -2px 0 #FF61A6;
   }
   25% {
     text-shadow: none;
   }
   40% {
-    text-shadow: 2px 0 #00FF41;
+    text-shadow: 2px 0 #21E6C1;
   }
   41% {
     text-shadow: none;
@@ -95,7 +149,7 @@
     text-shadow: none;
   }
   90% {
-    text-shadow: -1px 0 #00FF41;
+    text-shadow: -1px 0 #FF7A00; /* Orange neon */
   }
   91% {
     text-shadow: none;
@@ -106,14 +160,60 @@
   animation: glitchEffect 2s infinite;
 }
 
+@media (max-width: 48em) { /* sm breakpoint */
+  .navItem:hover .navText {
+    animation: none; /* Disable animation on mobile for better performance */
+  }
+}
+
 .navBox {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(20, 27, 65, 0.4); /* Dark navy blue */
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(21, 230, 193, 0.1);
   transition: all 0.3s ease;
+}
+
+@media (max-width: 64em) { /* md breakpoint */
+  .navBox {
+    padding: 8px 15px;
+  }
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .navBox {
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(20, 27, 65, 0.3); /* More transparent on smaller screens */
+  }
+}
+
+@media (max-width: 30em) { /* xs breakpoint */
+  .navBox {
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+}
+
+/* Adjust spacing for navigation groups at different breakpoints */
+.navigationGroup {
+  flex-wrap: nowrap;
+}
+
+.navLinksGroup {
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 48em) { /* sm breakpoint */
+  .navigationGroup {
+    gap: 8px !important;
+  }
+  
+  .navLinksGroup {
+    gap: 2px !important;
+  }
 }

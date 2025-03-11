@@ -1,11 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
-import { AppShellHeader, Container, Group, Box } from "@mantine/core";
+import { AppShellHeader, Container, Group, Box, useMantineTheme } from "@mantine/core";
 import DesktopNavigation from "./DesktopNavigation";
+import { useMediaQuery } from '@mantine/hooks';
 import * as styles from './Header.module.css';
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const headerRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
@@ -13,10 +16,11 @@ const Header: React.FC<HeaderProps> = () => {
   
   // State to track mouse position
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const blurStrength = 15;
-  const borderOpacity = 0.2;
-
+  
+  // Only enable effects on desktop for better performance
   useEffect(() => {
+    if (isMobile) return;
+    
     const handleMouseMove = (e: MouseEvent) => {
       if (!headerRef.current) return;
       const rect = headerRef.current.getBoundingClientRect();
@@ -34,7 +38,7 @@ const Header: React.FC<HeaderProps> = () => {
     
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [isMobile]);
 
   // Animation for the navigation on mount
   useEffect(() => {
@@ -42,15 +46,14 @@ const Header: React.FC<HeaderProps> = () => {
       // Initial styles
       highlightRef.current.style.opacity = '0';
       navRef.current.style.opacity = '0';
-      navRef.current.style.transform = 'translateY(-20px)';
-
+      navRef.current.style.transform = 'translateY(-10px)';
+      
       // Trigger animations after mount
       requestAnimationFrame(() => {
         if (highlightRef.current) {
           highlightRef.current.style.transition = 'opacity 0.5s ease';
           highlightRef.current.style.opacity = '1';
         }
-
         if (navRef.current) {
           navRef.current.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
           navRef.current.style.opacity = '1';
@@ -61,7 +64,7 @@ const Header: React.FC<HeaderProps> = () => {
   }, []);
   
   return (
-    <AppShellHeader className={styles.appShellHeader}>
+    <AppShellHeader className={styles.appShellHeader} ref={headerRef}>
       <Box className={styles.box}>
         <div
           ref={gradientRef}
@@ -73,14 +76,11 @@ const Header: React.FC<HeaderProps> = () => {
           ref={highlightRef}
           className={styles.highlight}
         />
-        <Box className={styles.scanline} />
+        <Box className={styles.scanline + ' mantine-hidden-from-sm'} />
       </Box>
       <Container size="xl" className={styles.container}>
         <div ref={navRef}>
-          <Group justify="space-between" h="100%" py={15}>
-            <Group>
-              {/* Burger menu removed since we don't have drawer props */}
-            </Group>
+          <Group justify="space-between" h="100%" className={styles.headerGroup}>
             <DesktopNavigation />
           </Group>
         </div>

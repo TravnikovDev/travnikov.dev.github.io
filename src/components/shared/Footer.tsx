@@ -2,20 +2,13 @@ import React from "react";
 import { Container, AppShellFooter, Box, Text, Anchor, useMantineTheme } from "@mantine/core";
 import { Link } from "gatsby";
 import SocialLinks from "./SocialLinks";
-import { useMediaQuery } from '@mantine/hooks';
 import * as styles from './Footer.module.css';
 
 const Footer: React.FC = () => {
-  const theme = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-
   return (
     <>
       {/* Standard Footer */}
-      <AppShellFooter
-        p="md"
-        className={styles.footer}
-      >
+      <AppShellFooter p="md" className={styles.footer}>
         <Container size="xl">
           <Box className={styles.footerContent}>
             <SocialLinks />
@@ -26,70 +19,68 @@ const Footer: React.FC = () => {
         </Container>
       </AppShellFooter>
       
-      {/* Mobile-only Fixed Bottom Navigation */}
-      {isMobile && (
-        <Box className={styles.mobileNav}>
-          {/* Home */}
-          <Anchor
-            component={Link}
-            to="/"
-            className={styles.navItem}
-          >
-            <Box className={styles.navIcon}>
-              🏠
-            </Box>
-            <Text className={styles.navText}>Home</Text>
-          </Anchor>
-          
-          {/* Projects */}
-          <Anchor
-            component={Link}
-            to="/projects"
-            className={styles.navItem}
-          >
-            <Box className={styles.navIcon}>
-              📂
-            </Box>
-            <Text className={styles.navText}>Projects</Text>
-          </Anchor>
-          
-          {/* Contact - Highlighted */}
-          <Anchor
-            component={Link}
-            to="/contact"
-            className={styles.navItemHighlighted}
-          >
-            <Box className={styles.navIconHighlighted}>
-              📞
-            </Box>
-            <Text className={styles.navTextHighlighted}>Contact</Text>
-          </Anchor>
-          
-          {/* Blog */}
-          <Anchor
-            component={Link}
-            to="/blog"
-            className={styles.navItem}
-          >
-            <Box className={styles.navIcon}>
-              📝
-            </Box>
-            <Text className={styles.navText}>Blog</Text>
-          </Anchor>
-          
-          {/* Experiments */}
-          <Anchor
-            component={Link}
-            to="/experiments"
-            className={styles.navItem}
-          >
-            <Box className={styles.navIcon}>
-              🧪
-            </Box>
-            <Text className={styles.navText}>Experiments</Text>
-          </Anchor>
-        </Box>
-      )}
+      {/* Mobile-only Fixed Bottom Navigation - hidden on sm and up screens */}
+      <Box className={styles.mobileNav + ' mantine-hidden-from-sm'}>
+        {/* Home */}
+        <Anchor
+          component={Link}
+          to="/"
+          className={styles.navItem}
+        >
+          <Box className={styles.navIcon}>
+            🏠
+          </Box>
+          <Text className={styles.navText}>Home</Text>
+        </Anchor>
+        
+        {/* Projects */}
+        <Anchor
+          component={Link}
+          to="/projects"
+          className={styles.navItem}
+        >
+          <Box className={styles.navIcon}>
+            📂
+          </Box>
+          <Text className={styles.navText}>Projects</Text>
+        </Anchor>
+        
+        {/* Contact - Highlighted */}
+        <Anchor
+          component={Link}
+          to="/contact"
+          className={styles.navItemHighlighted}
+        >
+          <Box className={styles.navIconHighlighted}>
+            📞
+          </Box>
+          <Text className={styles.navTextHighlighted}>Contact</Text>
+        </Anchor>
+        
+        {/* Blog */}
+        <Anchor
+          component={Link}
+          to="/blog"
+          className={styles.navItem}
+        >
+          <Box className={styles.navIcon}>
+            📝
+          </Box>
+          <Text className={styles.navText}>Blog</Text>
+        </Anchor>
+        
+        {/* Experiments */}
+        <Anchor
+          component={Link}
+          to="/experiments"
+          className={styles.navItem}
+        >
+          <Box className={styles.navIcon}>
+            🧪
+          </Box>
+          <Text className={styles.navText}>Experiments</Text>
+        </Anchor>
+      </Box>
     </>
   );
 };
