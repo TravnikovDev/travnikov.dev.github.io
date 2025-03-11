@@ -6,7 +6,7 @@ interface MatrixFruitProps {
   position?: [number, number, number];
   scale?: number;
   rotation?: [number, number, number];
-  fruitType?: 'banana' | 'eggplant' | 'apple' | 'orange';
+  fruitType?: 'banana' | 'eggplant' | 'apple' | 'orange' | 'dragonfruit' | 'watermelon';
   color?: string;
   speed?: number;
 }
@@ -16,14 +16,14 @@ export default function MatrixFruit({
   scale = 1,
   rotation = [0, 0, 0],
   fruitType = 'banana',
-  color = '#00FF41',
+  color = '#FF00FF', // Default changed to vaporwave pink
   speed = 1
 }: MatrixFruitProps) {
   const meshRef = useRef<THREE.Group>(null);
   const initialY = useRef(position[1]);
   const wireframeMaterialRef = useRef<THREE.Material>();
 
-  // Create the wireframe material
+  // Create the wireframe material with vaporwave glow
   const wireframeMaterial = useMemo(() => {
     return new THREE.MeshBasicMaterial({
       color: new THREE.Color(color),
@@ -33,12 +33,14 @@ export default function MatrixFruit({
     });
   }, [color]);
 
-  // Create the glow material
+  // Create enhanced glow material with more vibrant effect
   const glowMaterial = useMemo(() => {
+    const glowColor = new THREE.Color(color);
+    glowColor.multiplyScalar(1.5); // Make the glow more intense
     return new THREE.MeshBasicMaterial({
-      color: new THREE.Color(color),
+      color: glowColor,
       transparent: true,
-      opacity: 0.2,
+      opacity: 0.3,
     });
   }, [color]);
 
@@ -80,7 +82,64 @@ export default function MatrixFruit({
             </mesh>
           </group>
         );
-      
+
+      case 'dragonfruit':
+        return (
+          <group>
+            {/* Dragon fruit body */}
+            <mesh>
+              <sphereGeometry args={[0.4, 16, 16]} />
+              <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
+            </mesh>
+            {/* Spiky exterior */}
+            {Array.from({ length: 20 }).map((_, i) => (
+              <mesh 
+                key={i} 
+                position={[
+                  Math.sin(i * Math.PI * 2 / 20) * 0.4,
+                  Math.cos(i * Math.PI * 2 / 20) * 0.4,
+                  0
+                ]}
+              >
+                <coneGeometry args={[0.05, 0.1, 4]} />
+                <primitive object={wireframeMaterial} />
+              </mesh>
+            ))}
+            {/* Glow effect */}
+            <mesh scale={1.15}>
+              <sphereGeometry args={[0.4, 16, 16]} />
+              <primitive object={glowMaterial} />
+            </mesh>
+          </group>
+        );
+
+      case 'watermelon':
+        return (
+          <group>
+            {/* Watermelon body */}
+            <mesh rotation={[0, 0, Math.PI / 6]}>
+              <sphereGeometry args={[0.5, 16, 16]} />
+              <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
+            </mesh>
+            {/* Decorative stripes */}
+            {Array.from({ length: 5 }).map((_, i) => (
+              <mesh 
+                key={i} 
+                position={[0, -0.25 + i * 0.1, 0]}
+                rotation={[0, 0, Math.PI / 6]}
+              >
+                <torusGeometry args={[0.5, 0.02, 8, 16]} />
+                <primitive object={glowMaterial} />
+              </mesh>
+            ))}
+            {/* Glow effect */}
+            <mesh rotation={[0, 0, Math.PI / 6]} scale={1.05}>
+              <sphereGeometry args={[0.5, 16, 16]} />
+              <primitive object={glowMaterial} />
+            </mesh>
+          </group>
+        );
+
       case 'eggplant':
         return (
           <group>
@@ -101,7 +160,7 @@ export default function MatrixFruit({
             </mesh>
           </group>
         );
-      
+
       case 'apple':
         return (
           <group>
@@ -122,7 +181,7 @@ export default function MatrixFruit({
             </mesh>
           </group>
         );
-      
+
       case 'orange':
       default:
         return (

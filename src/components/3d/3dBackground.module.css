@@ -8,6 +8,10 @@
   pointer-events: auto;
   overflow: hidden;
   background-color: #000000;
+  background-image: linear-gradient(180deg, 
+    rgba(255, 0, 255, 0.1) 0%,
+    rgba(0, 255, 255, 0.1) 100%
+  );
 }
 
 .glowPulse {
@@ -16,29 +20,35 @@
 
 @keyframes glowPulse {
   0% {
-    box-shadow: 0 0 20px rgba(34, 144, 224, 0.3);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
   }
   50% {
-    box-shadow: 0 0 30px rgba(122, 82, 197, 0.5);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
   }
   100% {
-    box-shadow: 0 0 20px rgba(34, 144, 224, 0.3);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
   }
 }
 
 .matrixGlow {
-  animation: matrixGlowPulse 4s infinite;
+  animation: vaporwaveGlowPulse 4s infinite;
 }
 
-@keyframes matrixGlowPulse {
+@keyframes vaporwaveGlowPulse {
   0% {
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.5));
+  }
+  25% {
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.6));
   }
   50% {
-    box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+    filter: drop-shadow(0 0 20px rgba(157, 0, 255, 0.7));
+  }
+  75% {
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.6));
   }
   100% {
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.5));
   }
 }
 
@@ -50,15 +60,16 @@
   height: 100%;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0) 50%,
-    rgba(0, 255, 65, 0.03) 50%,
-    rgba(0, 0, 0, 0) 51%
+    rgba(255, 0, 255, 0),
+    rgba(255, 0, 255, 0) 50%,
+    rgba(0, 255, 255, 0.03) 50%,
+    rgba(255, 0, 255, 0) 51%
   );
   background-size: 100% 4px;
   z-index: -1;
   pointer-events: none;
   animation: scanlineAnimation 8s linear infinite;
+  opacity: 0.3;
 }
 
 @keyframes scanlineAnimation {
@@ -79,11 +90,18 @@
   z-index: -1;
   pointer-events: none;
   opacity: 0.05;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(0, 255, 65, 0.1) 0px,
-    rgba(0, 255, 65, 0.1) 1px,
-    transparent 1px,
-    transparent 2px
-  );
+  background-image: 
+    linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: gridAnimation 20s linear infinite;
+}
+
+@keyframes gridAnimation {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 20px;
+  }
 }

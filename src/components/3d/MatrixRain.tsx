@@ -2,7 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-interface MatrixRainProps {
+interface VaporwaveGridProps {
   count?: number;
   speed?: number;
   opacity?: number;
@@ -11,20 +11,20 @@ interface MatrixRainProps {
   color?: string;
 }
 
-export default function MatrixRain({
+export default function VaporwaveGrid({
   count = 1000,
   speed = 1,
   opacity = 0.8,
   spread = 25,
   position = [0, 0, -15],
-  color = '#00FF41'
-}: MatrixRainProps) {
+  color = '#FF00FF' // Changed to hot pink as default
+}: VaporwaveGridProps) {
   const instancedMeshRef = useRef<THREE.InstancedMesh>(null);
   const tempObject = useMemo(() => new THREE.Object3D(), []);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   
-  // Generate matrix rain drops with random positions and speeds
-  const drops = useMemo(() => {
+  // Generate grid elements with random positions and speeds
+  const gridElements = useMemo(() => {
     const temp = [];
     const spread2 = spread * 2; // For a more rectangular distribution (wider than tall)
     
@@ -35,15 +35,19 @@ export default function MatrixRain({
       const z = (Math.random() - 0.5) * spread;
       
       // Randomize speed and start time
-      const dropSpeed = (0.5 + Math.random() * 0.8) * speed;
+      const elemSpeed = (0.5 + Math.random() * 0.8) * speed;
       const startTime = -Math.random() * 10; // Stagger the start times
       const scale = 0.1 + Math.random() * 0.3; // Varying sizes for visual interest
       
+      // Add random shape variation (0: square, 1: rectangle, 2: triangle)
+      const shapeType = Math.floor(Math.random() * 3);
+      
       temp.push({
         position: [x, y, z],
-        speed: dropSpeed,
+        speed: elemSpeed,
         startTime,
-        scale
+        scale,
+        shapeType
       });
     }
     return temp;
@@ -52,19 +56,19 @@ export default function MatrixRain({
   useFrame(({ clock }) => {
     if (!instancedMeshRef.current) return;
     
-    // Update each raindrop
-    drops.forEach((drop, i) => {
-      const time = clock.getElapsedTime() + drop.startTime;
+    // Update each grid element
+    gridElements.forEach((elem, i) => {
+      const time = clock.getElapsedTime() + elem.startTime;
       
       // Calculate the y position with looping
-      const y = ((drop.position[1] - time * drop.speed) % (spread * 1.5)) - spread * 0.5;
+      const y = ((elem.position[1] - time * elem.speed) % (spread * 1.5)) - spread * 0.5;
       
       // Set the position and scale
-      dummy.position.set(drop.position[0], y, drop.position[2]);
-      dummy.scale.set(drop.scale, drop.scale, drop.scale);
+      dummy.position.set(elem.position[0], y, elem.position[2]);
+      dummy.scale.set(elem.scale, elem.scale, elem.scale);
       
-      // Apply a slight rotation for visual interest
-      dummy.rotation.set(0, time * 0.1, 0);
+      // Apply a rotation that changes with time for visual interest
+      dummy.rotation.set(0, time * 0.2, time * 0.1);
       
       // Update the matrix for this instance
       dummy.updateMatrix();
@@ -75,19 +79,53 @@ export default function MatrixRain({
     instancedMeshRef.current.instanceMatrix.needsUpdate = true;
   });
 
+  // Create a custom color gradient for vaporwave aesthetic
+  const gradientMaterial = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        color1: { value: new THREE.Color(color) },
+        color2: { value: new THREE.Color('#00FFFF') }, // Cyan for gradient
+        time: { value: 0 }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color1;
+        uniform vec3 color2;
+        uniform float time;
+        varying vec2 vUv;
+        
+        void main() {
+          float pulse = sin(time * 2.0) * 0.5 + 0.5;
+          vec3 color = mix(color1, color2, vUv.y + pulse * 0.2);
+          float alpha = 0.7 - abs(vUv.y - 0.5) * 0.8;
+          gl_FragColor = vec4(color, alpha);
+        }
+      `,
+      transparent: true,
+      side: THREE.DoubleSide
+    });
+  }, [color]);
+  
+  useFrame(({ clock }) => {
+    if (gradientMaterial) {
+      gradientMaterial.uniforms.time.value = clock.getElapsedTime();
+    }
+  });
+
   return (
     <group position={position}>
       <instancedMesh 
         ref={instancedMeshRef} 
         args={[null, null, count]}
       >
-        <planeGeometry args={[0.1, 0.3]} />
-        <meshBasicMaterial 
-          color={color}
-          transparent={true}
-          opacity={opacity}
-          side={THREE.DoubleSide}
-        />
+        <planeGeometry args={[0.3, 0.3]} /> {/* Larger elements for visibility */}
+        <primitive object={gradientMaterial} />
       </instancedMesh>
     </group>
   );

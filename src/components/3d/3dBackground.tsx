@@ -1,19 +1,11 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import {
-  Environment,
-  ContactShadows,
-  Torus,
-  Sphere,
-} from '@react-three/drei';
 import * as THREE from 'three';
 import { Group, MathUtils } from 'three';
 import * as styles from './3dBackground.module.css';
-import FloatingCodeBlock from './FloatingCodeBlock';
 import FloatingName from './FloatingName';
 import MatrixRain from './MatrixRain';
 import MatrixFruit from './MatrixFruit';
-import MatrixGlitch from './MatrixGlitch';
 
 // Type for position that accepts both THREE.Vector3 and position tuples
 type Position = [number, number, number];
@@ -125,48 +117,69 @@ function Scene() {
   const targetRotation = useRef({ x: 0, y: 0 });
   const scrollPos = useRef(0);
 
-  // Configuration for component spacing - adjusted for Matrix theme
+  // Updated configuration for component spacing
   const config = {
-    spacing: 8, // Vertical spacing between components
-    sideOffset: 4, // Side offset for components
-    scrollSpeed: 1, // Scroll speed for camera movement
-    totalHeight: 40, // Total height of the scene
+    spacing: 6, // Reduced spacing between elements
+    sideOffset: viewport.width / 2.2, // Dynamically calculate side offset based on viewport
+    scrollSpeed: 1,
+    totalHeight: 50, // Increased total height for more content
+    startOffset: 4, // Offset for initial elements
   };
 
-  // The Matrix green color
-  const matrixGreen = "#00FF41";
-  const matrixDarkGreen = "#0D7A29";
+  // Vaporwave color palette
+  const vaporwaveColors = {
+    hotPink: "#FF00FF",
+    neonCyan: "#00FFFF",
+    electricPurple: "#9D00FF",
+    neonBlue: "#00F1FF",
+    synthPink: "#FF0080",
+    neonGreen: "#39FF14"
+  };
 
-  // Define components with adjusted positions - now using MatrixFruit components
+  // Define components with more elements and better side distribution
   const components: ComponentConfig[] = [
+    // Initial elements (visible at start)
     {
       Component: MatrixFruit,
       props: { 
-        position: [-config.sideOffset, 0, -2] as Position,
-        rotation: [0, 0, 0] as Rotation,
-        fruitType: 'banana',
-        color: matrixGreen,
+        position: [-config.sideOffset, config.startOffset, -2] as Position,
+        rotation: [0.1, 0, 0.1] as Rotation,
+        fruitType: 'dragonfruit',
+        color: vaporwaveColors.hotPink,
         scale: 1.2,
         speed: 0.8
       },
       side: 'left'
     },
     {
+      Component: MatrixFruit,
+      props: { 
+        position: [config.sideOffset, config.startOffset, -2] as Position,
+        rotation: [-0.1, 0, -0.1] as Rotation,
+        fruitType: 'watermelon',
+        color: vaporwaveColors.neonCyan,
+        scale: 1.1,
+        speed: 0.7
+      },
+      side: 'right'
+    },
+    // Content elements
+    {
       Component: FloatingName,
       props: { 
-        position: [config.sideOffset, -config.spacing, -2] as Position, 
+        position: [config.sideOffset, -config.spacing + config.startOffset, -2] as Position, 
         scale: 1.5,
-        color: matrixGreen
+        color: vaporwaveColors.neonCyan
       },
       side: 'right'
     },
     {
       Component: MatrixFruit,
       props: { 
-        position: [-config.sideOffset, -config.spacing * 2, -2] as Position, 
-        color: matrixGreen,
+        position: [-config.sideOffset, -config.spacing * 2 + config.startOffset, -2] as Position, 
+        color: vaporwaveColors.electricPurple,
         rotation: [0.1, -0.1, 0] as Rotation,
-        fruitType: 'eggplant',
+        fruitType: 'banana',
         scale: 1.3,
         speed: 0.7
       },
@@ -175,37 +188,72 @@ function Scene() {
     {
       Component: FlowingRibbon,
       props: { 
-        position: [-config.sideOffset, -config.spacing * 4, -2] as Position,
+        position: [config.sideOffset, -config.spacing * 3 + config.startOffset, -2] as Position,
+        color: vaporwaveColors.neonGreen,
+        width: 0.1,
+        length: 3
+      },
+      side: 'right'
+    },
+    {
+      Component: MatrixFruit,
+      props: { 
+        position: [-config.sideOffset, -config.spacing * 4 + config.startOffset, -2] as Position,
         rotation: [0, 0, 0.1] as Rotation,
-        color: matrixGreen, 
-        width: 0.05, 
-        length: 8 
+        fruitType: 'apple',
+        color: vaporwaveColors.synthPink,
+        scale: 1.2,
+        speed: 0.9
+      },
+      side: 'left'
+    },
+    {
+      Component: FlowingRibbon,
+      props: { 
+        position: [-config.sideOffset, -config.spacing * 5 + config.startOffset, -2] as Position,
+        color: vaporwaveColors.neonBlue,
+        width: 0.1,
+        length: 4
       },
       side: 'left'
     },
     {
       Component: MatrixFruit,
       props: { 
-        position: [config.sideOffset, -config.spacing * 3, -2] as Position, 
-        rotation: [-0.1, 0.1, 0] as Rotation,
-        fruitType: 'apple',
-        color: matrixGreen,
-        scale: 1.1,
-        speed: 1
-      },
-      side: 'right'
-    },
-    {
-      Component: MatrixFruit,
-      props: { 
-        position: [config.sideOffset, -config.spacing * 5, -2] as Position,
+        position: [config.sideOffset, -config.spacing * 6 + config.startOffset, -2] as Position,
         rotation: [0.1, -0.1, 0] as Rotation,
         fruitType: 'orange',
-        color: matrixGreen,
+        color: vaporwaveColors.hotPink,
         scale: 1.2,
         speed: 0.9
       },
       side: 'right'
+    }
+  ];
+
+  // Additional decorative elements
+  const decorativeElements = [
+    // Left side floating elements
+    {
+      Component: MatrixParticles,
+      props: {
+        position: [-config.sideOffset * 0.8, -config.spacing * 2 + config.startOffset, -3],
+        count: 100,
+        color: vaporwaveColors.neonCyan,
+        spread: 5,
+        size: 0.02
+      }
+    },
+    // Right side floating elements
+    {
+      Component: MatrixParticles,
+      props: {
+        position: [config.sideOffset * 0.8, -config.spacing * 4 + config.startOffset, -3],
+        count: 100,
+        color: vaporwaveColors.hotPink,
+        spread: 5,
+        size: 0.02
+      }
     }
   ];
 
@@ -243,17 +291,17 @@ function Scene() {
     
     // Update camera position for smooth vertical movement
     if (state.camera) {
-      // Move camera from top to bottom
+      // Move camera from top to bottom, starting from initial offset
       state.camera.position.y = MathUtils.lerp(
         state.camera.position.y,
-        config.spacing * 2 - (scrollProgress * config.totalHeight),
+        config.startOffset - (scrollProgress * config.totalHeight),
         0.1
       );
       
-      // Keep camera at fixed distance
-      state.camera.position.z = 8;
+      // Keep camera at fixed distance but add slight z-movement based on scroll
+      state.camera.position.z = 8 + Math.sin(scrollProgress * Math.PI) * 0.5;
       
-      // Slight tilt based on scroll
+      // Dynamic camera tilt based on scroll
       state.camera.rotation.x = scrollProgress * 0.2;
     }
 
@@ -267,34 +315,38 @@ function Scene() {
 
   return (
     <>
-      {/* Matrix-themed lighting setup */}
+      {/* Enhanced lighting setup */}
       <ambientLight intensity={0.2} />
-      <directionalLight color={matrixGreen} position={[5, 5, 5] as Position} intensity={0.4} />
-      <pointLight color={matrixGreen} position={[0, 5, 0] as Position} intensity={0.3} />
-      <pointLight color={matrixGreen} position={[-2, -5, -2] as Position} intensity={0.5} />
+      <directionalLight color={vaporwaveColors.hotPink} position={[5, 5, 5] as Position} intensity={0.4} />
+      <pointLight color={vaporwaveColors.neonCyan} position={[0, 5, 0] as Position} intensity={0.3} />
+      <pointLight color={vaporwaveColors.electricPurple} position={[-2, -5, -2] as Position} intensity={0.5} />
       
-      {/* Matrix rain effect in the background */}
+      {/* Background effects */}
       <MatrixRain 
-        count={1500} 
-        opacity={0.6} 
-        speed={0.8} 
-        spread={30} 
-        position={[0, 0, -15]} 
-        color={matrixGreen}
+        count={2000}
+        opacity={0.4}
+        speed={0.6}
+        spread={35}
+        position={[0, 0, -20]}
+        color={vaporwaveColors.neonCyan}
       />
       
-      {/* Matrix particles */}
-      <MatrixParticles count={2000} color={matrixGreen} spread={20} />
-      
-      {/* Main scene content */}
+      {/* Main content group */}
       <group ref={sceneRef}>
-        {components.map(({ Component, props, side }, index) => (
+        {/* Main components */}
+        {components.map(({ Component, props }, index) => (
           <Component key={index} {...props} />
         ))}
+        
+        {/* Decorative elements */}
+        {decorativeElements.map(({ Component, props }, index) => (
+          <Component key={`decor-${index}`} {...props} />
+        ))}
       </group>
+
       
       
-      {/* Dark environment to match Matrix theme */}
+      {/* Environment */}
       <color attach="background" args={["#000000"]} />
     </>
   );
