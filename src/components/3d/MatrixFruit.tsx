@@ -6,7 +6,7 @@ interface MatrixFruitProps {
   position?: [number, number, number];
   scale?: number;
   rotation?: [number, number, number];
-  fruitType?: 'banana' | 'eggplant' | 'apple' | 'orange' | 'dragonfruit' | 'watermelon';
+  fruitType?: 'banana' | 'eggplant' | 'strawberry' | 'lemon' | 'mango' | 'cherry' | 'pineapple' | 'avocado';
   color?: string;
   speed?: number;
 }
@@ -70,71 +70,24 @@ export default function MatrixFruit({
       case 'banana':
         return (
           <group>
-            {/* Banana is a curved cylinder with tapered ends */}
-            <mesh rotation={[0, 0, Math.PI / 4]}>
-              <torusGeometry args={[0.5, 0.15, 8, 16, Math.PI]} />
+            {/* Banana with curved shape and more distinctive banana form */}
+            <mesh rotation={[0, 0, Math.PI / 3]}>
+              <torusGeometry args={[0.5, 0.15, 8, 16, Math.PI * 0.8]} />
               <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
             </mesh>
+            {/* Banana tip */}
+            <mesh position={[0.3, 0.4, 0]} rotation={[0, 0, Math.PI / 6]}>
+              <coneGeometry args={[0.1, 0.2, 6]} />
+              <primitive object={wireframeMaterial} />
+            </mesh>
+            {/* Banana stem */}
+            <mesh position={[-0.35, 0.25, 0]} rotation={[0, 0, Math.PI / 4]}>
+              <cylinderGeometry args={[0.03, 0.03, 0.15, 6]} />
+              <primitive object={wireframeMaterial} />
+            </mesh>
             {/* Glow effect */}
-            <mesh rotation={[0, 0, Math.PI / 4]} scale={1.05}>
-              <torusGeometry args={[0.5, 0.15, 8, 16, Math.PI]} />
-              <primitive object={glowMaterial} />
-            </mesh>
-          </group>
-        );
-
-      case 'dragonfruit':
-        return (
-          <group>
-            {/* Dragon fruit body */}
-            <mesh>
-              <sphereGeometry args={[0.4, 16, 16]} />
-              <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
-            </mesh>
-            {/* Spiky exterior */}
-            {Array.from({ length: 20 }).map((_, i) => (
-              <mesh 
-                key={i} 
-                position={[
-                  Math.sin(i * Math.PI * 2 / 20) * 0.4,
-                  Math.cos(i * Math.PI * 2 / 20) * 0.4,
-                  0
-                ]}
-              >
-                <coneGeometry args={[0.05, 0.1, 4]} />
-                <primitive object={wireframeMaterial} />
-              </mesh>
-            ))}
-            {/* Glow effect */}
-            <mesh scale={1.15}>
-              <sphereGeometry args={[0.4, 16, 16]} />
-              <primitive object={glowMaterial} />
-            </mesh>
-          </group>
-        );
-
-      case 'watermelon':
-        return (
-          <group>
-            {/* Watermelon body */}
-            <mesh rotation={[0, 0, Math.PI / 6]}>
-              <sphereGeometry args={[0.5, 16, 16]} />
-              <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
-            </mesh>
-            {/* Decorative stripes */}
-            {Array.from({ length: 5 }).map((_, i) => (
-              <mesh 
-                key={i} 
-                position={[0, -0.25 + i * 0.1, 0]}
-                rotation={[0, 0, Math.PI / 6]}
-              >
-                <torusGeometry args={[0.5, 0.02, 8, 16]} />
-                <primitive object={glowMaterial} />
-              </mesh>
-            ))}
-            {/* Glow effect */}
-            <mesh rotation={[0, 0, Math.PI / 6]} scale={1.05}>
-              <sphereGeometry args={[0.5, 16, 16]} />
+            <mesh rotation={[0, 0, Math.PI / 3]} scale={1.05}>
+              <torusGeometry args={[0.5, 0.15, 8, 16, Math.PI * 0.8]} />
               <primitive object={glowMaterial} />
             </mesh>
           </group>
@@ -143,57 +96,297 @@ export default function MatrixFruit({
       case 'eggplant':
         return (
           <group>
-            {/* Eggplant body */}
+            {/* Eggplant body - more bulbous at bottom */}
             <mesh position={[0, -0.1, 0]}>
-              <capsuleGeometry args={[0.3, 0.8, 8, 16]} />
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.1, -0.45),
+                  new THREE.Vector2(0.25, -0.3),
+                  new THREE.Vector2(0.3, 0),
+                  new THREE.Vector2(0.2, 0.3),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                12
+              ]} />
               <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
             </mesh>
-            {/* Eggplant stem */}
-            <mesh position={[0, 0.5, 0]} rotation={[0.2, 0, 0]}>
-              <cylinderGeometry args={[0.05, 0.05, 0.3, 8]} />
+            {/* Eggplant stem and leaf */}
+            <mesh position={[0, 0.5, 0]} rotation={[0, 0, 0]}>
+              <cylinderGeometry args={[0.05, 0.1, 0.2, 8]} />
+              <primitive object={wireframeMaterial} />
+            </mesh>
+            <mesh position={[0.1, 0.55, 0]} rotation={[0, 0, Math.PI / 4]}>
+              <boxGeometry args={[0.2, 0.05, 0.05]} />
               <primitive object={wireframeMaterial} />
             </mesh>
             {/* Glow effect */}
             <mesh position={[0, -0.1, 0]} scale={1.05}>
-              <capsuleGeometry args={[0.3, 0.8, 8, 16]} />
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.1, -0.45),
+                  new THREE.Vector2(0.25, -0.3),
+                  new THREE.Vector2(0.3, 0),
+                  new THREE.Vector2(0.2, 0.3),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                12
+              ]} />
               <primitive object={glowMaterial} />
             </mesh>
           </group>
         );
 
-      case 'apple':
+      case 'strawberry':
         return (
           <group>
-            {/* Apple body */}
-            <mesh>
-              <sphereGeometry args={[0.4, 16, 16]} />
+            {/* Strawberry body - heart-like shape */}
+            <mesh position={[0, -0.1, 0]}>
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.4),
+                  new THREE.Vector2(0.3, -0.2),
+                  new THREE.Vector2(0.4, 0),
+                  new THREE.Vector2(0.3, 0.2),
+                  new THREE.Vector2(0, 0.4),
+                ],
+                12
+              ]} />
               <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
             </mesh>
-            {/* Apple stem */}
+            {/* Strawberry stem and leaves */}
+            <mesh position={[0, 0.4, 0]}>
+              <cylinderGeometry args={[0.03, 0.03, 0.1, 6]} />
+              <primitive object={wireframeMaterial} />
+            </mesh>
+            {/* Leaves like a star shape */}
             <mesh position={[0, 0.45, 0]}>
-              <cylinderGeometry args={[0.03, 0.03, 0.2, 8]} />
+              <dodecahedronGeometry args={[0.15, 0]} />
+              <primitive object={wireframeMaterial} />
+            </mesh>
+            {/* Glow effect */}
+            <mesh position={[0, -0.1, 0]} scale={1.05}>
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.4),
+                  new THREE.Vector2(0.3, -0.2),
+                  new THREE.Vector2(0.4, 0),
+                  new THREE.Vector2(0.3, 0.2),
+                  new THREE.Vector2(0, 0.4),
+                ],
+                12
+              ]} />
+              <primitive object={glowMaterial} />
+            </mesh>
+          </group>
+        );
+
+      case 'lemon':
+        return (
+          <group>
+            {/* Lemon with pointed ends */}
+            <mesh>
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.25, -0.3),
+                  new THREE.Vector2(0.4, 0),
+                  new THREE.Vector2(0.25, 0.3),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                10
+              ]} />
+              <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
+            </mesh>
+            {/* Small stem */}
+            <mesh position={[0, 0.5, 0]}>
+              <cylinderGeometry args={[0.02, 0.02, 0.1, 6]} />
               <primitive object={wireframeMaterial} />
             </mesh>
             {/* Glow effect */}
             <mesh scale={1.05}>
-              <sphereGeometry args={[0.4, 16, 16]} />
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.25, -0.3),
+                  new THREE.Vector2(0.4, 0),
+                  new THREE.Vector2(0.25, 0.3),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                10
+              ]} />
               <primitive object={glowMaterial} />
             </mesh>
           </group>
         );
 
-      case 'orange':
-      default:
+      case 'mango':
         return (
           <group>
-            {/* Orange */}
+            {/* Mango with kidney shape */}
             <mesh>
-              <sphereGeometry args={[0.4, 16, 16]} />
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.2, -0.4),
+                  new THREE.Vector2(0.35, -0.1),
+                  new THREE.Vector2(0.25, 0.3),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                10
+              ]} />
               <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
+            </mesh>
+            {/* Small stem */}
+            <mesh position={[0, 0.5, 0]}>
+              <cylinderGeometry args={[0.02, 0.02, 0.1, 6]} />
+              <primitive object={wireframeMaterial} />
             </mesh>
             {/* Glow effect */}
             <mesh scale={1.05}>
-              <sphereGeometry args={[0.4, 16, 16]} />
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.2, -0.4),
+                  new THREE.Vector2(0.35, -0.1),
+                  new THREE.Vector2(0.25, 0.3),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                10
+              ]} />
+              <primitive object={glowMaterial} />
+            </mesh>
+          </group>
+        );
+        
+      case 'cherry':
+        return (
+          <group>
+            {/* Cherry body - two connected spheres */}
+            <mesh position={[0.15, -0.1, 0]}>
+              <sphereGeometry args={[0.25, 10, 10]} />
+              <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
+            </mesh>
+            <mesh position={[-0.15, -0.15, 0]}>
+              <sphereGeometry args={[0.22, 10, 10]} />
+              <primitive object={wireframeMaterial} />
+            </mesh>
+            {/* Cherry stem - curved line */}
+            <mesh>
+              <tubeGeometry args={[
+                new THREE.CatmullRomCurve3([
+                  new THREE.Vector3(0, 0.1, 0),
+                  new THREE.Vector3(0.05, 0.25, 0),
+                  new THREE.Vector3(0.15, 0.3, 0),
+                  new THREE.Vector3(0.15, 0.15, 0),
+                  new THREE.Vector3(0.15, 0, 0),
+                ]),
+                8,
+                0.03,
+                8,
+                false
+              ]} />
+              <primitive object={wireframeMaterial} />
+            </mesh>
+            {/* Glow effect */}
+            <mesh position={[0.15, -0.1, 0]} scale={1.05}>
+              <sphereGeometry args={[0.25, 10, 10]} />
+              <primitive object={glowMaterial} />
+            </mesh>
+            <mesh position={[-0.15, -0.15, 0]} scale={1.05}>
+              <sphereGeometry args={[0.22, 10, 10]} />
+              <primitive object={glowMaterial} />
+            </mesh>
+          </group>
+        );
+        
+      case 'pineapple':
+        return (
+          <group>
+            {/* Pineapple body */}
+            <mesh position={[0, -0.1, 0]}>
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.2, -0.4),
+                  new THREE.Vector2(0.25, 0),
+                  new THREE.Vector2(0.2, 0.4),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                10
+              ]} />
+              <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
+            </mesh>
+            
+            {/* Pineapple "cross-hatch" texture using rings */}
+            {[...Array(5)].map((_, i) => (
+              <mesh key={i} position={[0, -0.3 + i * 0.15, 0]} rotation={[Math.PI/2, 0, 0]}>
+                <torusGeometry args={[0.25, 0.01, 6, 12]} />
+                <primitive object={wireframeMaterial} />
+              </mesh>
+            ))}
+            
+            {/* Pineapple crown */}
+            {[...Array(5)].map((_, i) => (
+              <mesh key={`leaf-${i}`} position={[0, 0.5, 0]} rotation={[0.3, i * Math.PI/2.5, 0]}>
+                <coneGeometry args={[0.08, 0.25, 5]} />
+                <primitive object={wireframeMaterial} />
+              </mesh>
+            ))}
+            
+            {/* Glow effect */}
+            <mesh position={[0, -0.1, 0]} scale={1.05}>
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.2, -0.4),
+                  new THREE.Vector2(0.25, 0),
+                  new THREE.Vector2(0.2, 0.4),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                10
+              ]} />
+              <primitive object={glowMaterial} />
+            </mesh>
+          </group>
+        );
+        
+      case 'avocado':
+      default:
+        return (
+          <group>
+            {/* Avocado - pear shape with seed */}
+            <mesh position={[0, -0.1, 0]}>
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.25, -0.3),
+                  new THREE.Vector2(0.35, 0),
+                  new THREE.Vector2(0.25, 0.3),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                10
+              ]} />
+              <primitive object={wireframeMaterial} ref={wireframeMaterialRef} />
+            </mesh>
+            {/* Avocado seed */}
+            <mesh position={[0, -0.1, 0.05]}>
+              <sphereGeometry args={[0.2, 8, 8]} />
+              <meshBasicMaterial color="#553311" wireframe={true} transparent={true} opacity={0.8} />
+            </mesh>
+            {/* Glow effect */}
+            <mesh position={[0, -0.1, 0]} scale={1.05}>
+              <latheGeometry args={[
+                [
+                  new THREE.Vector2(0, -0.5),
+                  new THREE.Vector2(0.25, -0.3),
+                  new THREE.Vector2(0.35, 0),
+                  new THREE.Vector2(0.25, 0.3),
+                  new THREE.Vector2(0, 0.5),
+                ],
+                10
+              ]} />
               <primitive object={glowMaterial} />
             </mesh>
           </group>

@@ -8,6 +8,7 @@ import MatrixRain from './MatrixRain';
 import MatrixFruit from './MatrixFruit';
 
 // Type for position that accepts both THREE.Vector3 and position tuples
+// Coordinates are represented as [x, y, z]
 type Position = [number, number, number];
 type Rotation = [number, number, number];
 
@@ -25,34 +26,6 @@ type ComponentConfig = {
     speed?: number;
   };
   side: 'left' | 'right';
-};
-
-// A simple flowing ribbon (box with animation) - Kept but modified for Matrix style
-const FlowingRibbon = ({ 
-  position = [0, 0, 0] as Position, 
-  color = "#00FF41", 
-  width = 0.2, 
-  length = 5 
-}) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const initialPosition = useRef(position);
-  
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      const time = clock.getElapsedTime();
-      // Floating and waving animation
-      meshRef.current.position.y = initialPosition.current[1] + Math.sin(time * 0.3) * 0.4;
-      meshRef.current.rotation.z = Math.sin(time * 0.2) * 0.2;
-      meshRef.current.rotation.x = Math.sin(time * 0.1) * 0.1;
-    }
-  });
-  
-  return (
-    <mesh ref={meshRef} position={position as any} scale={[length, width, 0.1]}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshBasicMaterial color={color} wireframe={true} />
-    </mesh>
-  );
 };
 
 // Simple particles system with Matrix colors
@@ -142,9 +115,9 @@ function Scene() {
     {
       Component: MatrixFruit,
       props: { 
-        position: [-config.sideOffset, config.startOffset, -2] as Position,
+        position: [-config.sideOffset, config.startOffset * 0.5, -2] as Position,
         rotation: [0.1, 0, 0.1] as Rotation,
-        fruitType: 'dragonfruit',
+        fruitType: 'banana',
         color: vaporwaveColors.hotPink,
         scale: 1.2,
         speed: 0.8
@@ -154,10 +127,10 @@ function Scene() {
     {
       Component: MatrixFruit,
       props: { 
-        position: [config.sideOffset, config.startOffset, -2] as Position,
+        position: [config.sideOffset, config.startOffset * 1.5, -2] as Position,
         rotation: [-0.1, 0, -0.1] as Rotation,
-        fruitType: 'watermelon',
-        color: vaporwaveColors.neonCyan,
+        fruitType: 'eggplant',
+        color: vaporwaveColors.neonGreen,
         scale: 1.1,
         speed: 0.7
       },
@@ -167,9 +140,9 @@ function Scene() {
     {
       Component: FloatingName,
       props: { 
-        position: [config.sideOffset, -config.spacing + config.startOffset, -2] as Position, 
+        position: [-1, -config.spacing + config.startOffset, -2] as Position, 
         scale: 1.5,
-        color: vaporwaveColors.neonCyan
+        color: vaporwaveColors.hotPink
       },
       side: 'right'
     },
@@ -177,21 +150,23 @@ function Scene() {
       Component: MatrixFruit,
       props: { 
         position: [-config.sideOffset, -config.spacing * 2 + config.startOffset, -2] as Position, 
-        color: vaporwaveColors.electricPurple,
+        color: vaporwaveColors.synthPink,
         rotation: [0.1, -0.1, 0] as Rotation,
-        fruitType: 'banana',
+        fruitType: 'mango',
         scale: 1.3,
         speed: 0.7
       },
       side: 'left'
     },
     {
-      Component: FlowingRibbon,
+      Component: MatrixFruit,
       props: { 
         position: [config.sideOffset, -config.spacing * 3 + config.startOffset, -2] as Position,
-        color: vaporwaveColors.neonGreen,
-        width: 0.1,
-        length: 3
+        color: vaporwaveColors.hotPink,
+        rotation: [0, 0.2, 0.1] as Rotation,
+        fruitType: 'cherry',
+        scale: 1.2,
+        speed: 0.8
       },
       side: 'right'
     },
@@ -200,34 +175,24 @@ function Scene() {
       props: { 
         position: [-config.sideOffset, -config.spacing * 4 + config.startOffset, -2] as Position,
         rotation: [0, 0, 0.1] as Rotation,
-        fruitType: 'apple',
-        color: vaporwaveColors.synthPink,
+        fruitType: 'pineapple',
+        color: vaporwaveColors.neonCyan,
         scale: 1.2,
         speed: 0.9
-      },
-      side: 'left'
-    },
-    {
-      Component: FlowingRibbon,
-      props: { 
-        position: [-config.sideOffset, -config.spacing * 5 + config.startOffset, -2] as Position,
-        color: vaporwaveColors.neonBlue,
-        width: 0.1,
-        length: 4
       },
       side: 'left'
     },
     {
       Component: MatrixFruit,
       props: { 
-        position: [config.sideOffset, -config.spacing * 6 + config.startOffset, -2] as Position,
-        rotation: [0.1, -0.1, 0] as Rotation,
-        fruitType: 'orange',
-        color: vaporwaveColors.hotPink,
-        scale: 1.2,
-        speed: 0.9
+        position: [-config.sideOffset, -config.spacing * 5 + config.startOffset, -2] as Position,
+        rotation: [0.1, 0.1, 0.1] as Rotation,
+        fruitType: 'avocado',
+        color: vaporwaveColors.neonBlue,
+        scale: 1.3,
+        speed: 1.2
       },
-      side: 'right'
+      side: 'left'
     }
   ];
 
