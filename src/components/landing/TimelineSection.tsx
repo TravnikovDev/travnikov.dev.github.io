@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Container, Title, Text, Box, Group, Badge, ActionIcon, Button } from "@mantine/core";
-import { FaBriefcase, FaLaptopCode, FaCode, FaServer } from "react-icons/fa";
+import { FaBriefcase, FaLaptopCode, FaCode, FaServer, FaPlane, FaCar } from "react-icons/fa";
 import * as styles from './TimelineSection.module.css';
 
 // Timeline item interface with extended properties
@@ -16,49 +16,63 @@ interface TimelineItem {
   isCurrent?: boolean;
 }
 
-// Enhanced timeline data
+// Enhanced timeline data with Roman's actual work experience from ABOUT_AUTHOR.MD
 const timelineData: TimelineItem[] = [
   {
-    date: "2020 - Present",
+    date: "2023 - 2024",
     title: "Senior Frontend Developer",
-    company: "Tech Innovations Inc.",
-    description: "Leading the frontend development team in creating cutting-edge web applications with advanced 3D visualizations and interactive interfaces.",
+    company: "Super Dispatch (USA)",
+    description: "Working on refining the UI/UX for logistics platforms, focusing on performance optimization and responsive design.",
     achievements: [
-      "Architected and implemented a real-time 3D visualization platform that increased user engagement by 40%",
-      "Led the migration from legacy codebase to modern React with TypeScript, improving performance by 60%",
-      "Mentored junior developers and established coding standards across the team"
+      "Improved UI/UX for logistics management platforms using React.js and TypeScript",
+      "Implemented advanced state management patterns for complex data flows",
+      "Optimized frontend performance, reducing load times by 40%"
     ],
-    skills: ["React", "TypeScript", "Three.js", "WebGL", "Node.js", "Performance Optimization"],
+    skills: ["React", "TypeScript", "Redux", "UI/UX Design", "Performance Optimization"],
     color: "blue",
     icon: <FaLaptopCode size={24} />,
     isCurrent: true
   },
   {
-    date: "2018 - 2020",
+    date: "2022",
     title: "Frontend Developer",
-    company: "Digital Frontiers Agency",
-    description: "Developed interactive and responsive user interfaces for high-profile clients in the entertainment and e-commerce sectors.",
+    company: "Flymeto (Czech Republic)",
+    description: "Developed a high-traffic flight ticket booking platform with React.js and Next.js, focusing on performance and user experience.",
     achievements: [
-      "Created interactive product visualizations that improved conversion rates by 25%",
-      "Optimized critical rendering paths for mobile-first applications",
-      "Implemented WebGL-based animations that became a signature feature for the agency"
+      "Built a high-traffic flight booking platform using React.js and Next.js",
+      "Implemented responsive UI components for seamless mobile and desktop experiences",
+      "Integrated with multiple airline APIs for real-time pricing and availability"
     ],
-    skills: ["React", "JavaScript", "CSS3", "WebGL", "GSAP", "Responsive Design"],
+    skills: ["React", "Next.js", "API Integration", "Responsive Design", "Booking Systems"],
     color: "violet",
-    icon: <FaCode size={24} />
+    icon: <FaPlane size={24} />
   },
   {
-    date: "2015 - 2018",
-    title: "Full Stack Developer",
-    company: "NextGen Startup",
-    description: "Built complete web applications from concept to deployment, working across the entire technology stack.",
+    date: "2020 - 2022",
+    title: "Senior Frontend Developer",
+    company: "OMNETIC (Czech Republic)",
+    description: "Built a Dealership Management System for the EU market using React, Next.js, and Material UI.",
     achievements: [
-      "Developed the company's core product from ground up, securing Series A funding",
-      "Designed and implemented RESTful APIs used by over 10,000 daily active users",
-      "Optimized database queries that reduced server load by 70%"
+      "Architected and developed a comprehensive Dealership Management System for the EU market",
+      "Led frontend team and established coding standards across the project",
+      "Created a robust UI component library for consistent interfaces across the application"
     ],
-    skills: ["Node.js", "React", "MongoDB", "Express", "AWS", "Docker"],
+    skills: ["React", "Next.js", "Material UI", "TypeScript", "Team Leadership"],
     color: "teal",
+    icon: <FaCar size={24} />
+  },
+  {
+    date: "2017 - 2020",
+    title: "Full Stack Developer",
+    company: "RealTrac Technologies",
+    description: "Created GIS-based tracking systems for the mining industry, implementing high-performance maps and real-time notifications.",
+    achievements: [
+      "Developed GIS-based tracking systems for the mining industry",
+      "Implemented real-time map visualizations for tracking assets and personnel",
+      "Built notification systems for critical safety alerts and equipment monitoring"
+    ],
+    skills: ["GIS Systems", "Real-time Maps", "Node.js", "React", "Notification Systems"],
+    color: "blue",
     icon: <FaServer size={24} />
   }
 ];
@@ -301,7 +315,8 @@ export function TimelineSection() {
           <Box className={styles.timelineUnderline} />
         </Box>
         <Text className={styles.timelineDescriptionText} mb={40}>
-          Exploring my career path and key milestones in software development
+          My career path across logistics, travel, automotive, and mining industries, 
+          where I've crafted exceptional digital experiences
         </Text>
       </Box>
       

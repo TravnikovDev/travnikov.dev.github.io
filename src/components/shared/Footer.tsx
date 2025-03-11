@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   return (
     <>
       {/* Standard Footer */}
-      <AppShellFooter p="md" className={styles.footer + ' visible-hidden-to-sm'}>
+      <AppShellFooter p="md" className={styles.footer} visibleFrom="sm">
         <Container size="xl">
           <Box className={styles.footerContent}>
             <SocialLinks />
@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
       </AppShellFooter>
       
       {/* Mobile-only Fixed Bottom Navigation - hidden on sm and up screens */}
-      <Box className={styles.mobileNav + ' mantine-hidden-from-sm'}>
+      <Box className={styles.mobileNav} hiddenFrom="sm">
         {/* Home */}
         <Anchor
           component={Link}

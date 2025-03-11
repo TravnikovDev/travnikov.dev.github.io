@@ -73,7 +73,7 @@ interface TechCategory {
   skills: TechSkill[];
 }
 
-// Tech stack data
+// Updated Tech stack data based on Roman's actual skills from ABOUT_AUTHOR.MD
 const techData: TechCategory[] = [
   {
     name: "Frontend Development",
@@ -87,7 +87,7 @@ const techData: TechCategory[] = [
         color: "#3D7FFF",
         experience: "6+ years",
         projects: 30,
-        description: "Advanced React development including custom hooks, performance optimization, and state management"
+        description: "Advanced React and Next.js development including custom hooks, state management, and server-side rendering"
       },
       {
         name: "TypeScript",
@@ -95,23 +95,23 @@ const techData: TechCategory[] = [
         color: "#3D7FFF",
         experience: "4+ years",
         projects: 25,
-        description: "Type-safe development with advanced TypeScript features and patterns"
+        description: "Type-safe development with advanced TypeScript features and patterns for robust frontend applications"
       },
       {
-        name: "JavaScript",
-        level: 95,
-        color: "#3D7FFF",
-        experience: "8+ years",
-        projects: 40,
-        description: "Deep understanding of JavaScript including ES6+, async programming, and design patterns"
-      },
-      {
-        name: "HTML/CSS",
+        name: "State Management",
         level: 90,
         color: "#3D7FFF",
-        experience: "10+ years",
-        projects: 50,
-        description: "Semantic HTML and modern CSS including Flexbox, Grid, and animations"
+        experience: "5+ years",
+        projects: 28,
+        description: "Expertise with Redux, Redux Toolkit, RxJS, and Zustand for complex state management solutions"
+      },
+      {
+        name: "Mantine UI",
+        level: 88,
+        color: "#3D7FFF",
+        experience: "3+ years",
+        projects: 18,
+        description: "Building modern UIs with Mantine component library for consistent, accessible interfaces"
       }
     ]
   },
@@ -127,23 +127,7 @@ const techData: TechCategory[] = [
         color: "#A64DFF",
         experience: "3+ years",
         projects: 15,
-        description: "3D graphics programming with Three.js, including custom shaders and animations"
-      },
-      {
-        name: "WebGL",
-        level: 80,
-        color: "#A64DFF",
-        experience: "2+ years",
-        projects: 10,
-        description: "Low-level graphics programming with WebGL for custom visual effects"
-      },
-      {
-        name: "GSAP",
-        level: 85,
-        color: "#A64DFF",
-        experience: "4+ years",
-        projects: 20,
-        description: "Advanced animations and motion design with GSAP"
+        description: "3D graphics programming with Three.js for immersive web experiences and interactive visualizations"
       },
       {
         name: "SVG Animation",
@@ -151,15 +135,31 @@ const techData: TechCategory[] = [
         color: "#A64DFF",
         experience: "5+ years",
         projects: 25,
-        description: "Complex SVG animations and interactive graphics"
+        description: "Complex SVG animations and interactive graphics, including automation for scalable SVG generation"
+      },
+      {
+        name: "Motion Design",
+        level: 85,
+        color: "#A64DFF",
+        experience: "4+ years",
+        projects: 20,
+        description: "Creating advanced animations and parallax effects for engaging user interfaces"
+      },
+      {
+        name: "Figma",
+        level: 80,
+        color: "#A64DFF",
+        experience: "3+ years",
+        projects: 22,
+        description: "Design-to-code workflow with Figma for consistent implementation of UI/UX designs"
       }
     ]
   },
   {
-    name: "Backend Development",
+    name: "Backend & CMS",
     color: "#00B8D9",
     icon: <FaNodeJs size={32} />,
-    description: "Server-side development with modern JavaScript/TypeScript",
+    description: "Server-side development and content management solutions",
     skills: [
       {
         name: "Node.js",
@@ -175,23 +175,23 @@ const techData: TechCategory[] = [
         color: "#00B8D9",
         experience: "3+ years",
         projects: 12,
-        description: "API development with GraphQL, including schema design and resolvers"
+        description: "API development with GraphQL for flexible and efficient data fetching"
       },
       {
-        name: "PostgreSQL",
-        level: 75,
+        name: "Firebase",
+        level: 85,
         color: "#00B8D9",
         experience: "4+ years",
-        projects: 15,
-        description: "Database design and optimization with PostgreSQL"
+        projects: 16,
+        description: "Building realtime applications and serverless solutions with Firebase"
       },
       {
-        name: "MongoDB",
-        level: 80,
+        name: "Sanity/Contentful",
+        level: 82,
         color: "#00B8D9",
-        experience: "4+ years",
-        projects: 18,
-        description: "NoSQL database development with MongoDB"
+        experience: "3+ years",
+        projects: 14,
+        description: "Implementing headless CMS solutions with Sanity.io and Contentful for scalable content management"
       }
     ]
   }
