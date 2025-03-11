@@ -140,7 +140,7 @@ function Scene() {
     {
       Component: FloatingName,
       props: { 
-        position: [-1, -config.spacing + config.startOffset, -2] as Position, 
+        position: [-1, -config.spacing*2 + config.startOffset, -2] as Position, 
         scale: 1.5,
         color: vaporwaveColors.hotPink
       },
@@ -185,14 +185,14 @@ function Scene() {
     {
       Component: MatrixFruit,
       props: { 
-        position: [-config.sideOffset, -config.spacing * 5 + config.startOffset, -2] as Position,
+        position: [config.sideOffset, -config.spacing * 5 + config.startOffset, -2] as Position,
         rotation: [0.1, 0.1, 0.1] as Rotation,
         fruitType: 'avocado',
         color: vaporwaveColors.neonBlue,
         scale: 1.3,
         speed: 1.2
       },
-      side: 'left'
+      side: 'right'
     }
   ];
 
