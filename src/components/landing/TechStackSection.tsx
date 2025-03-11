@@ -450,7 +450,7 @@ const SkillCard = ({ skill, index, categoryColor }) => {
 
         {/* Bottom decorative element */}
         <Box
-          className={styles.bottomDecorativeElement}
+          // className={styles.bottomDecorativeElement}
           style={{
             position: "absolute",
             left: 0,
@@ -515,7 +515,7 @@ export function TechStackSection() {
             }}
           >
             <Box
-              className={styles.sectionTitleInner}
+              // className={styles.sectionTitleInner}
             >
               <Title
                 order={2}
