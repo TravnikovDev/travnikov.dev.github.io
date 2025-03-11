@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #141B41, #281154, #0A0A1A); /* Vaporwave gradient */
+  /* background: linear-gradient(to bottom, #141B41, #281154, #0A0A1A); */
+  background: transparent; /* Use the 3D background instead */
   overflow-x: hidden;
 }
 

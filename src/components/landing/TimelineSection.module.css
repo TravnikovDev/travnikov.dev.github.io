@@ -127,7 +127,7 @@
 }
 
 .timelineTitleContainer {
-  margin-bottom: 4rem;
+  margin-bottom: 5rem; /* Increased bottom margin */
   text-align: center;
   position: relative;
 }
@@ -138,8 +138,8 @@
 }
 
 .timelineTitleText {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin-bottom: 1rem;
+  font-size: clamp(2.2rem, 5vw, 3.2rem); /* Larger font size */
+  margin-bottom: 1.2rem;
   background: linear-gradient(135deg, #21E6C1, #FF61A6);
   background-clip: text;
   -webkit-background-clip: text;
@@ -149,20 +149,21 @@
 
 .timelineUnderline {
   position: absolute;
-  bottom: -5px;
+  bottom: -8px; /* Slightly lower position */
   left: 0;
   width: 100%;
-  height: 3px;
+  height: 4px; /* Thicker underline */
   background: linear-gradient(90deg, transparent, #21E6C1, #FF61A6, transparent);
   animation: shimmer 2s infinite linear;
 }
 
 .timelineDescriptionText {
   text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  max-width: 700px; /* Slightly wider */
+  margin: 1.5rem auto 0;
+  color: rgba(255, 255, 255, 0.85); /* Brighter text */
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem); /* Larger font size */
+  line-height: 1.7; /* Increased line height */
 }
 
 .timelineCardContainer {
@@ -499,4 +500,256 @@
     padding: 1rem;
     margin: 1.5rem 0;
   }
+}
+
+/* New Vertical Timeline Styles */
+.verticalTimelineContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.verticalTimelineItem {
+  display: grid;
+  grid-template-columns: auto 50px 1fr;
+  position: relative;
+  margin-bottom: 4.5rem; /* Increased spacing between timeline items */
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.cardLeft {
+  grid-column: 3 / 4;
+  margin-left: 2.5rem; /* Increased margin for better spacing */
+}
+
+.cardRight {
+  grid-column: 1 / 2;
+  margin-right: 2.5rem; /* Increased margin for better spacing */
+}
+
+/* For right-aligned cards (even items) on desktop */
+@media (min-width: 768px) {
+  .verticalTimelineItem:nth-child(even) {
+    grid-template-columns: 1fr 50px auto;
+  }
+
+  .verticalTimelineItem:nth-child(even) .verticalTimelineCard {
+    grid-column: 1 / 2;
+    margin-right: 2.5rem; /* Increased margin for better spacing */
+  }
+
+  .verticalTimelineItem:nth-child(even) .cardRight {
+    margin-right: 2.5rem; /* Increased margin for better spacing */
+    margin-left: 0;
+  }
+}
+
+.verticalTimelineLine {
+  grid-column: 2 / 3;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: 100%;
+  z-index: 1;
+}
+
+.verticalTimelineLineInner {
+  width: 4px; /* Thicker line for better visibility */
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3); /* Brighter default color */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  transition: all 0.3s ease;
+}
+
+.verticalTimelineDot {
+  grid-column: 2 / 3;
+  width: 52px; /* Larger dot for better visibility */
+  height: 52px; /* Larger dot for better visibility */
+  border-radius: 50%;
+  background: rgba(30, 40, 60, 0.8); /* Darker background for better contrast */
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 2;
+  position: relative;
+  transition: all 0.3s ease;
+  margin: 0 auto;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); /* Default subtle glow */
+}
+
+.verticalTimelineDotInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.verticalTimelineCard {
+  padding: 1.8rem; /* Increased padding for better readability */
+  border-radius: 1rem;
+  background: rgba(20, 27, 65, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Brighter border for better visibility */
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.verticalTimelineCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.verticalTimelineDate {
+  display: inline-flex;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+  background: linear-gradient(135deg, #3D7FFF, #0D47A1);
+  color: white;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.verticalTimelineHeader {
+  margin-bottom: 1.5rem;
+}
+
+.verticalTimelineTitle {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.verticalTimelineCompany {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.verticalTimelineDescription {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.verticalTimelineAchievements {
+  margin-top: 1.5rem;
+  margin-bottom: 1.8rem; /* Increased margin for better spacing */
+  padding: 1.2rem; /* Increased padding */
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.5s ease;
+}
+
+.verticalTimelineAchievementsTitle {
+  margin-bottom: 1.2rem; /* Increased margin */
+  font-size: 1.2rem; /* Larger font size */
+  color: rgba(255, 255, 255, 0.95); /* Brighter text */
+}
+
+.verticalTimelineAchievementDot {
+  width: 14px; /* Larger dot */
+  height: 14px; /* Larger dot */
+  border-radius: 50%;
+  margin-top: 5px;
+  border: 1.5px solid; /* Thicker border */
+}
+
+.verticalTimelineAchievementText {
+  line-height: 1.6;
+  font-size: 0.95rem; /* Slightly larger font */
+}
+
+.verticalTimelineSkills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem; /* Increased gap between skill tags */
+  margin-top: 1.5rem;
+}
+
+.verticalTimelineSkillBadge {
+  transition: all 0.3s ease;
+  font-size: 0.9rem; /* Slightly larger font */
+  padding: 0.5rem 0.8rem; /* Increased padding */
+  border: 1.5px solid; /* Thicker border */
+}
+
+.verticalTimelineSkillBadge:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+  .verticalTimelineItem {
+    grid-template-columns: 50px 1fr;
+    margin-bottom: 3.5rem; /* Slightly smaller spacing on mobile */
+  }
+  
+  .verticalTimelineLine {
+    grid-column: 1 / 2;
+  }
+  
+  .verticalTimelineDot {
+    grid-column: 1 / 2;
+    width: 48px; /* Slightly smaller on mobile */
+    height: 48px; /* Slightly smaller on mobile */
+  }
+  
+  .verticalTimelineCard {
+    grid-column: 2 / 3;
+    margin-left: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .cardRight, .cardLeft {
+    grid-column: 2 / 3;
+    margin-right: 0;
+    margin-left: 1.5rem;
+  }
+}
+
+/* Animation for achievements section */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade in animation for timeline items */
+.verticalTimelineItem {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: itemFadeIn 0.6s ease forwards; /* Slightly slower animation for smoother appearance */
+}
+
+.verticalTimelineItem:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.verticalTimelineItem:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.verticalTimelineItem:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+@keyframes itemFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Float animation for skill badges */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }

@@ -197,28 +197,28 @@ const techData: TechCategory[] = [
   }
 ];
 
-// Single skill card component with circular progress
+// Modified SkillCard component with improved visualization
 const SkillCard = ({ skill, index, categoryColor }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [progressValue, setProgressValue] = useState(0);
   const cardRef = useRef(null);
-
+  
   // Responsive layout detection
   const [isMobile, setIsMobile] = useState(false);
-
+  
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const checkMobile = () => {
         setIsMobile(window.innerWidth < 768);
       };
-
       checkMobile();
       window.addEventListener('resize', checkMobile);
       return () => window.removeEventListener('resize', checkMobile);
     }
   }, []);
-
+  
+  // Animation for the progress value
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -228,20 +228,16 @@ const SkillCard = ({ skill, index, categoryColor }) => {
           const duration = 1500;
           const startValue = 0;
           const endValue = skill.level;
-
           const animate = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-
             // Ease out function
             const easedProgress = 1 - Math.pow(1 - progress, 2);
             setProgressValue(startValue + (endValue - startValue) * easedProgress);
-
             if (progress < 1) {
               requestAnimationFrame(animate);
             }
           };
-
           setTimeout(() => {
             requestAnimationFrame(animate);
           }, 200 + index * 100);
@@ -249,18 +245,89 @@ const SkillCard = ({ skill, index, categoryColor }) => {
       },
       { threshold: 0.1 }
     );
-
     if (cardRef.current) {
       observer.observe(cardRef.current);
     }
-
     return () => {
       if (cardRef.current) {
         observer.unobserve(cardRef.current);
       }
     };
   }, [skill.level, index]);
-
+  
+  // Determine the card style based on skill level (for visual differentiation)
+  const getCardStyle = () => {
+    // Expert level (90-100%)
+    if (skill.level >= 90) {
+      return {
+        borderWidth: '3px',
+        boxShadow: isHovered
+          ? `0 15px 35px rgba(0, 0, 0, 0.3), 0 0 30px ${skill.color}80`
+          : `0 8px 25px rgba(0, 0, 0, 0.15), 0 0 15px ${skill.color}30`,
+        background: isHovered
+          ? `linear-gradient(135deg, rgba(10, 15, 36, 0.95), rgba(10, 15, 36, 0.8))`
+          : `linear-gradient(135deg, rgba(10, 15, 36, 0.85), rgba(10, 15, 36, 0.7))`,
+      };
+    }
+    // Advanced level (75-89%)
+    else if (skill.level >= 75) {
+      return {
+        borderWidth: '2px',
+        boxShadow: isHovered
+          ? `0 12px 30px rgba(0, 0, 0, 0.25), 0 0 20px ${skill.color}60`
+          : `0 6px 20px rgba(0, 0, 0, 0.12), 0 0 10px ${skill.color}20`,
+        background: isHovered
+          ? `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.75))`
+          : `linear-gradient(135deg, rgba(10, 15, 36, 0.8), rgba(10, 15, 36, 0.65))`,
+      };
+    }
+    // Intermediate level (below 75%)
+    else {
+      return {
+        borderWidth: '1px',
+        boxShadow: isHovered
+          ? `0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px ${skill.color}40`
+          : `0 4px 15px rgba(0, 0, 0, 0.1)`,
+        background: isHovered
+          ? `linear-gradient(135deg, rgba(10, 15, 36, 0.85), rgba(10, 15, 36, 0.7))`
+          : `linear-gradient(135deg, rgba(10, 15, 36, 0.75), rgba(10, 15, 36, 0.6))`,
+      };
+    }
+  };
+  
+  const cardStyle = getCardStyle();
+  
+  // Determine progress bar style based on skill level with improved thickness and readability
+  const progressStyle = () => {
+    if (skill.level >= 90) {
+      return {
+        size: isMobile ? 95 : 110, // Slightly smaller for better proportion
+        thickness: isMobile ? 8 : 7, // Thicker lines for better readability
+        ringOpacity: 1,
+        glowIntensity: '15px',
+        fontSize: isMobile ? "1.5rem" : "1.8rem" // Larger percentage number
+      };
+    } else if (skill.level >= 75) {
+      return {
+        size: isMobile ? 90 : 105,
+        thickness: isMobile ? 7 : 6,
+        ringOpacity: 0.9,
+        glowIntensity: '10px',
+        fontSize: isMobile ? "1.4rem" : "1.7rem"
+      };
+    } else {
+      return {
+        size: isMobile ? 85 : 100,
+        thickness: isMobile ? 6 : 5, // Still thicker than original for better visibility
+        ringOpacity: 0.8,
+        glowIntensity: '5px',
+        fontSize: isMobile ? "1.3rem" : "1.6rem"
+      };
+    }
+  };
+  
+  const progress = progressStyle();
+  
   return (
     <div
       ref={cardRef}
@@ -273,45 +340,40 @@ const SkillCard = ({ skill, index, categoryColor }) => {
     >
       <Paper
         shadow="md"
-        p={isMobile ? "lg" : "xl"}
+        p="xl" // Consistent padding for all cards
         radius="lg"
         className={styles.skillCardPaper}
         style={{
           position: "relative",
           height: "100%",
-          background: isHovered
-            ? `linear-gradient(135deg, rgba(10, 15, 36, 0.9), rgba(10, 15, 36, 0.95))`
-            : `rgba(10, 15, 36, 0.8)`,
+          background: cardStyle.background,
           backdropFilter: "blur(10px)",
-          border: `2px solid ${isHovered ? skill.color : isMobile ? `${skill.color}50` : 'rgba(255, 255, 255, 0.1)'}`,
+          border: `${cardStyle.borderWidth} solid ${isHovered ? skill.color : isMobile ? `${skill.color}50` : 'rgba(255, 255, 255, 0.1)'}`,
           transition: "all 0.4s ease",
           overflow: "hidden",
           cursor: "pointer",
-          boxShadow: isHovered
-            ? `0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px ${skill.color}40`
-            : "0 4px 20px rgba(0, 0, 0, 0.1)",
+          boxShadow: cardStyle.boxShadow,
           transform: isHovered ? "translateY(-5px)" : "translateY(0)",
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        {/* Gradient overlay effect */}
+        {/* Skill level indicator band at the top */}
         <Box
-          className={styles.gradientOverlay}
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
-            height: isMobile ? "8px" : "5px",
-            background: `linear-gradient(90deg, transparent, ${skill.color}, transparent)`,
-            opacity: isHovered || isMobile ? 1 : 0.5,
+            height: `${skill.level >= 90 ? '8px' : skill.level >= 75 ? '6px' : '4px'}`,
+            background: `linear-gradient(90deg, ${skill.color}, transparent ${skill.level}%)`,
+            opacity: isHovered || isMobile ? 1 : 0.7,
             transition: "opacity 0.3s ease"
           }}
         />
-
-        <Group align="flex-start" wrap="nowrap" gap={isMobile ? "lg" : "md"}>
+        
+        <Group align="flex-start" wrap="nowrap" gap="lg"> {/* Increased gap for better spacing */}
           {/* Circular progress with animated counter */}
           <Box
             className={styles.circularProgress}
@@ -320,8 +382,8 @@ const SkillCard = ({ skill, index, categoryColor }) => {
             }}
           >
             <RingProgress
-              size={isMobile ? 90 : 110}
-              thickness={isMobile ? 5 : 4}
+              size={progress.size}
+              thickness={progress.thickness}
               roundCaps
               label={
                 <Box
@@ -331,27 +393,32 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     flexDirection: "column",
-                    gap: "2px"
+                    gap: "4px" // Increased gap between icon and percentage
                   }}
                 >
                   <Box
                     className={styles.circularProgressIcon}
                     style={{
                       color: skill.color,
-                      filter: (isHovered || isMobile) ? `drop-shadow(0 0 8px ${skill.color})` : "none",
+                      filter: (isHovered || isMobile) 
+                        ? `drop-shadow(0 0 ${progress.glowIntensity} ${skill.color})` 
+                        : "none",
                       transition: "filter 0.3s ease",
-                      fontSize: isMobile ? "1.3rem" : undefined
+                      fontSize: isMobile ? "1.5rem" : "1.6rem", // Larger icon
+                      opacity: progress.ringOpacity
                     }}
                   >
                     {getSkillIcon(skill.name)}
                   </Box>
                   <Text
                     fw={700}
-                    size={isMobile ? "lg" : "xl"}
                     className={styles.circularProgressText}
                     style={{
                       color: "#fff",
-                      textShadow: (isHovered || isMobile) ? `0 0 8px ${skill.color}` : "none"
+                      fontSize: progress.fontSize, // Larger percentage number
+                      textShadow: (isHovered || isMobile) 
+                        ? `0 0 ${progress.glowIntensity} ${skill.color}` 
+                        : "none"
                     }}
                   >
                     {Math.round(progressValue)}%
@@ -359,104 +426,115 @@ const SkillCard = ({ skill, index, categoryColor }) => {
                 </Box>
               }
               sections={[
-                { value: progressValue, color: skill.color, tooltip: `${skill.level}% proficiency` },
+                { 
+                  value: progressValue, 
+                  color: skill.color, 
+                  tooltip: `${skill.level}% proficiency` 
+                },
               ]}
             />
-
             {/* Pulse effect background */}
             <Box
               className={styles.pulseEffect}
               style={{
                 position: "absolute",
-                top: "-5px",
-                left: "-5px",
-                right: "-5px",
-                bottom: "-5px",
+                top: "-8px", // Slightly larger area
+                left: "-8px",
+                right: "-8px",
+                bottom: "-8px",
                 borderRadius: "50%",
-                background: `radial-gradient(circle, ${skill.color}10 0%, transparent 70%)`,
+                background: `radial-gradient(circle, ${skill.color}20 0%, transparent 70%)`,
                 opacity: isHovered || isMobile ? 1 : 0,
                 transition: "opacity 0.3s ease",
                 zIndex: -1
               }}
             />
           </Box>
-
+          
           <Box style={{ flex: 1 }}>
             <Group justify="space-between" mb="xs">
               <Text
-                size={isMobile ? "lg" : "xl"}
-                fw={700}
+                size={
+                  isMobile ? "lg" : 
+                  skill.level >= 90 ? "xl" : 
+                  "lg"
+                }
+                fw={skill.level >= 90 ? 800 : 700}
                 className={styles.skillName}
                 style={{
                   color: skill.color,
                   transition: "all 0.3s ease",
-                  textShadow: (isHovered || isMobile) ? `0 0 10px ${skill.color}80` : "none",
-                  fontSize: isMobile ? "1.2rem" : undefined
+                  textShadow: (isHovered || isMobile) 
+                    ? `0 0 ${progress.glowIntensity} ${skill.color}80` 
+                    : "none",
+                  fontSize: isMobile ? "1.3rem" : skill.level >= 90 ? "1.4rem" : "1.3rem" // Larger text
                 }}
               >
                 {skill.name}
               </Text>
-
               <Badge
                 color="dark"
                 variant="filled"
                 radius="sm"
-                size={isMobile ? "md" : "sm"}
+                size="md" // Larger badge for better visibility
                 className={styles.skillExperience}
                 style={{
                   background: `linear-gradient(135deg, ${skill.color}90, ${skill.color}50)`,
-                  border: `1px solid ${skill.color}`,
-                  boxShadow: (isHovered || isMobile) ? `0 0 10px ${skill.color}60` : "none",
+                  border: `1.5px solid ${skill.color}`, // Thicker border
+                  boxShadow: (isHovered || isMobile) 
+                    ? `0 0 ${progress.glowIntensity} ${skill.color}60` 
+                    : "none",
                   transition: "all 0.3s ease",
-                  padding: isMobile ? "0.4rem 0.7rem" : undefined,
-                  fontSize: isMobile ? "0.9rem" : undefined
+                  padding: "0.4rem 0.8rem", // Increased padding
+                  fontSize: "0.95rem" // Larger font
                 }}
               >
                 {skill.experience}
               </Badge>
             </Group>
-
+            
             <Text
-              size={isMobile ? "md" : "sm"}
+              size="md" // Consistent medium size
               color="#E3E7F1"
               mb="md"
               className={styles.skillDescription}
               style={{
                 maxHeight: isExpanded ? "none" : "3em",
                 overflow: "hidden",
-                fontSize: isMobile ? "1rem" : undefined,
-                fontWeight: isMobile ? 400 : undefined,
+                fontSize: "1rem", // Consistent font size
+                lineHeight: 1.5, // Better line height for readability
                 transition: "max-height 0.3s ease"
               }}
             >
               {skill.description}
             </Text>
-
+            
             <Badge
-              leftSection={<Box size={isMobile ? 14 : 12}>📊</Box>}
-              size={isMobile ? "md" : "sm"}
+              leftSection={<Box size={14}>📊</Box>} // Slightly larger icon
+              size="md"
               className={styles.skillProjects}
               style={{
                 background: "rgba(255, 255, 255, 0.1)",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                padding: isMobile ? "0.5rem 0.8rem" : undefined,
-                fontSize: isMobile ? "0.9rem" : undefined
+                border: `1.5px solid ${skill.level >= 90 
+                  ? skill.color + '50' 
+                  : "rgba(255, 255, 255, 0.2)"}`,
+                padding: "0.5rem 0.8rem", // Increased padding
+                fontSize: "0.95rem" // Larger font
               }}
             >
               {skill.projects}+ Projects
             </Badge>
           </Box>
         </Group>
-
+        
         {/* Bottom decorative element */}
         <Box
-          // className={styles.bottomDecorativeElement}
           style={{
             position: "absolute",
             left: 0,
             bottom: 0,
             width: `${skill.level}%`,
-            height: isMobile ? "3px" : "2px",
+            height: `${skill.level >= 90 ? '4px' : skill.level >= 75 ? '3px' : '2px'}`,
             background: `linear-gradient(90deg, ${skill.color}70, transparent)`,
             transition: "all 0.3s ease"
           }}
@@ -470,7 +548,7 @@ export function TechStackSection() {
   const colorScheme = useColorScheme();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
-
+  
   // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
@@ -482,29 +560,27 @@ export function TechStackSection() {
         setScrollProgress(scrollProgress);
       }
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
+  
   // Responsive layout detection
   const [isMobile, setIsMobile] = useState(false);
-
+  
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const checkMobile = () => {
         setIsMobile(window.innerWidth < 768);
       };
-
       checkMobile();
       window.addEventListener('resize', checkMobile);
       return () => window.removeEventListener('resize', checkMobile);
     }
   }, []);
-
+  
   return (
-    <Container size="xl" className={styles.techStackSection}>
+    <Container size="xl" className={styles.techStackSection} ref={sectionRef}>
       <Stack gap="xl">
         <div className={styles.sectionTitle}>
           <Box
@@ -514,9 +590,7 @@ export function TechStackSection() {
               marginBottom: isMobile ? "2.5rem" : "4rem"
             }}
           >
-            <Box
-              // className={styles.sectionTitleInner}
-            >
+            <Box style={{ display: 'inline-block', position: 'relative' }}>
               <Title
                 order={2}
                 className={styles.sectionTitleText}
@@ -526,11 +600,9 @@ export function TechStackSection() {
               >
                 Technical Expertise
               </Title>
-
               {/* Animated underline */}
               <Box className={styles.animatedUnderline} />
             </Box>
-
             <Text
               size={isMobile ? "lg" : "xl"}
               className={styles.sectionDescription}
@@ -544,7 +616,7 @@ export function TechStackSection() {
             </Text>
           </Box>
         </div>
-
+        
         {techData.map((category, index) => (
           <Box key={index} mb="xl">
             <Paper
@@ -572,7 +644,6 @@ export function TechStackSection() {
                     >
                       {category.icon}
                     </Box>
-
                     <Box style={{ flex: 1 }}>
                       <Title
                         order={3}
@@ -589,7 +660,6 @@ export function TechStackSection() {
                       >
                         {category.name}
                       </Title>
-
                       <Badge
                         size="lg"
                         radius="md"
@@ -608,7 +678,6 @@ export function TechStackSection() {
                       </Badge>
                     </Box>
                   </Group>
-
                   <Text color="#E3E7F1" size="md" className={styles.categoryDescription} style={{ fontSize: "1rem", lineHeight: 1.5 }}>
                     {category.description}
                   </Text>
@@ -632,7 +701,6 @@ export function TechStackSection() {
                     >
                       {category.icon}
                     </Box>
-
                     <Box>
                       <Title
                         order={3}
@@ -649,13 +717,11 @@ export function TechStackSection() {
                       >
                         {category.name}
                       </Title>
-
                       <Text color="#E3E7F1" size="md" className={styles.categoryDescription}>
                         {category.description}
                       </Text>
                     </Box>
                   </Group>
-
                   <Badge
                     size="xl"
                     radius="md"
@@ -673,17 +739,35 @@ export function TechStackSection() {
                 </Group>
               )}
             </Paper>
-
-            <Grid gutter={isMobile ? "md" : "xl"}>
-              {category.skills.map((skill, index) => (
-                <Grid.Col key={index} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
-                  <SkillCard
-                    skill={skill}
-                    index={index}
-                    categoryColor={category.color}
-                  />
-                </Grid.Col>
-              ))}
+            
+            {/* Using a balanced grid layout for consistent visual appeal */}
+            <Grid 
+              gutter="xl" // Consistent gutter
+              style={{ marginTop: '25px' }} // Slightly more space between category and skills
+            >
+              {category.skills.map((skill, idx) => {
+                // Create a more balanced layout
+                let spanSize;
+                
+                if (isMobile) {
+                  // Mobile is full width
+                  spanSize = { base: 12 };
+                } else {
+                  // For desktop, create a more balanced 2x2 grid layout
+                  // This ensures symmetric appearance rather than asymmetric
+                  spanSize = { base: 12, sm: 6, md: 6, lg: 6 };
+                }
+                
+                return (
+                  <Grid.Col key={idx} span={spanSize}>
+                    <SkillCard
+                      skill={skill}
+                      index={idx}
+                      categoryColor={category.color}
+                    />
+                  </Grid.Col>
+                );
+              })}
             </Grid>
           </Box>
         ))}

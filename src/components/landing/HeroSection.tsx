@@ -84,33 +84,54 @@ const HeroSection = () => {
               ref={targetRef}
               className={styles.heroContent}
             >
+              {/* Decorative geometric element to fill empty space */}
+              <Box className={styles.geometricDecoration} />
+
+              {/* First floating element */}
               <Box
                 className={styles.floatingElement}
+                style={{
+                  top: "15%",
+                  left: "10%",
+                }}
               >
                 <Box
                   className={styles.floatingElementInner}
                 />
               </Box>
 
+              {/* Second floating element */}
+              <Box
+                className={styles.floatingElement}
+                style={{
+                  top: "25%",
+                  right: "15%",
+                }}
+              >
+                <Box
+                  className={styles.floatingElementInner}
+                  style={{
+                    background: "rgba(33, 230, 193, 0.4)", 
+                  }}
+                />
+              </Box>
+
               <Container
                 size="xl"
                 py={{ base: "xl", sm: "2xl" }}
-                mt={{ base: 50, sm: 80 }}
+                mt={{ base: 30, sm: 60 }}
               >
+                {/* Repositioned megaTitle for better visual balance */}
                 <div
                   className={styles.megaTitle}
                   style={{
                     transform: titleTransform,
+                    textAlign: "right",
+                    marginBottom: "3rem",
                   }}
                 >
                   <Text
                     className={styles.megaTitleText}
-                  >
-                    TRAVNIKOV
-                  </Text>
-
-                  <Text
-                    className={styles.megaTitleTextLight}
                   >
                     TRAVNIKOV
                   </Text>

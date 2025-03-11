@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   return (
     <>
       {/* Standard Footer */}
-      <AppShellFooter p="md" className={styles.footer}>
+      <AppShellFooter p="md" className={styles.footer + ' visible-hidden-to-sm'}>
         <Container size="xl">
           <Box className={styles.footerContent}>
             <SocialLinks />

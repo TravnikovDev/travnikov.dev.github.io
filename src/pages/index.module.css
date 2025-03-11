@@ -1,74 +1,16 @@
 :root {
-  --dark-bg: rgba(15, 15, 15, 0.95);
+  --dark-bg: rgba(15, 15, 15, 0.5); /* Significantly reduced opacity to let 3D background shine through */
   --spacing: 350px;
 }
 
-.topGradientCircle {
-  position: absolute;
-  top: -200px;
-  left: 50%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(34, 144, 224, 0.3), rgba(34, 144, 224, 0));
-  border-radius: 50%;
-  z-index: -1;
-  animation: glowPulse 3s infinite;
-}
-
-.middleRightBlob {
-  position: absolute;
-  top: 50%;
-  right: -150px;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(122, 82, 197, 0.5), rgba(122, 82, 197, 0));
-  border-radius: 50%;
-  z-index: -1;
-}
-
-.bottomLeftBlob {
-  position: absolute;
-  bottom: -100px;
-  left: -100px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(34, 144, 224, 0.3), rgba(34, 144, 224, 0));
-  border-radius: 50%;
-  z-index: -1;
-}
-
-.animatedGridPattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 75%, transparent 75%, transparent);
-  background-size: 50px 50px;
-  z-index: -2;
-  animation: gradientAnimation 15s linear infinite;
-}
-
-.animatedGradientLinesTop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
-  z-index: -1;
-  animation: gradientAnimation 10s linear infinite;
-}
-
+/* Hidden background elements that were covering the 3D background */
+.topGradientCircle,
+.middleRightBlob,
+.bottomLeftBlob,
+.animatedGridPattern,
+.animatedGradientLinesTop,
 .animatedGradientLinesBottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(to right, rgba(34, 144, 224, 0.3), rgba(122, 82, 197, 0.5));
-  z-index: -1;
-  animation: gradientAnimation 10s linear infinite;
+  display: none; /* Hide these since we're using the 3D background instead */
 }
 
 .sectionsDivider {
@@ -87,7 +29,6 @@
   width: 30%;
   background: linear-gradient(90deg, transparent, #3D7FFF, #A64DFF, transparent);
   animation: dividerAnimation 3s infinite linear;
-  background: var(--dark-bg);
   padding: 1rem;
 }
 
@@ -118,12 +59,34 @@ section {
   margin: 0 auto var(--spacing) auto;
   padding: 2rem;
   background: var(--dark-bg);
+  backdrop-filter: blur(5px);
   font-size: 1.25rem;
   line-height: 1.5;
+  border-radius: 8px; /* Add rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Add subtle shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions for animations */
 }
 
 .sectionRight {
   margin: 0 auto var(--spacing) auto;
+}
+
+/* Animation for section entrance */
+@keyframes sectionFadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+section {
+  animation: sectionFadeIn 0.6s ease forwards;
+}
+
+section:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+section:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
 @media (max-width: 48em) {
@@ -171,4 +134,24 @@ section {
 h1, h2, h3, h4, h5, h6, p {
   position: relative;
   z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow for better readability over 3D background */
+}
+
+/* Section transition improvements */
+.sectionTransition {
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.sectionTransition::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(15, 15, 15, 0.2));
+  z-index: 1;
 }
