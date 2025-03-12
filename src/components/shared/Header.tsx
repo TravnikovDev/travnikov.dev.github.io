@@ -7,38 +7,10 @@ import * as styles from './Header.module.css';
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
-  const theme = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const headerRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
-  
-  // State to track mouse position
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
-  // Only enable effects on desktop for better performance
-  useEffect(() => {
-    if (isMobile) return;
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!headerRef.current) return;
-      const rect = headerRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      
-      setMousePosition({ x, y });
-      
-      // Update gradient position using CSS variables
-      if (gradientRef.current) {
-        gradientRef.current.style.setProperty('--x', `${x * 100}%`);
-        gradientRef.current.style.setProperty('--y', `${y * 100}%`);
-      }
-    };
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isMobile]);
 
   // Animation for the navigation on mount
   useEffect(() => {
@@ -64,7 +36,7 @@ const Header: React.FC<HeaderProps> = () => {
   }, []);
   
   return (
-    <AppShellHeader className={styles.appShellHeader} ref={headerRef}>
+    <AppShellHeader className={styles.appShellHeader} ref={headerRef} visibleFrom="sm">
       <Box className={styles.box}>
         <div
           ref={gradientRef}

@@ -29,18 +29,18 @@ type ComponentConfig = {
 };
 
 // Simple particles system with Matrix colors
-const MatrixParticles = ({ count = 500, size = 0.03, color = "#00FF41", spread = 10 }) => {
+const MatrixParticles = ({ count = 500, size = 0.03, color = "#00FF41", spread = 10, position = [0, 0, 0] as Position }) => {
   // Generate particles positions
   const particles = useMemo(() => {
     const temp = [];
     for (let i = 0; i < count; i++) {
-      const x = (Math.random() - 0.5) * spread;
-      const y = (Math.random() - 0.5) * spread;
-      const z = (Math.random() - 0.5) * spread;
+      const x = position[0] + (Math.random() - 0.5) * spread;
+      const y = position[1] + (Math.random() - 0.5) * spread;
+      const z = position[2] + (Math.random() - 0.5) * spread;
       temp.push({ position: [x, y, z] });
     }
     return temp;
-  }, [count, spread]);
+  }, [count, spread, position]);
 
   // Create geometry for all particles
   const [positions] = useState(() => {
@@ -220,22 +220,32 @@ function Scene() {
     {
       Component: MatrixParticles,
       props: {
-        position: [-config.sideOffset * 0.8, -config.spacing * 2, -3],
-        count: 100,
-        color: vaporwaveColors.cyan,
-        spread: 5,
-        size: 0.02
+        position: [0, -config.spacing * 1 + config.startOffset, -2] as Position,
+        count: 500,
+        color: vaporwaveColors.neonCyan,
+        spread: 12,
+        size: 0.04
       }
     },
     // Right side floating elements
     {
       Component: MatrixParticles,
       props: {
-        position: [config.sideOffset * 0.8, -config.spacing * 4, -3],
-        count: 100,
-        color: vaporwaveColors.pink,
-        spread: 5,
-        size: 0.02
+        position: [0, -config.spacing * 5 + config.startOffset, -2] as Position,
+        count: 500,
+        color: vaporwaveColors.hotPink,
+        spread: 12,
+        size: 0.04
+      }
+    },
+    {
+      Component: MatrixParticles,
+      props: {
+        position: [0, -config.spacing * 7.5 + config.startOffset, -2] as Position,
+        count: 300,
+        color: vaporwaveColors.neonBlue,
+        spread: 12,
+        size: 0.05
       }
     }
   ];
@@ -306,7 +316,7 @@ function Scene() {
 
       {/* Background effects */}
       <MatrixRain
-        count={2000}
+        count={1000}
         opacity={0.4}
         speed={0.6}
         spread={35}

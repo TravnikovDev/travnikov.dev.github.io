@@ -120,6 +120,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   max-width: 83.333%; /* 10/12 columns */
   margin: 0 auto; /* Center the container */
 }

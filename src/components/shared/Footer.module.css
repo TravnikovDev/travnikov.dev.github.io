@@ -44,8 +44,8 @@
   border-top: 1px solid rgba(255, 97, 166, 0.2);
   display: flex;
   justify-content: space-around;
-  padding: 0.3rem 0;
-  height: 45px; /* Reduced height */
+  padding: 1rem 0;
+  min-height: 45px; /* Reduced height */
   box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }

@@ -291,7 +291,7 @@ const HeroSection = () => {
                 />
               </Box>
 
-              <div
+              {/* <div
                 className={styles.scrollSection}
                 style={{
                   transform: `translateY(${scrollY}px)`,
@@ -365,7 +365,7 @@ const HeroSection = () => {
                     className={styles.floatingElementBottom}
                   />
                 </Container>
-              </div>
+              </div> */}
             </Box>
           </Box>
         </Box>

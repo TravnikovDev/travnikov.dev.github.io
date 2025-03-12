@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   /* background: linear-gradient(to bottom, #141B41, #281154, #0A0A1A); */
   background: transparent; /* Use the 3D background instead */
   overflow-x: hidden;
@@ -21,12 +21,12 @@
 @media (max-width: 48em) { /* sm breakpoint */
   .main {
     width: 100%;
-    padding: 65px 0 60px; /* Smaller top padding on mobile */
+    padding: 25px 0 60px; /* Smaller top padding on mobile */
   }
 }
 
 @media (max-width: 30em) { /* xs breakpoint */
   .main {
-    padding: 55px 0 60px; /* Even smaller padding on extra small screens */
+    padding: 15px 0 60px; /* Even smaller padding on extra small screens */
   }
 }
