@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { MantineProvider as Provider, createTheme, CSSVariablesResolver } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { theme as customTheme } from "../../theme";
+import { theme as customTheme, vaporwaveColors } from "../../theme";
 
 // Create the final theme by merging our custom theme with the base theme
 const theme = createTheme({
@@ -9,13 +9,7 @@ const theme = createTheme({
 });
 
 // Vaporwave color palette for consistent use
-const colors = {
-  navy: '#141B41',     // Dark navy blue
-  purple: '#281154',   // Deep purple
-  cyan: '#21E6C1',     // Electric cyan
-  pink: '#FF61A6',     // Sunset pink
-  orange: '#FF7A00',   // Orange neon
-};
+const colors = vaporwaveColors;
 
 // TypeScript fix: Define the cssVariablesResolver separately with correct typing
 const cssVariablesResolver: CSSVariablesResolver = (theme) => ({

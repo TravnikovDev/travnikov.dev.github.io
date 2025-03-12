@@ -1,13 +1,21 @@
 import { MantineThemeOverride } from '@mantine/core';
 
 // Vaporwave color palette
-const vaporwaveColors = {
+export const vaporwaveColors = {
   navy: '#141B41',     // Dark navy blue background
+  neonBlue: "#00F1FF",
   purple: '#281154',   // Deep purple
+  electricPurple: "#9D00FF",
   cyan: '#21E6C1',     // Electric cyan
+  neonCyan: "#00FFFF",
   pink: '#FF61A6',     // Sunset pink
+  synthPink: "#FF0080",
+  hotPink: "#FF00FF",
   orange: '#FF7A00',   // Orange neon
-  matrixGreen: '#00FF41'  // Legacy matrix green - use sparingly
+  neonOrange: "#FFA500", // Neon orange for mango
+  neonGreen: "#39FF14",
+  matrixGreen: '#00FF41',  // Legacy matrix green - use sparingly
+  neonYellow: "#FFFF00" // Neon yellow for lemon
 };
 
 export const theme: MantineThemeOverride = {

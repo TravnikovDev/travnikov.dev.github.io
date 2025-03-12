@@ -7,7 +7,7 @@ interface MatrixFruitProps {
   position?: [number, number, number];
   scale?: number;
   rotation?: [number, number, number];
-  fruitType?: 'banana' | 'eggplant' | 'strawberry' | 'lemon' | 'mango' | 'cherry' | 'pineapple' | 'avocado';
+  fruitType?: 'banana' | 'eggplant' | 'strawberry' | 'lemon' | 'mango' | 'cherry' | 'pineapple' | 'avocado' | 'grapes' | 'pomegranate';
   color?: string;
   speed?: number;
 }
