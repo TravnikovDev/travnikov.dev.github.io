@@ -33,7 +33,7 @@
 
 .navButton {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-color);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.95rem;
   letter-spacing: 0.5px;
@@ -64,7 +64,7 @@
   position: absolute;
   left: -15px;
   opacity: 0;
-  color: #21E6C1; /* Electric cyan instead of green */
+  color: var(--mantine-color-primary-4); /* Electric cyan */
   transition: all 0.3s ease;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .navItem:hover .navButton {
-  color: #FF61A6; /* Sunset pink instead of green */
+  color: var(--mantine-color-secondary-4); /* Sunset pink */
 }
 
 .navUnderline {
@@ -89,7 +89,7 @@
   left: 50%;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #FF61A6, transparent);
+  background: linear-gradient(90deg, transparent, var(--mantine-color-secondary-4), transparent);
   transition: all 0.3s ease;
 }
 
@@ -110,7 +110,7 @@
   right: 0;
   bottom: 0;
   border-radius: 4px;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 97, 166, 0.15), transparent);
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(var(--mantine-color-secondary-4-rgb), 0.15), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -131,16 +131,16 @@
     text-shadow: none;
   }
   20% {
-    text-shadow: 0 0 4px rgba(33, 230, 193, 0.7);
+    text-shadow: 0 0 4px rgba(var(--mantine-color-primary-4-rgb), 0.7);
   }
   21% {
-    text-shadow: -2px 0 #FF61A6;
+    text-shadow: -2px 0 var(--mantine-color-secondary-4);
   }
   25% {
     text-shadow: none;
   }
   40% {
-    text-shadow: 2px 0 #21E6C1;
+    text-shadow: 2px 0 var(--mantine-color-primary-4);
   }
   41% {
     text-shadow: none;
@@ -149,7 +149,7 @@
     text-shadow: none;
   }
   90% {
-    text-shadow: -1px 0 #FF7A00; /* Orange neon */
+    text-shadow: -1px 0 var(--mantine-color-vaporwave-5); /* Orange neon */
   }
   91% {
     text-shadow: none;
@@ -172,9 +172,9 @@
   justify-content: center;
   padding: 10px 20px;
   border-radius: 10px;
-  background: rgba(20, 27, 65, 0.4); /* Dark navy blue */
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4); /* Dark navy blue */
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(21, 230, 193, 0.1);
+  box-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.1);
   transition: all 0.3s ease;
 }
 
@@ -188,7 +188,7 @@
   .navBox {
     padding: 6px 12px;
     border-radius: 8px;
-    background: rgba(20, 27, 65, 0.3); /* More transparent on smaller screens */
+    background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.3); /* More transparent on smaller screens */
   }
 }
 

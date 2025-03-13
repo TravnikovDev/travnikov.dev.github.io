@@ -8,10 +8,10 @@
   width: 100%;
   top: 0;
   z-index: 1000;
-  background: rgba(17, 16, 36, 0.75); /* Vaporwave dark navy/purple background */
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.75); /* Vaporwave dark navy/purple background */
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 97, 166, 0.2); /* Sunset pink instead of matrix green */
-  box-shadow: 0 0 20px rgba(21, 230, 193, 0.1); /* Electric cyan glow */
+  border-bottom: 1px solid rgba(var(--mantine-color-secondary-4-rgb), 0.2); /* Sunset pink instead of matrix green */
+  box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.1); /* Electric cyan glow */
   height: 50px; /* Reduced from 60px */
 }
 
@@ -19,7 +19,7 @@
 @media (max-width: 768px) {
   .appShellHeader {
     height: 40px; /* Even smaller on mobile */
-    background: rgba(17, 16, 36, 0.65); /* More transparent on mobile */
+    background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.65); /* More transparent on mobile */
   }
 }
 
@@ -39,7 +39,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(21, 230, 193, 0.1), transparent); /* Electric cyan instead of green */
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(var(--mantine-color-primary-4-rgb), 0.1), transparent); /* Electric cyan instead of green */
   transition: background 0.2s ease;
   mix-blend-mode: screen;
 }
@@ -53,8 +53,8 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 97, 166, 0.2), /* Sunset pink */
-    rgba(21, 230, 193, 0.2), /* Electric cyan */
+    rgba(var(--mantine-color-secondary-4-rgb), 0.2), /* Sunset pink */
+    rgba(var(--mantine-color-primary-4-rgb), 0.2), /* Electric cyan */
     transparent
   );
 }
@@ -68,8 +68,8 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 122, 0, 0.2), /* Orange neon */
-    rgba(255, 97, 166, 0.2), /* Sunset pink */
+    rgba(var(--mantine-color-vaporwave-5-rgb), 0.2), /* Orange neon */
+    rgba(var(--mantine-color-secondary-4-rgb), 0.2), /* Sunset pink */
     transparent
   );
 }
@@ -80,7 +80,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(21, 230, 193, 0.05), transparent); /* Electric cyan */
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(var(--mantine-color-primary-4-rgb), 0.05), transparent); /* Electric cyan */
   pointer-events: none;
   mix-blend-mode: screen;
 }
@@ -95,8 +95,8 @@
     to bottom,
     transparent,
     transparent 50%,
-    rgba(255, 97, 166, 0.01) 50%,
-    rgba(21, 230, 193, 0.01) 100%
+    rgba(var(--mantine-color-secondary-4-rgb), 0.01) 50%,
+    rgba(var(--mantine-color-primary-4-rgb), 0.01) 100%
   );
   background-size: 100% 4px;
   animation: scanlineEffect 6s linear infinite;

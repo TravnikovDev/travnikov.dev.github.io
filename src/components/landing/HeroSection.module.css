@@ -41,7 +41,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(33, 230, 193, 0.1), rgba(255, 97, 166, 0.1));
+  background: linear-gradient(135deg, 
+    rgba(var(--mantine-color-primary-4-rgb), 0.1), 
+    rgba(var(--mantine-color-secondary-4-rgb), 0.1));
   backdrop-filter: blur(10px);
   z-index: -1;
 }
@@ -49,7 +51,7 @@
 .heroText {
   font-size: clamp(4rem, 10vw, 10rem);
   font-weight: 900;
-  color: rgba(33, 230, 193, 0.05); /* Electric cyan with low opacity */
+  color: rgba(var(--mantine-color-primary-4-rgb), 0.05); /* Electric cyan with low opacity */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -89,7 +91,7 @@
   color: white;
   text-align: center;
   margin-bottom: 2rem;
-  text-shadow: 0 0 20px rgba(33, 230, 193, 0.5);
+  text-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.5);
 }
 
 .megaTitleText, .megaTitleTextLight {
@@ -101,14 +103,14 @@
 }
 
 .megaTitleText {
-  color: #21E6C1; /* Electric cyan */
-  text-shadow: 0 0 20px rgba(33, 230, 193, 0.5);
+  color: var(--mantine-color-primary-4); /* Electric cyan */
+  text-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.5);
 }
 
 .megaTitleTextLight {
-  color: #FF61A6; /* Sunset pink */
+  color: var(--mantine-color-secondary-4); /* Sunset pink */
   opacity: 0.8;
-  text-shadow: 0 0 20px rgba(255, 97, 166, 0.5);
+  text-shadow: 0 0 20px rgba(var(--mantine-color-secondary-4-rgb), 0.5);
 }
 
 .heroTitle {
@@ -122,7 +124,7 @@
 
 .heroDescription {
   font-size: clamp(1rem, 3vw, 1.5rem);
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-color);
   text-align: left;
   margin-bottom: 2rem;
   line-height: 1.6;
@@ -130,25 +132,27 @@
 }
 
 .highlightBlue {
-  color: #21E6C1; /* Electric cyan */
-  text-shadow: 0 0 10px rgba(33, 230, 193, 0.5);
+  color: var(--mantine-color-primary-4); /* Electric cyan */
+  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.5);
 }
 
 .highlightRoyal {
-  color: #FF61A6; /* Sunset pink */
-  text-shadow: 0 0 10px rgba(255, 97, 166, 0.5);
+  color: var(--mantine-color-secondary-4); /* Sunset pink */
+  text-shadow: 0 0 10px rgba(var(--mantine-color-secondary-4-rgb), 0.5);
 }
 
 .highlightReact {
-  color: #21E6C1; /* Electric cyan */
+  color: var(--mantine-color-primary-4); /* Electric cyan */
 }
 
 .highlightTypeScript {
-  color: #FF61A6; /* Sunset pink */
+  color: var(--mantine-color-secondary-4); /* Sunset pink */
 }
 
 .heroButton {
-  background: linear-gradient(135deg, #21E6C1, #FF61A6);
+  background: linear-gradient(135deg, 
+    var(--mantine-color-primary-4), 
+    var(--mantine-color-secondary-4));
   color: white;
   border: none;
   padding: 12px 24px;
@@ -160,13 +164,13 @@
 
 .heroButton:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(33, 230, 193, 0.3);
+  box-shadow: 0 10px 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .heroButtonOutline {
   background: transparent;
-  color: #21E6C1;
-  border: 2px solid #21E6C1;
+  color: var(--mantine-color-primary-4);
+  border: 2px solid var(--mantine-color-primary-4);
   padding: 12px 24px;
   font-size: clamp(0.9rem, 2vw, 1.1rem);
   font-weight: 700;
@@ -176,25 +180,25 @@
 
 .heroButtonOutline:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(33, 230, 193, 0.2);
-  background: rgba(33, 230, 193, 0.1);
+  box-shadow: 0 10px 20px rgba(var(--mantine-color-primary-4-rgb), 0.2);
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
 }
 
 .availability {
   display: flex;
   align-items: center;
   font-size: clamp(0.85rem, 2vw, 1rem);
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-color);
   margin-top: 1rem;
 }
 
 .availabilityIndicator {
   width: 8px;
   height: 8px;
-  background: #21E6C1;
+  background: var(--mantine-color-primary-4);
   border-radius: 50%;
   margin-right: 0.5rem;
-  box-shadow: 0 0 10px rgba(33, 230, 193, 0.5);
+  box-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.5);
   animation: pulse 2s infinite;
 }
 
@@ -215,14 +219,14 @@
   font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 50px;
-  background: rgba(20, 27, 65, 0.4);
-  border: 1px solid rgba(33, 230, 193, 0.2);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
   transition: all 0.3s ease;
 }
 
 .techBadge:hover {
-  border-color: #21E6C1;
-  box-shadow: 0 0 15px rgba(33, 230, 193, 0.3);
+  border-color: var(--mantine-color-primary-4);
+  box-shadow: 0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.3);
   transform: translateY(-2px);
 }
 
@@ -253,7 +257,7 @@
 .scrollBox {
   width: 26px;
   height: 26px;
-  border: 2px solid #21E6C1;
+  border: 2px solid var(--mantine-color-primary-4);
   border-radius: 50%;
   animation: bounce 2s infinite;
   position: relative;
@@ -267,9 +271,9 @@
   transform: translate(-50%, -50%);
   width: 8px;
   height: 8px;
-  background: #21E6C1;
+  background: var(--mantine-color-primary-4);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(33, 230, 193, 0.5);
+  box-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.5);
 }
 
 @keyframes bounce {
@@ -294,10 +298,10 @@
 
 .scrollContent {
   padding: 2rem;
-  background: rgba(20, 27, 65, 0.4);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
   backdrop-filter: blur(10px);
   border-radius: 1rem;
-  border: 1px solid rgba(33, 230, 193, 0.2);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 
@@ -307,12 +311,12 @@
   color: white;
   text-align: center;
   margin-bottom: 2rem;
-  text-shadow: 0 0 10px rgba(33, 230, 193, 0.3);
+  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .scrollItem {
   padding: 2rem;
-  background: rgba(20, 27, 65, 0.3);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.3);
   backdrop-filter: blur(5px);
   border-radius: 1rem;
   transition: all 0.3s ease;
@@ -352,7 +356,9 @@
   width: 180px;
   height: 180px;
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  background: linear-gradient(135deg, rgba(33, 230, 193, 0.15), rgba(255, 97, 166, 0.15));
+  background: linear-gradient(135deg, 
+    rgba(var(--mantine-color-primary-4-rgb), 0.15), 
+    rgba(var(--mantine-color-secondary-4-rgb), 0.15));
   border: 1px solid rgba(255, 255, 255, 0.1);
   animation: morphShape 8s infinite ease-in-out, float 5s infinite ease-in-out;
   z-index: 1;

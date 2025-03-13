@@ -1,5 +1,26 @@
 /* Global styles for improved typography and readability */
 
+/* Map to Mantine vaporwave color theme */
+:root {
+  /* Primary colors from Mantine theme */
+  --mantine-color-cyan: var(--mantine-color-primary-4);
+  --mantine-color-pink: var(--mantine-color-secondary-4);
+  --mantine-color-navy: var(--mantine-color-vaporwave-7);
+  --mantine-color-deep-navy: var(--mantine-color-vaporwave-8);
+  --mantine-color-almost-black: var(--mantine-color-vaporwave-9);
+  
+  /* Background color */
+  --background-color: var(--mantine-color-vaporwave-8);
+  
+  /* Text colors */
+  --text-color: rgba(255, 255, 255, 0.9);
+  --text-color-secondary: rgba(255, 255, 255, 0.7);
+  
+  /* Link colors */
+  --link-color: var(--mantine-color-primary-4);
+  --link-hover-color: var(--mantine-color-secondary-4);
+}
+
 /* Base font sizing */
 html {
   font-size: 16px;
@@ -8,8 +29,8 @@ html {
 body {
   font-family: "JetBrains Mono", monospace, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
-  background-color: #0A0A1A;
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 /* Improved heading readability */
@@ -44,13 +65,13 @@ p {
 
 /* Links and buttons */
 a {
-  color: #21E6C1; /* Electric cyan */
+  color: var(--link-color); /* Electric cyan */
   text-decoration: none;
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 a:hover {
-  color: #FF61A6; /* Sunset pink */
+  color: var(--link-hover-color); /* Sunset pink */
   text-shadow: 0 0 8px rgba(255, 97, 166, 0.4);
 }
 
@@ -65,12 +86,12 @@ a:hover {
 
 /* Text effects - use these classes sparingly */
 .text-neon {
-  color: #FF61A6; /* Sunset pink */
+  color: var(--mantine-color-pink); /* Sunset pink */
   text-shadow: 0 0 8px rgba(255, 97, 166, 0.7), 0 0 15px rgba(255, 97, 166, 0.5);
 }
 
 .text-neon-cyan {
-  color: #21E6C1; /* Electric cyan */
+  color: var(--mantine-color-cyan); /* Electric cyan */
   text-shadow: 0 0 8px rgba(33, 230, 193, 0.7), 0 0 15px rgba(33, 230, 193, 0.5);
 }
 
@@ -158,13 +179,13 @@ img {
 
 /* Vaporwave-style container with subtle grid background */
 .vaporwave-container {
-  background: rgba(20, 27, 65, 0.4);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
   background-image: 
-    linear-gradient(rgba(21, 230, 193, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(21, 230, 193, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(var(--mantine-color-primary-4-rgb), 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--mantine-color-primary-4-rgb), 0.03) 1px, transparent 1px);
   background-size: 20px 20px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 97, 166, 0.1);
+  border: 1px solid rgba(var(--mantine-color-secondary-4-rgb), 0.1);
   padding: 1.5rem;
   margin-bottom: 2rem;
   backdrop-filter: blur(5px);
