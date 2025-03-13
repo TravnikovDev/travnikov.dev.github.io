@@ -6,19 +6,19 @@
 .skillCardPaper {
   position: relative;
   height: 100%;
-  background: rgba(20, 27, 65, 0.4);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
   backdrop-filter: blur(10px);
   transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid rgba(33, 230, 193, 0.2);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .skillCardPaper:hover {
-  background: rgba(20, 27, 65, 0.6);
-  border-color: #21E6C1;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(33, 230, 193, 0.2);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.6);
+  border-color: var(--mantine-color-primary-4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.2);
   transform: translateY(-5px);
 }
 
@@ -28,7 +28,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #21E6C1, #FF61A6);
+  background: linear-gradient(90deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -50,18 +50,18 @@
 }
 
 .circularProgressIcon {
-  color: #21E6C1;
+  color: var(--mantine-color-primary-4);
   transition: all 0.3s ease;
 }
 
 .skillCardPaper:hover .circularProgressIcon {
-  filter: drop-shadow(0 0 8px #21E6C1);
+  filter: drop-shadow(0 0 8px var(--mantine-color-primary-4));
   transform: scale(1.1);
 }
 
 .circularProgressText {
   color: white;
-  text-shadow: 0 0 10px rgba(33, 230, 193, 0.3);
+  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .pulseEffect {
@@ -71,7 +71,7 @@
   right: -5px;
   bottom: -5px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(33, 230, 193, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--mantine-color-primary-4-rgb), 0.1) 0%, transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
@@ -83,77 +83,77 @@
 }
 
 .skillName {
-  color: #21E6C1;
+  color: var(--mantine-color-primary-4);
   transition: all 0.3s ease;
 }
 
 .skillCardPaper:hover .skillName {
-  text-shadow: 0 0 10px rgba(33, 230, 193, 0.5);
+  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.5);
 }
 
 .skillExperience {
-  background: linear-gradient(135deg, rgba(33, 230, 193, 0.2), rgba(255, 97, 166, 0.2));
-  border: 1px solid #21E6C1;
-  color: #21E6C1;
+  background: linear-gradient(135deg, rgba(var(--mantine-color-primary-4-rgb), 0.2), rgba(var(--mantine-color-secondary-4-rgb), 0.2));
+  border: 1px solid var(--mantine-color-primary-4);
+  color: var(--mantine-color-primary-4);
   transition: all 0.3s ease;
 }
 
 .skillCardPaper:hover .skillExperience {
-  box-shadow: 0 0 15px rgba(33, 230, 193, 0.3);
-  background: linear-gradient(135deg, rgba(33, 230, 193, 0.3), rgba(255, 97, 166, 0.3));
+  box-shadow: 0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.3);
+  background: linear-gradient(135deg, rgba(var(--mantine-color-primary-4-rgb), 0.3), rgba(var(--mantine-color-secondary-4-rgb), 0.3));
 }
 
 .skillDescription {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-color);
   line-height: 1.6;
   transition: all 0.3s ease;
 }
 
 .skillProjects {
-  background: rgba(33, 230, 193, 0.1);
-  border: 1px solid rgba(33, 230, 193, 0.2);
-  color: #21E6C1;
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
+  color: var(--mantine-color-primary-4);
   transition: all 0.3s ease;
 }
 
 .skillCardPaper:hover .skillProjects {
-  border-color: #21E6C1;
-  box-shadow: 0 0 10px rgba(33, 230, 193, 0.2);
+  border-color: var(--mantine-color-primary-4);
+  box-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .techCategoryPaper {
-  background: rgba(20, 27, 65, 0.4);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(33, 230, 193, 0.2);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
   transition: all 0.3s ease;
 }
 
 .techCategoryPaper:hover {
-  border-color: #21E6C1;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(33, 230, 193, 0.2);
+  border-color: var(--mantine-color-primary-4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .categoryIcon {
-  background: linear-gradient(135deg, #21E6C1, #FF61A6) !important;
-  box-shadow: 0 5px 15px rgba(33, 230, 193, 0.3);
+  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4)) !important;
+  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.3);
   animation: float 3s infinite ease-in-out;
 }
 
 .categoryTitle {
-  background: linear-gradient(135deg, #21E6C1, #FF61A6);
+  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(33, 230, 193, 0.3);
+  text-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .categoryBadge {
-  background: rgba(33, 230, 193, 0.1);
-  border: 1px solid rgba(33, 230, 193, 0.2);
-  color: #21E6C1;
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
+  color: var(--mantine-color-primary-4);
 }
 
 .categoryDescription {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-color);
   line-height: 1.6;
 }
 
@@ -164,10 +164,10 @@
 
 .sectionTitleText {
   font-size: clamp(2rem, 5vw, 3rem);
-  background: linear-gradient(135deg, #21E6C1, #FF61A6);
+  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(33, 230, 193, 0.3);
+  text-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
   font-weight: 800;
 }
 
@@ -177,12 +177,12 @@
   left: 25%;
   width: 50%;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #21E6C1, #FF61A6, transparent);
+  background: linear-gradient(90deg, transparent, var(--mantine-color-primary-4), var(--mantine-color-secondary-4), transparent);
   animation: shimmer 2s infinite linear;
 }
 
 .sectionDescription {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-color);
   font-size: clamp(1rem, 2.5vw, 1.25rem);
   max-width: 700px;
   margin: 2rem auto 0;

@@ -140,11 +140,11 @@
 .timelineTitleText {
   font-size: clamp(2.2rem, 5vw, 3.2rem); /* Larger font size */
   margin-bottom: 1.2rem;
-  background: linear-gradient(135deg, #21E6C1, #FF61A6);
+  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(33, 230, 193, 0.3);
+  text-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .timelineUnderline {
@@ -153,7 +153,7 @@
   left: 0;
   width: 100%;
   height: 4px; /* Thicker underline */
-  background: linear-gradient(90deg, transparent, #21E6C1, #FF61A6, transparent);
+  background: linear-gradient(90deg, transparent, var(--mantine-color-primary-4), var(--mantine-color-secondary-4), transparent);
   animation: shimmer 2s infinite linear;
 }
 
@@ -161,7 +161,7 @@
   text-align: center;
   max-width: 700px; /* Slightly wider */
   margin: 1.5rem auto 0;
-  color: rgba(255, 255, 255, 0.85); /* Brighter text */
+  color: var(--text-color); /* Brighter text */
   font-size: clamp(1.1rem, 2.5vw, 1.3rem); /* Larger font size */
   line-height: 1.7; /* Increased line height */
 }
@@ -172,8 +172,8 @@
   backdrop-filter: blur(10px);
   padding: 2rem;
   border-radius: 1rem;
-  border: 1px solid rgba(33, 230, 193, 0.2);
-  background: rgba(20, 27, 65, 0.4);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
 }
 
 .timelineMobileNav {
@@ -182,18 +182,18 @@
   align-items: center;
   margin-bottom: 2rem;
   padding: 1rem;
-  background: rgba(20, 27, 65, 0.6);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.6);
   border-radius: 0.5rem;
-  border: 1px solid rgba(33, 230, 193, 0.1);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.1);
 }
 
 .timelineMobileBadge {
-  background: linear-gradient(135deg, #21E6C1, #FF61A6);
+  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   color: white;
   font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  box-shadow: 0 0 15px rgba(33, 230, 193, 0.3);
+  box-shadow: 0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .timelineMobileNavIcon {
@@ -205,13 +205,13 @@
   justify-content: center;
   font-size: 1.2rem;
   transition: all 0.3s ease;
-  background: rgba(33, 230, 193, 0.1);
-  border: 1px solid rgba(33, 230, 193, 0.2);
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineMobileNavIcon:not(:disabled):hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(33, 230, 193, 0.2);
+  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineMobileNavIcon--disabled {
@@ -240,7 +240,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: rgba(33, 230, 193, 0.1);
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
   transform: translateY(-50%);
 }
 
@@ -249,10 +249,10 @@
   top: 50%;
   left: 0;
   height: 2px;
-  background: linear-gradient(90deg, #21E6C1, #FF61A6);
+  background: linear-gradient(90deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   transform: translateY(-50%);
   transition: width 0.5s ease;
-  box-shadow: 0 0 20px rgba(33, 230, 193, 0.3);
+  box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .timelineStepPoint {
@@ -260,8 +260,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(20, 27, 65, 0.6);
-  border: 2px solid rgba(33, 230, 193, 0.3);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.6);
+  border: 2px solid rgba(var(--mantine-color-primary-4-rgb), 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 1;
@@ -274,8 +274,8 @@
 
 .timelineStepPoint:hover {
   transform: translateY(-2px);
-  border-color: #21E6C1;
-  box-shadow: 0 0 20px rgba(33, 230, 193, 0.2);
+  border-color: var(--mantine-color-primary-4);
+  box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineStepPointInner {
@@ -305,24 +305,24 @@
   padding: 2rem;
   border-radius: 1rem;
   margin-top: 2rem;
-  background: rgba(20, 27, 65, 0.4);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(33, 230, 193, 0.2);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
   transition: all 0.3s ease;
 }
 
 .timelineMainCard:hover {
-  border-color: #21E6C1;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(33, 230, 193, 0.2);
+  border-color: var(--mantine-color-primary-4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineMainBadge {
-  background: linear-gradient(135deg, #21E6C1, #FF61A6);
+  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   color: white;
   font-weight: 600;
   padding: 0.5rem 1.5rem;
   border-radius: 2rem;
-  box-shadow: 0 5px 15px rgba(33, 230, 193, 0.2);
+  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineMainIcon {
@@ -332,30 +332,30 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, #21E6C1, #FF61A6);
+  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   color: white;
   font-size: 1.5rem;
-  box-shadow: 0 5px 15px rgba(33, 230, 193, 0.3);
+  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .timelineMainTitle {
   font-size: clamp(1.5rem, 4vw, 2rem);
-  color: #21E6C1;
+  color: var(--mantine-color-primary-4);
   margin: 1rem 0 0.5rem;
-  text-shadow: 0 0 10px rgba(33, 230, 193, 0.3);
+  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .timelineMainCompany {
   font-size: clamp(1.1rem, 3vw, 1.25rem);
-  color: #FF61A6;
+  color: var(--mantine-color-secondary-4);
   margin-bottom: 1rem;
 }
 
 .timelineMainDescriptionBox {
   margin: 2rem 0;
   padding-left: 1.5rem;
-  border-left: 3px solid #21E6C1;
-  background: rgba(33, 230, 193, 0.05);
+  border-left: 3px solid var(--mantine-color-primary-4);
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.05);
   padding: 1.5rem;
   border-radius: 0 1rem 1rem 0;
 }
@@ -368,9 +368,9 @@
 
 .timelineMainAchievementsTitle {
   font-size: clamp(1.1rem, 3vw, 1.25rem);
-  color: #21E6C1;
+  color: var(--mantine-color-primary-4);
   margin-bottom: 1.5rem;
-  text-shadow: 0 0 10px rgba(33, 230, 193, 0.2);
+  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineMainAchievementsBox {
@@ -383,8 +383,8 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(33, 230, 193, 0.1);
-  border: 2px solid rgba(33, 230, 193, 0.3);
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
+  border: 2px solid rgba(var(--mantine-color-primary-4-rgb), 0.3);
   margin-right: 1rem;
   flex-shrink: 0;
   display: flex;
@@ -400,9 +400,9 @@
 
 .timelineMainSkillsTitle {
   font-size: clamp(1.1rem, 3vw, 1.25rem);
-  color: #21E6C1;
+  color: var(--mantine-color-primary-4);
   margin: 2rem 0 1rem;
-  text-shadow: 0 0 10px rgba(33, 230, 193, 0.2);
+  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineMainSkillsBox {
@@ -414,18 +414,18 @@
 .timelineMainSkillBadge {
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  background: rgba(33, 230, 193, 0.1);
-  border: 1px solid rgba(33, 230, 193, 0.2);
-  color: #21E6C1;
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
+  color: var(--mantine-color-primary-4);
   font-size: clamp(0.8rem, 2vw, 0.9rem);
   transition: all 0.3s ease;
 }
 
 .timelineMainSkillBadge:hover {
   transform: translateY(-2px);
-  background: rgba(33, 230, 193, 0.15);
-  border-color: #21E6C1;
-  box-shadow: 0 5px 15px rgba(33, 230, 193, 0.2);
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.15);
+  border-color: var(--mantine-color-primary-4);
+  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineNavButton {
@@ -434,16 +434,16 @@
   font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
   transition: all 0.3s ease;
-  background: rgba(33, 230, 193, 0.1);
-  border: 1px solid rgba(33, 230, 193, 0.2);
-  color: #21E6C1;
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
+  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
+  color: var(--mantine-color-primary-4);
 }
 
 .timelineNavButton:not(:disabled):hover {
   transform: translateY(-2px);
-  background: rgba(33, 230, 193, 0.15);
-  border-color: #21E6C1;
-  box-shadow: 0 5px 15px rgba(33, 230, 193, 0.2);
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.15);
+  border-color: var(--mantine-color-primary-4);
+  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .timelineNavButton--disabled {
@@ -466,11 +466,11 @@
 @keyframes glowEffect {
   0%, 100% {
     opacity: 0.5;
-    box-shadow: 0 0 20px rgba(33, 230, 193, 0.3);
+    box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
   }
   50% {
     opacity: 1;
-    box-shadow: 0 0 30px rgba(33, 230, 193, 0.5);
+    box-shadow: 0 0 30px rgba(var(--mantine-color-primary-4-rgb), 0.5);
   }
 }
 
@@ -598,7 +598,7 @@
 .verticalTimelineCard {
   padding: 1.8rem; /* Increased padding for better readability */
   border-radius: 1rem;
-  background: rgba(20, 27, 65, 0.4);
+  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
   border: 1px solid rgba(255, 255, 255, 0.2); /* Brighter border for better visibility */
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
@@ -613,7 +613,7 @@
   display: inline-flex;
   padding: 0.5rem 1.5rem;
   border-radius: 2rem;
-  background: linear-gradient(135deg, #3D7FFF, #0D47A1);
+  background: linear-gradient(135deg, var(--mantine-color-primary-6), var(--mantine-color-vaporwave-4));
   color: white;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -653,7 +653,7 @@
 .verticalTimelineAchievementsTitle {
   margin-bottom: 1.2rem; /* Increased margin */
   font-size: 1.2rem; /* Larger font size */
-  color: rgba(255, 255, 255, 0.95); /* Brighter text */
+  color: var(--text-color); /* Brighter text */
 }
 
 .verticalTimelineAchievementDot {
@@ -661,7 +661,7 @@
   height: 14px; /* Larger dot */
   border-radius: 50%;
   margin-top: 5px;
-  border: 1.5px solid; /* Thicker border */
+  border: 1.5px solid var(--mantine-color-primary-4); /* Thicker border */
 }
 
 .verticalTimelineAchievementText {
@@ -680,12 +680,12 @@
   transition: all 0.3s ease;
   font-size: 0.9rem; /* Slightly larger font */
   padding: 0.5rem 0.8rem; /* Increased padding */
-  border: 1.5px solid; /* Thicker border */
+  border: 1.5px solid var(--mantine-color-primary-4); /* Thicker border */
 }
 
 .verticalTimelineSkillBadge:hover {
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.1);
 }
 
 /* Mobile adjustments */

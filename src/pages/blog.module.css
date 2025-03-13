@@ -8,6 +8,6 @@
 }
 
 .placeholderBox {
-  background-color: #f0f0f0;
+  background-color: rgba(var(--mantine-color-vaporwave-6-rgb), 0.4);
   border-radius: 0.5rem;
 }

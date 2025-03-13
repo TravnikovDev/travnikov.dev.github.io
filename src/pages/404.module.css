@@ -14,7 +14,7 @@
 
 .homeLink {
   font-size: 1.5rem;
-  color: #0070f3;
+  color: var(--mantine-color-primary-5);
   text-decoration: none;
 }
 
@@ -38,7 +38,7 @@
 
 .title {
   text-align: center;
-  color: var(--mantine-primary-color-6);
+  color: var(--mantine-color-primary-6);
 }
 
 .text {
