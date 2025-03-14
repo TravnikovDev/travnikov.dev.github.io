@@ -36,3 +36,8 @@ export const scrollItem: string;
 export const floatingElementTop: string;
 export const floatingElementBottom: string;
 export const morphShape: string;
+export const heroVisual: string;
+export const visualContainer: string;
+export const floatingShape: string;
+export const codeSnippet: string;
+export const codeText: string;
