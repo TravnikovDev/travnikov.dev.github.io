@@ -1,7 +1,17 @@
 import React, { ReactNode } from "react";
-import { MantineProvider as Provider, createTheme, CSSVariablesResolver } from "@mantine/core";
+  import { MantineProvider as Provider, createTheme, CSSVariablesResolver } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { theme as customTheme, vaporwaveColors } from "../../theme";
+
+// Helper function to convert hex to RGB
+function hexToRgb(hex: string) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
 
 // Create the final theme by merging our custom theme with the base theme
 const theme = createTheme({
@@ -11,9 +21,19 @@ const theme = createTheme({
 // Vaporwave color palette for consistent use
 const colors = vaporwaveColors;
 
+// Convert main colors to RGB format
+const primaryRgb = hexToRgb(colors.cyan);
+const secondaryRgb = hexToRgb(colors.pink);
+const vaporwave7Rgb = hexToRgb(colors.navy);
+
 // TypeScript fix: Define the cssVariablesResolver separately with correct typing
 const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
   variables: {
+    // RGB values for colors to use in rgba()
+    "--mantine-color-primary-4-rgb": primaryRgb ? `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}` : "33, 230, 193",
+    "--mantine-color-secondary-4-rgb": secondaryRgb ? `${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}` : "255, 97, 166",
+    "--mantine-color-vaporwave-7-rgb": vaporwave7Rgb ? `${vaporwave7Rgb.r}, ${vaporwave7Rgb.g}, ${vaporwave7Rgb.b}` : "20, 27, 65",
+    
     // Gradients using vaporwave colors
     "--mantine-primary-gradient": `linear-gradient(45deg, ${colors.cyan}, ${colors.pink})`,
     "--mantine-secondary-gradient": `linear-gradient(45deg, ${colors.pink}, ${colors.orange})`,
