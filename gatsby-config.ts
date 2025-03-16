@@ -21,6 +21,7 @@ const config: GatsbyConfig = {
   plugins: [
     'gatsby-plugin-dts-css-modules',
     'gatsby-transformer-remark',
+    'gatsby-plugin-offline',
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -56,6 +57,11 @@ const config: GatsbyConfig = {
         display: `standalone`,
         icons: [
           {
+            src: `/android-chrome-144x144.png`,
+            sizes: `144x144`,
+            type: `image/png`,
+          },
+          {
             src: `/android-chrome-192x192.png`,
             sizes: `192x192`,
             type: `image/png`,
@@ -66,6 +72,7 @@ const config: GatsbyConfig = {
             type: `image/png`,
           },
         ],
+        cache_busting_mode: 'none',
       },
     },
     // You can remove this plugin if you don't need it

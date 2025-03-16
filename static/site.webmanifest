@@ -1,7 +1,12 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "Roman Travnikov - Senior Frontend Developer",
+  "short_name": "Travnikov.dev",
   "icons": [
+    {
+      "src": "/android-chrome-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
     {
       "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
@@ -13,7 +18,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "start_url": "/",
+  "theme_color": "#141821",
+  "background_color": "#141821",
   "display": "standalone"
 }
