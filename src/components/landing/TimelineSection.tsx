@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Container, Title, Text, Box, Group, Badge, ActionIcon, Button } from "@mantine/core";
+import { Container, Title, Text, Box, Group, Badge, useMantineTheme } from "@mantine/core";
 import { FaBriefcase, FaLaptopCode, FaCode, FaServer, FaPlane, FaCar } from "react-icons/fa";
 import * as styles from './TimelineSection.module.css';
+import { vaporwaveColors } from '../../theme';
 
 // Timeline item interface with extended properties
 interface TimelineItem {
@@ -80,111 +81,40 @@ const timelineData: TimelineItem[] = [
 // Individual Timeline Card component for vertical layout
 const VerticalTimelineCard = ({ item, index, isActive, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
-  
-  const colors = {
-    blue: {
-      primary: "#3D7FFF",
-      secondary: "#0D47A1",
-      bg: "rgba(61, 127, 255, 0.1)",
-      border: "rgba(61, 127, 255, 0.2)",
-      glow: "rgba(61, 127, 255, 0.5)"
-    },
-    violet: {
-      primary: "#A64DFF",
-      secondary: "#6A1B9A",
-      bg: "rgba(166, 77, 255, 0.1)",
-      border: "rgba(166, 77, 255, 0.2)",
-      glow: "rgba(166, 77, 255, 0.5)"
-    },
-    teal: {
-      primary: "#00B8D9",
-      secondary: "#00838F",
-      bg: "rgba(0, 184, 217, 0.1)",
-      border: "rgba(0, 184, 217, 0.2)",
-      glow: "rgba(0, 184, 217, 0.5)"
-    }
-  };
-  
-  const color = colors[item.color];
   const isEven = index % 2 === 0;
   
   return (
     <Box 
-      className={styles.verticalTimelineItem} 
+      className={isActive ? styles.timelineItemActive : styles.timelineItemInactive}
       data-active={isActive}
-      style={{
-        opacity: isActive ? 1 : 0.8,
-        marginBottom: "4rem", // Increased spacing between timeline items
-      }}
+      data-hovered={isHovered}
+      data-color={item.color}
+      data-current={item.isCurrent ? true : false}
+      data-even={isEven}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
     >
       {/* Timeline line */}
       <div className={styles.verticalTimelineLine}>
-        <div 
-          className={styles.verticalTimelineLineInner} 
-          style={{ 
-            background: isActive || item.isCurrent ? 
-              `linear-gradient(to bottom, ${color.primary}, ${color.secondary})` : 
-              "rgba(255, 255, 255, 0.3)",
-            width: isActive || item.isCurrent ? "4px" : "3px", // Thicker line for better visibility
-          }} 
-        />
+        <div className={styles.verticalTimelineLineInner} />
       </div>
       
       {/* Timeline dot */}
-      <div 
-        className={styles.verticalTimelineDot}
-        style={{
-          background: isActive || item.isCurrent ? 
-            `linear-gradient(135deg, ${color.primary}, ${color.secondary})` : 
-            "rgba(30, 40, 60, 0.7)",
-          boxShadow: (isActive || item.isCurrent) ? 
-            `0 0 25px ${color.glow}` : 
-            "0 0 15px rgba(255, 255, 255, 0.15)",
-          borderColor: (isActive || item.isCurrent) ? color.primary : "rgba(255, 255, 255, 0.4)",
-          transform: `scale(${isHovered || isActive || item.isCurrent ? 1.2 : 1})`,
-          // Make current role dot larger with a neon glow effect
-          width: item.isCurrent ? "56px" : "48px", 
-          height: item.isCurrent ? "56px" : "48px",
-        }}
-      >
-        <div className={styles.verticalTimelineDotInner}
-          style={{
-            filter: item.isCurrent ? `drop-shadow(0 0 8px ${color.primary})` : "none",
-          }}
-        >
+      <div className={styles.verticalTimelineDot}>
+        <div className={styles.verticalTimelineDotInner}>
           {item.icon}
         </div>
       </div>
       
       {/* Timeline card content - alternate sides for visual interest */}
-      <div 
-        className={`${styles.verticalTimelineCard} ${isEven ? styles.cardRight : styles.cardLeft}`}
-        style={{
-          borderColor: isActive ? color.primary : "rgba(255, 255, 255, 0.15)",
-          boxShadow: isActive ? 
-            `0 15px 35px rgba(0, 0, 0, 0.25), 0 0 25px ${color.glow}` : 
-            "0 8px 20px rgba(0, 0, 0, 0.15)",
-          transform: isHovered ? 
-            `translateY(-5px) scale(${isActive ? 1.01 : 1})` : 
-            `translateY(0) scale(${isActive ? 1 : 0.98})`,
-          background: `rgba(20, 27, 65, ${isActive ? 0.7 : 0.4})`,
-          padding: "1.8rem", // Increased internal padding for better readability
-        }}
-      >
+      <div className={`${styles.verticalTimelineCard} ${isEven ? styles.cardRight : styles.cardLeft}`}>
         {/* Date badge */}
         <Badge
           variant="filled"
-          color={item.color}
           size="lg"
           radius="md"
           className={styles.verticalTimelineDate}
-          style={{
-            background: `linear-gradient(135deg, ${color.primary}, ${color.secondary})`,
-            boxShadow: isActive ? `0 0 15px ${color.glow}` : "none"
-          }}
         >
           {item.date}
         </Badge>
@@ -194,11 +124,6 @@ const VerticalTimelineCard = ({ item, index, isActive, onClick }) => {
           <Title
             order={3}
             className={styles.verticalTimelineTitle}
-            style={{
-              color: color.primary,
-              textShadow: isActive ? `0 0 10px ${color.glow}` : "none",
-              fontSize: item.isCurrent ? "1.9rem" : "clamp(1.3rem, 3vw, 1.8rem)"
-            }}
           >
             {item.title}
           </Title>
@@ -222,19 +147,17 @@ const VerticalTimelineCard = ({ item, index, isActive, onClick }) => {
         {/* Achievements - visible when active */}
         {isActive && (
           <Box className={styles.verticalTimelineAchievements}>
-            <Title order={5} mb="sm" className={styles.verticalTimelineAchievementsTitle}>
+            <Title 
+              order={5} 
+              mb="sm" 
+              className={styles.verticalTimelineAchievementsTitle}
+            >
               Key Achievements
             </Title>
             {item.achievements.map((achievement, i) => (
               <Group key={i} align="flex-start" mb="sm" gap="md">
-                <Box
-                  className={styles.verticalTimelineAchievementDot}
-                  style={{
-                    background: color.bg,
-                    borderColor: color.border
-                  }}
-                />
-                <Text size="sm" className={styles.verticalTimelineAchievementText}>
+                <Box className={styles.verticalTimelineAchievementDot} />
+                <Text className={styles.verticalTimelineAchievementText}>
                   {achievement}
                 </Text>
               </Group>
@@ -250,18 +173,8 @@ const VerticalTimelineCard = ({ item, index, isActive, onClick }) => {
               variant="dot"
               size="md"
               radius="sm"
-              color={item.color}
               className={styles.verticalTimelineSkillBadge}
-              style={{
-                background: color.bg,
-                borderColor: isActive ? color.primary : color.border,
-                color: color.primary,
-                animation: isActive ? `${styles.float} ${2 + i * 0.5}s infinite ease-in-out` : "none",
-                opacity: isActive ? 1 : 0.8,
-                padding: "0.5rem 0.7rem",
-                fontSize: "0.9rem",
-                boxShadow: isActive ? `0 0 10px ${color.glow}30` : "none",
-              }}
+              data-index={i % 5}
             >
               {skill}
             </Badge>

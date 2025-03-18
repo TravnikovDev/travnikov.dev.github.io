@@ -1,8 +1,9 @@
+/* Base styles */
 .timelineSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4rem 0;
+  padding: 5rem 0;
   max-width: 83.333%;
   margin: 0 auto;
 }
@@ -10,124 +11,13 @@
 @media (max-width: 48em) {
   .timelineSection {
     width: 100%;
-    padding: 2rem 1rem;
+    padding: 3rem 1rem;
   }
 }
 
-.timelineItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.timelineItemTitle {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.timelineItemDescription {
-  font-size: 1rem;
-  text-align: center;
-  max-width: 600px;
-}
-
-.timelineCard {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-}
-
-.timelineCardBox {
-  padding: 1rem;
-  border-radius: var(--mantine-radius-md);
-}
-
-.timelineCardBox--hovered {
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.timelineBadge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-}
-
-.timelineBadge--hovered {
-  animation: glowEffect 2s infinite ease-in-out;
-}
-
-.timelineIcon {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: white;
-}
-
-.timelineCompany {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-
-.timelineDescription {
-  margin: 1rem 0;
-}
-
-.timelineAchievements {
-  margin-top: 1rem;
-  overflow: hidden;
-}
-
-.timelineAchievementsBox {
-  padding: 0.5rem;
-}
-
-.timelineAchievementDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 0.5rem;
-}
-
-.timelineAchievementText {
-  line-height: 1.4;
-}
-
-.timelineSkill {
-  display: inline-flex;
-  align-items: center;
-  margin: 0.25rem;
-}
-
-.timelineSkillBadge {
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--mantine-radius-sm);
-}
-
-.timelineSkillBadge--hovered {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
-}
-
-.timelineShowMore {
-  margin-top: 1rem;
-  text-align: center;
-}
-
-.timelineShowMoreIcon {
-  margin-left: 0.5rem;
-  transition: transform 0.3s ease;
-}
-
-.timelineShowMoreIcon--expanded {
-  transform: rotate(180deg);
-}
-
+/* Main title styles */
 .timelineTitleContainer {
-  margin-bottom: 5rem; /* Increased bottom margin */
+  margin-bottom: 5rem;
   text-align: center;
   position: relative;
 }
@@ -138,7 +28,7 @@
 }
 
 .timelineTitleText {
-  font-size: clamp(2.2rem, 5vw, 3.2rem); /* Larger font size */
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
   margin-bottom: 1.2rem;
   background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
   background-clip: text;
@@ -149,360 +39,24 @@
 
 .timelineUnderline {
   position: absolute;
-  bottom: -8px; /* Slightly lower position */
+  bottom: -10px;
   left: 0;
   width: 100%;
-  height: 4px; /* Thicker underline */
+  height: 5px;
   background: linear-gradient(90deg, transparent, var(--mantine-color-primary-4), var(--mantine-color-secondary-4), transparent);
   animation: shimmer 2s infinite linear;
 }
 
 .timelineDescriptionText {
   text-align: center;
-  max-width: 700px; /* Slightly wider */
-  margin: 1.5rem auto 0;
-  color: var(--text-color); /* Brighter text */
-  font-size: clamp(1.1rem, 2.5vw, 1.3rem); /* Larger font size */
-  line-height: 1.7; /* Increased line height */
-}
-
-.timelineCardContainer {
-  width: 100%;
-  position: relative;
-  backdrop-filter: blur(10px);
-  padding: 2rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
-}
-
-.timelineMobileNav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.6);
-  border-radius: 0.5rem;
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.1);
-}
-
-.timelineMobileBadge {
-  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
-  color: white;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  box-shadow: 0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.3);
-}
-
-.timelineMobileNavIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineMobileNavIcon:not(:disabled):hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineMobileNavIcon--disabled {
-  background: rgba(30, 40, 60, 0.5);
-  border: 1px solid rgba(61, 127, 255, 0.5);
-}
-
-.timelineMobileNavIcon--enabled {
-  background: rgba(61, 127, 255, 0.8);
-  border: 1px solid rgba(61, 127, 255, 0.5);
-  box-shadow: 0 5px 15px rgba(61, 127, 255, 0.3);
-}
-
-.timelineDesktopStepper {
-  display: flex;
-  position: relative;
-  margin: 3rem 0;
-  padding: 2rem 0;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.timelineBar {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
-  transform: translateY(-50%);
-}
-
-.timelineProgress {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
-  transform: translateY(-50%);
-  transition: width 0.5s ease;
-  box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
-}
-
-.timelineStepPoint {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.6);
-  border: 2px solid rgba(var(--mantine-color-primary-4-rgb), 0.3);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.timelineStepPoint:hover {
-  transform: translateY(-2px);
-  border-color: var(--mantine-color-primary-4);
-  box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineStepPointInner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--mantine-primary-color-6);
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.timelineStepPointInner--active {
-  border: 2px solid;
-  box-shadow: 0 0 15px;
-}
-
-.timelineStepPointInner--inactive {
-  background: rgba(15, 20, 40, 0.8);
-  border: 2px solid rgba(61, 127, 255, 0.3);
-}
-
-.timelineMainCard {
-  padding: 2rem;
-  border-radius: 1rem;
-  margin-top: 2rem;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
-  transition: all 0.3s ease;
-}
-
-.timelineMainCard:hover {
-  border-color: var(--mantine-color-primary-4);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineMainBadge {
-  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
-  color: white;
-  font-weight: 600;
-  padding: 0.5rem 1.5rem;
-  border-radius: 2rem;
-  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineMainIcon {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4));
-  color: white;
-  font-size: 1.5rem;
-  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.3);
-}
-
-.timelineMainTitle {
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  color: var(--mantine-color-primary-4);
-  margin: 1rem 0 0.5rem;
-  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.3);
-}
-
-.timelineMainCompany {
-  font-size: clamp(1.1rem, 3vw, 1.25rem);
-  color: var(--mantine-color-secondary-4);
-  margin-bottom: 1rem;
-}
-
-.timelineMainDescriptionBox {
-  margin: 2rem 0;
-  padding-left: 1.5rem;
-  border-left: 3px solid var(--mantine-color-primary-4);
-  background: rgba(var(--mantine-color-primary-4-rgb), 0.05);
-  padding: 1.5rem;
-  border-radius: 0 1rem 1rem 0;
-}
-
-.timelineMainDescriptionText {
+  max-width: 700px;
+  margin: 1.8rem auto 0;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(1.2rem, 2.5vw, 1.4rem);
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
 }
 
-.timelineMainAchievementsTitle {
-  font-size: clamp(1.1rem, 3vw, 1.25rem);
-  color: var(--mantine-color-primary-4);
-  margin-bottom: 1.5rem;
-  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineMainAchievementsBox {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.timelineMainAchievementDot {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
-  border: 2px solid rgba(var(--mantine-color-primary-4-rgb), 0.3);
-  margin-right: 1rem;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.timelineMainAchievementText {
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-}
-
-.timelineMainSkillsTitle {
-  font-size: clamp(1.1rem, 3vw, 1.25rem);
-  color: var(--mantine-color-primary-4);
-  margin: 2rem 0 1rem;
-  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineMainSkillsBox {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.timelineMainSkillBadge {
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
-  color: var(--mantine-color-primary-4);
-  font-size: clamp(0.8rem, 2vw, 0.9rem);
-  transition: all 0.3s ease;
-}
-
-.timelineMainSkillBadge:hover {
-  transform: translateY(-2px);
-  background: rgba(var(--mantine-color-primary-4-rgb), 0.15);
-  border-color: var(--mantine-color-primary-4);
-  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineNavButton {
-  padding: 0.75rem 1.5rem;
-  border-radius: 2rem;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  font-weight: 600;
-  transition: all 0.3s ease;
-  background: rgba(var(--mantine-color-primary-4-rgb), 0.1);
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
-  color: var(--mantine-color-primary-4);
-}
-
-.timelineNavButton:not(:disabled):hover {
-  transform: translateY(-2px);
-  background: rgba(var(--mantine-color-primary-4-rgb), 0.15);
-  border-color: var(--mantine-color-primary-4);
-  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.2);
-}
-
-.timelineNavButton--disabled {
-  opacity: 0.5;
-}
-
-.timelineNavButton--enabled {
-  box-shadow: 0 5px 20px rgba(61, 127, 255, 0.4);
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes glowEffect {
-  0%, 100% {
-    opacity: 0.5;
-    box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
-  }
-  50% {
-    opacity: 1;
-    box-shadow: 0 0 30px rgba(var(--mantine-color-primary-4-rgb), 0.5);
-  }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@media (min-width: 768px) {
-  .timelineDesktopStepper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-
-@media (max-width: 48em) {
-  .timelineDesktopStepper {
-    display: none;
-  }
-  
-  .timelineMainCard {
-    padding: 1.5rem;
-  }
-  
-  .timelineMainDescriptionBox {
-    padding: 1rem;
-    margin: 1.5rem 0;
-  }
-}
-
-/* New Vertical Timeline Styles */
+/* Vertical Timeline Container */
 .verticalTimelineContainer {
   display: flex;
   flex-direction: column;
@@ -510,45 +64,64 @@
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem 0;
+  padding: 3rem 0;
 }
 
+/* Timeline Item Styles - Define verticalTimelineItem BEFORE it's used in composes */
 .verticalTimelineItem {
   display: grid;
   grid-template-columns: auto 50px 1fr;
   position: relative;
-  margin-bottom: 4.5rem; /* Increased spacing between timeline items */
+  margin-bottom: 5rem;
   cursor: pointer;
   transition: opacity 0.3s ease;
+  /* Fade in animation for timeline items */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: itemFadeIn 0.7s ease forwards;
 }
 
+.verticalTimelineItem:nth-child(1) {
+  animation-delay: 0.15s;
+}
+
+.verticalTimelineItem:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.verticalTimelineItem:nth-child(3) {
+  animation-delay: 0.55s;
+}
+
+.verticalTimelineItem:nth-child(4) {
+  animation-delay: 0.75s;
+}
+
+/* Active/Inactive Timeline Items */
+.timelineItemActive {
+  composes: verticalTimelineItem;
+  opacity: 1;
+  margin-bottom: 4rem;
+}
+
+.timelineItemInactive {
+  composes: verticalTimelineItem;
+  opacity: 0.9;
+  margin-bottom: 4rem;
+}
+
+/* Alternate layout for even/odd items */
 .cardLeft {
   grid-column: 3 / 4;
-  margin-left: 2.5rem; /* Increased margin for better spacing */
+  margin-left: 2.8rem;
 }
 
 .cardRight {
   grid-column: 1 / 2;
-  margin-right: 2.5rem; /* Increased margin for better spacing */
+  margin-right: 2.8rem;
 }
 
-/* For right-aligned cards (even items) on desktop */
-@media (min-width: 768px) {
-  .verticalTimelineItem:nth-child(even) {
-    grid-template-columns: 1fr 50px auto;
-  }
-
-  .verticalTimelineItem:nth-child(even) .verticalTimelineCard {
-    grid-column: 1 / 2;
-    margin-right: 2.5rem; /* Increased margin for better spacing */
-  }
-
-  .verticalTimelineItem:nth-child(even) .cardRight {
-    margin-right: 2.5rem; /* Increased margin for better spacing */
-    margin-left: 0;
-  }
-}
-
+/* Timeline Line Styles */
 .verticalTimelineLine {
   grid-column: 2 / 3;
   display: flex;
@@ -559,22 +132,39 @@
 }
 
 .verticalTimelineLineInner {
-  width: 4px; /* Thicker line for better visibility */
+  width: 5px;
   height: 100%;
-  background: rgba(255, 255, 255, 0.3); /* Brighter default color */
+  background: rgba(255, 255, 255, 0.4);
   position: absolute;
   top: 0;
   bottom: 0;
   transition: all 0.3s ease;
 }
 
+/* Line coloring based on data-color and data-active attributes */
+[data-active="true"][data-color="blue"] .verticalTimelineLineInner {
+  width: 5px;
+  background: linear-gradient(to bottom, var(--mantine-color-neonBlue), var(--mantine-color-cyan));
+}
+
+[data-active="true"][data-color="violet"] .verticalTimelineLineInner {
+  width: 5px;
+  background: linear-gradient(to bottom, var(--mantine-color-electricPurple), var(--mantine-color-hotPink));
+}
+
+[data-active="true"][data-color="teal"] .verticalTimelineLineInner {
+  width: 5px;
+  background: linear-gradient(to bottom, var(--mantine-color-neonCyan), var(--mantine-color-cyan));
+}
+
+/* Timeline Dot Styles */
 .verticalTimelineDot {
   grid-column: 2 / 3;
-  width: 52px; /* Larger dot for better visibility */
-  height: 52px; /* Larger dot for better visibility */
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background: rgba(30, 40, 60, 0.8); /* Darker background for better contrast */
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(40, 50, 70, 0.9);
+  border: 3px solid rgba(255, 255, 255, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -583,9 +173,41 @@
   position: relative;
   transition: all 0.3s ease;
   margin: 0 auto;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); /* Default subtle glow */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
+/* Dot styling based on data attributes */
+[data-active="true"][data-color="blue"] .verticalTimelineDot {
+  border: 3px solid var(--mantine-color-neonBlue);
+  background: linear-gradient(135deg, var(--mantine-color-neonBlue), var(--mantine-color-cyan));
+  box-shadow: 0 0 15px rgba(0, 241, 255, 0.6);
+  transform: scale(1.1);
+}
+
+[data-active="true"][data-color="violet"] .verticalTimelineDot {
+  border: 3px solid var(--mantine-color-electricPurple);
+  background: linear-gradient(135deg, var(--mantine-color-electricPurple), var(--mantine-color-hotPink));
+  box-shadow: 0 0 15px rgba(157, 0, 255, 0.6);
+  transform: scale(1.1);
+}
+
+[data-active="true"][data-color="teal"] .verticalTimelineDot {
+  border: 3px solid var(--mantine-color-neonCyan);
+  background: linear-gradient(135deg, var(--mantine-color-neonCyan), var(--mantine-color-cyan));
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+  transform: scale(1.1);
+}
+
+[data-hovered="true"] .verticalTimelineDot {
+  transform: scale(1.1);
+}
+
+[data-current="true"] .verticalTimelineDot {
+  width: 54px;
+  height: 54px;
+}
+
+/* Dot inner styles based on color */
 .verticalTimelineDotInner {
   display: flex;
   align-items: center;
@@ -595,104 +217,322 @@
   transition: all 0.3s ease;
 }
 
+[data-active="true"][data-color="blue"] .verticalTimelineDotInner {
+  filter: drop-shadow(0 0 5px var(--mantine-color-neonBlue));
+}
+
+[data-active="true"][data-color="violet"] .verticalTimelineDotInner {
+  filter: drop-shadow(0 0 5px var(--mantine-color-electricPurple));
+}
+
+[data-active="true"][data-color="teal"] .verticalTimelineDotInner {
+  filter: drop-shadow(0 0 5px var(--mantine-color-neonCyan));
+}
+
+/* Card Styles */
 .verticalTimelineCard {
-  padding: 1.8rem; /* Increased padding for better readability */
+  padding: 2.2rem;
   border-radius: 1rem;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Brighter border for better visibility */
+  background: rgba(40, 50, 70, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-.verticalTimelineCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+/* Card styling based on data attributes */
+[data-active="true"][data-color="blue"] .verticalTimelineCard {
+  border-color: var(--mantine-color-neonBlue);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 241, 255, 0.6);
 }
 
+[data-active="true"][data-color="violet"] .verticalTimelineCard {
+  border-color: var(--mantine-color-electricPurple);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(157, 0, 255, 0.6);
+}
+
+[data-active="true"][data-color="teal"] .verticalTimelineCard {
+  border-color: var(--mantine-color-neonCyan);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 255, 0.6);
+}
+
+[data-hovered="true"] .verticalTimelineCard {
+  transform: translateY(-5px) scale(1.01);
+}
+
+[data-active="true"][data-hovered="false"] .verticalTimelineCard {
+  transform: scale(1);
+}
+
+[data-active="false"][data-hovered="true"] .verticalTimelineCard {
+  transform: translateY(-5px) scale(1);
+}
+
+/* Date Badge Styles */
 .verticalTimelineDate {
   display: inline-flex;
-  padding: 0.5rem 1.5rem;
+  padding: 0.6rem 1.7rem;
   border-radius: 2rem;
   background: linear-gradient(135deg, var(--mantine-color-primary-6), var(--mantine-color-vaporwave-4));
   color: white;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
   transition: all 0.3s ease;
+  font-size: 1rem;
 }
 
+/* Date badge styling based on data attributes */
+[data-color="blue"] .verticalTimelineDate {
+  background: linear-gradient(135deg, var(--mantine-color-neonBlue), var(--mantine-color-cyan));
+}
+
+[data-color="violet"] .verticalTimelineDate {
+  background: linear-gradient(135deg, var(--mantine-color-electricPurple), var(--mantine-color-hotPink));
+}
+
+[data-color="teal"] .verticalTimelineDate {
+  background: linear-gradient(135deg, var(--mantine-color-neonCyan), var(--mantine-color-cyan));
+}
+
+[data-active="true"][data-color="blue"] .verticalTimelineDate {
+  box-shadow: 0 0 15px rgba(0, 241, 255, 0.6);
+}
+
+[data-active="true"][data-color="violet"] .verticalTimelineDate {
+  box-shadow: 0 0 15px rgba(157, 0, 255, 0.6);
+}
+
+[data-active="true"][data-color="teal"] .verticalTimelineDate {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+}
+
+/* Header and Title styles */
 .verticalTimelineHeader {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.7rem;
 }
 
 .verticalTimelineTitle {
-  font-size: clamp(1.3rem, 3vw, 1.8rem);
-  margin-bottom: 0.5rem;
-  transition: all 0.3s ease;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  margin-bottom: 0.7rem;
+}
+
+/* Title styles based on color and active state */
+[data-color="blue"] .verticalTimelineTitle {
+  color: var(--mantine-color-neonBlue);
+}
+
+[data-color="violet"] .verticalTimelineTitle {
+  color: var(--mantine-color-electricPurple);
+}
+
+[data-color="teal"] .verticalTimelineTitle {
+  color: var(--mantine-color-neonCyan);
+}
+
+[data-active="true"][data-color="blue"] .verticalTimelineTitle {
+  text-shadow: 0 0 10px rgba(0, 241, 255, 0.6);
+}
+
+[data-active="true"][data-color="violet"] .verticalTimelineTitle {
+  text-shadow: 0 0 10px rgba(157, 0, 255, 0.6);
+}
+
+[data-active="true"][data-color="teal"] .verticalTimelineTitle {
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+[data-current="true"] .verticalTimelineTitle {
+  font-size: 1.9rem;
 }
 
 .verticalTimelineCompany {
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.verticalTimelineDescription {
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
   color: rgba(255, 255, 255, 0.9);
 }
 
+.verticalTimelineDescription {
+  margin-bottom: 1.7rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.05rem;
+}
+
+/* Achievements Styles */
 .verticalTimelineAchievements {
-  margin-top: 1.5rem;
-  margin-bottom: 1.8rem; /* Increased margin for better spacing */
-  padding: 1.2rem; /* Increased padding */
+  margin-top: 1.7rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
   border-radius: 0.5rem;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.08);
   animation: fadeIn 0.5s ease;
+  border-left: 3px solid var(--mantine-color-primary-4);
+}
+
+/* Achievements section styling based on color */
+[data-color="blue"] .verticalTimelineAchievements {
+  border-left: 3px solid var(--mantine-color-neonBlue);
+}
+
+[data-color="violet"] .verticalTimelineAchievements {
+  border-left: 3px solid var(--mantine-color-electricPurple);
+}
+
+[data-color="teal"] .verticalTimelineAchievements {
+  border-left: 3px solid var(--mantine-color-neonCyan);
 }
 
 .verticalTimelineAchievementsTitle {
-  margin-bottom: 1.2rem; /* Increased margin */
-  font-size: 1.2rem; /* Larger font size */
-  color: var(--text-color); /* Brighter text */
+  margin-bottom: 1.4rem;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.95);
 }
 
+/* Achievement title coloring based on data-color */
+[data-color="blue"] .verticalTimelineAchievementsTitle {
+  color: var(--mantine-color-neonBlue);
+}
+
+[data-color="violet"] .verticalTimelineAchievementsTitle {
+  color: var(--mantine-color-electricPurple);
+}
+
+[data-color="teal"] .verticalTimelineAchievementsTitle {
+  color: var(--mantine-color-neonCyan);
+}
+
+/* Achievement Bullet Points */
 .verticalTimelineAchievementDot {
-  width: 14px; /* Larger dot */
-  height: 14px; /* Larger dot */
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   margin-top: 5px;
-  border: 1.5px solid var(--mantine-color-primary-4); /* Thicker border */
+  border: 2px solid var(--mantine-color-primary-4);
+}
+
+/* Achievement dot styling based on color */
+[data-color="blue"] .verticalTimelineAchievementDot {
+  background: rgba(0, 241, 255, 0.2);
+  border-color: var(--mantine-color-neonBlue);
+}
+
+[data-color="violet"] .verticalTimelineAchievementDot {
+  background: rgba(157, 0, 255, 0.2);
+  border-color: var(--mantine-color-electricPurple);
+}
+
+[data-color="teal"] .verticalTimelineAchievementDot {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: var(--mantine-color-neonCyan);
 }
 
 .verticalTimelineAchievementText {
   line-height: 1.6;
-  font-size: 0.95rem; /* Slightly larger font */
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.95);
 }
 
+/* Skills Section Styles */
 .verticalTimelineSkills {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.7rem; /* Increased gap between skill tags */
-  margin-top: 1.5rem;
+  gap: 0.9rem;
+  margin-top: 1.7rem;
 }
 
 .verticalTimelineSkillBadge {
   transition: all 0.3s ease;
-  font-size: 0.9rem; /* Slightly larger font */
-  padding: 0.5rem 0.8rem; /* Increased padding */
-  border: 1.5px solid var(--mantine-color-primary-4); /* Thicker border */
+  font-size: 0.95rem;
+  padding: 0.6rem 1rem;
+  border: 2px solid var(--mantine-color-primary-4);
+  background: rgba(var(--mantine-color-primary-4-rgb), 0.15);
 }
 
-.verticalTimelineSkillBadge:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.1);
+/* Skill badge styling based on color, active state, and index for staggered animations */
+[data-color="blue"] .verticalTimelineSkillBadge {
+  background: rgba(0, 241, 255, 0.2);
+}
+
+[data-color="violet"] .verticalTimelineSkillBadge {
+  background: rgba(157, 0, 255, 0.2);
+}
+
+[data-color="teal"] .verticalTimelineSkillBadge {
+  background: rgba(0, 255, 255, 0.2);
+}
+
+[data-active="true"][data-color="blue"] .verticalTimelineSkillBadge {
+  border-color: var(--mantine-color-neonBlue);
+  color: #fff;
+}
+
+[data-active="true"][data-color="violet"] .verticalTimelineSkillBadge {
+  border-color: var(--mantine-color-electricPurple);
+  color: #fff;
+}
+
+[data-active="true"][data-color="teal"] .verticalTimelineSkillBadge {
+  border-color: var(--mantine-color-neonCyan);
+  color: #fff;
+}
+
+[data-active="false"][data-color="blue"] .verticalTimelineSkillBadge {
+  border-color: rgba(0, 241, 255, 0.4);
+  color: var(--mantine-color-neonBlue);
+}
+
+[data-active="false"][data-color="violet"] .verticalTimelineSkillBadge {
+  border-color: rgba(157, 0, 255, 0.4);
+  color: var(--mantine-color-electricPurple);
+}
+
+[data-active="false"][data-color="teal"] .verticalTimelineSkillBadge {
+  border-color: rgba(0, 255, 255, 0.4);
+  color: var(--mantine-color-neonCyan);
+}
+
+/* Staggered floating animation for skill badges */
+[data-active="true"] .verticalTimelineSkillBadge[data-index="0"] {
+  animation: float 2.5s infinite ease-in-out;
+}
+
+[data-active="true"] .verticalTimelineSkillBadge[data-index="1"] {
+  animation: float 3s infinite ease-in-out;
+}
+
+[data-active="true"] .verticalTimelineSkillBadge[data-index="2"] {
+  animation: float 3.5s infinite ease-in-out;
+}
+
+[data-active="true"] .verticalTimelineSkillBadge[data-index="3"] {
+  animation: float 4s infinite ease-in-out;
+}
+
+[data-active="true"] .verticalTimelineSkillBadge[data-index="4"] {
+  animation: float 4.5s infinite ease-in-out;
+}
+
+/* For right-aligned cards (even items) on desktop */
+@media (min-width: 768px) {
+  .verticalTimelineItem:nth-child(even) {
+    grid-template-columns: 1fr 50px auto;
+  }
+
+  .verticalTimelineItem:nth-child(even) .verticalTimelineCard {
+    grid-column: 1 / 2;
+    margin-right: 2.8rem;
+  }
+
+  .verticalTimelineItem:nth-child(even) .cardRight {
+    margin-right: 2.8rem;
+    margin-left: 0;
+  }
 }
 
 /* Mobile adjustments */
 @media (max-width: 767px) {
   .verticalTimelineItem {
     grid-template-columns: 50px 1fr;
-    margin-bottom: 3.5rem; /* Slightly smaller spacing on mobile */
+    margin-bottom: 4rem;
   }
   
   .verticalTimelineLine {
@@ -701,46 +541,27 @@
   
   .verticalTimelineDot {
     grid-column: 1 / 2;
-    width: 48px; /* Slightly smaller on mobile */
-    height: 48px; /* Slightly smaller on mobile */
+    width: 50px;
+    height: 50px;
   }
   
   .verticalTimelineCard {
     grid-column: 2 / 3;
-    margin-left: 1.5rem;
-    padding: 1.5rem;
+    margin-left: 1.8rem;
+    padding: 1.8rem;
   }
   
   .cardRight, .cardLeft {
     grid-column: 2 / 3;
     margin-right: 0;
-    margin-left: 1.5rem;
+    margin-left: 1.8rem;
   }
 }
 
-/* Animation for achievements section */
+/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Fade in animation for timeline items */
-.verticalTimelineItem {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: itemFadeIn 0.6s ease forwards; /* Slightly slower animation for smoother appearance */
-}
-
-.verticalTimelineItem:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.verticalTimelineItem:nth-child(2) {
-  animation-delay: 0.3s;
-}
-
-.verticalTimelineItem:nth-child(3) {
-  animation-delay: 0.5s;
 }
 
 @keyframes itemFadeIn {
@@ -748,8 +569,12 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Float animation for skill badges */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
