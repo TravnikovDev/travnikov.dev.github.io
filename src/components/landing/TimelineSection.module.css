@@ -70,17 +70,19 @@
   padding: 3rem 0;
 }
 
-/* The continuous vertical line */
+/* The continuous vertical line - IMPROVED THICKNESS AND COLOR */
 .verticalTimelineContainer::before {
   content: '';
   position: absolute;
-  width: 4px;
-  background-color: #e0e0e0;
+  width: 6px; /* Increased from 4px for better visibility */
+  background-color: var(--mantine-color-primary-4); /* Light teal color that complements dark theme */
+  opacity: 0.7; /* Semi-transparent for subtle but visible effect */
   top: 0;
   bottom: 0;
   left: 50%;
-  margin-left: -2px;
+  margin-left: -3px; /* Adjusted for new width */
   z-index: 0;
+  box-shadow: 0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.3); /* Subtle glow effect */
 }
 
 /* Timeline Item Styles */
@@ -112,7 +114,7 @@
   animation-delay: 0.4s;
 }
 
-/* Active/Inactive Timeline Items */
+/* Active/Inactive Timeline Items - IMPROVED SPACING AND CONSISTENCY */
 .timelineItemActive {
   display: grid;
   grid-template-columns: 1fr 80px 1fr;
@@ -131,11 +133,11 @@
   margin-bottom: 4rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  opacity: 0.8;
+  opacity: 0.85; /* Slightly increased for better readability */
   transform: translateY(0);
 }
 
-/* Apply animation to active and inactive items like we do for verticalTimelineItem */
+/* Apply animation to active and inactive items */
 .timelineItemActive:nth-child(1),
 .timelineItemInactive:nth-child(1) {
   animation-delay: 0.1s;
@@ -156,85 +158,92 @@
   animation-delay: 0.4s;
 }
 
-/* Alternate layout for even/odd items */
+/* Alternate layout for even/odd items - IMPROVED SYMMETRY */
 .cardLeft {
   grid-column: 3 / 4;
   padding-left: 40px;
+  margin-top: 0; /* Consistent vertical alignment */
 }
 
 .cardRight {
   grid-column: 1 / 2;
   padding-right: 40px;
   text-align: right;
+  margin-top: 0; /* Consistent vertical alignment */
 }
 
-/* Timeline Dot Styles */
+/* Timeline Dot Styles - SIMPLIFIED AND CONSISTENT */
 .verticalTimelineDot {
   grid-column: 2 / 3;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 4px solid var(--mantine-color-primary-6);
+  background: rgba(20, 27, 65, 0.8); /* Darker background to make icon stand out */
+  border: 2px solid var(--mantine-color-primary-4); /* Consistent teal border */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--mantine-color-primary-6);
+  color: var(--mantine-color-primary-4); /* Teal icons */
   z-index: 2;
   position: relative;
   margin: 0 auto;
-  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2);
+  box-shadow: none; /* Removed shine for flat aesthetic */
+  transition: all 0.3s ease;
 }
 
-/* Dot styling based on data attributes */
+/* Dot styling based on data attributes - IMPROVED INTERACTION */
 [data-active="true"] .verticalTimelineDot {
-  background: var(--mantine-color-primary-6);
-  color: #ffffff;
-  transform: scale(1.1);
+  background: rgba(20, 27, 65, 0.9); /* Keeping flat aesthetic */
+  color: var(--mantine-color-primary-4);
+  transform: scale(1.05); /* Subtle scale for active state */
+  border-color: var(--mantine-color-primary-4);
+  border-width: 2px; /* Consistent border width */
 }
 
 [data-current="true"] .verticalTimelineDot {
-  border-width: 4px;
+  border-width: 2px; /* Consistent border width */
 }
 
-/* Dot inner styles */
+/* Dot inner styles - FLAT & SIMPLE ICONS */
 .verticalTimelineDotInner {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-size: 18px;
+  font-size: 16px; /* Smaller for better proportion */
+  opacity: 0.9; /* Slightly transparent for softer look */
 }
 
-/* Card Styles */
+/* Card Styles - CONSISTENT STYLING */
 .verticalTimelineCard {
   padding: 2rem;
   border-radius: 8px;
-  background: #2a3040;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(20, 27, 65, 0.7); /* Consistent dark blue background */
+  border: 1px solid var(--mantine-color-primary-4); /* Consistent teal border */
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Card styling based on data attributes */
+/* Card styling based on data attributes - IMPROVED VISUAL HIERARCHY */
 [data-active="true"] .verticalTimelineCard {
-  border-color: var(--mantine-color-primary-6);
-  background: #2c3245;
+  border-color: var(--mantine-color-primary-4);
+  background: rgba(20, 27, 65, 0.8);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
 [data-hovered="true"] .verticalTimelineCard {
   transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Date Badge Styles */
+/* Date Badge Styles - CONSISTENT STYLING */
 .verticalTimelineDate {
   display: inline-flex;
   padding: 0.5rem 1.2rem;
   border-radius: 4px;
-  background: var(--mantine-color-primary-6);
-  color: white;
+  background: var(--mantine-color-primary-4); /* Using primary teal color */
+  color: rgba(20, 27, 65, 0.9); /* Dark text for contrast */
   font-weight: 600;
   margin-bottom: 1.2rem;
   transition: all 0.3s ease;
@@ -246,7 +255,7 @@
   float: right;
 }
 
-/* Header and Title styles */
+/* Header and Title styles - IMPROVED READABILITY */
 .verticalTimelineHeader {
   margin-bottom: 1.5rem;
   clear: both;
@@ -255,20 +264,20 @@
 .verticalTimelineTitle {
   font-size: 1.5rem;
   margin-bottom: 0.7rem;
-  color: #ffffff;
-  font-weight: 600;
+  color: #E8E8E8; /* Brighter, more readable white */
+  font-weight: 700; /* Bolder for better visibility */
 }
 
 .verticalTimelineCompany {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(232, 232, 232, 0.85); /* Lighter for better readability */
   font-weight: 500;
 }
 
 .verticalTimelineDescription {
   margin-bottom: 1.5rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(232, 232, 232, 0.9); /* Brighter for readability */
   font-size: 1rem;
 }
 
@@ -279,42 +288,42 @@
   text-align: right;
 }
 
-/* Achievements Styles */
+/* Achievements Styles - CONSISTENT DESIGN */
 .verticalTimelineAchievements {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   padding: 1.2rem;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border-left: 3px solid var(--mantine-color-primary-6);
+  background: rgba(33, 230, 193, 0.05); /* Very subtle teal background */
+  border-left: 3px solid var(--mantine-color-primary-4);
 }
 
 .cardRight .verticalTimelineAchievements {
   border-left: none;
-  border-right: 3px solid var(--mantine-color-primary-6);
+  border-right: 3px solid var(--mantine-color-primary-4);
   text-align: right;
 }
 
 .verticalTimelineAchievementsTitle {
   margin-bottom: 1.2rem;
   font-size: 1.2rem;
-  color: #ffffff;
+  color: #E8E8E8; /* Brighter text */
   font-weight: 600;
 }
 
-/* Achievement Bullet Points */
+/* Achievement Bullet Points - IMPROVED VISUAL */
 .verticalTimelineAchievementDot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   margin-top: 8px;
-  background: var(--mantine-color-primary-6);
+  background: var(--mantine-color-primary-4); /* Teal dots */
 }
 
 .verticalTimelineAchievementText {
   line-height: 1.6;
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(232, 232, 232, 0.95); /* Brighter for readability */
 }
 
 /* Right-aligned achievements should have right-aligned bullet points */
@@ -322,7 +331,7 @@
   margin-left: auto;
 }
 
-/* Skills Section Styles */
+/* Skills Section Styles - CONSISTENT DESIGN */
 .verticalTimelineSkills {
   display: flex;
   flex-wrap: wrap;
@@ -337,16 +346,18 @@
 .verticalTimelineSkillBadge {
   font-size: 0.85rem;
   padding: 0.4rem 0.8rem;
-  border: 1px solid var(--mantine-color-primary-6);
+  border: 1px solid var(--mantine-color-primary-4); /* Teal border */
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(33, 230, 193, 0.05); /* Very subtle teal background */
+  color: #E8E8E8; /* Brighter text */
+  transition: all 0.2s ease;
 }
 
 /* Mobile adjustments */
 @media (max-width: 767px) {
   .verticalTimelineContainer::before {
     left: 31px;
+    width: 4px; /* Slightly thinner on mobile but still noticeable */
   }
 
   .verticalTimelineItem,
@@ -389,7 +400,7 @@
 
   .cardRight .verticalTimelineAchievements {
     border-right: none;
-    border-left: 3px solid var(--mantine-color-primary-6);
+    border-left: 3px solid var(--mantine-color-primary-4);
     text-align: left;
   }
 
@@ -411,4 +422,9 @@
 @keyframes itemFadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
