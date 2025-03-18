@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Container, Title, Text, Box, Group, Badge, useMantineTheme } from "@mantine/core";
 import { FaBriefcase, FaLaptopCode, FaCode, FaServer, FaPlane, FaCar } from "react-icons/fa";
 import * as styles from './TimelineSection.module.css';
-import { vaporwaveColors } from '../../theme';
 
 // Timeline item interface with extended properties
 interface TimelineItem {
@@ -17,7 +16,7 @@ interface TimelineItem {
   isCurrent?: boolean;
 }
 
-// Enhanced timeline data with Roman's actual work experience from ABOUT_AUTHOR.MD
+// Enhanced timeline data with work experience
 const timelineData: TimelineItem[] = [
   {
     date: "2023 - 2024",
@@ -31,7 +30,7 @@ const timelineData: TimelineItem[] = [
     ],
     skills: ["React", "TypeScript", "Redux", "UI/UX Design", "Performance Optimization"],
     color: "blue",
-    icon: <FaLaptopCode size={24} />,
+    icon: <FaLaptopCode size={20} />,
     isCurrent: true
   },
   {
@@ -46,7 +45,7 @@ const timelineData: TimelineItem[] = [
     ],
     skills: ["React", "Next.js", "API Integration", "Responsive Design", "Booking Systems"],
     color: "violet",
-    icon: <FaPlane size={24} />
+    icon: <FaPlane size={20} />
   },
   {
     date: "2020 - 2022",
@@ -60,7 +59,7 @@ const timelineData: TimelineItem[] = [
     ],
     skills: ["React", "Next.js", "Material UI", "TypeScript", "Team Leadership"],
     color: "teal",
-    icon: <FaCar size={24} />
+    icon: <FaCar size={20} />
   },
   {
     date: "2017 - 2020",
@@ -74,114 +73,104 @@ const timelineData: TimelineItem[] = [
     ],
     skills: ["GIS Systems", "Real-time Maps", "Node.js", "React", "Notification Systems"],
     color: "blue",
-    icon: <FaServer size={24} />
+    icon: <FaServer size={20} />
   }
 ];
 
-// Individual Timeline Card component for vertical layout
+// Individual Timeline Card component with proper layout
 const VerticalTimelineCard = ({ item, index, isActive, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
   const isEven = index % 2 === 0;
   
   return (
-    <Box 
+    <div 
       className={isActive ? styles.timelineItemActive : styles.timelineItemInactive}
       data-active={isActive}
       data-hovered={isHovered}
       data-color={item.color}
       data-current={item.isCurrent ? true : false}
-      data-even={isEven}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
     >
-      {/* Timeline line */}
-      <div className={styles.verticalTimelineLine}>
-        <div className={styles.verticalTimelineLineInner} />
-      </div>
-      
-      {/* Timeline dot */}
+      {/* Timeline dot with icon */}
       <div className={styles.verticalTimelineDot}>
         <div className={styles.verticalTimelineDotInner}>
           {item.icon}
         </div>
       </div>
       
-      {/* Timeline card content - alternate sides for visual interest */}
-      <div className={`${styles.verticalTimelineCard} ${isEven ? styles.cardRight : styles.cardLeft}`}>
-        {/* Date badge */}
-        <Badge
-          variant="filled"
-          size="lg"
-          radius="md"
-          className={styles.verticalTimelineDate}
-        >
-          {item.date}
-        </Badge>
-        
-        {/* Title & Company */}
-        <div className={styles.verticalTimelineHeader}>
-          <Title
-            order={3}
-            className={styles.verticalTimelineTitle}
+      {/* Timeline card content - on the correct side based on index */}
+      <div className={isEven ? styles.cardLeft : styles.cardRight}>
+        <div className={styles.verticalTimelineCard}>
+          {/* Date badge */}
+          <Badge
+            variant="filled"
+            size="md"
+            className={styles.verticalTimelineDate}
           >
-            {item.title}
-          </Title>
-          <Text
-            size="lg"
-            fw={600}
-            className={styles.verticalTimelineCompany}
-          >
-            {item.company}
-          </Text>
-        </div>
-        
-        {/* Description */}
-        <Text
-          size="md"
-          className={styles.verticalTimelineDescription}
-        >
-          {item.description}
-        </Text>
-        
-        {/* Achievements - visible when active */}
-        {isActive && (
-          <Box className={styles.verticalTimelineAchievements}>
-            <Title 
-              order={5} 
-              mb="sm" 
-              className={styles.verticalTimelineAchievementsTitle}
+            {item.date}
+          </Badge>
+          
+          {/* Title & Company */}
+          <div className={styles.verticalTimelineHeader}>
+            <Title
+              order={3}
+              className={styles.verticalTimelineTitle}
             >
-              Key Achievements
+              {item.title}
             </Title>
-            {item.achievements.map((achievement, i) => (
-              <Group key={i} align="flex-start" mb="sm" gap="md">
-                <Box className={styles.verticalTimelineAchievementDot} />
-                <Text className={styles.verticalTimelineAchievementText}>
-                  {achievement}
-                </Text>
-              </Group>
-            ))}
-          </Box>
-        )}
-        
-        {/* Skills */}
-        <Box className={styles.verticalTimelineSkills}>
-          {item.skills.map((skill, i) => (
-            <Badge
-              key={i}
-              variant="dot"
-              size="md"
-              radius="sm"
-              className={styles.verticalTimelineSkillBadge}
-              data-index={i % 5}
+            <Text
+              size="lg"
+              className={styles.verticalTimelineCompany}
             >
-              {skill}
-            </Badge>
-          ))}
-        </Box>
+              {item.company}
+            </Text>
+          </div>
+          
+          {/* Description */}
+          <Text
+            size="md"
+            className={styles.verticalTimelineDescription}
+          >
+            {item.description}
+          </Text>
+          
+          {/* Achievements - visible when active */}
+          {isActive && (
+            <div className={styles.verticalTimelineAchievements}>
+              <Title 
+                order={5} 
+                className={styles.verticalTimelineAchievementsTitle}
+              >
+                Key Achievements
+              </Title>
+              {item.achievements.map((achievement, i) => (
+                <Group key={i} align="flex-start" mb="xs" gap="sm" wrap="nowrap">
+                  <div className={styles.verticalTimelineAchievementDot} />
+                  <Text className={styles.verticalTimelineAchievementText}>
+                    {achievement}
+                  </Text>
+                </Group>
+              ))}
+            </div>
+          )}
+          
+          {/* Skills */}
+          <div className={styles.verticalTimelineSkills}>
+            {item.skills.map((skill, i) => (
+              <Badge
+                key={i}
+                variant="outline"
+                className={styles.verticalTimelineSkillBadge}
+              >
+                {skill}
+              </Badge>
+            ))}
+          </div>
+        </div>
       </div>
-    </Box>
+    </div>
   );
 };
 
@@ -190,7 +179,7 @@ export function TimelineSection() {
   const [isInView, setIsInView] = useState(false);
   const sectionRef = useRef(null);
   
-  // Handle scroll to set active card based on scroll position
+  // Handle intersection observer to trigger animations when section comes into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -227,13 +216,13 @@ export function TimelineSection() {
           </Title>
           <Box className={styles.timelineUnderline} />
         </Box>
-        <Text className={styles.timelineDescriptionText} mb={40}>
+        <Text className={styles.timelineDescriptionText}>
           My career path across logistics, travel, automotive, and mining industries, 
           where I've crafted exceptional digital experiences
         </Text>
       </Box>
       
-      {/* Vertical Timeline Layout */}
+      {/* Vertical Timeline Layout - the container has the continuous line via CSS */}
       <div className={styles.verticalTimelineContainer}>
         {timelineData.map((item, index) => (
           <VerticalTimelineCard
