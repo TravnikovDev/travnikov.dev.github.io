@@ -87,3 +87,5 @@ export const categoryIconMobile: string;
 export const categoryTitleGradient: string;
 export const categoryBadgeStyle: string;
 export const flexGrow: string;
+export const keySkill: string;
+export const keySkillBadge: string;

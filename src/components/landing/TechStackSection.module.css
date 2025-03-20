@@ -127,6 +127,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
   transition: all 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 .techCategoryPaper:hover {
@@ -460,16 +461,31 @@
 
 /* Skill Description */
 .skillDescription {
-  max-height: 3em;
+  max-height: 4.5em;
   overflow: hidden;
   font-size: 1rem;
   line-height: 1.5;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.4s ease;
   color: #E3E7F1;
+  position: relative;
 }
 
 .skillDescriptionExpanded {
-  max-height: none;
+  max-height: 20em;
+}
+
+.skillDescription:not(.skillDescriptionExpanded)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2em;
+  background: linear-gradient(transparent, rgba(10, 15, 36, 0.95));
+}
+
+.skillDescriptionExpanded::after {
+  display: none;
 }
 
 /* Skill Projects Badge */
@@ -510,6 +526,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
   transition: all 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 .techCategoryPaper:hover {
@@ -768,16 +785,31 @@
 
 /* Skill Description */
 .skillDescription {
-  max-height: 3em;
+  max-height: 4.5em;
   overflow: hidden;
   font-size: 1rem;
   line-height: 1.5;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.4s ease;
   color: #E3E7F1;
+  position: relative;
 }
 
 .skillDescriptionExpanded {
   max-height: none;
+}
+
+.skillDescription:not(.skillDescriptionExpanded)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2em;
+  background: linear-gradient(transparent, rgba(10, 15, 36, 0.95));
+}
+
+.skillDescriptionExpanded::after {
+  display: none;
 }
 
 /* New dynamic styling classes for skill cards */
@@ -826,4 +858,28 @@
 
 .flexGrow {
   flex: 1;
+}
+
+/* Key skill highlighting */
+.keySkill {
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(var(--skill-color-rgb), 0.4) !important;
+  border-width: 2px !important;
+  transform: translateY(-3px);
+  z-index: 5;
+}
+
+.keySkill:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px rgba(var(--skill-color-rgb), 0.6) !important;
+  transform: translateY(-8px);
+}
+
+.keySkillBadge {
+  background: linear-gradient(135deg, rgba(var(--skill-color-rgb), 0.3), rgba(var(--skill-color-rgb), 0.1)) !important;
+  border: 1px solid rgba(var(--skill-color-rgb), 0.4);
+  transition: all 0.3s ease;
+}
+
+.skillCardPaper:hover .keySkillBadge {
+  background: linear-gradient(135deg, rgba(var(--skill-color-rgb), 0.4), rgba(var(--skill-color-rgb), 0.2)) !important;
 }
