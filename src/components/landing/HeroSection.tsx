@@ -104,9 +104,10 @@ const HeroSection = () => {
                           transform: titleTransform,
                           fontSize: "clamp(3rem, 8vw, 5rem)",
                           background: "linear-gradient(135deg, var(--mantine-color-primary-4), var(--mantine-color-secondary-4))",
+                          backgroundClip: "text",
                           WebkitBackgroundClip: "text",
                           WebkitTextFillColor: "transparent",
-                          textShadow: "0 0 30px rgba(var(--mantine-color-primary-4-rgb), 0.3)",
+                          textShadow: "rgba(0, 0, 0, 0.3) 0px 1px 2px",
                         }}
                       >
                         Roman
