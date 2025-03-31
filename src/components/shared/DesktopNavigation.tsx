@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Box, Group, UnstyledButton } from "@mantine/core";
 import { Link } from "gatsby";
 import { useLocation } from "@reach/router";
@@ -59,7 +59,6 @@ const NavItem = ({ label, path, isActive }) => {
 };
 
 export default function DesktopNavigation() {
-  const colorScheme = useColorScheme();
   const location = useLocation();
   const navigationRef = useRef(null);
   

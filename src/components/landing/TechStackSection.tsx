@@ -13,7 +13,7 @@ import {
 import { theme } from "../../theme";
 import { useColorScheme } from "@mantine/hooks";
 import {
-  FaReact, FaJs, FaHtml5, FaNodeJs, FaDatabase, FaServer, FaCode, FaTools, FaCss3Alt, FaVial
+  FaReact, FaJs, FaHtml5, FaNodeJs, FaCode, FaTools, FaVial
 } from "react-icons/fa";
 import {
   SiTypescript, SiThreedotjs, SiWebgl, SiGreensock,
@@ -512,7 +512,6 @@ const SkillCard = ({ skill, index, categoryColor }) => {
 };
 
 export function TechStackSection() {
-  const colorScheme = useColorScheme();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   

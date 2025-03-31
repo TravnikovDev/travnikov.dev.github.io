@@ -1,4 +1,4 @@
-import React from 'react';
+import 'react';
 import { graphql, Link, PageProps } from "gatsby";
 import {
   Card,

@@ -3,7 +3,6 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Group, MathUtils } from 'three';
 import * as styles from './3dBackground.module.css';
-import FloatingName from './FloatingName';
 import MatrixRain from './MatrixRain';
 import MatrixFruit from './MatrixFruit';
 import { vaporwaveColors } from '../../theme';

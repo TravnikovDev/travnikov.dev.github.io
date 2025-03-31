@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
-import { AppShellHeader, Container, Group, Box, useMantineTheme } from "@mantine/core";
+import React, { useRef, useEffect } from "react";
+import { AppShellHeader, Container, Group, Box } from "@mantine/core";
 import DesktopNavigation from "./DesktopNavigation";
-import { useMediaQuery } from '@mantine/hooks';
+import { } from '@mantine/hooks';
 import * as styles from './Header.module.css';
 
 interface HeaderProps {}

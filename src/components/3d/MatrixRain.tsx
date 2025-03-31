@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -20,7 +20,6 @@ export default function VaporwaveGrid({
   color = '#FF00FF' // Changed to hot pink as default
 }: VaporwaveGridProps) {
   const instancedMeshRef = useRef<THREE.InstancedMesh>(null);
-  const tempObject = useMemo(() => new THREE.Object3D(), []);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   
   // Generate grid elements with random positions and speeds

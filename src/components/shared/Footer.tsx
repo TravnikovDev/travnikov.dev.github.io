@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, AppShellFooter, Box, Text, Anchor, useMantineTheme } from "@mantine/core";
+import { Container, AppShellFooter, Box, Text, Anchor } from "@mantine/core";
 import { Link } from "gatsby";
 import SocialLinks from "./SocialLinks";
 import * as styles from './Footer.module.css';

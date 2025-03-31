@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { graphql } from "gatsby";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
@@ -10,19 +10,6 @@ import ThreeDBackground from "../components/3d/3dBackground";
 import * as styles from './index.module.css';
 
 // Parallax divider with animation
-function SectionsDivider() {
-  return (
-    <Container size="lg" my={100}>
-      <Box
-        className={styles.sectionsDivider}
-      >
-        <Box
-          className={styles.sectionsDividerInner}
-        />
-      </Box>
-    </Container>
-  );
-}
 
 export default function IndexPage() {
   const [scrollProgress, setScrollProgress] = useState(0);

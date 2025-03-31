@@ -1,4 +1,4 @@
-import React from 'react';
+import 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { render } from '../../../utils/test-utils';

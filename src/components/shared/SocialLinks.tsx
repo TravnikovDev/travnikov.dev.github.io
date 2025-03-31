@@ -1,4 +1,4 @@
-import React from "react";
+import "react";
 import { Group, ActionIcon, MantineSize } from "@mantine/core";
 import SocialLinkIcon from "./SocialLinkIcon";
 import * as styles from './SocialLinks.module.css';
