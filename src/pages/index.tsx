@@ -7,13 +7,13 @@ import { TimelineSection } from "../components/landing/TimelineSection";
 import { TechStackSection } from "../components/landing/TechStackSection";
 import { Box, Container } from "@mantine/core";
 import ThreeDBackground from "../components/3d/3dBackground";
-import * as styles from './index.module.css';
+import * as styles from "./index.module.css";
 
 // Parallax divider with animation
 
 export default function IndexPage() {
   const [scrollProgress, setScrollProgress] = useState(0);
-  
+
   // Handle scroll events for progress indicator
   useEffect(() => {
     const handleScroll = () => {
@@ -21,16 +21,16 @@ export default function IndexPage() {
       const progress = Math.min(1, Math.max(0, window.scrollY / totalHeight));
       setScrollProgress(progress);
     };
-    
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  
+
   return (
     <BaseLayout>
       {/* Dynamic 3D background with parallax */}
       <ThreeDBackground />
-      
+
       {/* Main content with scroll animations */}
       <Box className={styles.mainContent}>
         <section>
@@ -41,9 +41,9 @@ export default function IndexPage() {
           <TimelineSection />
         </section>
 
-        <section>
+        {/* <section>
           <TechStackSection />
-        </section>
+        </section> */}
 
         <div
           className={styles.scrollProgressIndicator}
