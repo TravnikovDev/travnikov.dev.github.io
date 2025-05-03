@@ -4,8 +4,7 @@ import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
 import { TimelineSection } from "../components/landing/TimelineSection";
-import { TechStackSection } from "../components/landing/TechStackSection";
-import { Box, Container } from "@mantine/core";
+import { Box } from "@mantine/core";
 import ThreeDBackground from "../components/3d/3dBackground";
 import * as styles from "./index.module.css";
 
@@ -40,10 +39,6 @@ export default function IndexPage() {
         <section className={styles.sectionRight}>
           <TimelineSection />
         </section>
-
-        {/* <section>
-          <TechStackSection />
-        </section> */}
 
         <div
           className={styles.scrollProgressIndicator}
