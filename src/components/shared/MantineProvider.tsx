@@ -1,55 +1,67 @@
 import { ReactNode } from "react";
-  import { MantineProvider as Provider, createTheme, CSSVariablesResolver } from "@mantine/core";
+import {
+  MantineProvider as Provider,
+  createTheme,
+  CSSVariablesResolver,
+} from "@mantine/core";
 import "@mantine/core/styles.css";
 import { theme as customTheme, vaporwaveColors } from "../../theme";
 
 // Helper function to convert hex to RGB
 function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
 }
 
 // Create the final theme by merging our custom theme with the base theme
 const theme = createTheme({
-  ...customTheme
+  ...customTheme,
 });
 
 // Vaporwave color palette for consistent use
 const colors = vaporwaveColors;
 
 // Convert main colors to RGB format
-const primaryRgb = hexToRgb(colors.cyan);
-const secondaryRgb = hexToRgb(colors.pink);
+const primaryRgb = hexToRgb(colors.neonCyan);
+const secondaryRgb = hexToRgb(colors.electricPurple);
 const vaporwave7Rgb = hexToRgb(colors.navy);
 
 // TypeScript fix: Define the cssVariablesResolver separately with correct typing
 const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
   variables: {
     // RGB values for colors to use in rgba()
-    "--mantine-color-primary-4-rgb": primaryRgb ? `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}` : "33, 230, 193",
-    "--mantine-color-secondary-4-rgb": secondaryRgb ? `${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}` : "255, 97, 166",
-    "--mantine-color-vaporwave-7-rgb": vaporwave7Rgb ? `${vaporwave7Rgb.r}, ${vaporwave7Rgb.g}, ${vaporwave7Rgb.b}` : "20, 27, 65",
-    
+    "--mantine-color-primary-4-rgb": primaryRgb
+      ? `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}`
+      : "33, 230, 193",
+    "--mantine-color-secondary-4-rgb": secondaryRgb
+      ? `${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}`
+      : "255, 97, 166",
+    "--mantine-color-vaporwave-7-rgb": vaporwave7Rgb
+      ? `${vaporwave7Rgb.r}, ${vaporwave7Rgb.g}, ${vaporwave7Rgb.b}`
+      : "20, 27, 65",
+
     // Gradients using vaporwave colors
-    "--mantine-primary-gradient": `linear-gradient(45deg, ${colors.cyan}, ${colors.pink})`,
+    "--mantine-primary-gradient": `linear-gradient(45deg, ${colors.neonCyan}, ${colors.electricPurple})`,
     "--mantine-secondary-gradient": `linear-gradient(45deg, ${colors.pink}, ${colors.orange})`,
     "--mantine-animated-gradient": `linear-gradient(90deg, ${colors.navy}, ${colors.purple}, ${colors.navy})`,
     "--mantine-cyan-pink-gradient": `linear-gradient(45deg, ${colors.cyan}, ${colors.pink})`,
-    
+
     // Vaporwave-inspired glows and shadows
     "--mantine-glow-shadow": `0 10px 30px rgba(33, 230, 193, 0.2)`,
     "--mantine-pink-glow": `0 10px 30px rgba(255, 97, 166, 0.2)`,
     "--mantine-soft-shadow": `0 20px 80px -20px rgba(17, 16, 36, 0.4)`,
     "--mantine-card-shadow": `0 10px 40px -10px rgba(17, 16, 36, 0.45)`,
-    
+
     // Spacing variables for consistent layout
     "--mantine-section-spacing": "5rem",
     "--mantine-card-spacing": "1.5rem",
-    
+
     // Background
     "--mantine-page-bg": `linear-gradient(to bottom, ${colors.navy}, ${colors.purple}, rgba(10, 10, 26, 1))`,
   },
@@ -86,21 +98,21 @@ export const onRenderBody = ({ setHeadComponents }) => {
       href="https://unpkg.com/@mantine/core@7.6.2/styles.css"
       key="mantine-styles"
     />,
-    
+
     // Primary font - JetBrains Mono for clean readability
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
       key="google-fonts-jetbrains"
     />,
-    
+
     // Regular Inter font as a backup/alternate
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
       key="google-fonts-inter"
     />,
-    
+
     // Global styles for vaporwave aesthetic and improved readability
     <style
       key="global-styles"

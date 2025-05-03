@@ -8,9 +8,9 @@
   "license": "ISC",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop",
-    "develop:cypress": "cross-env CYPRESS_SUPPORT=y yarn develop",
-    "build:cypress": "cross-env CYPRESS_SUPPORT=y yarn build",
+    "dev": "gatsby develop",
+    "develop:cypress": "cross-env CYPRESS_SUPPORT=y npm dev",
+    "build:cypress": "cross-env CYPRESS_SUPPORT=y npm build",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
