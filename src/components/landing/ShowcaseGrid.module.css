@@ -1,0 +1,72 @@
+.showcaseGrid {
+  width: 100%;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: start;
+}
+
+.card {
+  cursor: pointer;
+}
+
+.cardLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aspect {
+  width: 100%;
+}
+
+.iconBox {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mantine-color-primary-4);
+}
+
+.iconBox svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.iconBoxLarge {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mantine-color-primary-4);
+}
+
+.iconBoxLarge svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.title {
+  text-align: center;
+  font-weight: 600;
+}
+
+.modalMedia {
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .showcaseGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
