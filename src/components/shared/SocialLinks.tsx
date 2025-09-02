@@ -1,7 +1,8 @@
 import "react";
+import type { CSSProperties } from "react";
 import { Group, ActionIcon, MantineSize } from "@mantine/core";
-import SocialLinkIcon from "./SocialLinkIcon";
-import * as styles from './SocialLinks.module.css';
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import * as styles from "./SocialLinks.module.css";
 
 interface SocialLinksProps {
   size?: MantineSize;
@@ -12,21 +13,21 @@ export default function SocialLinks({ size = "md" }: SocialLinksProps) {
     {
       name: "GitHub",
       url: "https://github.com/TravnikovDev",
-      icon: "🐙",
-      hoverColor: "#21E6C1" // Electric cyan - vaporwave
+      icon: <FaGithub />,
+      hoverColor: "#21E6C1", // Electric cyan - vaporwave
     },
     {
       name: "LinkedIn",
       url: "https://linkedin.com/in/travnikov",
-      icon: "💼",
-      hoverColor: "#FF61A6" // Sunset pink - vaporwave
+      icon: <FaLinkedin />,
+      hoverColor: "#FF61A6", // Sunset pink - vaporwave
     },
     {
       name: "Twitter",
       url: "https://twitter.com/TravnikovDev",
-      icon: "🐦",
-      hoverColor: "#FF7A00" // Orange neon - vaporwave
-    }
+      icon: <FaTwitter />,
+      hoverColor: "#FF7A00", // Orange neon - vaporwave
+    },
   ];
 
   return (
@@ -42,8 +43,11 @@ export default function SocialLinks({ size = "md" }: SocialLinksProps) {
           radius="xl"
           size={size}
           className={styles.actionIcon}
+          aria-label={link.name}
+          title={link.name}
+          style={{ "--hover-color": link.hoverColor } as CSSProperties}
         >
-          <SocialLinkIcon {...link} />
+          {link.icon}
         </ActionIcon>
       ))}
     </Group>
