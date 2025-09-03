@@ -2,7 +2,7 @@ import React from "react";
 import { Container, AppShellFooter, Box, Text, Anchor } from "@mantine/core";
 import { Link } from "gatsby";
 import SocialLinks from "./SocialLinks";
-import * as styles from './Footer.module.css';
+import * as styles from "./Footer.module.css";
 
 const Footer: React.FC = () => {
   return (
@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
           </Box>
         </Container>
       </AppShellFooter>
-      
+
       {/* Mobile-only Fixed Bottom Navigation - hidden on sm and up screens */}
       <Box className={styles.mobileNav} hiddenFrom="sm">
         {/* Home */}
@@ -26,58 +26,53 @@ const Footer: React.FC = () => {
           component={Link}
           to="/"
           className={styles.navItem}
+          onClick={(e) => e.preventDefault()}
         >
-          <Box className={styles.navIcon}>
-            🏠
-          </Box>
+          <Box className={styles.navIcon}>🏠</Box>
           <Text className={styles.navText}>Home</Text>
         </Anchor>
-        
+
         {/* Projects */}
         <Anchor
           component={Link}
           to="/projects"
           className={styles.navItem}
+          onClick={(e) => e.preventDefault()}
         >
-          <Box className={styles.navIcon}>
-            📂
-          </Box>
+          <Box className={styles.navIcon}>📂</Box>
           <Text className={styles.navText}>Projects</Text>
         </Anchor>
-        
+
         {/* Contact - Highlighted */}
         <Anchor
           component={Link}
           to="/contact"
           className={styles.navItemHighlighted}
+          onClick={(e) => e.preventDefault()}
         >
-          <Box className={styles.navIconHighlighted}>
-            📞
-          </Box>
+          <Box className={styles.navIconHighlighted}>📞</Box>
           <Text className={styles.navTextHighlighted}>Contact</Text>
         </Anchor>
-        
+
         {/* Blog */}
         <Anchor
           component={Link}
           to="/blog"
           className={styles.navItem}
+          onClick={(e) => e.preventDefault()}
         >
-          <Box className={styles.navIcon}>
-            📝
-          </Box>
+          <Box className={styles.navIcon}>📝</Box>
           <Text className={styles.navText}>Blog</Text>
         </Anchor>
-        
+
         {/* Experiments */}
         <Anchor
           component={Link}
           to="/experiments"
           className={styles.navItem}
+          onClick={(e) => e.preventDefault()}
         >
-          <Box className={styles.navIcon}>
-            🧪
-          </Box>
+          <Box className={styles.navIcon}>🧪</Box>
           <Text className={styles.navText}>Experiments</Text>
         </Anchor>
       </Box>

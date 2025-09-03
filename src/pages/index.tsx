@@ -3,15 +3,9 @@ import { graphql } from "gatsby";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
-import {
-  LandingSection,
-  TimelineSection,
-} from "../components/landing/TimelineSection";
-import SectionPlaceholder from "../components/landing/SectionPlaceholder";
+import { LandingSection } from "../components/landing/TimelineSection";
 import ShowcaseGrid from "../components/landing/ShowcaseGrid";
 import {
-  FaRocket,
-  FaBrain,
   FaBoxes,
   FaRobot,
   FaTools,
@@ -28,8 +22,6 @@ import {
   SiRedux,
   SiNextdotjs,
   SiGraphql,
-  SiDocker,
-  SiCypress,
   SiMui,
   SiJavascript,
   SiCss3,
