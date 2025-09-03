@@ -2,6 +2,7 @@
 export const showcaseGrid: string;
 export const card: string;
 export const cardLink: string;
+export const cardWrapper: string;
 export const inner: string;
 export const aspect: string;
 export const iconBox: string;

@@ -17,7 +17,8 @@ This document outlines the component hierarchy of the main page of travnikov.dev
       <sectionsDivider />
       
       <ParallaxSection>
-        <TimelineSection />
+        <LandingSection title="My projects" />
+        <!-- multiple LandingSection blocks used across the page (My projects, My libraries, My extensions, My Commercial Working History, My skills, etc.) -->
       </ParallaxSection>
       
       <sectionsDivider />
@@ -66,9 +67,12 @@ This document outlines the component hierarchy of the main page of travnikov.dev
   - First section visitors see
   - Contains 3D animation, name, title, and brief introduction
 
-- **TimelineSection**: Section displaying professional experience timeline
-  - Shows career progression with dates, positions, and companies
-  - Animated elements that appear on scroll
+- **LandingSection**: Reusable wrapper for landing subsections (title, optional description, children)
+  - Used for sections like My projects, My libraries, My extensions, My Commercial Working History, YouTube widget, My skills, What I can help you with
+
+- **ShowcaseGrid**: Grid used inside `LandingSection` to display items (projects, jobs, skills)
+  - Items have `image`, `icon`, `url`, `title`, and `description`
+  - Items with `url` are plain anchor links for SEO; items without `url` open a modal with more details
 
 - **TechStackSection**: Section showcasing technical skills and tools
   - Displays various technologies and proficiency levels

@@ -1,6 +1,11 @@
 :root {
-  --dark-bg: rgba(15, 15, 15, 0.5); /* Significantly reduced opacity to let 3D background shine through */
-  --spacing: 350px;
+  --dark-bg: rgba(
+    15,
+    15,
+    15,
+    0.5
+  ); /* Significantly reduced opacity to let 3D background shine through */
+  --spacing: 120px;
 }
 
 /* Hidden background elements that were covering the 3D background */
@@ -27,11 +32,13 @@
   position: absolute;
   height: 100%;
   width: 30%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--mantine-color-primary-4), 
-    var(--mantine-color-secondary-4), 
-    transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--mantine-color-primary-4),
+    var(--mantine-color-secondary-4),
+    transparent
+  );
   animation: dividerAnimation 3s infinite linear;
   padding: 1rem;
 }
@@ -42,9 +49,11 @@
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, 
-    var(--mantine-color-primary-4), 
-    var(--mantine-color-secondary-4));
+  background: linear-gradient(
+    90deg,
+    var(--mantine-color-primary-4),
+    var(--mantine-color-secondary-4)
+  );
   transform-origin: 0%;
   z-index: 1000;
   box-shadow: 0 0 10px rgba(var(--mantine-color-secondary-4-rgb), 0.6);
@@ -79,8 +88,14 @@ section {
 
 /* Animation for section entrance */
 @keyframes sectionFadeIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 section {
@@ -100,7 +115,7 @@ section:nth-child(3) {
     padding: 2rem 1rem;
     margin-bottom: calc(var(--spacing) / 2);
   }
-  
+
   .sectionRight {
     margin-bottom: calc(var(--spacing) / 2);
   }
@@ -137,7 +152,13 @@ section:nth-child(3) {
 }
 
 /* Ensures text is readable over the 3D background */
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   position: relative;
   z-index: 2;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow for better readability over 3D background */
@@ -152,12 +173,16 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .sectionTransition::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(15, 15, 15, 0.2));
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(15, 15, 15, 0.2)
+  );
   z-index: 1;
 }

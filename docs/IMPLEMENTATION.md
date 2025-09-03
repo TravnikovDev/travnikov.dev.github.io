@@ -2,72 +2,56 @@
 
 ## Project Structure Overview
 
-This project implements the requirements specified in TASK.MD. Below is a summary of the components and features implemented:
+This project implements the requirements specified in TASK.MD. Below is a concise summary of the components and features implemented and recent refactors.
 
 ### 1. Technology Stack
 
-- **Gatsby**: Used as the static site generator
-- **Mantine UI**: Integrated as the UI framework
-- **Three.js (via React Fiber)**: Implemented for 3D animations
-- **Strapi CMS**: Configured for content management
-- **GitHub Pages & Actions**: Set up for deployment with CI/CD
+- **Gatsby**: static site generator
+- **Mantine UI**: UI framework used for components (Card, Modal, AspectRatio, etc.)
+- **Three.js (via React Three Fiber)**: for decorative 3D animations on the homepage
+- **Strapi CMS**: configured for content management (where applicable)
+- **GitHub Pages & Actions**: CI/CD and deployment
 
-### 2. Website Sections & Features
+### 2. Website Sections & Key Components
 
 #### 2.1 Main Page (Landing Page)
-- Created HeroSection component with interactive 3D elements
-- Implemented TimelineSection for career progression
-- Added TechStackSection to showcase skills
-- Integrated social links
-- Optimized for SEO with structured data
+- `HeroSection` — main landing area with 3D/intro
+- `LandingSection` — a small, reusable wrapper component that accepts a title, optional description and children. (This replaces the previous tightly-coupled Timeline-only component for general landing subsections.)
+- Multiple landing subsections are now implemented as `LandingSection` blocks (examples: My projects, My apps, My libraries, My extensions, My Commercial Working History, YouTube widget, My skills, What I can help you with).
 
-#### 2.2 Projects Showcase
-- Built projects page with responsive grid layout
-- Created project template for individual project details
-- Added categories and tags for filtering
-- Implemented hover effects
+#### 2.2 ShowcaseGrid (Projects / Items)
+- `ShowcaseGrid` — a reusable grid component used inside `LandingSection` to display projects, packages, extensions, skills and work items.
+	- Items support: `image` (thumbnail/logo), `icon` (react-icon element), `url` (external link), `title`, `description`, and `alt`.
+	- Fallback priority: image → icon → default placeholder icon.
+	- Items with a `url` are rendered as plain anchor (`<a href="...">`) wrappers for SEO/crawlability (opens in new tab). Items without `url` open a modal showing details.
 
-#### 2.3 Blog
-- Set up blog page with listing of articles
-- Created blog template for article display
-- Configured Markdown processing
-- Added related posts section
+#### 2.3 Career / Timeline
+- A dedicated `LandingSection` now hosts the "My Commercial Working History" showcase which lists employment records. Each record is a `ShowcaseGrid` item that opens a modal with employment dates and short responsibilities/achievements.
 
-#### 2.4 Experiments
-- Implemented experiments page for frontend demos
-- Added code snippets display
-- Integrated with Strapi for dynamic content
+#### 2.4 Projects & Marketplace
+- Project links (for libraries, extensions, and marketplaces) use plain `<a>` links to external pages (npm, Chrome Web Store, Etsy) so search engines can discover them. Example: the Etsy project is linked to `https://neurofashion.etsy.com/` and uses the `BiLogoEtsy` icon.
 
-#### 2.6 Contact Page
-- Created contact form with validation
-- Added social media links
-- Implemented form submission handling
+### 3. Styling & CSS Modules
+- `ShowcaseGrid` styles live in a CSS module: `src/components/landing/ShowcaseGrid.module.css`.
+- CSS Modules typings are declared in `src/types/css-modules.d.ts` so TypeScript accepts `*.module.css` imports.
+- Icon sizing/normalization: Icons passed as react-icon elements are cloned and given inline styles (width/height 100%) so they visually match across sections; additional SVG rules live in the CSS module to ensure consistent rendering.
 
-### 3. Animations & Effects
-- Implemented 3D cube animation on homepage
-- Added hover effects on cards and buttons
-- Set up smooth transitions between pages
+### 4. Behavior & Accessibility
+- Modal: items without `url` open a Mantine `Modal` with a larger media area and a description. The modal is centered and keyboard-focusable (Mantine handles focus trapping by default).
+- External links: items with `url` are anchor elements with `target="_blank" rel="noopener noreferrer"`.
 
-### 4. Performance & SEO Optimization
-- Added JSON-LD structured data
-- Configured meta tags for social sharing
-- Implemented Schema.org markup
-- Added semantic HTML for accessibility
+### 5. Performance & SEO
+- Anchor links for external resources improve crawlability.
+- Structured data and meta tags remain in place via `SEO` utilities.
 
-### 5. Backend & CMS Integration
-- Set up Strapi connection in gatsby-config.ts
-- Created content models for blog, projects, and experiments
-- Configured environment variables for API keys
+### 6. Developer Workflow
+- TypeScript checks are used during CI and locally via `npm run typecheck`.
 
-### 6. Deployment & Hosting
-- Set up GitHub Actions workflow for automatic deployment
-- Configured CNAME for custom domain
-- Added CI/CD pipeline with typechecking
+## Next Steps / Suggestions
 
-## Next Steps
+1. Replace placeholder icons with company logos (`image`) where available for stronger branding.
+2. Provide a central data source (JSON or GraphQL/Strapi) for `ShowcaseGrid` items to avoid in-file lists.
+3. Add keyboard navigation to `ShowcaseGrid` tiles (arrow navigation) if desired.
+4. Improve responsive breakpoints for the grid (more granular column counts by viewport).
 
-1. **Strapi Setup**: A separate repository should be created for the Strapi CMS
-2. **n8n Automation**: Configure n8n workflows for content automation
-3. **Content Creation**: Populate with real content for projects, blog, and experiments
-4. **Performance Optimization**: Run Lighthouse audits and optimize Core Web Vitals
-5. **Testing**: Add comprehensive testing coverage
+If you want, I can extract the Commercial Working History into a standalone component and/or migrate the item data into a JSON file or CMS model.

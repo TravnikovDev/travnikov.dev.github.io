@@ -21,6 +21,21 @@ import {
   FaLaptopCode,
   FaBuilding,
 } from "react-icons/fa";
+import {
+  SiTypescript,
+  SiReact,
+  SiNodedotjs,
+  SiRedux,
+  SiNextdotjs,
+  SiGraphql,
+  SiDocker,
+  SiCypress,
+  SiMui,
+  SiJavascript,
+  SiCss3,
+  SiHtml5,
+} from "react-icons/si";
+import { BiLogoEtsy } from "react-icons/bi";
 import { Box } from "@mantine/core";
 import ThreeDBackground from "../components/3d/3dBackground";
 import * as styles from "./index.module.css";
@@ -55,28 +70,21 @@ export default function IndexPage() {
 
         <section className={styles.sectionRight}>
           {/* Landing subsections */}
-          <LandingSection title="My projects">
+          <LandingSection title="Projects">
             <ShowcaseGrid
               items={[
                 {
                   id: "proj-1",
-                  title: "Side project A",
-                  icon: <FaRocket />,
-                  description: "A small project demonstrating X and Y.",
-                },
-                {
-                  id: "proj-2",
-                  title: "Side project B",
-                  icon: <FaBrain />,
-                  description:
-                    "Tooling and automation for developer workflows.",
+                  title: "NeuroFashion — shop on Etsy",
+                  icon: <BiLogoEtsy />,
+                  url: "https://neurofashion.etsy.com/",
                 },
               ]}
             />
           </LandingSection>
         </section>
 
-        <section className={styles.sectionRight}>
+        {/* <section className={styles.sectionRight}>
           <LandingSection title="My apps">
             <ShowcaseGrid
               items={[
@@ -89,10 +97,10 @@ export default function IndexPage() {
               ]}
             />
           </LandingSection>
-        </section>
+        </section> */}
 
         <section className={styles.sectionRight}>
-          <LandingSection title="My libraries">
+          <LandingSection title="Open Source">
             <ShowcaseGrid
               items={[
                 {
@@ -117,7 +125,7 @@ export default function IndexPage() {
         </section>
 
         <section className={styles.sectionRight}>
-          <LandingSection title="My extensions">
+          <LandingSection title="Chrome extensions">
             <ShowcaseGrid
               items={[
                 {
@@ -133,7 +141,7 @@ export default function IndexPage() {
         </section>
 
         <section className={styles.sectionRight}>
-          <LandingSection title="My Commercial Working History">
+          <LandingSection title="Professional Experience">
             <ShowcaseGrid
               items={[
                 {
@@ -197,7 +205,7 @@ export default function IndexPage() {
           </LandingSection>
         </section>
 
-        <section className={styles.sectionRight}>
+        {/*         <section className={styles.sectionRight}>
           <LandingSection title="YouTube widget">
             <ShowcaseGrid
               items={[
@@ -210,21 +218,28 @@ export default function IndexPage() {
               ]}
             />
           </LandingSection>
-        </section>
+        </section> */}
 
         <section className={styles.sectionRight}>
-          <LandingSection title="My skills">
+          <LandingSection title="Skills">
             <ShowcaseGrid
               items={[
-                { id: "skill-1", title: "TypeScript", icon: <FaMicrochip /> },
-                { id: "skill-2", title: "React", icon: <FaRocket /> },
-                { id: "skill-3", title: "Node.js", icon: <FaRobot /> },
+                { id: "skill-1", title: "TypeScript", icon: <SiTypescript /> },
+                { id: "skill-2", title: "React", icon: <SiReact /> },
+                { id: "skill-3", title: "Node.js", icon: <SiNodedotjs /> },
+                { id: "skill-4", title: "Redux", icon: <SiRedux /> },
+                { id: "skill-5", title: "Next.js", icon: <SiNextdotjs /> },
+                { id: "skill-6", title: "GraphQL", icon: <SiGraphql /> },
+                { id: "skill-9", title: "Material UI", icon: <SiMui /> },
+                { id: "skill-10", title: "JavaScript", icon: <SiJavascript /> },
+                { id: "skill-11", title: "CSS", icon: <SiCss3 /> },
+                { id: "skill-12", title: "HTML", icon: <SiHtml5 /> },
               ]}
             />
           </LandingSection>
         </section>
 
-        <section className={styles.sectionRight}>
+        {/*         <section className={styles.sectionRight}>
           <LandingSection title="What I can help you with">
             <ShowcaseGrid
               items={[
@@ -243,7 +258,7 @@ export default function IndexPage() {
               ]}
             />
           </LandingSection>
-        </section>
+        </section> */}
 
         <div
           className={styles.scrollProgressIndicator}

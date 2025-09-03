@@ -115,7 +115,11 @@ export default function ShowcaseGrid({ items }: ShowcaseGridProps) {
         }
 
         return (
-          <div key={item.id} onClick={() => open(item)}>
+          <div
+            key={item.id}
+            className={styles.cardWrapper}
+            onClick={() => open(item)}
+          >
             {content}
           </div>
         );
