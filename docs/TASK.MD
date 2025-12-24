@@ -1,18 +1,24 @@
 # TASK: Personal Website Development (Travnikov.dev)
 
+## Status (Current Codebase)
+- Implemented: Gatsby landing page with `HeroSection`, `LandingSection`, `ShowcaseGrid`, and 3D background.
+- Implemented: Static data for projects, experience, and skills on the home page.
+- Not implemented: Blog, Experiments, Contact pages, Strapi CMS, n8n automations.
+
+
 ## Overview
 Rework current repo and Develop a personal website that showcases **Roman Travnikov** as a **senior frontend developer** with **10+ years of experience**. The website should serve as a **personal brand**, highlight **projects and achievements**, and include **playful, interactive 3D animations** to create a **"wow effect"**. It should be optimized for **SEO, performance, and accessibility**, ensuring Roman ranks high when people search for "Travnikov" on Google.
 
 ## Core Requirements
 
 ### 1. **Technology Stack**
-- **Static Site Generator**: Use **Gatsby** (great React support for Mantine UI)
-- **UI Framework**: [Mantine UI](https://mantine.dev/)
-- **3D & Animations**: Use **Three.js** (via React Fiber) for interactive effects
-- **Headless CMS**: Use **Strapi** (best for 8n8 automation)
-- **Deployment**: GitHub Pages (CI/CD via GitHub Actions)
-- **SEO Optimization**: Schema.org microformats, JSON-LD structured data
-- **Performance Optimization**: Core Web Vitals (fast load times, minimal JS)
+- **Static Site Generator**: Use **Gatsby** (current)
+- **UI Framework**: [Mantine UI](https://mantine.dev/) (current)
+- **3D & Animations**: Use **Three.js** (via React Fiber) (current)
+- **Headless CMS**: Use **Strapi** (planned)
+- **Deployment**: GitHub Pages (CI/CD via GitHub Actions) (planned)
+- **SEO Optimization**: Schema.org microformats, JSON-LD structured data (planned)
+- **Performance Optimization**: Core Web Vitals (planned)
 
 ---
 
@@ -61,7 +67,7 @@ Rework current repo and Develop a personal website that showcases **Roman Travni
 #### **2.6 Contact Page**
 - **Objective**: Make it easy for potential employers or clients to reach out.
 - **Features**:
-  - **Contact Form**: Integrated with Formspree or Strapi Webhooks
+  - **Contact Form**: Integrated with Strapi Webhooks
   - **Social Media Links**: GitHub, LinkedIn, Instagram
   - **Interactive Map (Optional)**: Fun visualization of "Travnikov's Journey"
   
@@ -75,19 +81,19 @@ Rework current repo and Develop a personal website that showcases **Roman Travni
 ---
 
 ### 4. **Performance & SEO Optimization**
-- **Lazy Loading**: Optimize images & scripts
-- **Minified CSS & JS**: Reduce load time
-- **Pre-rendered HTML**: Improve SEO (via Astro)
-- **JSON-LD Markup**: Enhance search ranking
-- **Core Web Vitals Focus**: Fast load, low CLS, quick FCP
-- **Alt Text & ARIA Labels**: Improve accessibility
+- **Lazy Loading**: Optimize images & scripts (planned)
+- **Minified CSS & JS**: Reduce load time (Gatsby build handles this)
+- **Pre-rendered HTML**: Gatsby pre-rendering (current)
+- **JSON-LD Markup**: Enhance search ranking (planned)
+- **Core Web Vitals Focus**: Fast load, low CLS, quick FCP (planned)
+- **Alt Text & ARIA Labels**: Improve accessibility (planned)
 
 ---
 
-### 5. **Backend & CMS Integration**
+### 5. **Backend & CMS Integration** (Planned)
 - **Strapi CMS**:
   - **Content Types**: Blog, Projects, Experiments, About, Contact
-  - **API Endpoints**: REST + GraphQL for Astro integration
+  - **API Endpoints**: REST + GraphQL for Gatsby integration
   - **Webhook for GitHub Actions**: Auto-deploy on content updates
 - **n8n Automation**:
   - Auto-trigger GitHub Actions when publishing new content

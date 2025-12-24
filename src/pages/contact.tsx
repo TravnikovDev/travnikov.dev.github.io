@@ -15,7 +15,7 @@ import {
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
 import SocialLinks from "../components/shared/SocialLinks";
-import * as styles from './contact.module.css';
+import * as styles from "./contact.module.css";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -80,7 +80,7 @@ export default function ContactPage() {
     e.preventDefault();
 
     if (validateForm()) {
-      // In a real implementation, this would send data to Formspree or Strapi
+      // In a real implementation, this would send data to Strapi
       console.log(formValues);
       setSubmitted(true);
     }
@@ -102,12 +102,10 @@ export default function ContactPage() {
                 <Stack className={styles.formStack}>
                   {submitted ? (
                     <Stack align="center" p="md">
-                      <Title order={2} >
-                        Message Sent!
-                      </Title>
+                      <Title order={2}>Message Sent!</Title>
                       <Text size="lg">
-                        Thank you for your message. I'll get back to you as soon as
-                        possible.
+                        Thank you for your message. I'll get back to you as soon
+                        as possible.
                       </Text>
                       <Button onClick={() => setSubmitted(false)}>
                         Send Another Message
