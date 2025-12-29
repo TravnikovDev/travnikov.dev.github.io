@@ -12,6 +12,7 @@
   padding: 1rem 0;
   max-width: 83.333%; /* 10/12 columns */
   margin: 0 auto; /* Center the container */
+  gap: 1.5rem;
 }
 
 @media (max-width: 48em) { /* sm breakpoint */
@@ -20,6 +21,24 @@
     gap: 0.5rem;
     padding: 0.75rem 0;
   }
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.footerLink {
+  text-decoration: none;
+  color: var(--text-color-secondary);
+  font-size: 0.85rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.footerLink:hover {
+  color: var(--mantine-color-secondary-4);
 }
 
 .footerText {

@@ -12,6 +12,32 @@ const Footer: React.FC = () => {
         <Container size="xl">
           <Box className={styles.footerContent}>
             <SocialLinks />
+            <Box className={styles.footerLinks}>
+              <Anchor component={Link} to="/" className={styles.footerLink}>
+                Home
+              </Anchor>
+              <Anchor
+                component={Link}
+                to="/projects"
+                className={styles.footerLink}
+              >
+                Case Studies
+              </Anchor>
+              <Anchor
+                component={Link}
+                to="/contact"
+                className={styles.footerLink}
+              >
+                Contact
+              </Anchor>
+              <Anchor
+                component={Link}
+                to="/experiments"
+                className={styles.footerLink}
+              >
+                Experiments
+              </Anchor>
+            </Box>
             <Text className={styles.footerText}>
               © {new Date().getFullYear()} Roman Travnikov. All rights reserved.
             </Text>
@@ -32,29 +58,40 @@ const Footer: React.FC = () => {
           <Text className={styles.navText}>Home</Text>
         </Anchor>
 
-        {/* Projects */}
+        {/* AI Automation */}
         <Anchor
           component={Link}
-          to="/projects"
+          to="/ai-automation-engineer"
           className={styles.navItem}
           onClick={(e) => e.preventDefault()}
         >
-          <Box className={styles.navIcon}>📂</Box>
-          <Text className={styles.navText}>Projects</Text>
+          <Box className={styles.navIcon}>🤖</Box>
+          <Text className={styles.navText}>Automation</Text>
         </Anchor>
 
-        {/* Contact - Highlighted */}
+        {/* Web Performance - Highlighted */}
         <Anchor
           component={Link}
-          to="/contact"
+          to="/react-performance-consulting"
           className={styles.navItemHighlighted}
           onClick={(e) => e.preventDefault()}
         >
-          <Box className={styles.navIconHighlighted}>📞</Box>
-          <Text className={styles.navTextHighlighted}>Contact</Text>
+          <Box className={styles.navIconHighlighted}>⚡</Box>
+          <Text className={styles.navTextHighlighted}>Performance</Text>
         </Anchor>
 
-        {/* Blog */}
+        {/* Fractional CTO */}
+        <Anchor
+          component={Link}
+          to="/fractional-cto"
+          className={styles.navItem}
+          onClick={(e) => e.preventDefault()}
+        >
+          <Box className={styles.navIcon}>🧭</Box>
+          <Text className={styles.navText}>CTO</Text>
+        </Anchor>
+
+        {/* Insights */}
         <Anchor
           component={Link}
           to="/blog"
@@ -62,18 +99,7 @@ const Footer: React.FC = () => {
           onClick={(e) => e.preventDefault()}
         >
           <Box className={styles.navIcon}>📝</Box>
-          <Text className={styles.navText}>Blog</Text>
-        </Anchor>
-
-        {/* Experiments */}
-        <Anchor
-          component={Link}
-          to="/experiments"
-          className={styles.navItem}
-          onClick={(e) => e.preventDefault()}
-        >
-          <Box className={styles.navIcon}>🧪</Box>
-          <Text className={styles.navText}>Experiments</Text>
+          <Text className={styles.navText}>Insights</Text>
         </Anchor>
       </Box>
     </>

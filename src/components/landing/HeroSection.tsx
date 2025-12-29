@@ -129,42 +129,23 @@ const HeroSection = () => {
                         mb={{ base: "xl", sm: "3.5rem" }}
                         className={`hover-card ${styles.heroDescription}`}
                       >
-                        I craft{" "}
+                        I engineer{" "}
                         <Box
                           component="span"
                           fw={900}
                           className={`highlight-blue ${styles.highlightBlue}`}
                         >
-                          innovative
+                          autonomous AI systems
                         </Box>{" "}
-                        and
+                        and{" "}
                         <Box
                           component="span"
                           fw={900}
                           className={`highlight-royal ${styles.highlightRoyal}`}
                         >
-                          {" "}
-                          high-performance
+                          high-performance web architecture
                         </Box>{" "}
-                        user interfaces with 10+ years of experience. My
-                        expertise spans across{" "}
-                        <Box
-                          component="span"
-                          fw={700}
-                          className={styles.highlightReact}
-                        >
-                          React
-                        </Box>
-                        ,{" "}
-                        <Box
-                          component="span"
-                          fw={700}
-                          className={styles.highlightTypeScript}
-                        >
-                          TypeScript
-                        </Box>
-                        , and modern frontend technologies to create exceptional
-                        user experiences.
+                        for startups.
                       </Text>
 
                       <Group gap="xl" mt={{ base: 30, sm: 40 }}>

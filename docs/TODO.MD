@@ -1,85 +1,125 @@
-# TODO (Based on Current Implementation)
+This is a clear roadmap. You are moving from a **"Generalist Developer Portfolio"** to a **"Specialized Expert Hub."**
 
-## Phase 1: Data Modeling & Backend Configuration (Strapi)
-- Objective: Establish the database schema to support the 3‑pillar silo structure (Services, Topics, Articles).
+The key shift here is psychological: A portfolio says *"Look at what I can do."* A personal brand website says *"Here is exactly how I can solve your problem."*
 
-### Service Collection Type
-- Create a new Collection Type named "Service".
-- Add text fields: Title, Slug (UID), Short Description, Hero Headline.
-- Add Rich Text (or Dynamic Zone) field for Body content.
-- Add text field for Price/Rate or Pricing Model.
-- Add string fields for Call to Action Label and Call to Action URL.
-- Enable Draft/Publish system.
+Since you want the "core" to remain static and are deferring the Strapi/n8n pipeline, we will build the **Service Silos** as static Gatsby pages first. This is smart—it preserves your speed and SEO scores while allowing you to iterate on copy.
 
-### Topic Collection Type (Clusters)
-- Create a new Collection Type named "Topic" (or "Cluster").
-- Add fields: Name, Slug.
-- Add text field for Description (used as intro on the topic archive page).
-- Add Media field for an icon or cover image representing the cluster.
+Here is your **Personal Brand Pivot Guideline**.
 
-### Article Collection Type (Update)
-- Modify the existing Article definition.
-- Add relation: Article belongs to one Topic.
-- Add relation: Article relates to one Service (optional, for explicit up‑selling).
-- Add SEO component/fields: Meta Title, Meta Description, Keywords.
-- Add JSON field `StructuredData` (to store pre‑generated schema from n8n).
+### **Phase 1: The Strategic Clean-Up**
 
-## Phase 2: Gatsby Routing & Core Refactor
-- Objective: Transition from a single‑page app to a multi‑route static site generator using `gatsby-node.js`.
+*Goal: Remove the noise that signals "freelancer looking for any work" and focus on "expert selling solutions."*
 
-### Clean Current Structure
-- Move the current `index.js` content into a new component or page named `About` or `LegacyHome` to preserve assets.
-- Reset `index.js` to serve as the new Router/Landing page foundation.
+1. **Deprecate "Generalist" Sections:**
+* Comment out/remove the **Skills** section (Don't list "HTML/CSS"—it implies you are junior. Your expertise should be implied by the content).
+* Comment out **Chrome Extensions** from the home page (Move these to a dedicated "Labs" or "Open Source" sub-page later. They distract from the high-ticket funnel).
 
-### Create Template Files
-- Create `src/templates/service-template.js` to render individual service landing pages.
-- Create `src/templates/topic-template.js` to render a list of articles belonging to a specific cluster.
-- Create `src/templates/article-template.js` to render the actual blog posts.
 
-### Configure `gatsby-node.js` for Page Generation
-- Write a GraphQL query to fetch all Services, Topics, and Articles from Strapi.
-- Iterate through Services: use `createPage` to generate pages at `/services/{service.slug}` with the service template.
-- Iterate through Topics: use `createPage` to generate pages at `/topics/{topic.slug}` with the topic template.
-- Iterate through Articles: use `createPage` to generate pages at `/blog/{article.slug}` with the article template; pass `topic.slug` as context to enable "related articles" queries.
+2. **Rename Navigation:**
+* *Current:* Projects | Blog | Experiments | Contact
+* *New header:* **AI Automation** | **Web Performance** | **Fractional CTO** | **Insights**
+* *Footer:* Home | Case Studies | Contact | Experiments
 
-## Phase 3: Frontend Implementation & Internal Linking
-- Objective: Build the visible structure that enforces the Semantic Core silos.
 
-### Global Navigation
-- Update the main `Layout` component.
-- Replace single‑page anchor links with routing links: Services, Blog, About.
-- Ensure the Services link opens a dropdown or leads to a Services index.
 
-### Service Template
-- Display the Hero Headline prominently.
-- Render the Body content.
-- Include a "Relevant Case Studies" section (hardcoded or dynamic).
-- Embed the Pricing and Call to Action fields clearly at the bottom.
+### **Phase 2: The New `index.tsx` (The Router)**
 
-### Topic Template (Cluster Page)
-- Display the Topic Name and Description.
-- Create a grid layout listing all Articles associated with this specific topic.
-- Ensure each card in the grid links to `/blog/{article.slug}`.
+*Goal: The Homepage is no longer a resume. It is a traffic controller sending users to your 3 Authority Pillars.*
 
-### Article Template
-- Render the main article content.
-- Sidebar/Footer: display a "Service Call to Action" based on topic (e.g., if the topic is "Automation", show a card linking to `/services/ai-automation`).
-- Add breadcrumbs: Home > Topics > {Topic Name} > {Article Title}.
+**Section 1: The Hero (Value Proposition)**
 
-## Phase 4: Technical SEO & Schema Integration
-- Objective: Optimize the site for crawlers and LLM entity extraction.
+* **Action:** Update the Hero text.
+* **Copy Logic:** "I engineer autonomous AI systems and high-performance web architecture for startups."
+* **Visual:** Keep the **Three.js/R3F background**. It is a powerful "Show, Don't Tell" signal of your frontend mastery.
 
-### SEO Component
-- Update or create a robust SEO/Head component using Gatsby Head API or React Helmet.
-- Accept props: title, description, image, pathname.
-- Generate the correct canonical URL for every page.
+**Section 2: The "3 Vectors" (The Core Pivot)**
 
-### Dynamic JSON‑LD (Schema.org)
-- In `service-template.js`, inject `Service` or `Product` schema; map price and description fields appropriately.
-- In `article-template.js`, inject `TechArticle` schema; use the `StructuredData` field from Strapi when available; otherwise, fallback to standard `Article` schema using title, date, and author (Roman Travnikov).
-- In `index.js`, inject `Person` and `ProfessionalService` schema that defines the Organization and lists `knowsAbout` (skills) and `hasOfferCatalog` (services).
+* *Design:* Three distinct interactive cards/columns.
+* *Action:* Create a new component `ServiceVector.tsx` to replace "Professional Experience."
+* *Structure:*
+1. **Vector A: AI Automation**
+* *Keyword Link:* `/ai-automation-engineer`
+* *Hook:* "I replace manual operations with intelligent n8n workflows and AI Agents."
 
-### Sitemap Configuration
-- Configure `gatsby-plugin-sitemap`.
-- Explicitly include the new `/services/`, `/topics/`, and `/blog/` paths.
-- Exclude any utility pages or `404` pages.
+
+2. **Vector B: Web Architecture**
+* *Keyword Link:* `/react-performance-consulting`
+* *Hook:* "I build scalable, sub-second React applications and Gatsby systems."
+
+
+3. **Vector C: Strategic Consulting**
+* *Keyword Link:* `/fractional-cto`
+* *Hook:* "Fractional CTO services to bridge the gap between business goals and tech stacks."
+
+
+
+
+
+**Section 3: Recent Insights (Static Stub)**
+
+* *Action:* Query the *latest 3* Markdown files from your `blog` folder.
+* *Logic:* Even without Strapi, you need this section *now*. Create 3 dummy markdown files representing your pillars to fill this space visually.
+* *Visual:* Minimal list view: Date + Title + "Read time".
+
+**Section 4: Selected Work (Proof)**
+
+* *Action:* Filter your existing `ProjectsPage` query to show only the **Top 2** projects that align with the new vectors (e.g., one AI project, one high-perf web project). Hide the rest behind a "View All Case Studies" link.
+
+---
+
+### **Phase 3: The Static "Service Silos"**
+
+*Goal: Create the landing targets for your home page vectors. These are static `.tsx` pages at root routes (no `/services/`).*
+
+Create these three files in `src/pages/`:
+
+**1. `ai-automation-engineer.tsx**`
+
+* **Focus:** Ops, Efficiency, n8n.
+* **Key Section:** "The Automation Stack" (Visual of n8n + OpenAI + Supabase).
+* **CTA:** "Book a Workflow Audit."
+
+**2. `react-performance-consulting.tsx**`
+
+* **Focus:** Speed, SEO, User Experience.
+* **Key Section:** "Performance Metrics" (Showcase Lighthouse scores or Core Web Vitals).
+* **CTA:** "Audit My Architecture."
+
+**3. `fractional-cto.tsx**`
+
+* **Focus:** Strategy, Mentorship, Hiring.
+* **Key Section:** "My Philosophy" (Brief text on how you lead teams).
+* **CTA:** "Discuss Your Vision."
+
+---
+
+### **Implementation Checklist (Your "To-Do")**
+
+* **Step 1 (Cleanup):**
+* [x] Open `index.tsx`.
+* [x] Comment out `<Skills />` and `<ChromeExtensions />`.
+* [x] Rename `<Projects />` section header to "Selected Case Studies."
+
+
+* **Step 2 (The Vectors):**
+* [x] Create `src/components/ServiceVector.tsx`.
+* [x] Implement a 3-column layout using Mantine `Grid` or `SimpleGrid`.
+* [x] Insert this component immediately after the Hero in `index.tsx`.
+* [x] Hardcode the 3 links to the new service pages.
+
+
+* **Step 3 (The Pages):**
+* [x] Create folder `src/pages/`.
+* [x] Create the 3 static files (`ai-automation-engineer.tsx`, etc.).
+* [x] Copy the layout from `sample-project.md` or `index.tsx` so they inherit the standard Nav/Footer.
+* [x] Add a simple generic Header + Text Block + Contact Form to each for now.
+
+
+* **Step 4 (Home Sections):**
+* [x] Add "Recent Insights" stub pulling latest 3 blog posts.
+* [x] Show top 2 case studies with a "View all case studies" link.
+
+
+### **Pivot Summary**
+
+You are stripping away the "resume" features (Skills lists, endless project grids) and replacing them with **Sales Funnels** (Vectors). Your Home Page is now a "Launchpad," not a parking lot.

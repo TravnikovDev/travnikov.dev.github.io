@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { graphql } from "gatsby";
+import { graphql, Link, PageProps } from "gatsby";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
 import { LandingSection } from "../components/landing/TimelineSection";
 import ShowcaseGrid from "../components/landing/ShowcaseGrid";
+import ServiceVector from "../components/ServiceVector";
 import {
   FaBoxes,
   FaRobot,
@@ -27,14 +28,42 @@ import {
   SiCss3,
   SiHtml5,
 } from "react-icons/si";
-import { BiLogoEtsy } from "react-icons/bi";
-import { Box } from "@mantine/core";
+import { Box, Text } from "@mantine/core";
 import ThreeDBackground from "../components/3d/3dBackground";
 import * as styles from "./index.module.css";
 
 // Parallax divider with animation
 
-export default function IndexPage() {
+interface IndexPageProps extends PageProps {
+  data: {
+    allBlogPosts: {
+      nodes: {
+        id: string;
+        timeToRead: number;
+        frontmatter: {
+          title: string;
+          date: string;
+          slug: string;
+        };
+      }[];
+    };
+    allProjects: {
+      nodes: {
+        id: string;
+        frontmatter: {
+          title: string;
+          slug: string;
+          description: string;
+          category: string;
+        };
+      }[];
+    };
+  };
+}
+
+export default function IndexPage({ data }: IndexPageProps) {
+  const insights = data?.allBlogPosts?.nodes ?? [];
+  const caseStudies = data?.allProjects?.nodes ?? [];
   const [scrollProgress, setScrollProgress] = useState(0);
 
   // Handle scroll events for progress indicator
@@ -61,18 +90,68 @@ export default function IndexPage() {
         </section>
 
         <section className={styles.sectionRight}>
+          <ServiceVector />
+        </section>
+
+        <section className={styles.sectionRight}>
+          <LandingSection
+            title="Recent Insights"
+            description="Fresh thinking across automation, performance, and technical leadership."
+          >
+            <Box className={styles.insightsList}>
+              {insights.map((insight) => (
+                <Link
+                  key={insight.id}
+                  to={`/blog/${insight.frontmatter.slug}`}
+                  className={styles.insightItem}
+                >
+                  <Box>
+                    <Text size="sm" c="dimmed">
+                      {insight.frontmatter.date}
+                    </Text>
+                    <Text className={styles.insightTitle}>
+                      {insight.frontmatter.title}
+                    </Text>
+                  </Box>
+                  <Text size="sm" c="dimmed">
+                    {insight.timeToRead} min read
+                  </Text>
+                </Link>
+              ))}
+            </Box>
+          </LandingSection>
+        </section>
+
+        <section className={styles.sectionRight}>
           {/* Landing subsections */}
-          <LandingSection title="Projects">
-            <ShowcaseGrid
-              items={[
-                {
-                  id: "proj-1",
-                  title: "NeuroFashion — shop on Etsy",
-                  icon: <BiLogoEtsy />,
-                  url: "https://neurofashion.etsy.com/",
-                },
-              ]}
-            />
+          <LandingSection title="Selected Case Studies">
+            <Box className={styles.caseStudiesList}>
+              {caseStudies.map((project) => (
+                <Link
+                  key={project.id}
+                  to={`/projects/${project.frontmatter.slug}`}
+                  className={styles.caseStudyItem}
+                >
+                  <Box>
+                    <Text size="sm" c="dimmed">
+                      {project.frontmatter.category}
+                    </Text>
+                    <Text className={styles.caseStudyTitle}>
+                      {project.frontmatter.title}
+                    </Text>
+                    <Text size="sm" c="dimmed">
+                      {project.frontmatter.description}
+                    </Text>
+                  </Box>
+                  <Text size="sm" className={styles.caseStudyCta}>
+                    View case study
+                  </Text>
+                </Link>
+              ))}
+            </Box>
+            <Link to="/projects" className={styles.caseStudiesLink}>
+              View all case studies
+            </Link>
           </LandingSection>
         </section>
 
@@ -116,7 +195,7 @@ export default function IndexPage() {
           </LandingSection>
         </section>
 
-        <section className={styles.sectionRight}>
+        {/* <section className={styles.sectionRight}>
           <LandingSection title="Chrome extensions">
             <ShowcaseGrid
               items={[
@@ -130,7 +209,7 @@ export default function IndexPage() {
               ]}
             />
           </LandingSection>
-        </section>
+        </section> */}
 
         <section className={styles.sectionRight}>
           <LandingSection title="Professional Experience">
@@ -212,7 +291,7 @@ export default function IndexPage() {
           </LandingSection>
         </section> */}
 
-        <section className={styles.sectionRight}>
+        {/* <section className={styles.sectionRight}>
           <LandingSection title="Skills">
             <ShowcaseGrid
               items={[
@@ -229,7 +308,7 @@ export default function IndexPage() {
               ]}
             />
           </LandingSection>
-        </section>
+        </section> */}
 
         {/*         <section className={styles.sectionRight}>
           <LandingSection title="What I can help you with">
@@ -272,6 +351,36 @@ export const query = graphql`
     site {
       siteMetadata {
         siteTitle
+      }
+    }
+    allBlogPosts: allMarkdownRemark(
+      filter: { frontmatter: { template: { eq: "blog" } } }
+      sort: { frontmatter: { date: DESC } }
+      limit: 3
+    ) {
+      nodes {
+        id
+        timeToRead
+        frontmatter {
+          title
+          date(formatString: "MMM D, YYYY")
+          slug
+        }
+      }
+    }
+    allProjects: allMarkdownRemark(
+      filter: { frontmatter: { template: { eq: "project" } } }
+      sort: { frontmatter: { title: ASC } }
+      limit: 2
+    ) {
+      nodes {
+        id
+        frontmatter {
+          title
+          slug
+          description
+          category
+        }
       }
     }
   }

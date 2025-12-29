@@ -39,11 +39,11 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
       <Container size="lg" py="xl">
         <Box mb="xl">
           <Title order={1} mb="md">
-            Projects
+            Case Studies
           </Title>
           <Text size="lg">
-            A showcase of my work as a senior frontend developer, including
-            indie projects, browser extensions, and professional work.
+            A curated selection of engagements focused on automation, web
+            performance, and product delivery.
           </Text>
         </Box>
 
@@ -110,8 +110,8 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
 export function Head() {
   return (
     <SEO
-      title="Projects"
-      description="Browse through Roman Travnikov's portfolio of frontend development projects including web applications, browser extensions, and more."
+      title="Case Studies"
+      description="Browse case studies focused on automation, performance engineering, and product delivery."
     />
   );
 }
