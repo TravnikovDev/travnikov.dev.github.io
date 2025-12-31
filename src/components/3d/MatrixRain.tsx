@@ -1,8 +1,9 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { auraColors } from '../../theme';
 
-interface VaporwaveGridProps {
+interface AuraGridProps {
   count?: number;
   speed?: number;
   opacity?: number;
@@ -11,14 +12,14 @@ interface VaporwaveGridProps {
   color?: string;
 }
 
-export default function VaporwaveGrid({
+export default function AuraGrid({
   count = 1000,
   speed = 1,
   opacity = 0.8,
   spread = 25,
   position = [0, 0, -15],
-  color = '#FF00FF' // Changed to hot pink as default
-}: VaporwaveGridProps) {
+  color = auraColors.warmSand
+}: AuraGridProps) {
   const instancedMeshRef = useRef<THREE.InstancedMesh>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   
@@ -78,12 +79,12 @@ export default function VaporwaveGrid({
     instancedMeshRef.current.instanceMatrix.needsUpdate = true;
   });
 
-  // Create a custom color gradient for vaporwave aesthetic
+  // Create a custom color gradient for aura aesthetic
   const gradientMaterial = useMemo(() => {
     return new THREE.ShaderMaterial({
       uniforms: {
         color1: { value: new THREE.Color(color) },
-        color2: { value: new THREE.Color('#00FFFF') }, // Cyan for gradient
+        color2: { value: new THREE.Color(auraColors.paleAqua) },
         time: { value: 0 }
       },
       vertexShader: `

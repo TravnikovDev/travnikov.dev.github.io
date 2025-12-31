@@ -33,10 +33,10 @@ const NavItem = ({ label, path, isActive }) => {
           width: isActive ? "100%" : hovered ? "90%" : "0%",
           opacity: isActive || hovered ? 1 : 0,
           background: isActive
-            ? "linear-gradient(90deg, #21E6C1, #FF61A6)" // Vaporwave colors (cyan to pink)
+            ? "var(--mantine-mint-warmSand-gradient)"
             : "currentColor",
           boxShadow: isActive
-            ? "0 0 15px rgba(33, 230, 193, 0.8), 0 0 30px rgba(255, 97, 166, 0.5)"
+            ? "0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.8), 0 0 30px rgba(var(--mantine-color-secondary-4-rgb), 0.5)"
             : "none",
         }}
       />

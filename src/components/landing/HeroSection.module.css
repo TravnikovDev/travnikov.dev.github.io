@@ -59,7 +59,7 @@
   color: rgba(
     var(--mantine-color-primary-4-rgb),
     0.05
-  ); /* Electric cyan with low opacity */
+  ); /* Electric mint with low opacity */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -96,10 +96,10 @@
 .megaTitle {
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 900;
-  color: white;
+  color: var(--text-color);
   text-align: center;
   margin-bottom: 2rem;
-  text-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.5);
+  text-shadow: 0 2px 10px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .megaTitleText,
@@ -112,12 +112,12 @@
 }
 
 .megaTitleText {
-  color: var(--mantine-color-primary-4); /* Electric cyan */
+  color: var(--mantine-color-primary-4); /* Electric mint */
   text-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.5);
 }
 
 .megaTitleTextLight {
-  color: var(--mantine-color-secondary-4); /* Sunset pink */
+  color: var(--mantine-color-secondary-4); /* Sunset warmSand */
   opacity: 0.8;
   text-shadow: 0 0 20px rgba(var(--mantine-color-secondary-4-rgb), 0.5);
 }
@@ -125,7 +125,7 @@
 .heroTitle {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 900;
-  color: white;
+  color: var(--text-color);
   text-align: left;
   margin-bottom: 2rem;
   letter-spacing: -0.02em;
@@ -143,21 +143,21 @@
 }
 
 .highlightBlue {
-  color: var(--mantine-color-primary-4); /* Electric cyan */
+  color: var(--mantine-color-primary-4); /* Electric mint */
   text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.3);
 }
 
 .highlightRoyal {
-  color: var(--mantine-color-secondary-4); /* Sunset pink */
+  color: var(--mantine-color-secondary-4); /* Sunset warmSand */
   text-shadow: 0 0 10px rgba(var(--mantine-color-secondary-4-rgb), 0.3);
 }
 
 .highlightReact {
-  color: var(--mantine-color-primary-4); /* Electric cyan */
+  color: var(--mantine-color-primary-4); /* Electric mint */
 }
 
 .highlightTypeScript {
-  color: var(--mantine-color-secondary-4); /* Sunset pink */
+  color: var(--mantine-color-secondary-4); /* Sunset warmSand */
 }
 
 .heroButton {
@@ -244,8 +244,9 @@
   font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 50px;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.3);
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-color);
   transition: all 0.3s ease;
 }
 
@@ -273,7 +274,7 @@
 
 .scrollText {
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-color-secondary);
   margin-bottom: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -333,25 +334,25 @@
 
 .scrollContent {
   padding: 2rem;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
+  background: var(--card-bg-strong);
   backdrop-filter: blur(10px);
   border-radius: 1rem;
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 15px 40px var(--card-shadow);
 }
 
 .scrollTitle {
   font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
-  color: white;
+  color: var(--text-color);
   text-align: center;
   margin-bottom: 2rem;
-  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.3);
+  text-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.2);
 }
 
 .scrollItem {
   padding: 2rem;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.3);
+  background: var(--card-bg);
   backdrop-filter: blur(5px);
   border-radius: 1rem;
   transition: all 0.3s ease;
@@ -396,7 +397,7 @@
     rgba(var(--mantine-color-primary-4-rgb), 0.1),
     rgba(var(--mantine-color-secondary-4-rgb), 0.1)
   );
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--surface-border);
   animation: morphShape 8s infinite ease-in-out;
   z-index: -1;
   opacity: 0.5;
@@ -427,7 +428,7 @@
     rgba(var(--mantine-color-primary-4-rgb), 0.1),
     rgba(var(--mantine-color-secondary-4-rgb), 0.1)
   );
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--surface-border);
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
   z-index: 1;
@@ -480,10 +481,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 1.5rem;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4);
-  border: 1px solid rgba(var(--mantine-color-primary-4-rgb), 0.2);
+  background: var(--card-bg-strong);
+  border: 1px solid var(--card-border);
   border-radius: 1rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px var(--card-shadow);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   z-index: 2;

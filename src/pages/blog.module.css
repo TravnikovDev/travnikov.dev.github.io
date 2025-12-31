@@ -8,6 +8,7 @@
 }
 
 .placeholderBox {
-  background-color: rgba(var(--mantine-color-vaporwave-6-rgb), 0.4);
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 0.5rem;
 }

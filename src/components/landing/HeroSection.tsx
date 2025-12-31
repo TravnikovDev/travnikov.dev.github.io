@@ -96,7 +96,7 @@ const HeroSection = () => {
                             letterSpacing: "-0.01em",
                             color: "white",
                             boxShadow: "var(--mantine-soft-shadow)",
-                            border: "1px solid rgba(255, 255, 255, 0.9)",
+                            border: "1px solid var(--card-border)",
                             transform: "translateZ(30px)",
                           }}
                         >
@@ -116,7 +116,8 @@ const HeroSection = () => {
                           backgroundClip: "text",
                           WebkitBackgroundClip: "text",
                           WebkitTextFillColor: "transparent",
-                          textShadow: "rgba(0, 0, 0, 0.3) 0px 1px 2px",
+                          textShadow:
+                            "0 2px 12px rgba(var(--mantine-color-aura-9-rgb), 0.22)",
                         }}
                       >
                         Roman

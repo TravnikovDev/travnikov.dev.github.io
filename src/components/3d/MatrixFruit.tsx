@@ -2,6 +2,7 @@ import { useRef, useMemo, useEffect } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import * as THREE from 'three';
+import { auraColors } from '../../theme';
 
 interface MatrixFruitProps {
   position?: [number, number, number];
@@ -17,7 +18,7 @@ export default function MatrixFruit({
   scale = 1,
   rotation = [0, 0, 0],
   fruitType = 'banana',
-  color = '#FF00FF', // Default changed to vaporwave pink
+  color = auraColors.warmSand,
   speed = 1
 }: MatrixFruitProps) {
   const groupRef = useRef<THREE.Group>(null);
@@ -30,7 +31,7 @@ export default function MatrixFruit({
   // Clone the model to avoid modifying the cached original
   const clonedModel = useMemo(() => obj.clone(), [obj]);
 
-  // Create the wireframe material with vaporwave glow
+  // Create the wireframe material with aura glow
   const wireframeMaterial = useMemo(() => {
     return new THREE.MeshBasicMaterial({
       color: new THREE.Color(color),

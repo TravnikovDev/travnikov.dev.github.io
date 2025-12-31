@@ -1,108 +1,83 @@
 import React from "react";
-import { Container, AppShellFooter, Box, Text, Anchor } from "@mantine/core";
-import { Link } from "gatsby";
-import SocialLinks from "./SocialLinks";
+import { Container, Box, Text, Anchor } from "@mantine/core";
 import * as styles from "./Footer.module.css";
 
 const Footer: React.FC = () => {
+  const localTime = new Date().toLocaleTimeString("en-US", {
+    timeZone: "Europe/Istanbul",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
-    <>
-      {/* Standard Footer */}
-      <AppShellFooter p="md" className={styles.footer} visibleFrom="sm">
-        <Container size="xl">
-          <Box className={styles.footerContent}>
-            <SocialLinks />
-            <Box className={styles.footerLinks}>
-              <Anchor component={Link} to="/" className={styles.footerLink}>
-                Home
+    <footer className={styles.footer}>
+      <Container size="xl" className={styles.footerInner}>
+        <Box className={styles.topRow}>
+          <Box className={styles.brandBlock}>
+            <Text className={styles.brand}>Roman Travnikov</Text>
+            <Text className={styles.meta}>© {new Date().getFullYear()}</Text>
+          </Box>
+
+          <Box className={styles.linkColumns}>
+            <Box className={styles.linkGroup}>
+              <Text className={styles.linkTitle}>Socials</Text>
+              <Anchor
+                href="https://linkedin.com/in/travnikov"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.link}
+              >
+                LinkedIn
               </Anchor>
               <Anchor
-                component={Link}
-                to="/projects"
-                className={styles.footerLink}
+                href="https://twitter.com/TravnikovDev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.link}
               >
-                Case Studies
+                Twitter / X
               </Anchor>
               <Anchor
-                component={Link}
-                to="/contact"
-                className={styles.footerLink}
+                href="https://github.com/TravnikovDev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.link}
               >
-                Contact
-              </Anchor>
-              <Anchor
-                component={Link}
-                to="/experiments"
-                className={styles.footerLink}
-              >
-                Experiments
+                GitHub
               </Anchor>
             </Box>
-            <Text className={styles.footerText}>
-              © {new Date().getFullYear()} Roman Travnikov. All rights reserved.
-            </Text>
+
+            <Box className={styles.linkGroup}>
+              <Text className={styles.linkTitle}>Legal</Text>
+              <Anchor href="/privacy" className={styles.link}>
+                Privacy
+              </Anchor>
+              <Anchor href="/terms" className={styles.link}>
+                Terms
+              </Anchor>
+            </Box>
           </Box>
-        </Container>
-      </AppShellFooter>
+        </Box>
 
-      {/* Mobile-only Fixed Bottom Navigation - hidden on sm and up screens */}
-      <Box className={styles.mobileNav} hiddenFrom="sm">
-        {/* Home */}
-        <Anchor
-          component={Link}
-          to="/"
-          className={styles.navItem}
-          onClick={(e) => e.preventDefault()}
-        >
-          <Box className={styles.navIcon}>🏠</Box>
-          <Text className={styles.navText}>Home</Text>
-        </Anchor>
+        <div className={styles.divider} />
 
-        {/* AI Automation */}
-        <Anchor
-          component={Link}
-          to="/ai-automation-engineer"
-          className={styles.navItem}
-          onClick={(e) => e.preventDefault()}
-        >
-          <Box className={styles.navIcon}>🤖</Box>
-          <Text className={styles.navText}>Automation</Text>
-        </Anchor>
+        <Box className={styles.heroBlock}>
+          <Text className={styles.heroOutline}>Build the</Text>
+          <Text className={styles.heroTitle}>Future</Text>
+          <Anchor
+            href="mailto:roman@travnikov.dev"
+            className={styles.email}
+          >
+            roman@travnikov.dev
+          </Anchor>
+        </Box>
 
-        {/* Web Performance - Highlighted */}
-        <Anchor
-          component={Link}
-          to="/react-performance-consulting"
-          className={styles.navItemHighlighted}
-          onClick={(e) => e.preventDefault()}
-        >
-          <Box className={styles.navIconHighlighted}>⚡</Box>
-          <Text className={styles.navTextHighlighted}>Performance</Text>
-        </Anchor>
-
-        {/* Fractional CTO */}
-        <Anchor
-          component={Link}
-          to="/fractional-cto"
-          className={styles.navItem}
-          onClick={(e) => e.preventDefault()}
-        >
-          <Box className={styles.navIcon}>🧭</Box>
-          <Text className={styles.navText}>CTO</Text>
-        </Anchor>
-
-        {/* Insights */}
-        <Anchor
-          component={Link}
-          to="/blog"
-          className={styles.navItem}
-          onClick={(e) => e.preventDefault()}
-        >
-          <Box className={styles.navIcon}>📝</Box>
-          <Text className={styles.navText}>Insights</Text>
-        </Anchor>
-      </Box>
-    </>
+        <Box className={styles.bottomRow}>
+          <Text className={styles.meta}>Based in Istanbul, Turkey</Text>
+          <Text className={styles.meta}>Local time: {localTime}</Text>
+        </Box>
+      </Container>
+    </footer>
   );
 };
 

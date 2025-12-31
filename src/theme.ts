@@ -1,21 +1,22 @@
 import { MantineColorsTuple, MantineThemeOverride } from "@mantine/core";
 
-// Vaporwave color palette
-export const vaporwaveColors = {
-  navy: "#141B41", // Dark navy blue background
-  neonBlue: "#00F1FF",
-  purple: "#281154", // Deep purple
-  electricPurple: "#9D00FF",
-  cyan: "#21E6C1", // Electric cyan
-  neonCyan: "#00FFFF",
-  pink: "#FF61A6", // Sunset pink
-  synthPink: "#FF0080",
-  hotPink: "#FF00FF",
-  orange: "#FF7A00", // Orange neon
-  neonOrange: "#FFA500", // Neon orange for mango
-  neonGreen: "#39FF14",
-  matrixGreen: "#00FF41", // Legacy matrix green - use sparingly
-  neonYellow: "#FFFF00", // Neon yellow for lemon
+// Aura color palette
+export const auraColors = {
+  charcoal: "#1A1E21", // Charcoal frame tone
+  powderBlue: "#A5CDE0", // Powder blue glow
+  slate: "#4A5964", // Slate blue-gray
+  mutedTeal: "#6A9C97", // Muted teal
+  mint: "#8DD4C8", // Soft mint
+  paleAqua: "#C2EBE4", // Pale aqua highlight
+  warmSand: "#E0C4AE", // Warm sand
+  clay: "#D0AC8E", // Beige clay
+  cream: "#EDD9C2", // Cream
+  tan: "#C09578", // Tan
+  lightTan: "#DEBA98", // Light tan
+  lightMint: "#BCE0C6", // Light mint
+  seafoam: "#8CBFB2", // Seafoam
+  pearl: "#F4EFE6", // Soft pearl / elephant bone
+  ivory: "#EFE2CC", // Soft ivory
 };
 
 const hex2rgb = (hex: string) => {
@@ -74,21 +75,22 @@ export const theme: MantineThemeOverride = {
   // Base colors for the theme
   colors: {
     // Use the function for primary colors
-    primary: generateColorShades(vaporwaveColors.cyan),
-    // Update secondary colors based on electric purple
-    secondary: generateColorShades(vaporwaveColors.electricPurple),
-    // Define custom color scheme using vaporwaveColors
-    vaporwave: [
-      vaporwaveColors.neonYellow, // Brightest shade
-      vaporwaveColors.neonGreen,
-      vaporwaveColors.neonCyan,
-      vaporwaveColors.neonBlue,
-      vaporwaveColors.cyan,
-      vaporwaveColors.pink,
-      vaporwaveColors.hotPink,
-      vaporwaveColors.electricPurple,
-      vaporwaveColors.purple,
-      vaporwaveColors.navy, // Darkest shade
+    primary: generateColorShades(auraColors.mint),
+    // Update secondary colors based on muted teal
+    secondary: generateColorShades(auraColors.mutedTeal),
+    // Define custom color scheme using auraColors
+    aura: [
+      auraColors.pearl, // Brightest shade
+      auraColors.ivory,
+      auraColors.lightMint,
+      auraColors.paleAqua,
+      auraColors.powderBlue,
+      auraColors.mint,
+      auraColors.warmSand,
+      auraColors.cream,
+      auraColors.mutedTeal,
+      auraColors.slate,
+      auraColors.charcoal, // Darkest shade
     ],
   },
 
@@ -103,7 +105,7 @@ export const theme: MantineThemeOverride = {
           transition: "all 0.2s ease",
           "&:hover": {
             transform: "translateY(-2px)",
-            boxShadow: `0 0 15px ${vaporwaveColors.cyan}60`,
+            boxShadow: `0 0 15px ${auraColors.mint}60`,
           },
           fontWeight: 600,
         },

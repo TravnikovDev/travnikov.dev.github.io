@@ -31,10 +31,10 @@
 }
 
 .matrixGlow {
-  animation: vaporwaveGlowPulse 4s infinite;
+  animation: auraGlowPulse 4s infinite;
 }
 
-@keyframes vaporwaveGlowPulse {
+@keyframes auraGlowPulse {
   0% {
     filter: drop-shadow(0 0 5px rgba(var(--mantine-color-secondary-4-rgb), 0.5));
   }
@@ -42,7 +42,7 @@
     filter: drop-shadow(0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.6));
   }
   50% {
-    filter: drop-shadow(0 0 20px rgba(var(--mantine-color-vaporwave-5-rgb), 0.7));
+    filter: drop-shadow(0 0 20px rgba(var(--mantine-color-aura-5-rgb), 0.7));
   }
   75% {
     filter: drop-shadow(0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.6));

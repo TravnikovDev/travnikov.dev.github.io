@@ -1,14 +1,48 @@
 /* Global styles for improved typography and readability */
 
-/* Map to Mantine vaporwave color theme */
+/* Map to Mantine aura color theme */
 :root {
   /* Text colors */
-  --text-color: rgba(255, 255, 255, 0.9);
-  --text-color-secondary: rgba(255, 255, 255, 0.7);
+  --text-color: var(--mantine-color-aura-9);
+  --text-color-secondary: rgba(
+    var(--mantine-color-aura-9-rgb, 74, 89, 100),
+    0.7
+  );
 
   /* Link colors */
   --link-color: var(--mantine-color-primary-4);
   --link-hover-color: var(--mantine-color-secondary-4);
+
+  /* Shared surfaces */
+  --section-bg: rgba(
+    var(--mantine-color-aura-0-rgb, 244, 239, 230),
+    0.72
+  );
+  --section-bg-strong: rgba(
+    var(--mantine-color-aura-1-rgb, 239, 226, 204),
+    0.82
+  );
+  --surface-border: rgba(
+    var(--mantine-color-aura-9-rgb, 74, 89, 100),
+    0.18
+  );
+  --surface-shadow: rgba(
+    var(--mantine-color-aura-9-rgb, 74, 89, 100),
+    0.12
+  );
+  --text-shadow: rgba(
+    var(--mantine-color-aura-9-rgb, 74, 89, 100),
+    0.18
+  );
+  --card-bg: rgba(var(--mantine-color-aura-0-rgb, 244, 239, 230), 0.6);
+  --card-bg-strong: rgba(
+    var(--mantine-color-aura-1-rgb, 239, 226, 204),
+    0.72
+  );
+  --card-border: rgba(var(--mantine-color-aura-9-rgb, 74, 89, 100), 0.2);
+  --card-shadow: rgba(var(--mantine-color-aura-9-rgb, 74, 89, 100), 0.12);
+  --glass-blur: 10px;
+  --spacing: 120px;
 }
 
 /* Base font sizing */
@@ -21,19 +55,28 @@ body {
     Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
-  background-color: var(--mantine-color-vaporwave-8);
+  background-color: var(--mantine-color-aura-1);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--mantine-color-aura-9);
 }
 
 /* Links and buttons */
 a {
-  color: var(--link-color); /* Electric cyan */
+  color: var(--link-color); /* Electric mint */
   text-decoration: none;
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 a:hover {
-  color: var(--link-hover-color); /* Sunset pink */
-  text-shadow: 0 0 8px rgba(255, 97, 166, 0.4);
+  color: var(--link-hover-color); /* Sunset warmSand */
+  text-shadow: 0 0 8px rgba(var(--mantine-color-secondary-4-rgb), 0.4);
 }
 
 /* Readability helpers for smaller screens */

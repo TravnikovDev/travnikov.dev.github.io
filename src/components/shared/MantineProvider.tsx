@@ -5,7 +5,7 @@ import {
   CSSVariablesResolver,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { theme as customTheme, vaporwaveColors } from "../../theme";
+import { theme as customTheme, auraColors } from "../../theme";
 
 // Helper function to convert hex to RGB
 function hexToRgb(hex: string) {
@@ -24,13 +24,16 @@ const theme = createTheme({
   ...customTheme,
 });
 
-// Vaporwave color palette for consistent use
-const colors = vaporwaveColors;
+// Aura color palette for consistent use
+const colors = auraColors;
 
 // Convert main colors to RGB format
-const primaryRgb = hexToRgb(colors.neonCyan);
-const secondaryRgb = hexToRgb(colors.electricPurple);
-const vaporwave7Rgb = hexToRgb(colors.navy);
+const primaryRgb = hexToRgb(colors.paleAqua);
+const secondaryRgb = hexToRgb(colors.mutedTeal);
+const aura7Rgb = hexToRgb(colors.charcoal);
+const aura0Rgb = hexToRgb(colors.pearl);
+const aura9Rgb = hexToRgb(colors.slate);
+const aura1Rgb = hexToRgb(colors.ivory);
 
 // TypeScript fix: Define the cssVariablesResolver separately with correct typing
 const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
@@ -38,23 +41,32 @@ const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
     // RGB values for colors to use in rgba()
     "--mantine-color-primary-4-rgb": primaryRgb
       ? `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}`
-      : "33, 230, 193",
+      : "212, 238, 233",
     "--mantine-color-secondary-4-rgb": secondaryRgb
       ? `${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}`
-      : "255, 97, 166",
-    "--mantine-color-vaporwave-7-rgb": vaporwave7Rgb
-      ? `${vaporwave7Rgb.r}, ${vaporwave7Rgb.g}, ${vaporwave7Rgb.b}`
-      : "20, 27, 65",
+      : "126, 165, 161",
+    "--mantine-color-aura-7-rgb": aura7Rgb
+      ? `${aura7Rgb.r}, ${aura7Rgb.g}, ${aura7Rgb.b}`
+      : "31, 35, 38",
+    "--mantine-color-aura-0-rgb": aura0Rgb
+      ? `${aura0Rgb.r}, ${aura0Rgb.g}, ${aura0Rgb.b}`
+      : "244, 239, 230",
+    "--mantine-color-aura-1-rgb": aura1Rgb
+      ? `${aura1Rgb.r}, ${aura1Rgb.g}, ${aura1Rgb.b}`
+      : "239, 226, 204",
+    "--mantine-color-aura-9-rgb": aura9Rgb
+      ? `${aura9Rgb.r}, ${aura9Rgb.g}, ${aura9Rgb.b}`
+      : "74, 89, 100",
 
-    // Gradients using vaporwave colors
-    "--mantine-primary-gradient": `linear-gradient(45deg, ${colors.neonCyan}, ${colors.electricPurple})`,
-    "--mantine-secondary-gradient": `linear-gradient(45deg, ${colors.pink}, ${colors.orange})`,
-    "--mantine-animated-gradient": `linear-gradient(90deg, ${colors.navy}, ${colors.purple}, ${colors.navy})`,
-    "--mantine-cyan-pink-gradient": `linear-gradient(45deg, ${colors.cyan}, ${colors.pink})`,
+    // Gradients using aura colors
+    "--mantine-primary-gradient": `linear-gradient(45deg, ${colors.paleAqua}, ${colors.mutedTeal})`,
+    "--mantine-secondary-gradient": `linear-gradient(45deg, ${colors.warmSand}, ${colors.tan})`,
+    "--mantine-animated-gradient": `linear-gradient(90deg, ${colors.charcoal}, ${colors.slate}, ${colors.charcoal})`,
+    "--mantine-mint-warmSand-gradient": `linear-gradient(45deg, ${colors.mint}, ${colors.warmSand})`,
 
-    // Vaporwave-inspired glows and shadows
-    "--mantine-glow-shadow": `0 10px 30px rgba(33, 230, 193, 0.2)`,
-    "--mantine-pink-glow": `0 10px 30px rgba(255, 97, 166, 0.2)`,
+    // Aura-inspired glows and shadows
+    "--mantine-glow-shadow": `0 10px 30px rgba(var(--mantine-color-primary-4-rgb), 0.2)`,
+    "--mantine-warmSand-glow": `0 10px 30px rgba(var(--mantine-color-secondary-4-rgb), 0.2)`,
     "--mantine-soft-shadow": `0 20px 80px -20px rgba(17, 16, 36, 0.4)`,
     "--mantine-card-shadow": `0 10px 40px -10px rgba(17, 16, 36, 0.45)`,
 
@@ -63,11 +75,11 @@ const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
     "--mantine-card-spacing": "1.5rem",
 
     // Background
-    "--mantine-page-bg": `linear-gradient(to bottom, ${colors.navy}, ${colors.purple}, rgba(10, 10, 26, 1))`,
+    "--mantine-page-bg": colors.ivory,
   },
   light: {},
   dark: {
-    // Enhanced dark theme variables with vaporwave colors
+    // Enhanced dark theme variables with aura colors
     "--mantine-color-body": "#0A0A1A",
   },
 });
@@ -84,13 +96,13 @@ interface MantineProviderProps {
 
 export function MantineProvider({ children }: MantineProviderProps) {
   return (
-    <Provider theme={finalTheme} defaultColorScheme="dark">
+    <Provider theme={finalTheme} defaultColorScheme="light">
       {children}
     </Provider>
   );
 }
 
-// Enhanced font loading for vaporwave aesthetic
+// Enhanced font loading for aura aesthetic
 export const onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([
     <link
@@ -113,7 +125,13 @@ export const onRenderBody = ({ setHeadComponents }) => {
       key="google-fonts-inter"
     />,
 
-    // Global styles for vaporwave aesthetic and improved readability
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap"
+      rel="stylesheet"
+      key="google-fonts-playfair"
+    />,
+
+    // Global styles for aura aesthetic and improved readability
     <style
       key="global-styles"
       dangerouslySetInnerHTML={{
@@ -121,7 +139,7 @@ export const onRenderBody = ({ setHeadComponents }) => {
           body {
             background: var(--mantine-page-bg);
             overflow-x: hidden;
-            color: rgba(255, 255, 255, 0.9);
+            color: ${colors.charcoal};
           }
           
           /* Improved paragraph readability */
@@ -149,11 +167,11 @@ export const onRenderBody = ({ setHeadComponents }) => {
             }
           }
           
-          /* Subtle vaporwave grid background */
-          .vaporwave-grid {
+          /* Subtle aura grid background */
+          .aura-grid {
             background-image: 
-              linear-gradient(rgba(33, 230, 193, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(33, 230, 193, 0.03) 1px, transparent 1px);
+              linear-gradient(rgba(var(--mantine-color-primary-4-rgb), 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(var(--mantine-color-primary-4-rgb), 0.03) 1px, transparent 1px);
             background-size: 20px 20px;
             position: relative;
           }
@@ -162,7 +180,7 @@ export const onRenderBody = ({ setHeadComponents }) => {
           .card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             background: rgba(20, 27, 65, 0.4);
-            border: 1px solid rgba(255, 97, 166, 0.1);
+            border: 1px solid rgba(var(--mantine-color-secondary-4-rgb), 0.1);
             border-radius: 8px;
             padding: 1.5rem;
             backdrop-filter: blur(5px);
@@ -170,24 +188,25 @@ export const onRenderBody = ({ setHeadComponents }) => {
           
           .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(33, 230, 193, 0.15);
+            box-shadow: 0 10px 30px rgba(var(--mantine-color-primary-4-rgb), 0.15);
           }
           
           /* Typography enhancements */
           h1, h2, h3, h4, h5, h6 {
             margin-bottom: 1rem;
             font-weight: 600;
+            color: ${colors.charcoal};
           }
           
           /* Text effects - use these classes sparingly */
-          .text-neon-pink {
-            color: ${colors.pink};
-            text-shadow: 0 0 8px rgba(255, 97, 166, 0.7);
+          .text-neon-warmSand {
+            color: ${colors.warmSand};
+            text-shadow: 0 0 8px rgba(var(--mantine-color-secondary-4-rgb), 0.7);
           }
           
-          .text-neon-cyan {
-            color: ${colors.cyan};
-            text-shadow: 0 0 8px rgba(33, 230, 193, 0.7);
+          .text-neon-mint {
+            color: ${colors.mint};
+            text-shadow: 0 0 8px rgba(var(--mantine-color-primary-4-rgb), 0.7);
           }
           
           /* Remove webkit tap highlight on mobile */
@@ -195,30 +214,30 @@ export const onRenderBody = ({ setHeadComponents }) => {
             -webkit-tap-highlight-color: transparent;
           }
           
-          /* Improved scrollbar for vaporwave theme */
+          /* Improved scrollbar for aura theme */
           ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
           }
           
           ::-webkit-scrollbar-track {
-            background: ${colors.navy};
+            background: ${colors.charcoal};
           }
           
           ::-webkit-scrollbar-thumb {
-            background: ${colors.cyan};
+            background: ${colors.mint};
             border-radius: 4px;
           }
           
           ::-webkit-scrollbar-thumb:hover {
-            background: ${colors.pink};
+            background: ${colors.warmSand};
           }
           
           /* Text selection style */
           ::selection {
-            background: rgba(33, 230, 193, 0.3);
+            background: rgba(var(--mantine-color-primary-4-rgb), 0.3);
             color: #FFFFFF;
-            text-shadow: 0 0 8px rgba(33, 230, 193, 0.5);
+            text-shadow: 0 0 8px rgba(var(--mantine-color-primary-4-rgb), 0.5);
           }
           
           /* Buttons and interactive elements */
@@ -230,7 +249,7 @@ export const onRenderBody = ({ setHeadComponents }) => {
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 0.9rem;
-            background: ${colors.cyan};
+            background: ${colors.mint};
             color: #000;
             border: none;
             cursor: pointer;
@@ -238,15 +257,15 @@ export const onRenderBody = ({ setHeadComponents }) => {
           
           .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(33, 230, 193, 0.4);
+            box-shadow: 0 5px 15px rgba(var(--mantine-color-primary-4-rgb), 0.4);
           }
           
           .btn-secondary {
-            background: ${colors.pink};
+            background: ${colors.warmSand};
           }
           
           .btn-secondary:hover {
-            box-shadow: 0 5px 15px rgba(255, 97, 166, 0.4);
+            box-shadow: 0 5px 15px rgba(var(--mantine-color-secondary-4-rgb), 0.4);
           }
           
           /* Responsive font size adjustments */

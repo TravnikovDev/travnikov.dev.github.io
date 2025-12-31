@@ -3,10 +3,19 @@ import type { CSSProperties } from "react";
 import { Group, ActionIcon, MantineSize } from "@mantine/core";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import * as styles from "./SocialLinks.module.css";
+import { auraColors } from "../../theme";
 
 interface SocialLinksProps {
   size?: MantineSize;
 }
+
+const hexToRgb = (hex: string) => {
+  const normalized = hex.replace("#", "");
+  const r = parseInt(normalized.slice(0, 2), 16);
+  const g = parseInt(normalized.slice(2, 4), 16);
+  const b = parseInt(normalized.slice(4, 6), 16);
+  return `${r}, ${g}, ${b}`;
+};
 
 export default function SocialLinks({ size = "md" }: SocialLinksProps) {
   const socialLinks = [
@@ -14,19 +23,19 @@ export default function SocialLinks({ size = "md" }: SocialLinksProps) {
       name: "GitHub",
       url: "https://github.com/TravnikovDev",
       icon: <FaGithub />,
-      hoverColor: "#21E6C1", // Electric cyan - vaporwave
+      hoverColor: auraColors.mint,
     },
     {
       name: "LinkedIn",
       url: "https://linkedin.com/in/travnikov",
       icon: <FaLinkedin />,
-      hoverColor: "#FF61A6", // Sunset pink - vaporwave
+      hoverColor: auraColors.warmSand,
     },
     {
       name: "Twitter",
       url: "https://twitter.com/TravnikovDev",
       icon: <FaTwitter />,
-      hoverColor: "#FF7A00", // Orange neon - vaporwave
+      hoverColor: auraColors.tan,
     },
   ];
 
@@ -45,7 +54,9 @@ export default function SocialLinks({ size = "md" }: SocialLinksProps) {
           className={styles.actionIcon}
           aria-label={link.name}
           title={link.name}
-          style={{ "--hover-color": link.hoverColor } as CSSProperties}
+          style={
+            { "--hover-color-rgb": hexToRgb(link.hoverColor) } as CSSProperties
+          }
         >
           {link.icon}
         </ActionIcon>

@@ -7,7 +7,7 @@
 .logoText {
   font-size: 24px;
   font-weight: bold;
-  color: var(--mantine-color-primary-4); /* Electric cyan - vaporwave color */
+  color: var(--mantine-color-primary-4); /* Electric mint - aura color */
   text-shadow: 0 0 8px rgba(var(--mantine-color-primary-4-rgb), 0.6);
   transition: all 0.3s ease;
 }
@@ -26,6 +26,6 @@
 }
 
 .logo:hover .logoText {
-  color: var(--mantine-color-secondary-4); /* Sunset pink on hover */
+  color: var(--mantine-color-secondary-4); /* Sunset warmSand on hover */
   text-shadow: 0 0 10px rgba(var(--mantine-color-secondary-4-rgb), 0.7);
 }

@@ -1,13 +1,3 @@
-:root {
-  --dark-bg: rgba(
-    15,
-    15,
-    15,
-    0.5
-  ); /* Significantly reduced opacity to let 3D background shine through */
-  --spacing: 120px;
-}
-
 /* Hidden background elements that were covering the 3D background */
 .topGradientCircle,
 .middleRightBlob,
@@ -21,7 +11,7 @@
 .sectionsDivider {
   width: 100%;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--mantine-color-aura-9-rgb), 0.12);
   position: relative;
   overflow: hidden;
   grid-column: 2 / span 9;
@@ -73,12 +63,19 @@ section {
   max-width: 1200px;
   margin: 0 auto var(--spacing) auto;
   padding: 2rem;
-  background: var(--dark-bg);
-  backdrop-filter: blur(5px);
+  background: linear-gradient(
+    135deg,
+    var(--section-bg),
+    var(--section-bg-strong)
+  );
+  backdrop-filter: blur(var(--glass-blur));
   font-size: 1.25rem;
   line-height: 1.5;
   border-radius: 8px; /* Add rounded corners */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Add subtle shadow */
+  border: 1px solid var(--surface-border);
+  box-shadow:
+    0 4px 20px var(--surface-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4); /* glass highlight */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions for animations */
 }
 
@@ -101,8 +98,9 @@ section {
   border-radius: 10px;
   text-decoration: none;
   color: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(15, 15, 15, 0.4);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
   transition: transform 200ms ease, border-color 200ms ease,
     box-shadow 200ms ease;
 }
@@ -110,7 +108,7 @@ section {
 .insightItem:hover {
   transform: translateY(-3px);
   border-color: rgba(var(--mantine-color-secondary-4-rgb), 0.8);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 26px var(--card-shadow);
 }
 
 .insightTitle {
@@ -134,8 +132,9 @@ section {
   border-radius: 10px;
   text-decoration: none;
   color: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(15, 15, 15, 0.4);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
   transition: transform 200ms ease, border-color 200ms ease,
     box-shadow 200ms ease;
 }
@@ -143,7 +142,7 @@ section {
 .caseStudyItem:hover {
   transform: translateY(-3px);
   border-color: rgba(var(--mantine-color-primary-4-rgb), 0.8);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 26px var(--card-shadow);
 }
 
 .caseStudyTitle {
@@ -246,7 +245,7 @@ h6,
 p {
   position: relative;
   z-index: 2;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow for better readability over 3D background */
+  text-shadow: 0 2px 4px var(--text-shadow); /* Add text shadow for better readability over 3D background */
 }
 
 /* Section transition improvements */
@@ -267,7 +266,7 @@ p {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0),
-    rgba(15, 15, 15, 0.2)
+    rgba(var(--mantine-color-aura-9-rgb), 0.12)
   );
   z-index: 1;
 }

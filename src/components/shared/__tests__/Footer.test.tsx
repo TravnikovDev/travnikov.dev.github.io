@@ -24,8 +24,8 @@ describe('Footer', () => {
     const { container } = render(<Footer />);
     const footer = container.querySelector('.footer');
     expect(footer).toHaveStyle({
-      borderTop: '1px solid var(--mantine-color-dark-4)',
-      background: 'var(--mantine-color-dark-8)',
+      borderTop: '1px solid rgba(var(--mantine-color-secondary-4-rgb), 0.2)',
+      background: 'rgba(var(--mantine-color-aura-0-rgb), 0.7)',
     });
   });
 });

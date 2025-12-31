@@ -64,7 +64,7 @@
   position: absolute;
   left: -15px;
   opacity: 0;
-  color: var(--mantine-color-primary-4); /* Electric cyan */
+  color: var(--mantine-color-primary-4); /* Electric mint */
   transition: all 0.3s ease;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .navItem:hover .navButton {
-  color: var(--mantine-color-secondary-4); /* Sunset pink */
+  color: var(--mantine-color-secondary-4); /* Sunset warmSand */
 }
 
 .navUnderline {
@@ -149,7 +149,7 @@
     text-shadow: none;
   }
   90% {
-    text-shadow: -1px 0 var(--mantine-color-vaporwave-5); /* Orange neon */
+    text-shadow: -1px 0 var(--mantine-color-aura-5); /* Orange neon */
   }
   91% {
     text-shadow: none;
@@ -172,9 +172,9 @@
   justify-content: center;
   padding: 10px 20px;
   border-radius: 10px;
-  background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.4); /* Dark navy blue */
+  background: rgba(var(--mantine-color-aura-0-rgb), 0.6);
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.1);
+  box-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.08);
   transition: all 0.3s ease;
 }
 
@@ -188,7 +188,7 @@
   .navBox {
     padding: 6px 12px;
     border-radius: 8px;
-    background: rgba(var(--mantine-color-vaporwave-7-rgb), 0.3); /* More transparent on smaller screens */
+    background: rgba(var(--mantine-color-aura-0-rgb), 0.5);
   }
 }
 

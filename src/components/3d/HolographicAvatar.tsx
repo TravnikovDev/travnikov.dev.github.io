@@ -2,7 +2,7 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
-import { vaporwaveColors } from '../../theme';
+import { auraColors } from '../../theme';
 
 interface HolographicAvatarProps {
   position?: [number, number, number];
@@ -15,7 +15,7 @@ export default function HolographicAvatar({
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   scale = 1,
-  color = vaporwaveColors.cyan
+  color = auraColors.mint
 }: HolographicAvatarProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const wireframeRef = useRef<THREE.Mesh>(null);
@@ -97,7 +97,7 @@ export default function HolographicAvatar({
       {/* Adjusted lighting */}
       <pointLight color={color} intensity={1.5} distance={4} />
       <pointLight 
-        color={vaporwaveColors.pink} 
+        color={auraColors.warmSand} 
         intensity={0.8} 
         distance={3}
         position={[1, 0, 1]} 
