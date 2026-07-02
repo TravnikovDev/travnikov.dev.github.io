@@ -168,41 +168,44 @@ function Scene() {
   return (
     <>
       <FluidBackground />
+      {/* tiny warm sparks hugging the ribbon */}
       <BokehParticles
-        count={Math.round(55 * density)}
-        spread={diagonal * 1.4}
-        size={0.28}
-        opacity={0.55}
-        shimmer={0.2}
-        drift={0.14}
-        rise={0.08}
-        frontDepth={-0.6}
-        color={auraColors.warmSand}
-        bandSigma={viewport.height * 0.32}
-      />
-      <BokehParticles
-        count={Math.round(40 * density)}
+        count={Math.round(34 * density)}
         spread={diagonal * 1.3}
-        size={0.55}
-        opacity={0.7}
-        shimmer={0.26}
+        size={0.14}
+        opacity={0.6}
+        shimmer={0.15}
         drift={0.12}
-        rise={0.07}
-        frontDepth={-0.8}
-        color={auraColors.cream}
-        bandSigma={viewport.height * 0.36}
-      />
-      <BokehParticles
-        count={Math.round(14 * density)}
-        spread={diagonal * 1.2}
-        size={1.05}
-        opacity={0.4}
-        shimmer={0.28}
-        drift={0.1}
         rise={0.06}
-        frontDepth={-1.1}
-        color={auraColors.powderBlue}
-        bandSigma={viewport.height * 0.42}
+        frontDepth={-0.6}
+        color={auraColors.cream}
+        bandSigma={viewport.height * 0.22}
+      />
+      {/* mid glow dots */}
+      <BokehParticles
+        count={Math.round(18 * density)}
+        spread={diagonal * 1.2}
+        size={0.45}
+        opacity={0.55}
+        shimmer={0.18}
+        drift={0.1}
+        rise={0.05}
+        frontDepth={-0.8}
+        color={auraColors.warmSand}
+        bandSigma={viewport.height * 0.26}
+      />
+      {/* a few large soft discs, far layer */}
+      <BokehParticles
+        count={Math.round(7 * density)}
+        spread={diagonal * 1.1}
+        size={1.15}
+        opacity={0.3}
+        shimmer={0.14}
+        drift={0.08}
+        rise={0.04}
+        frontDepth={-1.2}
+        color={auraColors.cream}
+        bandSigma={viewport.height * 0.3}
       />
     </>
   );

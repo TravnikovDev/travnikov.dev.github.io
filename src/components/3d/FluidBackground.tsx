@@ -31,7 +31,6 @@ const fragmentShader = /* glsl */ `
   uniform vec3 uCanvas;
   uniform vec3 uAqua;
   uniform vec3 uMint;
-  uniform vec3 uPowder;
   uniform vec3 uSand;
   uniform vec3 uSlate;
 
@@ -57,7 +56,7 @@ const fragmentShader = /* glsl */ `
     float v = 0.0;
     float a = 0.5;
     mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 4; i++) {
       v += a * noise(p);
       p = m * p;
       a *= 0.5;
@@ -72,32 +71,45 @@ const fragmentShader = /* glsl */ `
     mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
     vec2 rp = rot * p;
 
-    float t = uTime * 0.035;
-    vec2 drift = vec2(t, -t * 0.3) + uPointer * 0.12;
+    float t = uTime * 0.03;
+    // anisotropic domain: long silky strands along the band, detail across it
+    vec2 sp = vec2(rp.x * 0.32, rp.y * 1.1);
+    vec2 drift = vec2(t, -t * 0.22) + uPointer * 0.1;
 
+    // gentle warp so the folds meander instead of turbulence
     vec2 q = vec2(
-      fbm(rp * 0.85 + drift),
-      fbm(rp * 0.85 + vec2(5.2, 1.3) - drift * 0.6)
+      fbm(sp + drift),
+      fbm(sp + vec2(3.1, 7.7) - drift * 0.5)
     );
-    vec2 r = vec2(
-      fbm(rp + 2.4 * q + vec2(1.7, 9.2) + drift * 0.4),
-      fbm(rp + 2.4 * q + vec2(8.3, 2.8) - drift * 0.3)
-    );
-    float f = fbm(rp * 1.15 + 2.0 * r);
+    vec2 warped = sp + 1.1 * q;
+
+    // ribbon folds: stripes across the band, bent by the warp field
+    float phase = rp.y * 5.5 + fbm(warped) * 4.2 - q.x * 1.8;
+    float fold = sin(phase);
+    float foldB = sin(phase * 0.62 + 2.3);
+    float foldC = sin(phase * 0.85 + 4.4);
+    float f = fbm(warped + vec2(0.0, 0.3) * fold);
 
     vec3 col = uCanvas;
-    col = mix(col, uAqua, smoothstep(0.36, 0.78, f) * 0.6);
-    col = mix(col, uMint, smoothstep(0.48, 0.9, q.y) * 0.45);
-    col = mix(col, uPowder, smoothstep(0.55, 0.98, r.x) * 0.3);
-    col = mix(col, uSand, smoothstep(0.46, 0.9, r.y) * 0.55);
-    col = mix(col, uSlate, smoothstep(0.66, 1.02, f * r.x * 1.4) * 0.38);
-
-    // silky sheen along ribbon crests
-    float sheen = smoothstep(0.45, 0.5, f) * smoothstep(0.55, 0.5, f);
-    col += sheen * 0.07;
+    // broad cream underlay
+    col = mix(col, uSand, smoothstep(0.25, 0.85, foldB) * 0.42);
+    // mint ribbon — narrower window gives a defined strand
+    col = mix(col, uMint, smoothstep(0.35, 0.85, fold) * smoothstep(0.2, 0.6, f) * 0.75);
+    // pale aqua ribbon on an offset phase
+    col = mix(col, uAqua, smoothstep(0.45, 0.9, foldC) * 0.6);
+    // warm sand strand
+    col = mix(col, uSand, smoothstep(0.5, 0.95, sin(phase * 0.45 + 1.1)) * 0.4);
+    // bright near-white strands between the colored ribbons
+    col = mix(col, uCanvas * 1.03, smoothstep(0.45, 0.95, -fold) * 0.8);
+    // dark folds: one or two large smooth blobs, never wisps
+    float darkMask = smoothstep(0.45, 0.72, fbm(sp * 0.45 + vec2(9.3, 2.4)));
+    col = mix(col, uSlate, darkMask * smoothstep(0.3, 0.85, fold) * 0.6);
+    // broad soft crest lightening
+    col += smoothstep(0.5, 1.0, fold) * 0.05;
 
     // confine ribbons to the diagonal band; corners stay near-white
-    float band = 1.0 - smoothstep(0.2, 1.05, abs(rp.y + 0.1));
+    float band = 1.0 - smoothstep(0.15, 1.0, abs(rp.y + 0.1));
+    band *= band;
     col = mix(uCanvas, col, band);
 
     // gentle luminosity toward the top
@@ -126,7 +138,6 @@ export default function FluidBackground() {
           uCanvas: { value: hexToVec3(auraColors.canvas) },
           uAqua: { value: hexToVec3(auraColors.paleAqua) },
           uMint: { value: hexToVec3(auraColors.mint) },
-          uPowder: { value: hexToVec3(auraColors.powderBlue) },
           uSand: { value: hexToVec3(auraColors.warmSand) },
           uSlate: { value: hexToVec3(auraColors.slate) },
         },
