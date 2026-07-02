@@ -1,3 +1,7 @@
+> **Note (Jul 2026):** the pivot below is shipped and its rationale is preserved in
+> [BRAND_PIVOT.md](./BRAND_PIVOT.md). Current work is the visual redesign — see
+> [DESIGN_VISION.md](./DESIGN_VISION.md) (what) and [HERO_REDESIGN_PLAN.md](./HERO_REDESIGN_PLAN.md) (how).
+
 This is a clear roadmap. You are moving from a **"Generalist Developer Portfolio"** to a **"Specialized Expert Hub."**
 
 The key shift here is psychological: A portfolio says *"Look at what I can do."* A personal brand website says *"Here is exactly how I can solve your problem."*
