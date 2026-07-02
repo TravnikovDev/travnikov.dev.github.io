@@ -11,7 +11,7 @@ interface BaseLayoutProps {
 export default function BaseLayout({ children }: BaseLayoutProps) {
   return (
     <AppShell padding={0} className={styles.container}>
-      {/*  <Header /> */}
+      <Header />
 
       <AppShell.Main className={styles.main}>{children}</AppShell.Main>
 

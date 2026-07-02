@@ -11,6 +11,7 @@ export const dividerAnimation: string;
 export const scrollProgressIndicator: string;
 export const mainContent: string;
 export const sectionRight: string;
+export const heroSection: string;
 export const insightsList: string;
 export const insightItem: string;
 export const insightTitle: string;

@@ -1,134 +1,24 @@
-.header {
-  position: relative;
-  z-index: 10;
-}
-
 .appShellHeader {
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
-  background: rgba(var(--mantine-color-aura-0-rgb), 0.7);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(var(--mantine-color-secondary-4-rgb), 0.2); /* Sunset warmSand instead of matrix green */
-  box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.08);
-  height: 50px; /* Reduced from 60px */
-}
-
-/* Mobile optimization */
-@media (max-width: 768px) {
-  .appShellHeader {
-    height: 40px; /* Even smaller on mobile */
-    background: rgba(var(--mantine-color-aura-0-rgb), 0.6);
-  }
-}
-
-.box {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.gradient {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(var(--mantine-color-primary-4-rgb), 0.1), transparent); /* Electric mint instead of green */
-  transition: background 0.2s ease;
-  mix-blend-mode: screen;
-}
-
-.topBorder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(var(--mantine-color-secondary-4-rgb), 0.2), /* Sunset warmSand */
-    rgba(var(--mantine-color-primary-4-rgb), 0.2), /* Electric mint */
-    transparent
-  );
-}
-
-.bottomBorder {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(var(--mantine-color-aura-5-rgb), 0.2), /* Orange neon */
-    rgba(var(--mantine-color-secondary-4-rgb), 0.2), /* Sunset warmSand */
-    transparent
-  );
-}
-
-.highlight {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(var(--mantine-color-primary-4-rgb), 0.05), transparent); /* Electric mint */
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-.scanline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 50%,
-    rgba(var(--mantine-color-secondary-4-rgb), 0.01) 50%,
-    rgba(var(--mantine-color-primary-4-rgb), 0.01) 100%
-  );
-  background-size: 100% 4px;
-  animation: scanlineEffect 6s linear infinite;
-  opacity: 0.3; /* Reduced opacity */
-  pointer-events: none;
-}
-
-@keyframes scanlineEffect {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(4px);
-  }
+  background: transparent;
+  border: none;
+  height: 68px;
 }
 
 .container {
   position: relative;
   z-index: 20;
-  padding: 0 1rem; /* Reduced padding */
+  padding: 0 1rem;
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  max-width: 83.333%; /* 10/12 columns */
-  margin: 0 auto; /* Center the container */
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 0.5rem; /* Even smaller padding on mobile */
-  }
+  max-width: min(1560px, 100%);
+  margin: 0 auto;
+  padding-left: clamp(16px, 3.5vw, 56px);
+  padding-right: clamp(16px, 3.5vw, 56px);
 }
 
 .headerGroup {
@@ -136,15 +26,12 @@
   padding: 0;
 }
 
-@media (max-width: 48em) { /* sm breakpoint */
-  .headerGroup {
-    justify-content: center !important; /* Center on mobile */
+@media (max-width: 48em) {
+  .appShellHeader {
+    height: 56px;
   }
-}
 
-@media (max-width: 48em) { /* sm breakpoint */
-  .container {
-    padding: 0 0.5rem; /* Even smaller padding on mobile */
-    max-width: 95%; /* Slightly wider on mobile */
+  .headerGroup {
+    justify-content: center !important;
   }
 }

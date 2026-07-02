@@ -5,7 +5,6 @@ import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
 import { LandingSection } from "../components/landing/TimelineSection";
 import ShowcaseGrid from "../components/landing/ShowcaseGrid";
-import ServiceVector from "../components/ServiceVector";
 import {
   FaBoxes,
   FaRobot,
@@ -85,12 +84,8 @@ export default function IndexPage({ data }: IndexPageProps) {
 
       {/* Main content with scroll animations */}
       <Box className={styles.mainContent}>
-        <section>
+        <section className={styles.heroSection}>
           <HeroSection />
-        </section>
-
-        <section className={styles.sectionRight}>
-          <ServiceVector />
         </section>
 
         <section className={styles.sectionRight}>

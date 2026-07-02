@@ -10,7 +10,7 @@ const Logo: React.FC = () => {
       to="/"
       className={styles.logo}
     >
-      <Text className={styles.logoText}>R</Text>
+      <Text className={styles.logoText}>Roman&nbsp;Travnikov</Text>
     </Box>
   );
 };

@@ -83,6 +83,18 @@ section {
   margin: 0 auto var(--spacing) auto;
 }
 
+/* Full-bleed hero: opt out of the default glass-card section chrome */
+.heroSection {
+  max-width: min(1560px, 100%);
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  border-radius: 0;
+  padding: 0 clamp(16px, 3.5vw, 56px);
+  animation: none;
+}
+
 .insightsList {
   display: flex;
   flex-direction: column;

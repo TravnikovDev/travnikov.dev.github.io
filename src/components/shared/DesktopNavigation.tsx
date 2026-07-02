@@ -1,102 +1,51 @@
-import { useState, useRef, useEffect } from "react";
-import { Box, Group, UnstyledButton } from "@mantine/core";
+import React from "react";
+import { Group, UnstyledButton } from "@mantine/core";
 import { Link } from "gatsby";
 import { useLocation } from "@reach/router";
-import { useColorScheme } from "@mantine/hooks";
 import Logo from "./Logo";
 import * as styles from "./DesktopNavigation.module.css";
 
-const NavItem = ({ label, path, isActive }) => {
-  const [hovered, setHovered] = useState(false);
-  const itemRef = useRef(null);
-  const underlineRef = useRef(null);
-  const textRef = useRef(null);
-  const glowRef = useRef(null);
+const navItems = [
+  { label: "AI Automation", path: "/ai-automation-engineer" },
+  { label: "Web Performance", path: "/react-performance-consulting" },
+  { label: "Fractional CTO", path: "/fractional-cto" },
+  { label: "Insights", path: "/blog" },
+];
 
-  return (
-    <div
-      ref={itemRef}
-      className={styles.navItem}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <UnstyledButton component={Link} to={path} className={styles.navButton}>
-        <div ref={textRef} className={styles.navText}>
-          {label}
-        </div>
-      </UnstyledButton>
-      <div
-        ref={underlineRef}
-        className={styles.navUnderline}
-        style={{
-          left: isActive ? "0%" : hovered ? "5%" : "50%",
-          width: isActive ? "100%" : hovered ? "90%" : "0%",
-          opacity: isActive || hovered ? 1 : 0,
-          background: isActive
-            ? "var(--mantine-mint-warmSand-gradient)"
-            : "currentColor",
-          boxShadow: isActive
-            ? "0 0 15px rgba(var(--mantine-color-primary-4-rgb), 0.8), 0 0 30px rgba(var(--mantine-color-secondary-4-rgb), 0.5)"
-            : "none",
-        }}
-      />
-      <div
-        ref={glowRef}
-        className={styles.navGlow}
-        style={{
-          opacity: hovered ? 0.8 : 0,
-        }}
-      />
-    </div>
-  );
-};
+const NavItem = ({
+  label,
+  path,
+  isActive,
+}: {
+  label: string;
+  path: string;
+  isActive: boolean;
+}) => (
+  <UnstyledButton
+    component={Link}
+    to={path}
+    className={`${styles.navButton} ${isActive ? styles.navButtonActive : ""}`}
+  >
+    {label}
+  </UnstyledButton>
+);
 
 export default function DesktopNavigation() {
   const location = useLocation();
-  const navigationRef = useRef(null);
-
-  const navItems = [
-    { label: "AI Automation", path: "/ai-automation-engineer" },
-    { label: "Web Performance", path: "/react-performance-consulting" },
-    { label: "Fractional CTO", path: "/fractional-cto" },
-    { label: "Insights", path: "/blog" },
-  ];
-
-  // Animate navigation on mount
-  useEffect(() => {
-    if (navigationRef.current) {
-      navigationRef.current.style.opacity = "0";
-      navigationRef.current.style.transform = "translateY(-10px)";
-
-      // Trigger animation after mount
-      requestAnimationFrame(() => {
-        if (navigationRef.current) {
-          navigationRef.current.style.transition =
-            "opacity 0.6s ease, transform 0.6s ease";
-          navigationRef.current.style.opacity = "1";
-          navigationRef.current.style.transform = "translateY(0)";
-        }
-      });
-    }
-  }, []);
 
   return (
-    <Group gap="md" className={styles.navigationGroup}>
+    <Group justify="space-between" className={styles.navigationGroup}>
       <Logo />
-      <div ref={navigationRef}>
-        <Box className={styles.navBox}>
-          <Group gap="xs" className={styles.navLinksGroup}>
-            {navItems.map((link) => (
-              <NavItem
-                key={link.path}
-                label={link.label}
-                path={link.path}
-                isActive={location.pathname === link.path}
-              />
-            ))}
-          </Group>
-        </Box>
-      </div>
+      <Group gap="xs" className={styles.navLinksGroup}>
+        {navItems.map((link) => (
+          <NavItem
+            key={link.path}
+            label={link.label}
+            path={link.path}
+            isActive={location.pathname.replace(/\/$/, "") === link.path}
+          />
+        ))}
+      </Group>
     </Group>
   );
 }
