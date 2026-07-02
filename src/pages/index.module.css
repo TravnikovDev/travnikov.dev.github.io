@@ -33,20 +33,16 @@
   padding: 1rem;
 }
 
+/* Architect's-ruler progress line: 1px of ink drawing across the top */
 .scrollProgressIndicator {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--mantine-color-primary-4),
-    var(--mantine-color-secondary-4)
-  );
+  height: 1px;
+  background: var(--ink);
   transform-origin: 0%;
-  z-index: 1000;
-  box-shadow: 0 0 10px rgba(var(--mantine-color-secondary-4-rgb), 0.6);
+  z-index: 1001;
 }
 
 .mainContent {
@@ -247,7 +243,7 @@ section:nth-child(3) {
   }
 }
 
-/* Ensures text is readable over the 3D background */
+/* Ensures text stacks above the 3D background; ink-on-pearl needs no shadow */
 h1,
 h2,
 h3,
@@ -257,7 +253,6 @@ h6,
 p {
   position: relative;
   z-index: 2;
-  text-shadow: 0 2px 4px var(--text-shadow); /* Add text shadow for better readability over 3D background */
 }
 
 /* Section transition improvements */

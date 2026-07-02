@@ -126,7 +126,8 @@ const BokehParticles = ({
   });
 
   return (
-    <points ref={pointsRef} renderOrder={20}>
+    // key remounts the geometry when count changes: buffer attributes can't resize
+    <points key={count} ref={pointsRef} renderOrder={20}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -161,12 +162,14 @@ const BokehParticles = ({
 function Scene() {
   const { viewport } = useThree();
   const diagonal = Math.hypot(viewport.width, viewport.height);
+  // Portrait screens get roughly half the particles
+  const density = viewport.aspect < 1 ? 0.5 : 1;
 
   return (
     <>
       <FluidBackground />
       <BokehParticles
-        count={55}
+        count={Math.round(55 * density)}
         spread={diagonal * 1.4}
         size={0.28}
         opacity={0.55}
@@ -178,7 +181,7 @@ function Scene() {
         bandSigma={viewport.height * 0.32}
       />
       <BokehParticles
-        count={40}
+        count={Math.round(40 * density)}
         spread={diagonal * 1.3}
         size={0.55}
         opacity={0.7}
@@ -190,7 +193,7 @@ function Scene() {
         bandSigma={viewport.height * 0.36}
       />
       <BokehParticles
-        count={14}
+        count={Math.round(14 * density)}
         spread={diagonal * 1.2}
         size={1.05}
         opacity={0.4}

@@ -41,12 +41,12 @@ const HeroSection = () => {
   return (
     <div ref={heroRef} className={styles.hero}>
       <div className={styles.left}>
-        <h1 className={styles.headline}>
+        <h1 className={`${styles.headline} ${styles.reveal}`}>
           Automating enterprises with{" "}
           <span className={styles.accent}>AI&nbsp;&amp; architecture.</span>
         </h1>
 
-        <div className={styles.glassCard}>
+        <div className={`${styles.glassCard} ${styles.reveal}`}>
           <p>
             I design automation systems and frontend architecture that let
             teams ship faster — from n8n content pipelines to production React
@@ -77,9 +77,14 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div className={styles.availability}>
+        <div className={`${styles.availability} ${styles.reveal}`}>
           <span className={styles.availabilityDot} />
           Available for new opportunities
+        </div>
+
+        <div className={styles.scrollCue} aria-hidden="true">
+          <span className={styles.scrollCueLabel}>Scroll</span>
+          <span className={styles.scrollCueLine} />
         </div>
       </div>
 

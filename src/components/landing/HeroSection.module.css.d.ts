@@ -17,3 +17,7 @@ export const serviceReverse: string;
 export const glyph: string;
 export const serviceText: string;
 export const glyphCanvas: string;
+export const scrollCue: string;
+export const scrollCueLabel: string;
+export const scrollCueLine: string;
+export const drawDown: string;

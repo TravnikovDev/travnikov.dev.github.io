@@ -48,9 +48,9 @@
   color: var(--ink);
 }
 
+/* On phones only the wordmark shows; links wait for a proper drawer */
 @media (max-width: 48em) {
-  .navButton {
-    font-size: 11px;
-    letter-spacing: 0.1em;
+  .navLinksGroup {
+    display: none;
   }
 }

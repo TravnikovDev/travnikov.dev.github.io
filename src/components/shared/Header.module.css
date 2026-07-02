@@ -3,7 +3,12 @@
   width: 100%;
   top: 0;
   z-index: 1000;
-  background: transparent;
+  background: linear-gradient(
+    rgba(248, 245, 238, 0.85),
+    rgba(248, 245, 238, 0.55)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: none;
   height: 68px;
 }
