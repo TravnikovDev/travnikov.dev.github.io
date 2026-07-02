@@ -2,6 +2,13 @@ import React from "react";
 import type { GatsbyBrowser } from "gatsby";
 import { MantineProvider } from "./src/components/shared/MantineProvider";
 import '@mantine/core/styles.css';
+// Self-hosted fonts (see docs/DESIGN_VISION.md typography roles)
+import '@fontsource-variable/inter';
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/fraunces/opsz-italic.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '@fontsource/jetbrains-mono/700.css';
 import './src/global.css'; // Import our global CSS
 
 export const wrapRootElement: GatsbyBrowser["wrapRootElement"] = ({ element }) => {

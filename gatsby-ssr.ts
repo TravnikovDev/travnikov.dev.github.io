@@ -11,13 +11,6 @@ export const onRenderBody: GatsbySSR["onRenderBody"] = ({ setHtmlAttributes, set
   setHtmlAttributes({ lang: `en` });
   
   setHeadComponents([
-    // Add Mantine styles
-    React.createElement("link", {
-      key: "mantine-styles",
-      rel: "stylesheet",
-      href: "https://unpkg.com/@mantine/core@7.6.2/styles.css"
-    }),
-    
     // Structured data for SEO
     React.createElement("script", {
       key: "structured-data",

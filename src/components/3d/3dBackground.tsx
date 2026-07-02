@@ -502,7 +502,7 @@ export default function ThreeDBackground() {
           outputColorSpace: THREE.SRGBColorSpace,
         }}
         onCreated={({ gl }) => {
-          gl.setClearColor(0xf3e9d8, 1);
+          gl.setClearColor(new THREE.Color(auraColors.canvas), 1);
         }}
         shadows
         style={{
@@ -513,7 +513,7 @@ export default function ThreeDBackground() {
           width: "100%",
           height: "100%",
           pointerEvents: "none",
-          backgroundColor: auraColors.ivory,
+          backgroundColor: auraColors.canvas,
         }}
       >
         <Scene />

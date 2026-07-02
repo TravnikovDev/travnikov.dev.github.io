@@ -2,6 +2,7 @@ import { MantineColorsTuple, MantineThemeOverride } from "@mantine/core";
 
 // Aura color palette
 export const auraColors = {
+  canvas: "#F8F5EE", // Near-white luminous canvas (hero background)
   charcoal: "#1A1E21", // Charcoal frame tone
   powderBlue: "#A5CDE0", // Powder blue glow
   slate: "#4A5964", // Slate blue-gray
@@ -68,9 +69,12 @@ export const theme: MantineThemeOverride = {
     },
   },
 
-  // Updated font family with fallbacks
+  // Typography roles (docs/DESIGN_VISION.md): grotesque sans for body/headlines,
+  // mono reserved for small UI labels, serif display exposed via --font-display
   fontFamily:
-    '"JetBrains Mono", Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+    '"Inter Variable", Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+  fontFamilyMonospace:
+    '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
 
   // Base colors for the theme
   colors: {
@@ -116,10 +120,8 @@ export const theme: MantineThemeOverride = {
       styles: {
         root: {
           fontFamily:
-            '"JetBrains Mono", Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
-          fontWeight: 700,
-          // Make headings more legible on dark backgrounds
-          textShadow: "0 1px 2px rgba(0,0,0,0.3)",
+            '"Inter Variable", Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+          fontWeight: 650,
         },
       },
     },
