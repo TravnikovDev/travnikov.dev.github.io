@@ -67,7 +67,8 @@ const fragmentShader = /* glsl */ `
   void main() {
     vec2 p = (vUv - 0.5) * vec2(uAspect, 1.0) * 2.6;
 
-    float ang = -0.62;
+    // positive angle: band flows top-right -> bottom-left like the reference
+    float ang = 0.62;
     mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
     vec2 rp = rot * p;
 

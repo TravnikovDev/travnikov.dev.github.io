@@ -196,11 +196,11 @@ function Scene() {
       />
       {/* a few large soft discs, far layer */}
       <BokehParticles
-        count={Math.round(7 * density)}
+        count={Math.round(5 * density)}
         spread={diagonal * 1.1}
-        size={1.15}
-        opacity={0.3}
-        shimmer={0.14}
+        size={0.85}
+        opacity={0.22}
+        shimmer={0.1}
         drift={0.08}
         rise={0.04}
         frontDepth={-1.2}

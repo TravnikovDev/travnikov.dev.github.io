@@ -54,15 +54,17 @@ const Crystal = () => {
   const material = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: "#cfdfec",
+        color: "#c4d8e8",
         metalness: 0,
-        roughness: 0.08,
-        transmission: 0.85,
-        thickness: 2.2,
+        roughness: 0.06,
+        transmission: 0.7,
+        thickness: 2.4,
         ior: 2.0,
         clearcoat: 1,
-        clearcoatRoughness: 0.08,
-        envMapIntensity: 2.0,
+        clearcoatRoughness: 0.06,
+        envMapIntensity: 2.2,
+        attenuationColor: new THREE.Color("#8fb8d4"),
+        attenuationDistance: 1.4,
         flatShading: true,
       }),
     []
@@ -140,14 +142,18 @@ const Lattice = ({ innerRef }: { innerRef: React.RefObject<THREE.Group> }) => {
   );
 };
 
-// Balance sculpture: dome base, dark pivot, rocking curved arc with spheres
+// Balance sculpture: dome base, dark pivot, a curved rocker wire resting on
+// it with spheres threaded along the wire like beads
 const arcRadius = 3.0;
 const arcHalf = 0.62;
-const arcCenterY = -arcRadius * Math.cos(arcHalf);
 const arcEndX = arcRadius * Math.sin(arcHalf);
+const arcEndY = arcRadius - arcRadius * Math.cos(arcHalf);
+// y of the wire at a given x (circle centered at [0, arcRadius])
+const arcYAt = (x: number) =>
+  arcRadius - Math.sqrt(arcRadius * arcRadius - x * x);
 
 const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => (
-  <group scale={0.95}>
+  <group scale={0.95} position={[0, 0.1, 0]}>
     <mesh position={[0, -1.62, 0]} rotation={[Math.PI, 0, 0]}>
       <coneGeometry args={[1.0, 1.1, 40]} />
       <meshStandardMaterial color="#ebe5d8" roughness={0.55} metalness={0.05} />
@@ -156,11 +162,11 @@ const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => (
       <sphereGeometry args={[0.4, 32, 32]} />
       <meshStandardMaterial color="#23282a" roughness={0.3} metalness={0.05} />
     </mesh>
-    <group ref={beamRef} position={[0, -0.08, 0]}>
-      {/* curved wire arc bowing over the pivot */}
+    {/* rocker pivots at its contact point on top of the dark sphere */}
+    <group ref={beamRef} position={[0, -0.18, 0]}>
       <mesh
-        position={[0, arcCenterY, 0]}
-        rotation={[0, 0, Math.PI / 2 - arcHalf]}
+        position={[0, arcRadius, 0]}
+        rotation={[0, 0, -Math.PI / 2 - arcHalf]}
       >
         <torusGeometry args={[arcRadius, 0.065, 12, 64, arcHalf * 2]} />
         <meshStandardMaterial
@@ -169,24 +175,24 @@ const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => (
           metalness={0.1}
         />
       </mesh>
-      <mesh position={[-arcEndX, 0.12, 0]}>
-        <sphereGeometry args={[0.5, 32, 32]} />
+      <mesh position={[-arcEndX, arcEndY, 0]}>
+        <sphereGeometry args={[0.48, 32, 32]} />
         <meshStandardMaterial
           color="#f2ede1"
           roughness={0.45}
           metalness={0.05}
         />
       </mesh>
-      <mesh position={[arcEndX, 0.06, 0]}>
-        <sphereGeometry args={[0.32, 32, 32]} />
+      <mesh position={[arcEndX, arcEndY, 0]}>
+        <sphereGeometry args={[0.3, 32, 32]} />
         <meshStandardMaterial
           color="#23282a"
           roughness={0.3}
           metalness={0.05}
         />
       </mesh>
-      <mesh position={[0.92, 0.48, 0]}>
-        <sphereGeometry args={[0.2, 32, 32]} />
+      <mesh position={[0.95, arcYAt(0.95), 0]}>
+        <sphereGeometry args={[0.18, 32, 32]} />
         <meshStandardMaterial
           color="#b9c6bf"
           roughness={0.4}
@@ -249,6 +255,15 @@ export function GlyphScene({
           <mesh position={[0, -6, 2]} rotation={[1.2, 0, 0]} scale={[9, 9, 1]}>
             <planeGeometry />
             <meshBasicMaterial color="#e0c4ae" />
+          </mesh>
+          {/* dark panels give the facets contrast to refract */}
+          <mesh position={[5, -3, -3]} rotation={[0, -0.9, 0]} scale={[6, 8, 1]}>
+            <planeGeometry />
+            <meshBasicMaterial color="#2a3438" />
+          </mesh>
+          <mesh position={[-5, 5, -2]} rotation={[0.4, 0.9, 0]} scale={[5, 6, 1]}>
+            <planeGeometry />
+            <meshBasicMaterial color="#3c4a50" />
           </mesh>
         </Environment>
       )}

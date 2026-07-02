@@ -27,19 +27,27 @@
 }
 
 .brandMark {
-  width: clamp(40px, 3.6vw, 54px);
+  width: clamp(42px, 3.8vw, 58px);
   aspect-ratio: 1;
-  border-radius: 30%;
+  border-radius: 61% 39% 52% 48% / 54% 46% 58% 42%;
   background:
     radial-gradient(
-      circle at 30% 30%,
-      rgba(255, 255, 255, 0.95),
-      rgba(255, 255, 255, 0) 60%
+      circle at 32% 28%,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0) 42%
     ),
-    conic-gradient(from 210deg, #cfe6da, #f3e8cf, #aec9bf, #cfe6da);
+    conic-gradient(
+      from 200deg,
+      #9fd4c4,
+      #f5d9ba,
+      #f8f0dd,
+      #8fbfb0,
+      #cfe6da,
+      #9fd4c4
+    );
   box-shadow:
-    0 10px 24px rgba(90, 110, 100, 0.25),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    0 10px 24px rgba(90, 110, 100, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55);
   flex: none;
 }
 
