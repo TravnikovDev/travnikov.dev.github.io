@@ -92,29 +92,31 @@ const fragmentShader = /* glsl */ `
     float f = fbm(warped + vec2(0.0, 0.3) * fold);
 
     vec3 col = uCanvas;
-    // broad cream underlay
-    col = mix(col, uSand, smoothstep(0.25, 0.85, foldB) * 0.42);
+    // muted cream underlay — the warmth is a whisper, not a band
+    col = mix(col, uSand, smoothstep(0.25, 0.9, foldB) * 0.22);
     // mint ribbon — narrower window gives a defined strand
-    col = mix(col, uMint, smoothstep(0.35, 0.85, fold) * smoothstep(0.2, 0.6, f) * 0.75);
+    col = mix(col, uMint, smoothstep(0.35, 0.85, fold) * smoothstep(0.2, 0.6, f) * 0.6);
     // pale aqua ribbon on an offset phase
-    col = mix(col, uAqua, smoothstep(0.45, 0.9, foldC) * 0.6);
-    // warm sand strand
-    col = mix(col, uSand, smoothstep(0.5, 0.95, sin(phase * 0.45 + 1.1)) * 0.4);
-    // bright near-white strands between the colored ribbons
-    col = mix(col, uCanvas * 1.03, smoothstep(0.45, 0.95, -fold) * 0.8);
+    col = mix(col, uAqua, smoothstep(0.45, 0.9, foldC) * 0.5);
+    // faint sand strand
+    col = mix(col, uSand, smoothstep(0.5, 0.95, sin(phase * 0.45 + 1.1)) * 0.22);
+    // soft gray-mint shadow in the fold troughs gives the silk its depth
+    col = mix(col, vec3(0.77, 0.815, 0.79), smoothstep(0.35, 0.95, -foldB) * 0.2);
+    // near-white strands between the colored ribbons (no glow hotspots)
+    col = mix(col, uCanvas * 1.012, smoothstep(0.45, 0.95, -fold) * 0.55);
     // dark folds: one or two large smooth blobs, never wisps
     float darkMask = smoothstep(0.45, 0.72, fbm(sp * 0.45 + vec2(9.3, 2.4)));
-    col = mix(col, uSlate, darkMask * smoothstep(0.3, 0.85, fold) * 0.6);
+    col = mix(col, uSlate, darkMask * smoothstep(0.3, 0.85, fold) * 0.55);
     // broad soft crest lightening
-    col += smoothstep(0.5, 1.0, fold) * 0.05;
+    col += smoothstep(0.5, 1.0, fold) * 0.028;
 
     // confine ribbons to the diagonal band; corners stay near-white
-    float band = 1.0 - smoothstep(0.15, 1.0, abs(rp.y + 0.1));
+    float band = 1.0 - smoothstep(0.12, 0.85, abs(rp.y + 0.1));
     band *= band;
     col = mix(uCanvas, col, band);
 
     // gentle luminosity toward the top
-    col += (vUv.y - 0.5) * 0.03;
+    col += (vUv.y - 0.5) * 0.022;
 
     // paper grain
     float grain = hash(vUv * vec2(1440.0, 900.0));
@@ -136,10 +138,13 @@ export default function FluidBackground() {
           uTime: { value: 0 },
           uAspect: { value: 1.6 },
           uPointer: { value: new THREE.Vector2(0, 0) },
-          uCanvas: { value: hexToVec3(auraColors.canvas) },
+          // shader-local canvas: a touch cooler than the page pearl so the
+          // silk reads greenish-white like the reference, not beige
+          uCanvas: { value: hexToVec3("#F6F5F0") },
           uAqua: { value: hexToVec3(auraColors.paleAqua) },
           uMint: { value: hexToVec3(auraColors.mint) },
-          uSand: { value: hexToVec3(auraColors.warmSand) },
+          // cream instead of warmSand: less orange in the band
+          uSand: { value: hexToVec3(auraColors.cream) },
           uSlate: { value: hexToVec3(auraColors.slate) },
         },
         vertexShader,

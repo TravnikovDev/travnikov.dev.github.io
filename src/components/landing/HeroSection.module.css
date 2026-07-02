@@ -53,21 +53,23 @@
 
 .brandName {
   font-family: var(--font-display);
-  font-weight: 640;
-  font-size: clamp(24px, 2.3vw, 38px);
-  line-height: 1.02;
+  font-weight: 700;
+  /* high optical size = maximum thick/thin contrast in Fraunces */
+  font-variation-settings: "opsz" 144;
+  font-size: clamp(26px, 2.5vw, 42px);
+  line-height: 1;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
 
 .headline {
   font-family: var(--font-sans);
-  font-weight: 650;
+  font-weight: 550;
   font-size: clamp(2.4rem, 4.6vw, 5rem);
-  line-height: 0.96;
-  letter-spacing: -0.035em;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: rgba(26, 30, 33, 0.92);
   max-width: 13ch;
   margin: 0;
 }
@@ -258,8 +260,8 @@
 .serviceText h3 {
   margin: 0 0 6px;
   font-family: var(--font-sans);
-  font-weight: 650;
-  font-size: clamp(1.1rem, 1.6vw, 1.55rem);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 1.8vw, 1.7rem);
   letter-spacing: -0.01em;
   color: var(--ink);
   display: inline-block;
