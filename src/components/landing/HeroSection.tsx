@@ -41,9 +41,17 @@ const HeroSection = () => {
   return (
     <div ref={heroRef} className={styles.hero}>
       <div className={styles.left}>
+        <div className={`${styles.brand} ${styles.reveal}`}>
+          <span className={styles.brandMark} aria-hidden="true" />
+          <span className={styles.brandName}>
+            Roman
+            <br />
+            Travnikov
+          </span>
+        </div>
+
         <h1 className={`${styles.headline} ${styles.reveal}`}>
-          Automating enterprises with{" "}
-          <span className={styles.accent}>AI&nbsp;&amp; architecture.</span>
+          Automating enterprises with AI&nbsp;&amp; architecture.
         </h1>
 
         <div className={`${styles.glassCard} ${styles.reveal}`}>

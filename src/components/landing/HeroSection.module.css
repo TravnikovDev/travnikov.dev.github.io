@@ -5,7 +5,7 @@
   gap: clamp(24px, 4vw, 72px);
   align-items: center;
   min-height: calc(100svh - 90px);
-  padding: clamp(80px, 10vh, 130px) 0 clamp(36px, 6vh, 72px);
+  padding: clamp(130px, 16vh, 190px) 0 clamp(36px, 6vh, 72px);
 }
 
 .left {
@@ -13,6 +13,43 @@
   flex-direction: column;
   gap: clamp(20px, 3.2vh, 38px);
   min-width: 0;
+}
+
+/* Brand block anchored to the hero's top-left, like the reference */
+.brand {
+  position: absolute;
+  top: clamp(16px, 3.5vh, 40px);
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 3;
+}
+
+.brandMark {
+  width: clamp(40px, 3.6vw, 54px);
+  aspect-ratio: 1;
+  border-radius: 30%;
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0) 60%
+    ),
+    conic-gradient(from 210deg, #cfe6da, #f3e8cf, #aec9bf, #cfe6da);
+  box-shadow:
+    0 10px 24px rgba(90, 110, 100, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  flex: none;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-weight: 640;
+  font-size: clamp(24px, 2.3vw, 38px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
 .headline {
@@ -27,19 +64,15 @@
   margin: 0;
 }
 
-.accent {
-  color: var(--ink-soft);
-}
-
 .glassCard {
-  max-width: 560px;
+  max-width: 540px;
   background: var(--glass-fill);
   border: 1px solid var(--glass-border);
-  border-radius: 22px;
-  padding: clamp(18px, 2vw, 28px);
+  border-radius: 20px;
+  padding: clamp(16px, 1.8vw, 24px);
   backdrop-filter: blur(16px) saturate(1.15);
   -webkit-backdrop-filter: blur(16px) saturate(1.15);
-  box-shadow: 0 18px 50px rgba(80, 100, 92, 0.14);
+  box-shadow: 0 18px 50px rgba(80, 100, 92, 0.12);
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -69,15 +102,15 @@
   align-items: center;
   gap: 10px;
   padding: 13px 26px;
-  font-family: var(--font-mono);
-  font-size: 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink);
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(26, 30, 33, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(26, 30, 33, 0.12);
   border-radius: 999px;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
@@ -103,10 +136,10 @@
 }
 
 .ctaSecondary {
-  font-family: var(--font-mono);
-  font-size: 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-soft);
   text-decoration: underline;
@@ -154,9 +187,9 @@
 
 .service {
   display: grid;
-  grid-template-columns: clamp(100px, 9vw, 150px) 1fr;
+  grid-template-columns: clamp(120px, 11.5vw, 185px) 1fr;
   align-items: center;
-  gap: clamp(12px, 1.4vw, 22px);
+  gap: clamp(12px, 1.6vw, 26px);
   text-decoration: none;
   color: inherit;
   opacity: 0;
@@ -164,14 +197,18 @@
   animation: reveal 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
 }
 
+/* zigzag stagger following the fluid diagonal */
 .service:nth-child(1) {
   animation-delay: 0.25s;
+  margin-right: clamp(0px, 4vw, 64px);
 }
 .service:nth-child(2) {
   animation-delay: 0.45s;
+  margin-left: clamp(0px, 4vw, 64px);
 }
 .service:nth-child(3) {
   animation-delay: 0.65s;
+  margin-right: clamp(0px, 2vw, 32px);
 }
 
 .serviceReverse {
@@ -180,6 +217,14 @@
 
 .serviceReverse > * {
   direction: ltr;
+}
+
+.serviceReverse .serviceText {
+  text-align: right;
+}
+
+.serviceReverse .serviceText p {
+  margin-left: auto;
 }
 
 .glyph {
@@ -191,9 +236,14 @@
 .glyph::after {
   content: "";
   position: absolute;
-  inset: 12%;
+  inset: 8%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 252, 240, 0.9), transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 252, 240, 0.95),
+    rgba(255, 252, 240, 0.4) 55%,
+    transparent 72%
+  );
   z-index: -1;
 }
 
@@ -280,7 +330,7 @@
 
 /* ---------- Animations ---------- */
 
-/* Drawn-in reveal for the left column, staggered after the headline */
+/* Drawn-in reveal for the left column, staggered after the brand */
 .reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -288,11 +338,15 @@
 }
 
 .left .reveal:nth-child(2) {
-  animation-delay: 0.15s;
+  animation-delay: 0.12s;
 }
 
 .left .reveal:nth-child(3) {
-  animation-delay: 0.3s;
+  animation-delay: 0.24s;
+}
+
+.left .reveal:nth-child(4) {
+  animation-delay: 0.36s;
 }
 
 @keyframes reveal {
@@ -340,6 +394,11 @@
     padding-top: clamp(70px, 9vh, 110px);
   }
 
+  /* brand flows above the headline on small screens */
+  .brand {
+    position: static;
+  }
+
   .headline {
     max-width: 15ch;
   }
@@ -347,11 +406,26 @@
   .serviceReverse {
     direction: ltr;
   }
+
+  .serviceReverse .serviceText {
+    text-align: left;
+  }
+
+  .serviceReverse .serviceText p {
+    margin-left: 0;
+  }
+
+  .service:nth-child(1),
+  .service:nth-child(2),
+  .service:nth-child(3) {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 @media (max-width: 30em) {
   .service {
-    grid-template-columns: 88px 1fr;
+    grid-template-columns: 96px 1fr;
   }
 
   .glassCard {

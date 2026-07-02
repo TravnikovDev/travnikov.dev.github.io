@@ -3,20 +3,37 @@
   width: 100%;
   top: 0;
   z-index: 1000;
+  background: transparent;
+  border: none;
+  height: 68px;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+/* Blur bar only once content scrolls beneath; the hero owns the brand at top */
+.scrolled {
   background: linear-gradient(
     rgba(248, 245, 238, 0.85),
     rgba(248, 245, 238, 0.55)
   );
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: none;
-  height: 68px;
+}
+
+/* The wordmark fades in with the blur bar (the hero brand shows before that) */
+.appShellHeader a[href="/"] {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.scrolled a[href="/"] {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .container {
   position: relative;
   z-index: 20;
-  padding: 0 1rem;
   height: 100%;
   display: flex;
   align-items: center;
