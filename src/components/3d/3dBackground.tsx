@@ -168,43 +168,43 @@ function Scene() {
   return (
     <>
       <FluidBackground />
-      {/* tiny warm sparks hugging the ribbon */}
+      {/* tiny golden sparks hugging the ribbon — warm lights on a cool canvas */}
       <BokehParticles
-        count={Math.round(30 * density)}
+        count={Math.round(38 * density)}
         spread={diagonal * 1.3}
         size={0.14}
-        opacity={0.5}
-        shimmer={0.12}
+        opacity={0.62}
+        shimmer={0.14}
         drift={0.12}
         rise={0.06}
         frontDepth={-0.6}
-        color={auraColors.cream}
+        color="#F2D9AE"
         bandSigma={viewport.height * 0.2}
       />
-      {/* mid glow dots */}
+      {/* mid golden glow dots */}
       <BokehParticles
-        count={Math.round(16 * density)}
+        count={Math.round(20 * density)}
         spread={diagonal * 1.2}
         size={0.4}
-        opacity={0.4}
-        shimmer={0.14}
+        opacity={0.5}
+        shimmer={0.16}
         drift={0.1}
         rise={0.05}
         frontDepth={-0.8}
-        color={auraColors.cream}
+        color="#F0D3A4"
         bandSigma={viewport.height * 0.22}
       />
       {/* a few large soft discs, far layer */}
       <BokehParticles
-        count={Math.round(3 * density)}
+        count={Math.round(4 * density)}
         spread={diagonal * 1.1}
         size={0.8}
-        opacity={0.15}
+        opacity={0.18}
         shimmer={0.08}
         drift={0.08}
         rise={0.04}
         frontDepth={-1.2}
-        color={auraColors.cream}
+        color="#F2DCB6"
         bandSigma={viewport.height * 0.26}
       />
     </>
