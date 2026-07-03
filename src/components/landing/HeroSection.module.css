@@ -351,6 +351,35 @@
   z-index: -1;
 }
 
+/* crystal sits on the dark shader droplet — no white halo washing it out */
+.service:nth-child(1) .glyph::after {
+  background: radial-gradient(
+    circle,
+    rgba(255, 252, 240, 0.25),
+    transparent 65%
+  );
+}
+
+/* champagne glow grounds the lattice */
+.service:nth-child(2) .glyph::after {
+  background: radial-gradient(
+    circle,
+    rgba(245, 224, 186, 0.85),
+    rgba(245, 224, 186, 0.3) 55%,
+    transparent 72%
+  );
+}
+
+/* sage glow grounds the balance sculpture */
+.service:nth-child(3) .glyph::after {
+  background: radial-gradient(
+    circle,
+    rgba(202, 224, 214, 0.9),
+    rgba(202, 224, 214, 0.35) 55%,
+    transparent 72%
+  );
+}
+
 .serviceText h3 {
   margin: 0 0 6px;
   font-family: var(--font-sans);

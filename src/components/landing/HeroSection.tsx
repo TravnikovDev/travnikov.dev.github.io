@@ -109,7 +109,10 @@ const HeroSection = () => {
               index === 1 ? styles.serviceReverse : ""
             }`}
           >
-            <View className={styles.glyph}>
+            <View
+              className={styles.glyph}
+              id={vector.glyph === "crystal" ? "crystal-glyph-anchor" : undefined}
+            >
               <GlyphScene kind={vector.glyph} phase={index * 2.1} />
             </View>
             <div className={styles.serviceText}>

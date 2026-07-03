@@ -28,6 +28,7 @@ const fragmentShader = /* glsl */ `
   uniform float uAspect;
   uniform vec2 uPointer;
   uniform vec3 uCanvas;
+  uniform vec2 uDrop; // uv anchor of the signature dark droplet
 
   // stream palette (design-fixed)
   #define GREY_TEAL  vec3(0.765, 0.827, 0.824)  /* #c3d3d2 */
@@ -78,7 +79,7 @@ const fragmentShader = /* glsl */ `
   float silkHeight(vec2 rp, vec2 drift) {
     vec2 sp = vec2(rp.x * 0.32, rp.y * 1.1);
     vec2 q = vec2(fbm(sp + drift), fbm(sp + vec2(3.1, 7.7) - drift * 0.5));
-    float phase = rp.y * 5.5 + fbm(sp + 1.1 * q) * 4.2 - q.x * 1.8;
+    float phase = rp.y * 4.1 + fbm(sp + 1.1 * q) * 3.6 - q.x * 1.8;
     return sin(phase) * 0.6 + sin(phase * 0.62 + 2.3) * 0.3
       + sin(phase * 1.35 + 4.4) * 0.18;
   }
@@ -104,7 +105,8 @@ const fragmentShader = /* glsl */ `
     vec2 warped = sp + 1.1 * q;
 
     // ribbon folds: stripes across the band, bent by the warp field
-    float phase = rp.y * 5.5 + fbm(warped) * 4.2 - q.x * 1.8;
+    // (lower frequency = fewer, fatter, more voluminous folds)
+    float phase = rp.y * 4.1 + fbm(warped) * 3.6 - q.x * 1.8;
     float fold = sin(phase);
     float foldB = sin(phase * 0.62 + 2.3);
     float foldC = sin(phase * 0.85 + 4.4);
@@ -116,13 +118,20 @@ const fragmentShader = /* glsl */ `
     col = mix(col, TAN, smoothstep(0.5, 0.92, foldB) * 0.3);
     col = mix(col, CHAMPAGNE, smoothstep(0.6, 0.97, sin(phase * 0.45 + 1.1)) * 0.5);
     col = mix(col, TAUPE, smoothstep(0.68, 0.99, sin(phase * 0.38 + 2.6)) * 0.2);
+    // depth-of-field: fold edges go from crisp to defocused across the canvas
+    float focus = fbm(sp * 0.35 + vec2(4.7, 8.1));
+    float w = mix(0.1, 0.42, focus);
     // greens paint last so they win their regions
-    col = mix(col, TEAL_PALE, smoothstep(0.45, 0.9, foldC) * 0.8);
-    col = mix(col, SAGE_PALE, smoothstep(0.4, 0.95, sin(phase * 0.52 + 5.2)) * 0.5);
+    col = mix(col, TEAL_PALE, smoothstep(0.68 - w, 0.68 + w, foldC) * 0.8);
+    col = mix(
+      col,
+      SAGE_PALE,
+      smoothstep(0.68 - w, 0.68 + w, sin(phase * 0.52 + 5.2)) * 0.5
+    );
     col = mix(
       col,
       SAGE,
-      smoothstep(0.35, 0.85, fold) * mix(0.6, 1.0, smoothstep(0.2, 0.6, f)) * 0.8
+      smoothstep(0.6 - w, 0.6 + w, fold) * mix(0.6, 1.0, smoothstep(0.2, 0.6, f)) * 0.8
     );
     // grey-teal light strands between the ribbons
     col = mix(col, GREY_TEAL, smoothstep(0.45, 0.95, -fold) * 0.5);
@@ -139,12 +148,22 @@ const fragmentShader = /* glsl */ `
     band *= band;
     col = mix(uCanvas, col, band);
 
+    // signature dark droplet anchored in the band (sits behind the crystal)
+    vec2 dropDelta = (vUv - uDrop) * vec2(uAspect, 1.0);
+    dropDelta = rot * dropDelta;
+    dropDelta.x *= 0.6; // elongate along the flow
+    float dropR = length(dropDelta)
+      + fbm(dropDelta * 4.0 + drift * 0.4) * 0.04 - 0.02;
+    float drop = 1.0 - smoothstep(0.025, 0.085, dropR);
+    col = mix(col, NAVY, drop * 0.7);
+    col = mix(col, SLATE_BLUE, (1.0 - smoothstep(0.06, 0.14, dropR)) * (1.0 - drop) * 0.28);
+
     // ---- sculptural relief: light the fold field like 3D silk ----
     float hC = fold * 0.6 + foldB * 0.3 + sin(phase * 1.35 + 4.4) * 0.18;
     float e = 0.025;
     float hX = silkHeight(rp + vec2(e, 0.0), drift);
     float hY = silkHeight(rp + vec2(0.0, e), drift);
-    vec3 N = normalize(vec3((hC - hX) / e * 0.09, (hC - hY) / e * 0.09, 1.0));
+    vec3 N = normalize(vec3((hC - hX) / e * 0.13, (hC - hY) / e * 0.13, 1.0));
     vec3 L = normalize(vec3(0.45, 0.6, 0.66)); // warm key, upper right
     float diff = clamp(dot(N, L), 0.0, 1.0);
     float spec = pow(clamp(dot(N, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0, 1.0), 28.0);
@@ -181,6 +200,8 @@ export default function FluidBackground() {
           // shader-local canvas: cool ice-white — the reference canvas is
           // blue-grey-green, with the warmth living inside the stream
           uCanvas: { value: hexToVec3("#EDF1EF") },
+          // sits just below-left of the crystal glyph on desktop
+          uDrop: { value: new THREE.Vector2(0.63, 0.56) },
         },
         vertexShader,
         fragmentShader,
@@ -200,6 +221,30 @@ export default function FluidBackground() {
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
   }, []);
+
+  // anchor the dark droplet just below-left of the crystal glyph, measured
+  // at page-top coordinates (the canvas is viewport-fixed)
+  useEffect(() => {
+    const update = () => {
+      const el = document.getElementById("crystal-glyph-anchor");
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const x = (rect.left + rect.width * 0.35) / window.innerWidth;
+      const y =
+        1 - (rect.top + window.scrollY + rect.height * 0.78) / window.innerHeight;
+      (material.uniforms.uDrop.value as THREE.Vector2).set(
+        Math.min(0.95, Math.max(0.05, x)),
+        Math.min(0.95, Math.max(0.05, y))
+      );
+    };
+    update();
+    const settle = setTimeout(update, 1200);
+    window.addEventListener("resize", update);
+    return () => {
+      clearTimeout(settle);
+      window.removeEventListener("resize", update);
+    };
+  }, [material]);
 
   useFrame(({ clock }) => {
     material.uniforms.uTime.value = clock.getElapsedTime();

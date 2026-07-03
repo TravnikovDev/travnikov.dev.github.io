@@ -69,7 +69,7 @@ const Crystal = () => {
   }, []);
 
   return (
-    <group scale={1.12}>
+    <group scale={1.24}>
       <mesh geometry={geometry} material={material} scale={[0.75, 1.0, 0.75]} />
       {spikes.map((spike, i) => (
         <mesh
