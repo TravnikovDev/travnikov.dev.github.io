@@ -26,29 +26,63 @@
   z-index: 3;
 }
 
+/* Living blob mark: overlapping translucent lobes, each morphing slowly */
 .brandMark {
-  width: clamp(42px, 3.8vw, 58px);
+  position: relative;
+  width: clamp(54px, 4.8vw, 80px);
   aspect-ratio: 1;
-  border-radius: 61% 39% 52% 48% / 54% 46% 58% 42%;
-  background:
-    radial-gradient(
-      circle at 32% 28%,
-      rgba(255, 255, 255, 0.9),
-      rgba(255, 255, 255, 0) 42%
-    ),
-    conic-gradient(
-      from 200deg,
-      #9fd4c4,
-      #f5d9ba,
-      #f8f0dd,
-      #8fbfb0,
-      #cfe6da,
-      #9fd4c4
-    );
-  box-shadow:
-    0 10px 24px rgba(90, 110, 100, 0.28),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.55);
   flex: none;
+  filter: drop-shadow(0 10px 20px rgba(90, 110, 100, 0.22));
+}
+
+.brandMark i {
+  position: absolute;
+  display: block;
+}
+
+/* big white glass lobe */
+.lobeA {
+  inset: 0 14% 14% 0;
+  background: radial-gradient(
+    circle at 30% 28%,
+    rgba(255, 255, 255, 0.98),
+    rgba(238, 246, 242, 0.8) 55%,
+    rgba(206, 228, 219, 0.55)
+  );
+  border-radius: 62% 38% 55% 45% / 55% 48% 52% 45%;
+  animation: morphA 9s ease-in-out infinite alternate;
+}
+
+/* peach lobe, upper right */
+.lobeB {
+  right: -3%;
+  top: 2%;
+  width: 56%;
+  height: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    #ffdcae,
+    rgba(244, 198, 140, 0.85) 60%,
+    rgba(244, 198, 140, 0)
+  );
+  border-radius: 58% 42% 60% 40% / 55% 60% 40% 45%;
+  animation: morphB 7s ease-in-out infinite alternate;
+}
+
+/* mint lobe, bottom */
+.lobeC {
+  left: 2%;
+  bottom: -3%;
+  width: 62%;
+  height: 54%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    #bde8d6,
+    rgba(141, 212, 200, 0.9) 55%,
+    rgba(141, 212, 200, 0)
+  );
+  border-radius: 45% 55% 52% 48% / 48% 42% 58% 52%;
+  animation: morphC 8s ease-in-out infinite alternate;
 }
 
 .brandName {
@@ -56,10 +90,55 @@
   font-weight: 700;
   /* high optical size = maximum thick/thin contrast in Fraunces */
   font-variation-settings: "opsz" 144;
-  font-size: clamp(26px, 2.5vw, 42px);
-  line-height: 1;
-  letter-spacing: -0.01em;
+  font-size: clamp(32px, 3.2vw, 56px);
+  line-height: 0.98;
+  letter-spacing: -0.015em;
   color: var(--ink);
+}
+
+@keyframes morphA {
+  0% {
+    border-radius: 62% 38% 55% 45% / 55% 48% 52% 45%;
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    border-radius: 48% 52% 42% 58% / 62% 40% 60% 38%;
+    transform: rotate(6deg) scale(1.04);
+  }
+  100% {
+    border-radius: 55% 45% 60% 40% / 45% 58% 42% 55%;
+    transform: rotate(-4deg) scale(0.98);
+  }
+}
+
+@keyframes morphB {
+  0% {
+    border-radius: 58% 42% 60% 40% / 55% 60% 40% 45%;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    border-radius: 45% 55% 48% 52% / 60% 42% 58% 40%;
+    transform: translate(-6%, 8%) scale(1.12);
+  }
+  100% {
+    border-radius: 60% 40% 52% 48% / 42% 58% 44% 56%;
+    transform: translate(4%, -4%) scale(0.94);
+  }
+}
+
+@keyframes morphC {
+  0% {
+    border-radius: 45% 55% 52% 48% / 48% 42% 58% 52%;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    border-radius: 58% 42% 45% 55% / 40% 60% 42% 58%;
+    transform: translate(8%, -6%) rotate(-8deg);
+  }
+  100% {
+    border-radius: 50% 50% 60% 40% / 55% 45% 52% 48%;
+    transform: translate(-4%, 3%) rotate(5deg);
+  }
 }
 
 .headline {
@@ -463,7 +542,10 @@
   }
 
   .availabilityDot,
-  .scrollCueLine {
+  .scrollCueLine,
+  .lobeA,
+  .lobeB,
+  .lobeC {
     animation: none;
   }
 }

@@ -42,7 +42,11 @@ const HeroSection = () => {
     <div ref={heroRef} className={styles.hero}>
       <div className={styles.left}>
         <div className={`${styles.brand} ${styles.reveal}`}>
-          <span className={styles.brandMark} aria-hidden="true" />
+          <span className={styles.brandMark} aria-hidden="true">
+            <i className={styles.lobeA} />
+            <i className={styles.lobeB} />
+            <i className={styles.lobeC} />
+          </span>
           <span className={styles.brandName}>
             Roman
             <br />
