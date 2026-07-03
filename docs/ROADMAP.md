@@ -28,14 +28,12 @@
 
 ## Track B — Rest of the site (still old design)
 
-- **B1. Below-fold sections** (Insights, Case Studies, Open Source,
-  Experience): drop the beige glass section cards; editorial layout directly
-  on the canvas — hairline charcoal dividers, mono uppercase labels, serif
-  accents, drawn-in reveals via IntersectionObserver (no GSAP, per
-  [PROHIBITED_LIBRARIES.md](./PROHIBITED_LIBRARIES.md)). Case studies as the
-  Blueprint "file-folder table" with ink lines thickening on hover.
-- **B2. Footer**: replace the dark "BUILD THE FUTURE" block — light canvas,
-  hairline top rule, mono links, serif sign-off.
+- **B1. Below-fold sections** ✅ (`552033e`, Jul 2026): beige glass cards
+  dropped; hairline editorial rows on the canvas, mono uppercase labels, serif
+  case titles, ink slide-in on hover. Remaining nice-to-have: scroll-triggered
+  reveals via IntersectionObserver (currently a load-fade).
+- **B2. Footer** ✅ (`552033e`): light wash + hairline rule, serif wordmark,
+  mono link groups, Fraunces italic/bold "Build the Future" sign-off.
 - **B3. Service pages** (`/ai-automation-engineer`,
   `/react-performance-consulting`, `/fractional-cto`): shared fluid canvas,
   typographic hero, restyled content blocks + CTAs. These are the funnel
