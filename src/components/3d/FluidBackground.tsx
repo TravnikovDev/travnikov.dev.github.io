@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { auraColors } from "../../theme";
 
 // Raw sRGB values on purpose: ShaderMaterial output skips tone mapping and
 // color-space conversion, so the palette renders exactly as authored.
@@ -29,11 +28,20 @@ const fragmentShader = /* glsl */ `
   uniform float uAspect;
   uniform vec2 uPointer;
   uniform vec3 uCanvas;
-  uniform vec3 uAqua;
-  uniform vec3 uMint;
-  uniform vec3 uSage;
-  uniform vec3 uSand;
-  uniform vec3 uSlate;
+
+  // stream palette (design-fixed)
+  #define GREY_TEAL  vec3(0.765, 0.827, 0.824)  /* #c3d3d2 */
+  #define TEAL_PALE  vec3(0.722, 0.824, 0.827)  /* #b8d2d3 */
+  #define SAGE       vec3(0.525, 0.675, 0.631)  /* #86aca1 */
+  #define SAGE_PALE  vec3(0.733, 0.780, 0.702)  /* #bbc7b3 */
+  #define CHAMPAGNE  vec3(0.898, 0.792, 0.678)  /* #e5caad */
+  #define TAN        vec3(0.878, 0.788, 0.663)  /* #e0c9a9 */
+  #define TAUPE      vec3(0.710, 0.655, 0.553)  /* #b5a78d */
+  #define IVORY      vec3(0.906, 0.851, 0.808)  /* #e7d9ce */
+  #define SLATE_BLUE vec3(0.282, 0.353, 0.392)  /* #485a64 */
+  #define STEEL_BLUE vec3(0.314, 0.435, 0.514)  /* #506f83 */
+  #define NAVY       vec3(0.145, 0.176, 0.251)  /* #252d40 */
+  #define CHARCOAL   vec3(0.239, 0.251, 0.278)  /* #3d4047 */
 
   // sin-free hash: fract(sin(...)*43758.) collapses on Apple GPUs (Metal fast-sin)
   float hash(vec2 p) {
@@ -103,21 +111,28 @@ const fragmentShader = /* glsl */ `
     float f = fbm(warped + vec2(0.0, 0.3) * fold);
 
     vec3 col = uCanvas;
-    // cream/ivory ribbons woven through the cool base
-    col = mix(col, uSand, smoothstep(0.25, 0.9, foldB) * 0.34);
-    // mint ribbon — narrower window gives a defined strand
-    col = mix(col, uMint, smoothstep(0.35, 0.85, fold) * smoothstep(0.2, 0.6, f) * 0.8);
-    // pale aqua ribbon on an offset phase
-    col = mix(col, uAqua, smoothstep(0.45, 0.9, foldC) * 0.62);
-    // deeper sage mid-tone folds
-    col = mix(col, uSage, smoothstep(0.55, 0.98, sin(phase * 0.7 + 3.6)) * 0.34);
-    // faint sand strand
-    col = mix(col, uSand, smoothstep(0.5, 0.95, sin(phase * 0.45 + 1.1)) * 0.26);
-    // near-white strands between the colored ribbons
-    col = mix(col, uCanvas * 1.01, smoothstep(0.45, 0.95, -fold) * 0.5);
-    // deep teal-navy shadow pockets — the reference's dark accents
-    float darkMask = smoothstep(0.38, 0.64, fbm(sp * 0.45 + vec2(9.3, 2.4)));
-    col = mix(col, vec3(0.14, 0.21, 0.25), darkMask * smoothstep(0.25, 0.9, fold) * 0.5);
+    // warm body first: ivory underlay, tan wash, champagne + taupe strands
+    col = mix(col, IVORY, smoothstep(0.2, 0.9, foldB) * 0.5);
+    col = mix(col, TAN, smoothstep(0.5, 0.92, foldB) * 0.3);
+    col = mix(col, CHAMPAGNE, smoothstep(0.6, 0.97, sin(phase * 0.45 + 1.1)) * 0.5);
+    col = mix(col, TAUPE, smoothstep(0.68, 0.99, sin(phase * 0.38 + 2.6)) * 0.2);
+    // greens paint last so they win their regions
+    col = mix(col, TEAL_PALE, smoothstep(0.45, 0.9, foldC) * 0.8);
+    col = mix(col, SAGE_PALE, smoothstep(0.4, 0.95, sin(phase * 0.52 + 5.2)) * 0.5);
+    col = mix(
+      col,
+      SAGE,
+      smoothstep(0.35, 0.85, fold) * mix(0.6, 1.0, smoothstep(0.2, 0.6, f)) * 0.8
+    );
+    // grey-teal light strands between the ribbons
+    col = mix(col, GREY_TEAL, smoothstep(0.45, 0.95, -fold) * 0.5);
+    // steel-blue shading in the troughs
+    col = mix(col, STEEL_BLUE, smoothstep(0.55, 0.98, -foldB) * 0.18);
+    // dark pockets: slate-blue folds with a navy core, charcoal creases
+    float darkMask = smoothstep(0.36, 0.6, fbm(sp * 0.45 + vec2(9.3, 2.4)));
+    col = mix(col, SLATE_BLUE, darkMask * smoothstep(0.2, 0.8, fold) * 0.6);
+    col = mix(col, NAVY, darkMask * smoothstep(0.55, 0.95, fold) * 0.55);
+    col = mix(col, CHARCOAL, darkMask * smoothstep(0.6, 0.98, -foldC) * 0.2);
 
     // confine ribbons to the diagonal band; corners stay near-white
     float band = 1.0 - smoothstep(0.12, 0.95, abs(rp.y + 0.1));
@@ -134,7 +149,7 @@ const fragmentShader = /* glsl */ `
     float diff = clamp(dot(N, L), 0.0, 1.0);
     float spec = pow(clamp(dot(N, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0, 1.0), 28.0);
     // diffuse shading confined to the band
-    col *= mix(1.0, 0.78 + 0.34 * diff, band);
+    col *= mix(1.0, 0.82 + 0.28 * diff, band);
     // champagne specular highlights along the crests
     col += spec * vec3(0.98, 0.92, 0.76) * 0.26 * band;
     // faint warm glow hugging the band core
@@ -164,14 +179,8 @@ export default function FluidBackground() {
           uAspect: { value: 1.6 },
           uPointer: { value: new THREE.Vector2(0, 0) },
           // shader-local canvas: cool ice-white — the reference canvas is
-          // blue-grey-green, with the warmth reserved for the sparkles
+          // blue-grey-green, with the warmth living inside the stream
           uCanvas: { value: hexToVec3("#EDF1EF") },
-          uAqua: { value: hexToVec3(auraColors.paleAqua) },
-          uMint: { value: hexToVec3(auraColors.mint) },
-          uSage: { value: hexToVec3(auraColors.mutedTeal) },
-          // cream instead of warmSand: ivory ribbons, not orange
-          uSand: { value: hexToVec3(auraColors.cream) },
-          uSlate: { value: hexToVec3(auraColors.slate) },
         },
         vertexShader,
         fragmentShader,
