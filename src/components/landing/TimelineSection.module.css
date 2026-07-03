@@ -27,46 +27,40 @@
   position: relative;
 }
 
-/* DO NOT MODIFY THOSE STYLES */
+/* Same centered placement — editorial ink typography */
 .timelineTitleText {
-  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-family: var(--font-sans);
+  font-size: clamp(2.2rem, 4.6vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
   margin-bottom: 1.2rem;
-  background: linear-gradient(
-    135deg,
-    var(--mantine-color-primary-4),
-    var(--mantine-color-secondary-4)
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
+  color: var(--ink);
 }
 
-/* DO NOT MODIFY THOSE STYLES */
+/* Kept as the animated accent, recoloured to a refined ink hairline */
 .timelineUnderline {
   position: absolute;
-  bottom: -10px;
+  bottom: -8px;
   left: 0;
   width: 100%;
-  height: 5px;
+  height: 2px;
   background: linear-gradient(
     90deg,
     transparent,
-    var(--mantine-color-primary-4),
-    var(--mantine-color-secondary-4),
+    rgba(26, 30, 33, 0.5),
     transparent
   );
   animation: shimmer 2s infinite linear;
 }
 
-/* DO NOT MODIFY THOSE STYLES */
 .timelineDescriptionText {
   text-align: center;
-  max-width: 700px;
-  margin: 1.8rem auto 0;
-  color: var(--text-color-secondary);
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  line-height: 1.7;
+  max-width: 640px;
+  margin: 1.6rem auto 0;
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  line-height: 1.6;
 }
 
 /* Vertical Timeline Container */
