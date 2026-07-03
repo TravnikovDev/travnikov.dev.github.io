@@ -53,24 +53,30 @@
   overflow: hidden;
 }
 
-/* Editorial section: content sits directly on the canvas, no glass card */
 section {
   position: relative;
   width: 100%;
-  max-width: min(1180px, 100%);
-  margin: 0 auto clamp(80px, 12vh, 150px) auto;
-  padding: 0 clamp(16px, 3.5vw, 56px);
-  font-size: 1rem;
-  line-height: 1.6;
-  background: none;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  backdrop-filter: none;
+  max-width: 1200px;
+  margin: 0 auto var(--spacing) auto;
+  padding: 2rem;
+  background: linear-gradient(
+    135deg,
+    var(--section-bg),
+    var(--section-bg-strong)
+  );
+  backdrop-filter: blur(var(--glass-blur));
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: 8px; /* Add rounded corners */
+  border: 1px solid var(--surface-border);
+  box-shadow:
+    0 4px 20px var(--surface-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4); /* glass highlight */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions for animations */
 }
 
 .sectionRight {
-  margin: 0 auto clamp(80px, 12vh, 150px) auto;
+  margin: 0 auto var(--spacing) auto;
 }
 
 /* Full-bleed hero: opt out of the default glass-card section chrome */
@@ -85,11 +91,10 @@ section {
   animation: none;
 }
 
-/* Insights — hairline editorial rows drawn straight on the canvas */
 .insightsList {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid rgba(26, 30, 33, 0.14);
+  gap: 1rem;
 }
 
 .insightItem {
@@ -97,30 +102,33 @@ section {
   justify-content: space-between;
   align-items: baseline;
   gap: 1.5rem;
-  padding: 1.15rem 0.25rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 10px;
   text-decoration: none;
-  color: var(--ink);
-  border-bottom: 1px solid rgba(26, 30, 33, 0.14);
-  transition: padding-left 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    border-color 250ms ease;
+  color: inherit;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
+  transition: transform 200ms ease, border-color 200ms ease,
+    box-shadow 200ms ease;
 }
 
 .insightItem:hover {
-  padding-left: 1rem;
-  border-color: var(--ink);
+  transform: translateY(-3px);
+  border-color: rgba(var(--mantine-color-secondary-4-rgb), 0.8);
+  box-shadow: 0 12px 26px var(--card-shadow);
 }
 
 .insightTitle {
-  font-size: 1.15rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .caseStudiesList {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid rgba(26, 30, 33, 0.14);
-  margin-bottom: 1.75rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .caseStudyItem {
@@ -128,34 +136,32 @@ section {
   justify-content: space-between;
   align-items: flex-start;
   gap: 1.5rem;
-  padding: 1.6rem 0.25rem;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
   text-decoration: none;
-  color: var(--ink);
-  border-bottom: 1px solid rgba(26, 30, 33, 0.14);
-  transition: padding-left 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    border-color 250ms ease;
+  color: inherit;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
+  transition: transform 200ms ease, border-color 200ms ease,
+    box-shadow 200ms ease;
 }
 
 .caseStudyItem:hover {
-  padding-left: 1rem;
-  border-color: var(--ink);
+  transform: translateY(-3px);
+  border-color: rgba(var(--mantine-color-primary-4-rgb), 0.8);
+  box-shadow: 0 12px 26px var(--card-shadow);
 }
 
 .caseStudyTitle {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  margin: 0.15rem 0 0.5rem;
+  margin: 0.25rem 0 0.5rem;
 }
 
 .caseStudyCta {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--mantine-color-secondary-4);
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -163,19 +169,13 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink);
+  color: var(--mantine-color-secondary-4);
+  font-weight: 600;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 200ms ease;
 }
 
 .caseStudiesLink:hover {
-  border-color: var(--ink);
+  text-decoration: underline;
 }
 
 /* Animation for section entrance */
