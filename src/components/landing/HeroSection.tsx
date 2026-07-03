@@ -64,7 +64,8 @@ const HeroSection = () => {
         </div>
 
         <h1 className={`${styles.headline} ${styles.reveal}`}>
-          Automating enterprises with AI&nbsp;&amp; architecture.
+          Automating enterprises with{" "}
+          <span className={styles.accent}>AI&nbsp;&amp; architecture.</span>
         </h1>
 
         <div className={`${styles.glassCard} ${styles.reveal}`}>

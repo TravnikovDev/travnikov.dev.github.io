@@ -159,6 +159,11 @@
   z-index: 2;
 }
 
+/* two-tone split: the second clause reads in slate */
+.accent {
+  color: var(--ink-soft);
+}
+
 .glassCard {
   max-width: 540px;
   /* atmospheric pane: cooler tint, gradient translucency, embedded in the
