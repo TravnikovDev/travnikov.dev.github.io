@@ -1,7 +1,6 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Link } from "gatsby";
 import { Canvas } from "@react-three/fiber";
-import { View } from "@react-three/drei";
 import * as styles from "./HeroSection.module.css";
 import { GlyphScene, GlyphKind } from "../3d/ServiceGlyphs";
 
@@ -35,11 +34,21 @@ const vectors: {
   },
 ];
 
-const HeroSection = () => {
-  const heroRef = useRef<HTMLDivElement>(null!);
+// Each glyph gets its own small canvas so it scrolls natively with the DOM.
+// (A shared drei <View> re-scissors per frame and visibly lags during scroll.)
+const GlyphCanvas = ({ kind, phase }: { kind: GlyphKind; phase: number }) => (
+  <Canvas
+    className={styles.glyphCanvas}
+    dpr={[1, 2]}
+    gl={{ antialias: true, alpha: true }}
+  >
+    <GlyphScene kind={kind} phase={phase} />
+  </Canvas>
+);
 
+const HeroSection = () => {
   return (
-    <div ref={heroRef} className={styles.hero}>
+    <div className={styles.hero}>
       <div className={styles.left}>
         <div className={`${styles.brand} ${styles.reveal}`}>
           <span className={styles.brandMark} aria-hidden="true">
@@ -109,12 +118,14 @@ const HeroSection = () => {
               index === 1 ? styles.serviceReverse : ""
             }`}
           >
-            <View
+            <div
               className={styles.glyph}
-              id={vector.glyph === "crystal" ? "crystal-glyph-anchor" : undefined}
+              id={
+                vector.glyph === "crystal" ? "crystal-glyph-anchor" : undefined
+              }
             >
-              <GlyphScene kind={vector.glyph} phase={index * 2.1} />
-            </View>
+              <GlyphCanvas kind={vector.glyph} phase={index * 2.1} />
+            </div>
             <div className={styles.serviceText}>
               <h3>{vector.title}</h3>
               <p>{vector.copy}</p>
@@ -122,15 +133,6 @@ const HeroSection = () => {
           </Link>
         ))}
       </div>
-
-      <Canvas
-        className={styles.glyphCanvas}
-        eventSource={heroRef}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <View.Port />
-      </Canvas>
     </div>
   );
 };

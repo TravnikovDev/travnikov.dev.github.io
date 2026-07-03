@@ -416,12 +416,11 @@
   max-width: 34ch;
 }
 
-/* Shared canvas that renders all glyph views */
+/* Per-glyph canvas fills its container and ignores pointer (Link handles clicks) */
 .glyphCanvas {
-  position: absolute !important;
-  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
   pointer-events: none;
-  z-index: 2;
 }
 
 /* ---------- Scroll cue: a line drawing itself downward ---------- */
