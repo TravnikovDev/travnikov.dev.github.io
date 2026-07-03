@@ -170,11 +170,11 @@ function Scene() {
       <FluidBackground />
       {/* tiny golden sparks hugging the ribbon — warm lights on a cool canvas */}
       <BokehParticles
-        count={Math.round(38 * density)}
+        count={Math.round(55 * density)}
         spread={diagonal * 1.3}
         size={0.14}
-        opacity={0.62}
-        shimmer={0.14}
+        opacity={0.68}
+        shimmer={0.16}
         drift={0.12}
         rise={0.06}
         frontDepth={-0.6}
@@ -183,11 +183,11 @@ function Scene() {
       />
       {/* mid golden glow dots */}
       <BokehParticles
-        count={Math.round(20 * density)}
+        count={Math.round(26 * density)}
         spread={diagonal * 1.2}
         size={0.4}
-        opacity={0.5}
-        shimmer={0.16}
+        opacity={0.55}
+        shimmer={0.18}
         drift={0.1}
         rise={0.05}
         frontDepth={-0.8}
@@ -196,16 +196,29 @@ function Scene() {
       />
       {/* a few large soft discs, far layer */}
       <BokehParticles
-        count={Math.round(4 * density)}
+        count={Math.round(5 * density)}
         spread={diagonal * 1.1}
         size={0.8}
-        opacity={0.18}
+        opacity={0.2}
         shimmer={0.08}
         drift={0.08}
         rise={0.04}
         frontDepth={-1.2}
         color="#F2DCB6"
         bandSigma={viewport.height * 0.26}
+      />
+      {/* foreground out-of-focus discs — depth-of-field layer */}
+      <BokehParticles
+        count={Math.round(6 * density)}
+        spread={diagonal * 1.2}
+        size={1.7}
+        opacity={0.1}
+        shimmer={0.05}
+        drift={0.16}
+        rise={0.06}
+        frontDepth={-0.12}
+        color="#F5E6C8"
+        bandSigma={viewport.height * 0.4}
       />
     </>
   );

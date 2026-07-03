@@ -15,71 +15,70 @@ const GlyphLights = () => (
   </>
 );
 
-// Refractive gem cluster: intersecting octahedron shards with transmission
-const crystalShards: {
-  position: [number, number, number];
-  rotation: [number, number, number];
-  scale: [number, number, number];
-}[] = [
-  { position: [0, 0, 0], rotation: [0, 0.4, 0], scale: [1.05, 1.7, 1.05] },
-  {
-    position: [0.72, 0.3, 0.25],
-    rotation: [0.45, 0.2, -0.55],
-    scale: [0.5, 0.95, 0.5],
-  },
-  {
-    position: [-0.68, 0.35, -0.15],
-    rotation: [-0.35, 0.5, 0.5],
-    scale: [0.45, 0.8, 0.45],
-  },
-  {
-    position: [0.2, -0.55, 0.45],
-    rotation: [0.7, 0.1, 0.35],
-    scale: [0.4, 0.7, 0.4],
-  },
-  {
-    position: [-0.35, -0.45, -0.4],
-    rotation: [-0.55, -0.3, -0.45],
-    scale: [0.38, 0.62, 0.38],
-  },
-  {
-    position: [0.55, -0.15, -0.5],
-    rotation: [0.2, 0.8, 0.6],
-    scale: [0.32, 0.55, 0.32],
-  },
-];
-
+// Stellated crystal star: elongated octahedron shards radiating from a core,
+// like the reference's translucent diamond bloom
 const Crystal = () => {
   const geometry = useMemo(() => new THREE.OctahedronGeometry(1, 0), []);
   const material = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: "#c4d8e8",
+        color: "#d4e4f0",
         metalness: 0,
-        roughness: 0.06,
-        transmission: 0.7,
-        thickness: 2.4,
+        roughness: 0.05,
+        transmission: 0.78,
+        thickness: 2.0,
         ior: 2.0,
         clearcoat: 1,
-        clearcoatRoughness: 0.06,
-        envMapIntensity: 2.2,
+        clearcoatRoughness: 0.05,
+        envMapIntensity: 2.6,
         attenuationColor: new THREE.Color("#8fb8d4"),
-        attenuationDistance: 1.4,
+        attenuationDistance: 1.6,
         flatShading: true,
       }),
     []
   );
+  // one spike along each icosahedron vertex direction = a 12-point star
+  const spikes = useMemo(() => {
+    const geo = new THREE.IcosahedronGeometry(1, 0);
+    const positions = geo.attributes.position;
+    const seen = new Set<string>();
+    const up = new THREE.Vector3(0, 1, 0);
+    const result: {
+      position: THREE.Vector3;
+      quaternion: THREE.Quaternion;
+      length: number;
+    }[] = [];
+    for (let i = 0; i < positions.count; i++) {
+      const v = new THREE.Vector3()
+        .fromBufferAttribute(positions, i)
+        .normalize();
+      const key = v
+        .toArray()
+        .map((n) => n.toFixed(2))
+        .join(",");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      result.push({
+        position: v.clone().multiplyScalar(0.72),
+        quaternion: new THREE.Quaternion().setFromUnitVectors(up, v),
+        length: 0.85 + (result.length % 3) * 0.28,
+      });
+    }
+    geo.dispose();
+    return result;
+  }, []);
 
   return (
-    <group scale={1.02}>
-      {crystalShards.map((shard, i) => (
+    <group scale={1.12}>
+      <mesh geometry={geometry} material={material} scale={[0.75, 1.0, 0.75]} />
+      {spikes.map((spike, i) => (
         <mesh
           key={i}
           geometry={geometry}
           material={material}
-          position={shard.position}
-          rotation={shard.rotation}
-          scale={shard.scale}
+          position={spike.position}
+          quaternion={spike.quaternion}
+          scale={[0.3, spike.length, 0.3]}
         />
       ))}
     </group>
@@ -91,9 +90,9 @@ const Lattice = ({ innerRef }: { innerRef: React.RefObject<THREE.Group> }) => {
   // THREE.Line built imperatively: R3F's <line> collides with the SVG type
   const fan = useMemo(() => {
     const material = new THREE.LineBasicMaterial({
-      color: "#6a7a74",
+      color: "#4c5a63",
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.75,
     });
     const lines: THREE.Line[] = [];
     for (let i = 0; i < 10; i++) {
@@ -126,16 +125,16 @@ const Lattice = ({ innerRef }: { innerRef: React.RefObject<THREE.Group> }) => {
   );
 
   return (
-    <group>
+    <group scale={1.18}>
       <lineSegments geometry={boxEdges}>
-        <lineBasicMaterial color="#4a5964" transparent opacity={0.6} />
+        <lineBasicMaterial color="#333f47" transparent opacity={0.9} />
       </lineSegments>
       {fan.map((lineObject, i) => (
         <primitive key={i} object={lineObject} />
       ))}
       <group ref={innerRef}>
         <lineSegments geometry={innerEdges}>
-          <lineBasicMaterial color="#4a5964" transparent opacity={0.6} />
+          <lineBasicMaterial color="#333f47" transparent opacity={0.9} />
         </lineSegments>
       </group>
     </group>
@@ -153,7 +152,7 @@ const arcYAt = (x: number) =>
   arcRadius - Math.sqrt(arcRadius * arcRadius - x * x);
 
 const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => (
-  <group scale={0.95} position={[0, 0.1, 0]}>
+  <group scale={1.08} position={[0, 0.1, 0]}>
     <mesh position={[0, -1.62, 0]} rotation={[Math.PI, 0, 0]}>
       <coneGeometry args={[1.0, 1.1, 40]} />
       <meshStandardMaterial color="#ebe5d8" roughness={0.55} metalness={0.05} />

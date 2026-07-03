@@ -64,25 +64,36 @@
 
 .headline {
   font-family: var(--font-sans);
-  font-weight: 550;
+  font-weight: 500;
   font-size: clamp(2.4rem, 4.6vw, 5rem);
   line-height: 0.98;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.028em;
   text-transform: uppercase;
-  color: rgba(26, 30, 33, 0.92);
+  color: rgba(26, 30, 33, 0.9);
   max-width: 13ch;
   margin: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .glassCard {
   max-width: 540px;
-  background: var(--glass-fill);
-  border: 1px solid var(--glass-border);
+  /* atmospheric pane: cooler tint, gradient translucency, embedded in the
+     composition — the headline overlaps its top edge */
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.38),
+    rgba(233, 243, 239, 0.18)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 20px;
   padding: clamp(16px, 1.8vw, 24px);
-  backdrop-filter: blur(16px) saturate(1.15);
-  -webkit-backdrop-filter: blur(16px) saturate(1.15);
-  box-shadow: 0 18px 50px rgba(80, 100, 92, 0.12);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  box-shadow: 0 24px 60px rgba(60, 84, 78, 0.14);
+  margin-top: clamp(-30px, -2.2vh, -10px);
+  position: relative;
+  z-index: 1;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -197,7 +208,7 @@
 
 .service {
   display: grid;
-  grid-template-columns: clamp(120px, 11.5vw, 185px) 1fr;
+  grid-template-columns: clamp(140px, 13vw, 215px) 1fr;
   align-items: center;
   gap: clamp(12px, 1.6vw, 26px);
   text-decoration: none;

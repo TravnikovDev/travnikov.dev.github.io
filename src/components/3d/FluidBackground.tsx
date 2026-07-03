@@ -65,6 +65,16 @@ const fragmentShader = /* glsl */ `
     return v;
   }
 
+  // silk height field — same fold construction the colors use, so the
+  // shading relief lines up with the ribbon boundaries
+  float silkHeight(vec2 rp, vec2 drift) {
+    vec2 sp = vec2(rp.x * 0.32, rp.y * 1.1);
+    vec2 q = vec2(fbm(sp + drift), fbm(sp + vec2(3.1, 7.7) - drift * 0.5));
+    float phase = rp.y * 5.5 + fbm(sp + 1.1 * q) * 4.2 - q.x * 1.8;
+    return sin(phase) * 0.6 + sin(phase * 0.62 + 2.3) * 0.3
+      + sin(phase * 1.35 + 4.4) * 0.18;
+  }
+
   void main() {
     vec2 p = (vUv - 0.5) * vec2(uAspect, 1.0) * 2.6;
 
@@ -94,32 +104,44 @@ const fragmentShader = /* glsl */ `
 
     vec3 col = uCanvas;
     // cream/ivory ribbons woven through the cool base
-    col = mix(col, uSand, smoothstep(0.25, 0.9, foldB) * 0.32);
+    col = mix(col, uSand, smoothstep(0.25, 0.9, foldB) * 0.34);
     // mint ribbon — narrower window gives a defined strand
-    col = mix(col, uMint, smoothstep(0.35, 0.85, fold) * smoothstep(0.2, 0.6, f) * 0.75);
+    col = mix(col, uMint, smoothstep(0.35, 0.85, fold) * smoothstep(0.2, 0.6, f) * 0.8);
     // pale aqua ribbon on an offset phase
-    col = mix(col, uAqua, smoothstep(0.45, 0.9, foldC) * 0.6);
+    col = mix(col, uAqua, smoothstep(0.45, 0.9, foldC) * 0.62);
     // deeper sage mid-tone folds
-    col = mix(col, uSage, smoothstep(0.55, 0.98, sin(phase * 0.7 + 3.6)) * 0.28);
+    col = mix(col, uSage, smoothstep(0.55, 0.98, sin(phase * 0.7 + 3.6)) * 0.34);
     // faint sand strand
-    col = mix(col, uSand, smoothstep(0.5, 0.95, sin(phase * 0.45 + 1.1)) * 0.24);
-    // cool blue-grey shadow in the fold troughs gives the silk its depth
-    col = mix(col, vec3(0.71, 0.77, 0.775), smoothstep(0.35, 0.95, -foldB) * 0.3);
-    // near-white strands between the colored ribbons (no glow hotspots)
-    col = mix(col, uCanvas * 1.012, smoothstep(0.45, 0.95, -fold) * 0.55);
-    // dark folds: one or two large smooth blobs, never wisps
-    float darkMask = smoothstep(0.4, 0.66, fbm(sp * 0.45 + vec2(9.3, 2.4)));
-    col = mix(col, uSlate, darkMask * smoothstep(0.3, 0.85, fold) * 0.62);
-    // broad soft crest lightening
-    col += smoothstep(0.5, 1.0, fold) * 0.028;
+    col = mix(col, uSand, smoothstep(0.5, 0.95, sin(phase * 0.45 + 1.1)) * 0.26);
+    // near-white strands between the colored ribbons
+    col = mix(col, uCanvas * 1.01, smoothstep(0.45, 0.95, -fold) * 0.5);
+    // deep teal-navy shadow pockets — the reference's dark accents
+    float darkMask = smoothstep(0.38, 0.64, fbm(sp * 0.45 + vec2(9.3, 2.4)));
+    col = mix(col, vec3(0.14, 0.21, 0.25), darkMask * smoothstep(0.25, 0.9, fold) * 0.5);
 
     // confine ribbons to the diagonal band; corners stay near-white
     float band = 1.0 - smoothstep(0.12, 0.95, abs(rp.y + 0.1));
     band *= band;
     col = mix(uCanvas, col, band);
 
+    // ---- sculptural relief: light the fold field like 3D silk ----
+    float hC = fold * 0.6 + foldB * 0.3 + sin(phase * 1.35 + 4.4) * 0.18;
+    float e = 0.025;
+    float hX = silkHeight(rp + vec2(e, 0.0), drift);
+    float hY = silkHeight(rp + vec2(0.0, e), drift);
+    vec3 N = normalize(vec3((hC - hX) / e * 0.09, (hC - hY) / e * 0.09, 1.0));
+    vec3 L = normalize(vec3(0.45, 0.6, 0.66)); // warm key, upper right
+    float diff = clamp(dot(N, L), 0.0, 1.0);
+    float spec = pow(clamp(dot(N, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0, 1.0), 28.0);
+    // diffuse shading confined to the band
+    col *= mix(1.0, 0.78 + 0.34 * diff, band);
+    // champagne specular highlights along the crests
+    col += spec * vec3(0.98, 0.92, 0.76) * 0.26 * band;
+    // faint warm glow hugging the band core
+    col += vec3(0.038, 0.032, 0.02) * band * smoothstep(0.2, 0.9, fold);
+
     // gentle luminosity toward the top
-    col += (vUv.y - 0.5) * 0.022;
+    col += (vUv.y - 0.5) * 0.02;
 
     // paper grain
     float grain = hash(vUv * vec2(1440.0, 900.0));
