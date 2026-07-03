@@ -28,12 +28,15 @@
 
 ## Track B — Rest of the site (still old design)
 
-- **B1. Below-fold sections** ✅ (`552033e`, Jul 2026): beige glass cards
-  dropped; hairline editorial rows on the canvas, mono uppercase labels, serif
-  case titles, ink slide-in on hover. Remaining nice-to-have: scroll-triggered
-  reveals via IntersectionObserver (currently a load-fade).
-- **B2. Footer** ✅ (`552033e`): light wash + hairline rule, serif wordmark,
-  mono link groups, Fraunces italic/bold "Build the Future" sign-off.
+- **B1. Below-fold sections** (Insights, Case Studies, Open Source,
+  Experience): keep the existing glass-card structure/placement and the
+  fade-in dynamic — restyle in place only (an editorial teardown was tried in
+  `552033e` and reverted in `8339c1b` for losing the structure). Lighter
+  touch: refresh card surfaces/typography toward the new palette without
+  changing layout.
+- **B2. Footer**: keep the dark "Build the Future" block (user likes it).
+  Only revisit if explicitly requested; note it still uses Playfair Display
+  which is not currently self-hosted (falls back to Times).
 - **B3. Service pages** (`/ai-automation-engineer`,
   `/react-performance-consulting`, `/fractional-cto`): shared fluid canvas,
   typographic hero, restyled content blocks + CTAs. These are the funnel
