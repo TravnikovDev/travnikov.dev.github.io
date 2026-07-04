@@ -180,8 +180,9 @@
   backdrop-filter: blur(20px) saturate(1.2);
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
   box-shadow: 0 24px 60px rgba(60, 84, 78, 0.16);
-  /* overlap the last headline line by ~a third, without burying it */
-  margin-top: clamp(-72px, -5vh, -44px);
+  /* flat overlap — clip only the bottom of the last line. (vh here amplifies
+     the overlap on tall screens and slices through the word — do not use it.) */
+  margin-top: -42px;
   position: relative;
   z-index: 2;
 }
