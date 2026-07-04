@@ -3,3 +3,8 @@ export const navigationGroup: string;
 export const navLinksGroup: string;
 export const navButton: string;
 export const navButtonActive: string;
+export const mobileMenu: string;
+export const menuFade: string;
+export const mobileMenuLabel: string;
+export const drawerLink: string;
+export const drawerLinkActive: string;

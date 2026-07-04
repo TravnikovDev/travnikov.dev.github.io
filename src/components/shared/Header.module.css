@@ -52,8 +52,4 @@
   .appShellHeader {
     height: 56px;
   }
-
-  .headerGroup {
-    justify-content: center !important;
-  }
 }

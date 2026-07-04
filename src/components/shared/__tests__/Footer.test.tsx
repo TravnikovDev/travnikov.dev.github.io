@@ -1,36 +1,24 @@
-import 'react';
+import React from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { render } from '../../../utils/test-utils';
 import Footer from '../Footer';
 
-// Mock current year to make the test deterministic
-const mockDate = new Date(2024, 3, 1);
-const originalDate = global.Date;
-global.Date = class extends Date {
-  constructor() {
-    super();
-    return mockDate;
-  }
-} as DateConstructor;
-
 describe('Footer', () => {
-  it('renders copyright text with current year', () => {
+  it('renders the brand name', () => {
     render(<Footer />);
-    expect(screen.getByText('© 2024 Roman Travnikov. All rights reserved.')).toBeInTheDocument();
+    expect(screen.getByText('Roman Travnikov')).toBeInTheDocument();
   });
 
-  it('is positioned at the bottom of the page', () => {
-    const { container } = render(<Footer />);
-    const footer = container.querySelector('.footer');
-    expect(footer).toHaveStyle({
-      borderTop: '1px solid rgba(var(--mantine-color-secondary-4-rgb), 0.2)',
-      background: 'rgba(var(--mantine-color-aura-0-rgb), 0.7)',
-    });
+  it('shows the current year in the copyright line', () => {
+    render(<Footer />);
+    const year = new Date().getFullYear().toString();
+    expect(screen.getByText(`© ${year}`)).toBeInTheDocument();
   });
-});
 
-// Restore original Date after tests
-afterAll(() => {
-  global.Date = originalDate;
+  it('links to the primary email', () => {
+    render(<Footer />);
+    const email = screen.getByText('roman@travnikov.dev');
+    expect(email).toHaveAttribute('href', 'mailto:roman@travnikov.dev');
+  });
 });

@@ -36,10 +36,20 @@ const vectors: {
 
 // Each glyph gets its own small canvas so it scrolls natively with the DOM.
 // (A shared drei <View> re-scissors per frame and visibly lags during scroll.)
-const GlyphCanvas = ({ kind, phase }: { kind: GlyphKind; phase: number }) => (
+const GlyphCanvas = ({
+  kind,
+  phase,
+  reducedMotion,
+}: {
+  kind: GlyphKind;
+  phase: number;
+  reducedMotion: boolean;
+}) => (
   <Canvas
     className={styles.glyphCanvas}
     dpr={[1, 2]}
+    // reduced motion: render one static frame instead of a rAF loop
+    frameloop={reducedMotion ? "demand" : "always"}
     gl={{ antialias: true, alpha: true }}
   >
     <GlyphScene kind={kind} phase={phase} />
@@ -47,6 +57,10 @@ const GlyphCanvas = ({ kind, phase }: { kind: GlyphKind; phase: number }) => (
 );
 
 const HeroSection = () => {
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   return (
     <div className={styles.hero}>
       <div className={styles.left}>
@@ -125,7 +139,11 @@ const HeroSection = () => {
                 vector.glyph === "crystal" ? "crystal-glyph-anchor" : undefined
               }
             >
-              <GlyphCanvas kind={vector.glyph} phase={index * 2.1} />
+              <GlyphCanvas
+                kind={vector.glyph}
+                phase={index * 2.1}
+                reducedMotion={reducedMotion}
+              />
             </div>
             <div className={styles.serviceText}>
               <h3>{vector.title}</h3>

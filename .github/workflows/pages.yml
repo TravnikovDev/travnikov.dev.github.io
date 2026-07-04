@@ -72,9 +72,10 @@ jobs:
             ${{ runner.os }}-gatsby-build-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-      # Skip type checking to avoid errors
-      # - name: Run type check
-      #   run: ${{ steps.detect-package-manager.outputs.manager }} run typecheck
+      - name: Type check
+        run: ${{ steps.detect-package-manager.outputs.manager }} run typecheck
+      - name: Test
+        run: ${{ steps.detect-package-manager.outputs.manager }} test
       - name: Build with Gatsby
         env:
           PREFIX_PATHS: 'true'
