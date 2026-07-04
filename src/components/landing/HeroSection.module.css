@@ -28,55 +28,72 @@
 
 /* Living blob mark: one morphing glass shape with blurred colour fields
    drifting INSIDE it — the clip is what fuses the lobes into a droplet */
+/* Airy glass cloud: soft translucent lobes with feathered edges, not a
+   solid clipped ball. No fill/clip on the container — the lobes ARE the blob. */
+/* Frosted pearl: present body, feathered edges, faint peach/mint tints */
 .brandMark {
   position: relative;
-  overflow: hidden;
-  width: clamp(56px, 5vw, 84px);
+  width: clamp(58px, 5.2vw, 86px);
   aspect-ratio: 1;
   flex: none;
-  border-radius: 58% 42% 55% 45% / 52% 48% 58% 42%;
-  background: linear-gradient(140deg, #fbfdfc, #eaf2ee 70%, #e2ece7);
-  box-shadow:
-    0 14px 28px rgba(90, 110, 100, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-  animation: blobMorph 11s ease-in-out infinite alternate;
+  filter: drop-shadow(0 7px 15px rgba(90, 110, 100, 0.22));
+  animation: blobMorph 12s ease-in-out infinite alternate;
 }
 
 .brandMark i {
   position: absolute;
   display: block;
-  border-radius: 50%;
-  filter: blur(5px);
 }
 
-/* white glass sheen, upper left */
+/* main body, upper-left — opaque-ish core that feathers to a soft edge */
 .lobeA {
-  top: -8%;
-  left: -6%;
-  width: 65%;
-  height: 60%;
-  background: rgba(255, 255, 255, 0.95);
+  top: 0%;
+  left: 2%;
+  width: 80%;
+  height: 76%;
+  border-radius: 62% 38% 55% 45% / 55% 48% 52% 45%;
+  background: radial-gradient(
+    circle at 40% 36%,
+    rgba(255, 255, 255, 0.98),
+    rgba(255, 255, 255, 0.86) 42%,
+    rgba(255, 255, 255, 0.5) 68%,
+    rgba(255, 255, 255, 0.14) 88%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  filter: blur(3px);
   animation: lobeDriftA 9s ease-in-out infinite alternate;
 }
 
-/* peach light, upper right */
+/* warm peach glow, upper-right of the body */
 .lobeB {
   top: 4%;
-  right: -2%;
-  width: 52%;
-  height: 47%;
-  background: #f5c48c;
+  right: 8%;
+  width: 46%;
+  height: 44%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(247, 196, 138, 0.85),
+    rgba(247, 196, 138, 0) 68%
+  );
+  filter: blur(5px);
   animation: lobeDriftB 7s ease-in-out infinite alternate;
 }
 
-/* mint light, lower left */
+/* cool mint tail, lower-right — the second paisley lobe */
 .lobeC {
-  bottom: 0%;
-  left: 2%;
-  width: 56%;
-  height: 50%;
-  background: #8dd4c8;
+  bottom: 2%;
+  right: 8%;
+  width: 54%;
+  height: 52%;
+  border-radius: 55% 45% 48% 52% / 50% 55% 45% 50%;
+  background: radial-gradient(
+    circle at 52% 44%,
+    rgba(255, 255, 255, 0.88),
+    rgba(141, 212, 200, 0.72) 44%,
+    rgba(141, 212, 200, 0) 78%
+  );
+  filter: blur(4px);
   animation: lobeDriftC 8s ease-in-out infinite alternate;
 }
 
