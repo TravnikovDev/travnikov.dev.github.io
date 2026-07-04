@@ -85,57 +85,75 @@ const Crystal = () => {
   );
 };
 
-// Wireframe lattice: box edges, hyperbolic fan curves, inner octahedron
+// Wireframe lattice: a cube containing a turbine flower of fine ruled-surface
+// blades radiating from a solid core (matches the reference's mesh density)
 const Lattice = ({ innerRef }: { innerRef: React.RefObject<THREE.Group> }) => {
-  // THREE.Line built imperatively: R3F's <line> collides with the SVG type
-  const fan = useMemo(() => {
-    const material = new THREE.LineBasicMaterial({
-      color: "#4c5a63",
-      transparent: true,
-      opacity: 0.75,
-    });
-    const lines: THREE.Line[] = [];
-    for (let i = 0; i < 10; i++) {
-      const a = (i / 10) * Math.PI;
-      const pts: THREE.Vector3[] = [];
-      for (let j = 0; j <= 24; j++) {
-        const t = j / 24;
-        const r = 1.3 * Math.sin(t * Math.PI);
-        pts.push(
-          new THREE.Vector3(
-            Math.cos(a) * r * (1 - t * 0.4),
-            (t - 0.5) * 2.4,
-            Math.sin(a) * r * (1 - t * 0.4)
-          )
-        );
+  // one parametric point on blade b at (u along length, v across width)
+  const bladePoint = (b: number, u: number, v: number) => {
+    const NB = 6;
+    const a0 = (b / NB) * Math.PI * 2;
+    const R0 = 0.36;
+    const R1 = 1.5;
+    const R = R0 + (R1 - R0) * u; // radius grows outward
+    const halfW = 0.44 * (0.22 + 0.78 * Math.sin(u * Math.PI)); // widest mid-span
+    const yCenter = 0.5 * Math.sin(u * Math.PI); // arch up then down
+    const y = yCenter + (v - 0.5) * 2 * halfW;
+    const az = a0 + 0.95 * u + (v - 0.5) * 0.6 * (1 - u); // pinwheel curl + fan
+    return new THREE.Vector3(Math.cos(az) * R, y, Math.sin(az) * R);
+  };
+
+  // dense grid of line segments across all 6 blades, one geometry / draw call
+  const blades = useMemo(() => {
+    const NB = 6;
+    const NU = 8;
+    const NV = 5;
+    const pos: number[] = [];
+    const push = (p1: THREE.Vector3, p2: THREE.Vector3) =>
+      pos.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+    for (let b = 0; b < NB; b++) {
+      for (let j = 0; j <= NV; j++) {
+        const v = j / NV;
+        for (let i = 0; i < NU; i++) {
+          push(bladePoint(b, i / NU, v), bladePoint(b, (i + 1) / NU, v));
+        }
       }
-      lines.push(
-        new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), material)
-      );
+      for (let i = 0; i <= NU; i++) {
+        const u = i / NU;
+        for (let j = 0; j < NV; j++) {
+          push(bladePoint(b, u, j / NV), bladePoint(b, u, (j + 1) / NV));
+        }
+      }
     }
-    return lines;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+    return geo;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const boxEdges = useMemo(
-    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(2.6, 2.6, 2.6)),
-    []
-  );
-  const innerEdges = useMemo(
-    () => new THREE.EdgesGeometry(new THREE.OctahedronGeometry(0.8)),
+    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(2.9, 2.9, 2.9)),
     []
   );
 
   return (
-    <group scale={1.18}>
+    <group scale={1.12}>
       <lineSegments geometry={boxEdges}>
-        <lineBasicMaterial color="#333f47" transparent opacity={0.9} />
+        <lineBasicMaterial color="#43515a" transparent opacity={0.55} />
       </lineSegments>
-      {fan.map((lineObject, i) => (
-        <primitive key={i} object={lineObject} />
-      ))}
+      {/* spinning turbine flower + solid core */}
       <group ref={innerRef}>
-        <lineSegments geometry={innerEdges}>
-          <lineBasicMaterial color="#333f47" transparent opacity={0.9} />
+        <lineSegments geometry={blades}>
+          <lineBasicMaterial color="#3c4a53" transparent opacity={0.6} />
         </lineSegments>
+        <mesh>
+          <icosahedronGeometry args={[0.28, 0]} />
+          <meshStandardMaterial
+            color="#c6cdd2"
+            roughness={0.35}
+            metalness={0.5}
+            flatShading
+          />
+        </mesh>
       </group>
     </group>
   );
