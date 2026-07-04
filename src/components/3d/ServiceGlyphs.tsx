@@ -157,45 +157,57 @@ const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => (
       <coneGeometry args={[1.0, 1.1, 40]} />
       <meshStandardMaterial color="#ebe5d8" roughness={0.55} metalness={0.05} />
     </mesh>
+    {/* chrome/mercury pivot bead */}
     <mesh position={[0, -0.6, 0]}>
-      <sphereGeometry args={[0.4, 32, 32]} />
-      <meshStandardMaterial color="#23282a" roughness={0.3} metalness={0.05} />
+      <sphereGeometry args={[0.4, 48, 48]} />
+      <meshStandardMaterial
+        color="#cfd6da"
+        roughness={0.16}
+        metalness={1}
+        envMapIntensity={1.3}
+      />
     </mesh>
-    {/* rocker pivots at its contact point on top of the dark sphere */}
+    {/* rocker pivots at its contact point on top of the pivot bead */}
     <group ref={beamRef} position={[0, -0.18, 0]}>
+      {/* gunmetal wire (not flat black) */}
       <mesh
         position={[0, arcRadius, 0]}
         rotation={[0, 0, -Math.PI / 2 - arcHalf]}
       >
         <torusGeometry args={[arcRadius, 0.065, 12, 64, arcHalf * 2]} />
         <meshStandardMaterial
-          color="#2b3133"
-          roughness={0.35}
-          metalness={0.1}
+          color="#3a4248"
+          roughness={0.32}
+          metalness={0.85}
+          envMapIntensity={1}
         />
       </mesh>
+      {/* mercury beads — bright silvery, subtle warm/cool variation */}
       <mesh position={[-arcEndX, arcEndY, 0]}>
-        <sphereGeometry args={[0.48, 32, 32]} />
+        <sphereGeometry args={[0.48, 48, 48]} />
         <meshStandardMaterial
-          color="#f2ede1"
-          roughness={0.45}
-          metalness={0.05}
+          color="#dbe0e3"
+          roughness={0.14}
+          metalness={1}
+          envMapIntensity={1.35}
         />
       </mesh>
       <mesh position={[arcEndX, arcEndY, 0]}>
-        <sphereGeometry args={[0.3, 32, 32]} />
+        <sphereGeometry args={[0.3, 48, 48]} />
         <meshStandardMaterial
-          color="#23282a"
-          roughness={0.3}
-          metalness={0.05}
+          color="#c9d1d7"
+          roughness={0.17}
+          metalness={1}
+          envMapIntensity={1.3}
         />
       </mesh>
       <mesh position={[0.95, arcYAt(0.95), 0]}>
-        <sphereGeometry args={[0.18, 32, 32]} />
+        <sphereGeometry args={[0.18, 48, 48]} />
         <meshStandardMaterial
-          color="#b9c6bf"
-          roughness={0.4}
-          metalness={0.05}
+          color="#c2d0d2"
+          roughness={0.2}
+          metalness={1}
+          envMapIntensity={1.25}
         />
       </mesh>
     </group>
@@ -263,6 +275,32 @@ export function GlyphScene({
           <mesh position={[-5, 5, -2]} rotation={[0.4, 0.9, 0]} scale={[5, 6, 1]}>
             <planeGeometry />
             <meshBasicMaterial color="#3c4a50" />
+          </mesh>
+        </Environment>
+      )}
+      {kind === "balance" && (
+        // studio softbox: bright sky, dark ground, warm/cool sides — the
+        // gradient across this is what reads as chrome/mercury on the beads
+        <Environment resolution={128}>
+          <mesh position={[0, 0, -12]} scale={[26, 26, 1]}>
+            <planeGeometry />
+            <meshBasicMaterial color="#dfe4e6" />
+          </mesh>
+          <mesh position={[0, 9, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[26, 26, 1]}>
+            <planeGeometry />
+            <meshBasicMaterial color="#ffffff" />
+          </mesh>
+          <mesh position={[0, -9, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={[26, 26, 1]}>
+            <planeGeometry />
+            <meshBasicMaterial color="#39424a" />
+          </mesh>
+          <mesh position={[8, 2, 4]} rotation={[0, -1.1, 0]} scale={[9, 11, 1]}>
+            <planeGeometry />
+            <meshBasicMaterial color="#f1e6d3" />
+          </mesh>
+          <mesh position={[-8, 0, 4]} rotation={[0, 1.1, 0]} scale={[9, 11, 1]}>
+            <planeGeometry />
+            <meshBasicMaterial color="#c2ebe4" />
           </mesh>
         </Environment>
       )}
