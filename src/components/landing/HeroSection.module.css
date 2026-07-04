@@ -437,7 +437,8 @@
   margin: 0;
   font-size: clamp(0.85rem, 1vw, 0.95rem);
   line-height: 1.5;
-  color: var(--ink-soft);
+  /* darker than --ink-soft to stay legible over the bright fluid band */
+  color: rgba(26, 30, 33, 0.78);
   max-width: 34ch;
 }
 

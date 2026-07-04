@@ -12,6 +12,7 @@ export const lobeC: string;
 export const lobeDriftC: string;
 export const brandName: string;
 export const headline: string;
+export const accent: string;
 export const glassCard: string;
 export const actions: string;
 export const cta: string;

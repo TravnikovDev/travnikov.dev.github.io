@@ -10,5 +10,9 @@ tags: ["Leadership", "Strategy", "CTO"]
 
 # The Fractional CTO Operating System
 
-This is a placeholder post about leadership cadence, hiring signals, and
-building a roadmap that stays realistic.
+A part-time CTO can't be everywhere, so the real job is building systems that
+keep working when you're not in the room. This is the operating system I bring
+to fractional engagements: a weekly leadership cadence, hiring signals that
+predict who will actually thrive, and a roadmap that stays honest about
+trade-offs. The goal is alignment between the team, the tech stack, and the
+business — without becoming the bottleneck yourself.

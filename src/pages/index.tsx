@@ -88,6 +88,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           <HeroSection />
         </section>
 
+        {insights.length > 0 && (
         <section className={styles.sectionRight}>
           <LandingSection
             title="Recent Insights"
@@ -116,7 +117,9 @@ export default function IndexPage({ data }: IndexPageProps) {
             </Box>
           </LandingSection>
         </section>
+        )}
 
+        {caseStudies.length > 0 && (
         <section className={styles.sectionRight}>
           {/* Landing subsections */}
           <LandingSection title="Selected Case Studies">
@@ -149,6 +152,7 @@ export default function IndexPage({ data }: IndexPageProps) {
             </Link>
           </LandingSection>
         </section>
+        )}
 
         {/* <section className={styles.sectionRight}>
           <LandingSection title="My apps">
@@ -338,7 +342,12 @@ export default function IndexPage({ data }: IndexPageProps) {
 }
 
 export function Head() {
-  return <SEO />;
+  return (
+    <SEO
+      title="AI Automation & Web Architecture for Startups"
+      description="I engineer autonomous AI systems and high-performance React & Gatsby architecture for startups — plus fractional CTO leadership."
+    />
+  );
 }
 
 export const query = graphql`

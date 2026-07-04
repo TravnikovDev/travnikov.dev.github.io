@@ -10,5 +10,9 @@ tags: ["Web Performance", "React", "Gatsby"]
 
 # Architecture That Feels Instant
 
-This is a placeholder post focused on performance audits, metrics, and the
-systems that keep React apps fast at scale.
+Speed isn't a Lighthouse score — it's whether the interface responds the
+instant a user acts. This post connects Core Web Vitals to the architectural
+decisions that actually move them: how you split bundles, where you render,
+how data reaches each component, and which work you defer off the critical
+path. I walk through the audit I run on React and Gatsby apps to find the
+handful of changes that make a product *feel* instant, not just measure fast.

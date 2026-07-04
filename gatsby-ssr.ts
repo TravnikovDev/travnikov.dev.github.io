@@ -20,14 +20,15 @@ export const onRenderBody: GatsbySSR["onRenderBody"] = ({ setHtmlAttributes, set
           "@context": "https://schema.org",
           "@type": "Person",
           name: "Roman Travnikov",
-          jobTitle: "Senior Frontend Developer",
+          jobTitle: "AI Automation & Web Architecture Consultant",
           url: "https://travnikov.dev",
           sameAs: [
             "https://github.com/TravnikovDev",
             "https://www.linkedin.com/in/roman-travnikov/",
             "https://instagram.com/travnikov.dev"
           ],
-          description: "Senior Frontend Developer with 10+ years of experience",
+          description:
+            "Engineers autonomous AI systems and high-performance web architecture for startups; fractional CTO services.",
           image: "https://travnikov.dev/banner.jpg",
         })
       }

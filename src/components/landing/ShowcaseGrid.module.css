@@ -1,11 +1,12 @@
+/* Centered flex-wrap so any item count reads intentionally (2 tiles no longer
+   look like "2 of 5 columns"); rows wrap and center. */
 .showcaseGrid {
   width: 100%;
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 16px;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  /* Make all rows equal height so tiles stay stable */
-  grid-auto-rows: 1fr;
-  align-items: start;
+  justify-content: center;
+  align-items: stretch;
 }
 
 .card {
@@ -38,10 +39,10 @@
   height: 100%;
 }
 
-/* Ensure direct children of the grid (anchor or wrapper div) stretch to the row height */
+/* Fixed-basis tiles: they wrap and stay a consistent size at any count */
 .showcaseGrid > a,
 .showcaseGrid > div {
-  height: 100%;
+  flex: 0 1 180px;
   display: block;
 }
 
@@ -105,7 +106,8 @@
 }
 
 @media (max-width: 768px) {
-  .showcaseGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .showcaseGrid > a,
+  .showcaseGrid > div {
+    flex: 1 1 140px;
   }
 }

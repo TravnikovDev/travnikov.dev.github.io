@@ -10,5 +10,9 @@ tags: ["AI Automation", "n8n", "Operations"]
 
 # Automation Audits That Unlock Ops Time
 
-This is a placeholder post covering how I identify automation opportunities,
-prioritize workflows, and ship reliable AI-assisted operations.
+Most teams have a dozen manual workflows quietly eating hours every week. An
+automation audit finds the ones worth automating — high-frequency, rule-based,
+low-exception — and deliberately skips the ones that only look automatable.
+Here's the framework I use to map operations, score each workflow by leverage
+and fragility, and ship n8n + LLM pipelines that survive real-world edge cases
+instead of breaking the first week in production.
