@@ -26,6 +26,7 @@ export const reveal: string;
 export const serviceReverse: string;
 export const serviceText: string;
 export const glyph: string;
+export const glyphCanvasWrap: string;
 export const glyphCanvas: string;
 export const scrollCue: string;
 export const scrollCueLabel: string;

@@ -443,6 +443,11 @@
 }
 
 /* Per-glyph canvas fills its container and ignores pointer (Link handles clicks) */
+.glyphCanvasWrap {
+  width: 100%;
+  height: 100%;
+}
+
 .glyphCanvas {
   width: 100% !important;
   height: 100% !important;
