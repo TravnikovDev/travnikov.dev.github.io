@@ -37,12 +37,12 @@
 - **B2. Footer**: keep the dark "Build the Future" block (user likes it).
   Only revisit if explicitly requested; note it still uses Playfair Display
   which is not currently self-hosted (falls back to Times).
-- **B3. Service pages** (`/ai-automation-engineer`,
-  `/react-performance-consulting`, `/fractional-cto`): shared fluid canvas,
-  typographic hero, restyled content blocks + CTAs. These are the funnel
-  targets from [BRAND_PIVOT.md](./BRAND_PIVOT.md).
+- **B3. Service pages** ✅ (`3155d02`): shared `ServicePage` component — fluid
+  canvas, editorial hero, frosted content + contact card (mailto submit),
+  cross-links between the three funnel targets.
 - **B4. Blog & projects pages**: typography/chrome pass to match.
-- **B5. Mobile nav drawer**: header shows wordmark only on phones; add a
+- **B5. Mobile nav drawer** ✅ (`5cf4627`): burger + frosted overlay menu; the
+  header shows wordmark only on phones; add a
   drawer (mono link list overlay, drawn-in underlines).
 - **B6. Housekeeping** (from the original audit):
   - delete redundant `.github/workflows/deploy.yml` (Pages deploys via
