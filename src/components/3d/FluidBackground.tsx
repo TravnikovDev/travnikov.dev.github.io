@@ -75,13 +75,17 @@ const fragmentShader = /* glsl */ `
   }
 
   // silk height field — same fold construction the colors use, so the
-  // shading relief lines up with the ribbon boundaries
+  // shading relief lines up with the ribbon boundaries. An isotropic
+  // low-frequency blob term adds rounded 3D volume (not just flat streaks).
   float silkHeight(vec2 rp, vec2 drift) {
     vec2 sp = vec2(rp.x * 0.32, rp.y * 1.1);
     vec2 q = vec2(fbm(sp + drift), fbm(sp + vec2(3.1, 7.7) - drift * 0.5));
     float phase = rp.y * 4.1 + fbm(sp + 1.1 * q) * 3.6 - q.x * 1.8;
-    return sin(phase) * 0.6 + sin(phase * 0.62 + 2.3) * 0.3
+    float strands = sin(phase) * 0.6 + sin(phase * 0.62 + 2.3) * 0.3
       + sin(phase * 1.35 + 4.4) * 0.18;
+    // rounded, overlapping lobes — the "thick liquid" bulges
+    float blobs = fbm(rp * 0.52 + drift * 0.6) * 2.0 - 1.0;
+    return strands * 0.5 + blobs * 1.0;
   }
 
   void main() {
@@ -143,6 +147,25 @@ const fragmentShader = /* glsl */ `
     col = mix(col, NAVY, darkMask * smoothstep(0.55, 0.95, fold) * 0.55);
     col = mix(col, CHARCOAL, darkMask * smoothstep(0.6, 0.98, -foldC) * 0.2);
 
+    // ---- large rounded colour masses: distinct mint / champagne / aqua lobes
+    // (isotropic low-freq blobs so colours read as separated bodies) ----
+    float massMint = smoothstep(0.5, 0.76, fbm(rp * 0.5 + vec2(1.0, 4.0) + drift * 0.4));
+    col = mix(col, SAGE, massMint * 0.55);
+    float massWarm = smoothstep(0.52, 0.78, fbm(rp * 0.46 + vec2(7.0, 2.0) - drift * 0.3));
+    col = mix(col, CHAMPAGNE, massWarm * 0.52);
+    float massAqua = smoothstep(0.54, 0.8, fbm(rp * 0.54 + vec2(3.5, 9.0) + drift * 0.5));
+    col = mix(col, TEAL_PALE, massAqua * 0.5);
+
+    // ---- big sculptural dark folds woven through the band ----
+    float darkA = smoothstep(0.52, 0.74, fbm(rp * 0.4 + vec2(5.0, 8.0) - drift * 0.3));
+    col = mix(col, SLATE_BLUE, darkA * 0.5);
+    float darkB = smoothstep(0.58, 0.8, fbm(rp * 0.34 + vec2(9.0, 1.0) + drift * 0.2));
+    col = mix(col, NAVY, darkB * 0.42);
+
+    // richer, more separated colour
+    float lum = dot(col, vec3(0.299, 0.587, 0.114));
+    col = mix(vec3(lum), col, 1.22);
+
     // confine ribbons to the diagonal band; corners stay near-white
     float band = 1.0 - smoothstep(0.12, 0.95, abs(rp.y + 0.1));
     band *= band;
@@ -158,19 +181,19 @@ const fragmentShader = /* glsl */ `
     col = mix(col, NAVY, drop * 0.7);
     col = mix(col, SLATE_BLUE, (1.0 - smoothstep(0.06, 0.14, dropR)) * (1.0 - drop) * 0.28);
 
-    // ---- sculptural relief: light the fold field like 3D silk ----
-    float hC = fold * 0.6 + foldB * 0.3 + sin(phase * 1.35 + 4.4) * 0.18;
-    float e = 0.025;
+    // ---- sculptural relief: light the fold field like thick 3D liquid ----
+    float e = 0.02;
+    float hC = silkHeight(rp, drift);
     float hX = silkHeight(rp + vec2(e, 0.0), drift);
     float hY = silkHeight(rp + vec2(0.0, e), drift);
-    vec3 N = normalize(vec3((hC - hX) / e * 0.13, (hC - hY) / e * 0.13, 1.0));
+    vec3 N = normalize(vec3((hC - hX) / e * 0.22, (hC - hY) / e * 0.22, 1.0));
     vec3 L = normalize(vec3(0.45, 0.6, 0.66)); // warm key, upper right
     float diff = clamp(dot(N, L), 0.0, 1.0);
-    float spec = pow(clamp(dot(N, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0, 1.0), 28.0);
-    // diffuse shading confined to the band
-    col *= mix(1.0, 0.82 + 0.28 * diff, band);
+    float spec = pow(clamp(dot(N, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0, 1.0), 24.0);
+    // stronger diffuse falloff = rounder, more voluminous lobes
+    col *= mix(1.0, 0.7 + 0.42 * diff, band);
     // champagne specular highlights along the crests
-    col += spec * vec3(0.98, 0.92, 0.76) * 0.26 * band;
+    col += spec * vec3(0.98, 0.92, 0.76) * 0.3 * band;
     // faint warm glow hugging the band core
     col += vec3(0.038, 0.032, 0.02) * band * smoothstep(0.2, 0.9, fold);
 
