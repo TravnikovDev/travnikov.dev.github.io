@@ -27,74 +27,63 @@
 }
 
 /* Living blob mark: one morphing glass shape with blurred colour fields
-   drifting INSIDE it — the clip is what fuses the lobes into a droplet */
-/* Airy glass cloud: soft translucent lobes with feathered edges, not a
-   solid clipped ball. No fill/clip on the container — the lobes ARE the blob. */
-/* Frosted pearl: present body, feathered edges, faint peach/mint tints */
+   Turquoise/mint metaball sphere: drops gather into one sphere, then spiral
+   out into orbiting droplets and merge back — the SVG goo filter fuses and
+   separates them like liquid. */
 .brandMark {
   position: relative;
   width: clamp(58px, 5.2vw, 86px);
   aspect-ratio: 1;
   flex: none;
-  filter: drop-shadow(0 7px 15px rgba(90, 110, 100, 0.22));
-  animation: blobMorph 12s ease-in-out infinite alternate;
+  filter: drop-shadow(0 8px 15px rgba(60, 130, 116, 0.3));
 }
 
-.brandMark i {
-  position: absolute;
+.blob {
+  width: 100%;
+  height: 100%;
   display: block;
+  overflow: visible;
 }
 
-/* main body, upper-left — opaque-ish core that feathers to a soft edge */
-.lobeA {
-  top: 0%;
-  left: 2%;
-  width: 80%;
-  height: 76%;
-  border-radius: 62% 38% 55% 45% / 55% 48% 52% 45%;
-  background: radial-gradient(
-    circle at 40% 36%,
-    rgba(255, 255, 255, 0.98),
-    rgba(255, 255, 255, 0.86) 42%,
-    rgba(255, 255, 255, 0.5) 68%,
-    rgba(255, 255, 255, 0.14) 88%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  filter: blur(3px);
-  animation: lobeDriftA 9s ease-in-out infinite alternate;
+.core,
+.drop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: brandOrbit 6.5s ease-in-out infinite;
 }
 
-/* warm peach glow, upper-right of the body */
-.lobeB {
-  top: 4%;
-  right: 8%;
-  width: 46%;
-  height: 44%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(247, 196, 138, 0.85),
-    rgba(247, 196, 138, 0) 68%
-  );
-  filter: blur(5px);
-  animation: lobeDriftB 7s ease-in-out infinite alternate;
+/* central mass barely moves so there's always a body to merge back into */
+.core {
+  --r: 5px;
+  --a: 0deg;
+}
+.drop1 {
+  --r: 22px;
+  --a: 20deg;
+}
+.drop2 {
+  --r: 25px;
+  --a: 112deg;
+}
+.drop3 {
+  --r: 21px;
+  --a: 205deg;
+}
+.drop4 {
+  --r: 24px;
+  --a: 298deg;
 }
 
-/* cool mint tail, lower-right — the second paisley lobe */
-.lobeC {
-  bottom: 2%;
-  right: 8%;
-  width: 54%;
-  height: 52%;
-  border-radius: 55% 45% 48% 52% / 50% 55% 45% 50%;
-  background: radial-gradient(
-    circle at 52% 44%,
-    rgba(255, 255, 255, 0.88),
-    rgba(141, 212, 200, 0.72) 44%,
-    rgba(141, 212, 200, 0) 78%
-  );
-  filter: blur(4px);
-  animation: lobeDriftC 8s ease-in-out infinite alternate;
+/* gather at 0/100 (all drops at centre → one sphere), spiral out to orbit
+   at 50%; every drop shares the duration so they re-merge in sync */
+@keyframes brandOrbit {
+  0%,
+  100% {
+    transform: rotate(var(--a)) translateX(0);
+  }
+  50% {
+    transform: rotate(calc(var(--a) + 210deg)) translateX(var(--r));
+  }
 }
 
 .brandName {
@@ -106,60 +95,6 @@
   line-height: 0.98;
   letter-spacing: -0.015em;
   color: var(--ink);
-}
-
-/* the shape itself breathes */
-@keyframes blobMorph {
-  0% {
-    border-radius: 58% 42% 55% 45% / 52% 48% 58% 42%;
-    transform: rotate(0deg);
-  }
-  33% {
-    border-radius: 48% 52% 42% 58% / 60% 44% 56% 40%;
-    transform: rotate(3deg);
-  }
-  66% {
-    border-radius: 55% 45% 62% 38% / 45% 56% 44% 55%;
-    transform: rotate(-3deg);
-  }
-  100% {
-    border-radius: 62% 38% 50% 50% / 55% 45% 60% 40%;
-    transform: rotate(2deg);
-  }
-}
-
-/* the colour fields wander inside the glass */
-@keyframes lobeDriftA {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(14%, 10%) scale(1.15);
-  }
-}
-
-@keyframes lobeDriftB {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(-16%, 14%) scale(1.2);
-  }
-  100% {
-    transform: translate(-6%, -6%) scale(0.9);
-  }
-}
-
-@keyframes lobeDriftC {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(16%, -12%) scale(1.12);
-  }
-  100% {
-    transform: translate(-8%, 4%) scale(0.95);
-  }
 }
 
 .headline {
@@ -611,10 +546,8 @@
 
   .availabilityDot,
   .scrollCueLine,
-  .brandMark,
-  .lobeA,
-  .lobeB,
-  .lobeC {
+  .core,
+  .drop {
     animation: none;
   }
 }
