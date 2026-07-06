@@ -83,9 +83,10 @@ const fragmentShader = /* glsl */ `
     float phase = rp.y * 4.1 + fbm(sp + 1.1 * q) * 3.6 - q.x * 1.8;
     float strands = sin(phase) * 0.6 + sin(phase * 0.62 + 2.3) * 0.3
       + sin(phase * 1.35 + 4.4) * 0.18;
-    // rounded, overlapping lobes — the "thick liquid" bulges
-    float blobs = fbm(rp * 0.52 + drift * 0.6) * 2.0 - 1.0;
-    return strands * 0.5 + blobs * 1.0;
+    // two blob scales — big rolling masses + medium lobes = thick 3D volume
+    float blobBig = fbm(rp * 0.28 + drift * 0.4) * 2.0 - 1.0;
+    float blobMed = fbm(rp * 0.55 + drift * 0.6) * 2.0 - 1.0;
+    return strands * 0.42 + blobBig * 0.85 + blobMed * 0.7;
   }
 
   void main() {
@@ -186,12 +187,12 @@ const fragmentShader = /* glsl */ `
     float hC = silkHeight(rp, drift);
     float hX = silkHeight(rp + vec2(e, 0.0), drift);
     float hY = silkHeight(rp + vec2(0.0, e), drift);
-    vec3 N = normalize(vec3((hC - hX) / e * 0.22, (hC - hY) / e * 0.22, 1.0));
+    vec3 N = normalize(vec3((hC - hX) / e * 0.28, (hC - hY) / e * 0.28, 1.0));
     vec3 L = normalize(vec3(0.45, 0.6, 0.66)); // warm key, upper right
     float diff = clamp(dot(N, L), 0.0, 1.0);
     float spec = pow(clamp(dot(N, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0, 1.0), 24.0);
     // stronger diffuse falloff = rounder, more voluminous lobes
-    col *= mix(1.0, 0.7 + 0.42 * diff, band);
+    col *= mix(1.0, 0.62 + 0.5 * diff, band);
     // champagne specular highlights along the crests
     col += spec * vec3(0.98, 0.92, 0.76) * 0.3 * band;
     // faint warm glow hugging the band core

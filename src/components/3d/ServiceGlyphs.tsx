@@ -85,72 +85,63 @@ const Crystal = () => {
   );
 };
 
-// Wireframe lattice: a cube containing a turbine flower of fine ruled-surface
-// blades radiating from a solid core (matches the reference's mesh density)
+// Web-architecture glyph: a clean geodesic wireframe sphere (a network of
+// nodes + connections) suspended inside a light cube frame, with a metal core.
 const Lattice = ({ innerRef }: { innerRef: React.RefObject<THREE.Group> }) => {
-  // one parametric point on blade b at (u along length, v across width)
-  const bladePoint = (b: number, u: number, v: number) => {
-    const NB = 6;
-    const a0 = (b / NB) * Math.PI * 2;
-    const R0 = 0.36;
-    const R1 = 1.5;
-    const R = R0 + (R1 - R0) * u; // radius grows outward
-    const halfW = 0.44 * (0.22 + 0.78 * Math.sin(u * Math.PI)); // widest mid-span
-    const yCenter = 0.5 * Math.sin(u * Math.PI); // arch up then down
-    const y = yCenter + (v - 0.5) * 2 * halfW;
-    const az = a0 + 0.95 * u + (v - 0.5) * 0.6 * (1 - u); // pinwheel curl + fan
-    return new THREE.Vector3(Math.cos(az) * R, y, Math.sin(az) * R);
-  };
-
-  // dense grid of line segments across all 6 blades, one geometry / draw call
-  const blades = useMemo(() => {
-    const NB = 6;
-    const NU = 8;
-    const NV = 5;
-    const pos: number[] = [];
-    const push = (p1: THREE.Vector3, p2: THREE.Vector3) =>
-      pos.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-    for (let b = 0; b < NB; b++) {
-      for (let j = 0; j <= NV; j++) {
-        const v = j / NV;
-        for (let i = 0; i < NU; i++) {
-          push(bladePoint(b, i / NU, v), bladePoint(b, (i + 1) / NU, v));
-        }
-      }
-      for (let i = 0; i <= NU; i++) {
-        const u = i / NU;
-        for (let j = 0; j < NV; j++) {
-          push(bladePoint(b, u, j / NV), bladePoint(b, u, (j + 1) / NV));
-        }
-      }
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-    return geo;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const boxEdges = useMemo(
-    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(2.9, 2.9, 2.9)),
+    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(2.7, 2.7, 2.7)),
     []
   );
+  // full triangle mesh of a subdivided icosahedron = geodesic "system" look
+  const sphereWire = useMemo(
+    () => new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.02, 1)),
+    []
+  );
+  // nodes at the sphere vertices
+  const nodePositions = useMemo(() => {
+    const g = new THREE.IcosahedronGeometry(1.02, 1);
+    const pos = g.attributes.position;
+    const seen = new Set<string>();
+    const out: [number, number, number][] = [];
+    for (let i = 0; i < pos.count; i++) {
+      const v = new THREE.Vector3().fromBufferAttribute(pos, i);
+      const k = v
+        .toArray()
+        .map((n) => n.toFixed(2))
+        .join(",");
+      if (seen.has(k)) continue;
+      seen.add(k);
+      out.push([v.x, v.y, v.z]);
+    }
+    g.dispose();
+    return out;
+  }, []);
 
   return (
-    <group scale={1.12}>
+    <group scale={1.02}>
       <lineSegments geometry={boxEdges}>
-        <lineBasicMaterial color="#43515a" transparent opacity={0.55} />
+        <lineBasicMaterial color="#5a6771" transparent opacity={0.35} />
       </lineSegments>
-      {/* spinning turbine flower + solid core */}
       <group ref={innerRef}>
-        <lineSegments geometry={blades}>
-          <lineBasicMaterial color="#3c4a53" transparent opacity={0.6} />
+        <lineSegments geometry={sphereWire}>
+          <lineBasicMaterial color="#3c4a53" transparent opacity={0.7} />
         </lineSegments>
+        {nodePositions.map((p, i) => (
+          <mesh key={i} position={p}>
+            <sphereGeometry args={[0.045, 12, 12]} />
+            <meshStandardMaterial
+              color="#4a5964"
+              roughness={0.4}
+              metalness={0.3}
+            />
+          </mesh>
+        ))}
         <mesh>
-          <icosahedronGeometry args={[0.28, 0]} />
+          <icosahedronGeometry args={[0.3, 0]} />
           <meshStandardMaterial
             color="#c6cdd2"
-            roughness={0.35}
-            metalness={0.5}
+            roughness={0.3}
+            metalness={0.6}
             flatShading
           />
         </mesh>
@@ -170,7 +161,7 @@ const arcYAt = (x: number) =>
   arcRadius - Math.sqrt(arcRadius * arcRadius - x * x);
 
 const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => (
-  <group scale={1.08} position={[0, 0.1, 0]}>
+  <group scale={1.0} position={[0, 0.3, 0]}>
     <mesh position={[0, -1.62, 0]} rotation={[Math.PI, 0, 0]}>
       <coneGeometry args={[1.0, 1.1, 40]} />
       <meshStandardMaterial color="#ebe5d8" roughness={0.55} metalness={0.05} />
@@ -247,7 +238,7 @@ export function GlyphScene({
     const t = clock.getElapsedTime() + phase;
     const group = groupRef.current;
     if (!group) return;
-    group.position.y = Math.sin(t * 0.8) * 0.18;
+    group.position.y = Math.sin(t * 0.8) * 0.1;
     if (kind === "crystal") {
       group.rotation.y = t * 0.4;
       group.rotation.x = Math.sin(t * 0.5) * 0.25;
@@ -265,7 +256,8 @@ export function GlyphScene({
   return (
     <>
       <GlyphLights />
-      <PerspectiveCamera makeDefault position={[0, 0, 7]} fov={38} />
+      {/* pulled back for padding so tall/wide objects never clip the canvas */}
+      <PerspectiveCamera makeDefault position={[0, 0, 8.4]} fov={38} />
       {kind === "crystal" && (
         // local pastel softbox so the gem has something to refract
         <Environment resolution={64}>
