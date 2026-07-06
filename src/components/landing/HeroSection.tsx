@@ -3,6 +3,7 @@ import { Link } from "gatsby";
 import { Canvas } from "@react-three/fiber";
 import * as styles from "./HeroSection.module.css";
 import { GlyphScene, GlyphKind } from "../3d/ServiceGlyphs";
+import BrandSphere from "../3d/BrandSphere";
 
 const vectors: {
   id: string;
@@ -89,60 +90,7 @@ const HeroSection = () => {
       <div className={styles.left}>
         <div className={`${styles.brand} ${styles.reveal}`}>
           <span className={styles.brandMark} aria-hidden="true">
-            <svg
-              className={styles.blob}
-              viewBox="0 0 100 100"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <radialGradient id="brandMint" cx="38%" cy="32%" r="78%">
-                  <stop offset="0%" stopColor="#d8f4ec" />
-                  <stop offset="45%" stopColor="#8dd4c8" />
-                  <stop offset="100%" stopColor="#4bb2a1" />
-                </radialGradient>
-                <filter id="brandGoo">
-                  <feGaussianBlur
-                    in="SourceGraphic"
-                    stdDeviation="4.2"
-                    result="blur"
-                  />
-                  <feColorMatrix
-                    in="blur"
-                    mode="matrix"
-                    values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8"
-                    result="goo"
-                  />
-                  <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-                </filter>
-              </defs>
-              <g filter="url(#brandGoo)" fill="url(#brandMint)">
-                <circle className={styles.core} cx="50" cy="50" r="17" />
-                <circle
-                  className={`${styles.drop} ${styles.drop1}`}
-                  cx="50"
-                  cy="50"
-                  r="12"
-                />
-                <circle
-                  className={`${styles.drop} ${styles.drop2}`}
-                  cx="50"
-                  cy="50"
-                  r="11"
-                />
-                <circle
-                  className={`${styles.drop} ${styles.drop3}`}
-                  cx="50"
-                  cy="50"
-                  r="10"
-                />
-                <circle
-                  className={`${styles.drop} ${styles.drop4}`}
-                  cx="50"
-                  cy="50"
-                  r="9"
-                />
-              </g>
-            </svg>
+            <BrandSphere reducedMotion={reducedMotion} />
           </span>
           <span className={styles.brandName}>
             Roman
