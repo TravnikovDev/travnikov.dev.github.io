@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { graphql, Link, PageProps } from "gatsby";
 import BaseLayout from "../layouts/BaseLayout";
 import { SEO } from "../utils/seo/SEO";
@@ -63,17 +63,23 @@ interface IndexPageProps extends PageProps {
 export default function IndexPage({ data }: IndexPageProps) {
   const insights = data?.allBlogPosts?.nodes ?? [];
   const caseStudies = data?.allProjects?.nodes ?? [];
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  // Handle scroll events for progress indicator
+  // Progress bar is updated via ref (no setState) so scrolling never
+  // re-renders the page — keeps the 3D background/glyph canvases stable.
+  const progressRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.body.scrollHeight - window.innerHeight;
-      const progress = Math.min(1, Math.max(0, window.scrollY / totalHeight));
-      setScrollProgress(progress);
+      const progress =
+        totalHeight > 0
+          ? Math.min(1, Math.max(0, window.scrollY / totalHeight))
+          : 0;
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${progress})`;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -331,10 +337,9 @@ export default function IndexPage({ data }: IndexPageProps) {
         </section> */}
 
         <div
+          ref={progressRef}
           className={styles.scrollProgressIndicator}
-          style={{
-            transform: `scaleX(${scrollProgress})`,
-          }}
+          style={{ transform: "scaleX(0)" }}
         />
       </Box>
     </BaseLayout>

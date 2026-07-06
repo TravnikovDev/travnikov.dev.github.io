@@ -179,4 +179,6 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+// no props — memo keeps the three glyph canvases stable through parent
+// re-renders
+export default React.memo(HeroSection);

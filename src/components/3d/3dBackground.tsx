@@ -225,7 +225,7 @@ function Scene() {
 }
 
 // Main component with proper fullscreen fixed positioning
-export default function ThreeDBackground() {
+function ThreeDBackground() {
   const prefersReducedMotion = useMemo(
     () =>
       typeof window !== "undefined" &&
@@ -270,3 +270,7 @@ export default function ThreeDBackground() {
     </div>
   );
 }
+
+// no props — memo makes it render once and stay stable through any parent
+// re-render (e.g. scroll-driven state elsewhere on the page)
+export default React.memo(ThreeDBackground);
