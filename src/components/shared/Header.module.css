@@ -19,14 +19,15 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* The wordmark fades in with the blur bar (the hero brand shows before that) */
+/* Wordmark is hidden only on the homepage at scroll-top (hero owns the brand);
+   the .wordmark class is applied on every other page and once scrolled. */
 .appShellHeader a[href="/"] {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
 
-.scrolled a[href="/"] {
+.wordmark a[href="/"] {
   opacity: 1;
   pointer-events: auto;
 }
