@@ -191,12 +191,17 @@ const fragmentShader = /* glsl */ `
     vec3 L = normalize(vec3(0.45, 0.6, 0.66)); // warm key, upper right
     float diff = clamp(dot(N, L), 0.0, 1.0);
     float spec = pow(clamp(dot(N, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0, 1.0), 24.0);
-    // stronger diffuse falloff = rounder, more voluminous lobes
-    col *= mix(1.0, 0.62 + 0.5 * diff, band);
+    // diffuse falloff for volume — floor kept high so troughs stay coloured,
+    // not grey (the multiply was washing the pastels toward silver)
+    col *= mix(1.0, 0.74 + 0.36 * diff, band);
     // champagne specular highlights along the crests
     col += spec * vec3(0.98, 0.92, 0.76) * 0.3 * band;
     // faint warm glow hugging the band core
     col += vec3(0.038, 0.032, 0.02) * band * smoothstep(0.2, 0.9, fold);
+
+    // restore the pastel vibrancy the shading washed out (band only)
+    float satLum = dot(col, vec3(0.299, 0.587, 0.114));
+    col = mix(col, mix(vec3(satLum), col, 1.42), band * 0.9);
 
     // gentle luminosity toward the top
     col += (vUv.y - 0.5) * 0.02;
