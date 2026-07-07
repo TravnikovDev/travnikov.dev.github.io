@@ -149,13 +149,13 @@ const fragmentShader = /* glsl */ `
     col = mix(col, CHARCOAL, darkMask * smoothstep(0.6, 0.98, -foldC) * 0.2);
 
     // ---- large rounded colour masses: distinct mint / champagne / aqua lobes
-    // (isotropic low-freq blobs so colours read as separated bodies) ----
-    float massMint = smoothstep(0.5, 0.76, fbm(rp * 0.5 + vec2(1.0, 4.0) + drift * 0.4));
-    col = mix(col, SAGE, massMint * 0.55);
-    float massWarm = smoothstep(0.52, 0.78, fbm(rp * 0.46 + vec2(7.0, 2.0) - drift * 0.3));
-    col = mix(col, CHAMPAGNE, massWarm * 0.52);
-    float massAqua = smoothstep(0.54, 0.8, fbm(rp * 0.54 + vec2(3.5, 9.0) + drift * 0.5));
-    col = mix(col, TEAL_PALE, massAqua * 0.5);
+    // (narrow windows = crisp boundaries so colours read as separated bodies) ----
+    float massMint = smoothstep(0.54, 0.7, fbm(rp * 0.5 + vec2(1.0, 4.0) + drift * 0.4));
+    col = mix(col, SAGE, massMint * 0.64);
+    float massWarm = smoothstep(0.56, 0.72, fbm(rp * 0.46 + vec2(7.0, 2.0) - drift * 0.3));
+    col = mix(col, CHAMPAGNE, massWarm * 0.6);
+    float massAqua = smoothstep(0.58, 0.74, fbm(rp * 0.54 + vec2(3.5, 9.0) + drift * 0.5));
+    col = mix(col, TEAL_PALE, massAqua * 0.58);
 
     // ---- big sculptural dark folds woven through the band ----
     float darkA = smoothstep(0.52, 0.74, fbm(rp * 0.4 + vec2(5.0, 8.0) - drift * 0.3));

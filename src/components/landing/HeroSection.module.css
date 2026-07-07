@@ -81,7 +81,8 @@
   padding: clamp(18px, 2vw, 28px);
   backdrop-filter: blur(20px) saturate(1.2);
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
-  box-shadow: 0 24px 60px rgba(60, 84, 78, 0.16);
+  /* defined lift, not a soft ghost halo */
+  box-shadow: 0 16px 38px rgba(60, 84, 78, 0.18);
   /* flat overlap — clip only the bottom of the last line. (vh here amplifies
      the overlap on tall screens and slices through the word — do not use it.) */
   margin-top: -42px;
@@ -97,7 +98,9 @@
 
 .glassCard p {
   margin: 0;
-  color: var(--ink-soft);
+  /* near-ink for legible body copy over the translucent glass (was slate,
+     which dipped below AA where the fluid darkened behind the card) */
+  color: rgba(26, 30, 33, 0.86);
   font-size: clamp(0.95rem, 1.1vw, 1.06rem);
   line-height: 1.55;
   max-width: 48ch;
