@@ -54,7 +54,13 @@ export default function DesktopNavigation() {
       <Logo />
 
       {/* Desktop links */}
-      <Group gap="xs" className={styles.navLinksGroup} visibleFrom="sm">
+      <Group
+        component="nav"
+        aria-label="Main navigation"
+        gap="xs"
+        className={styles.navLinksGroup}
+        visibleFrom="sm"
+      >
         {navItems.map((link) => (
           <NavItem
             key={link.path}
@@ -73,6 +79,7 @@ export default function DesktopNavigation() {
         size="sm"
         color="var(--ink)"
         aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+        className={styles.burger}
         style={{ zIndex: 1002 }}
       />
 

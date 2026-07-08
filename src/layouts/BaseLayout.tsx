@@ -11,9 +11,14 @@ interface BaseLayoutProps {
 export default function BaseLayout({ children }: BaseLayoutProps) {
   return (
     <AppShell padding={0} className={styles.container}>
+      <a href="#main-content" className={styles.skipLink}>
+        Skip to content
+      </a>
       <Header />
 
-      <AppShell.Main className={styles.main}>{children}</AppShell.Main>
+      <AppShell.Main id="main-content" className={styles.main}>
+        {children}
+      </AppShell.Main>
 
       <Footer />
     </AppShell>

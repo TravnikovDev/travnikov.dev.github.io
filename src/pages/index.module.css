@@ -1,38 +1,3 @@
-/* Hidden background elements that were covering the 3D background */
-.topGradientCircle,
-.middleRightBlob,
-.bottomLeftBlob,
-.animatedGridPattern,
-.animatedGradientLinesTop,
-.animatedGradientLinesBottom {
-  display: none; /* Hide these since we're using the 3D background instead */
-}
-
-.sectionsDivider {
-  width: 100%;
-  height: 1px;
-  background-color: rgba(var(--mantine-color-aura-9-rgb), 0.12);
-  position: relative;
-  overflow: hidden;
-  grid-column: 2 / span 9;
-  margin-bottom: var(--spacing);
-}
-
-.sectionsDividerInner {
-  position: absolute;
-  height: 100%;
-  width: 30%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--mantine-color-primary-4),
-    var(--mantine-color-secondary-4),
-    transparent
-  );
-  animation: dividerAnimation 3s infinite linear;
-  padding: 1rem;
-}
-
 /* Architect's-ruler progress line: 1px of ink drawing across the top */
 .scrollProgressIndicator {
   position: fixed;
@@ -49,7 +14,6 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  /* min-height: 100vh; */
   overflow: hidden;
 }
 
@@ -109,7 +73,7 @@ section {
   border-radius: 12px;
   text-decoration: none;
   color: var(--ink);
-  border: 1px solid rgba(26, 30, 33, 0.14);
+  border: 1px solid rgba(var(--ink-rgb), 0.14);
   background: rgba(255, 255, 255, 0.34);
   backdrop-filter: blur(6px);
   transition: transform 200ms ease, border-color 200ms ease,
@@ -118,7 +82,7 @@ section {
 
 .insightItem:hover {
   transform: translateY(-3px);
-  border-color: rgba(26, 30, 33, 0.42);
+  border-color: rgba(var(--ink-rgb), 0.42);
   box-shadow: 0 12px 26px rgba(60, 84, 78, 0.14);
 }
 
@@ -146,7 +110,7 @@ section {
   border-radius: 12px;
   text-decoration: none;
   color: var(--ink);
-  border: 1px solid rgba(26, 30, 33, 0.14);
+  border: 1px solid rgba(var(--ink-rgb), 0.14);
   background: rgba(255, 255, 255, 0.34);
   backdrop-filter: blur(6px);
   transition: transform 200ms ease, border-color 200ms ease,
@@ -155,7 +119,7 @@ section {
 
 .caseStudyItem:hover {
   transform: translateY(-3px);
-  border-color: rgba(26, 30, 33, 0.42);
+  border-color: rgba(var(--ink-rgb), 0.42);
   box-shadow: 0 12px 26px rgba(60, 84, 78, 0.14);
 }
 
@@ -197,6 +161,65 @@ section {
   border-color: var(--ink);
 }
 
+/* ---------- Professional experience: editorial role list ----------
+   Rows with hairline rules instead of a grid of identical cards — the
+   period column reads like a CV margin, the role carries the weight. */
+.experienceList {
+  display: flex;
+  flex-direction: column;
+}
+
+.experienceItem {
+  display: grid;
+  grid-template-columns: clamp(120px, 14vw, 170px) 1fr;
+  gap: 0.4rem 1.5rem;
+  align-items: baseline;
+  padding: 1.05rem 0.4rem;
+  border-bottom: 1px solid rgba(var(--ink-rgb), 0.12);
+}
+
+.experienceItem:first-child {
+  border-top: 1px solid rgba(var(--ink-rgb), 0.12);
+}
+
+.experiencePeriod {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.experienceRole {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.experienceCompany {
+  color: var(--ink-soft);
+  font-weight: 450;
+}
+
+.experienceSummary {
+  margin: 0.3rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(var(--ink-rgb), 0.78);
+  max-width: 62ch;
+}
+
+@media (max-width: 30em) {
+  .experienceItem {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Animation for section entrance */
 @keyframes sectionFadeIn {
   from {
@@ -232,33 +255,14 @@ section:nth-child(3) {
   }
 }
 
-@keyframes glowPulse {
-  0% {
-    box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
+@media (prefers-reduced-motion: reduce) {
+  section {
+    animation: none;
   }
-  50% {
-    box-shadow: 0 0 30px rgba(var(--mantine-color-secondary-4-rgb), 0.5);
-  }
-  100% {
-    box-shadow: 0 0 20px rgba(var(--mantine-color-primary-4-rgb), 0.3);
-  }
-}
 
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 0%;
-  }
-  100% {
-    background-position: 100% 100%;
-  }
-}
-
-@keyframes dividerAnimation {
-  0% {
-    left: -30%;
-  }
-  100% {
-    left: 100%;
+  .insightItem,
+  .caseStudyItem {
+    transition: none;
   }
 }
 
@@ -272,27 +276,4 @@ h6,
 p {
   position: relative;
   z-index: 2;
-}
-
-/* Section transition improvements */
-.sectionTransition {
-  height: 60px;
-  position: relative;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.sectionTransition::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0),
-    rgba(var(--mantine-color-aura-9-rgb), 0.12)
-  );
-  z-index: 1;
 }

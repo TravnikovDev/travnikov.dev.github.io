@@ -168,7 +168,7 @@ const HeroSection = () => {
               />
             </div>
             <div className={styles.serviceText}>
-              <h3>{vector.title}</h3>
+              <h2>{vector.title}</h2>
               <p>{vector.copy}</p>
             </div>
           </Link>

@@ -5,16 +5,7 @@ import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
 import { LandingSection } from "../components/landing/TimelineSection";
 import ShowcaseGrid from "../components/landing/ShowcaseGrid";
-import {
-  FaBoxes,
-  FaRobot,
-  FaTools,
-  FaMicrochip,
-  FaCode,
-  FaBriefcase,
-  FaLaptopCode,
-  FaBuilding,
-} from "react-icons/fa";
+import { FaBoxes, FaRobot, FaTools, FaMicrochip } from "react-icons/fa";
 import {
   SiTypescript,
   SiReact,
@@ -59,6 +50,73 @@ interface IndexPageProps extends PageProps {
     };
   };
 }
+
+// Career history as structured rows (period / role / summary) — rendered as
+// an editorial list rather than a grid of identical cards
+const experience = [
+  {
+    id: "work-super-dispatch",
+    period: "2023 – 2024",
+    role: "Frontend Engineer",
+    company: "Super Dispatch · Remote (US)",
+    summary:
+      "Transportation/logistics platform in React and TypeScript; refined UI/UX and built scalable applications.",
+  },
+  {
+    id: "work-flymeto",
+    period: "2022",
+    role: "Senior Frontend Developer",
+    company: "Flymeto · Remote (Prague)",
+    summary:
+      "Flight ticketing service for high-traffic websites using React, Next.js, TypeScript and SCSS.",
+  },
+  {
+    id: "work-omnetic",
+    period: "2020 – 2022",
+    role: "Senior Frontend Developer",
+    company: "OMNETIC · Remote (Prague)",
+    summary:
+      "Dealership Management System for the Czech/EU market. React, Next.js, TypeScript, SCSS, Material UI, Redux, Cypress.",
+  },
+  {
+    id: "work-realtrac",
+    period: "2017 – 2020",
+    role: "Senior Frontend Developer",
+    company: "RealTrac Technologies · St. Petersburg",
+    summary:
+      "Industrial tracking and communication system; migrated the codebase to TypeScript, added a reports constructor, GIS maps and WebSocket events.",
+  },
+  {
+    id: "work-miix",
+    period: "2016 – 2017",
+    role: "Frontend Web Developer",
+    company: "MiiiX.org · St. Petersburg",
+    summary:
+      "E-commerce platform with real-time auctions and an admin panel using React, Redux and Webpack.",
+  },
+  {
+    id: "work-programny",
+    period: "2014 – 2015",
+    role: "Frontend Web Developer",
+    company: "Programny Produkt · Moscow / Remote",
+    summary:
+      "Portals for Russian ministries and companies (Finance Ministry, MFA, OTP Bank, Rostelecom) on IBM WebSphere, JavaScript and SCSS.",
+  },
+  {
+    id: "work-altera",
+    period: "2013 – 2014",
+    role: "Junior Web Developer",
+    company: "Altera Media · St. Petersburg",
+    summary: "Websites and smaller client projects.",
+  },
+  {
+    id: "work-fabricasaitov",
+    period: "2012 – 2013",
+    role: "Junior Web Developer",
+    company: "Fabricasaitov.ru · St. Petersburg",
+    summary: "Entry-level role building websites.",
+  },
+];
 
 export default function IndexPage({ data }: IndexPageProps) {
   const insights = data?.allBlogPosts?.nodes ?? [];
@@ -218,66 +276,22 @@ export default function IndexPage({ data }: IndexPageProps) {
 
         <section className={styles.sectionRight}>
           <LandingSection title="Professional Experience">
-            <ShowcaseGrid
-              items={[
-                {
-                  id: "work-super-dispatch",
-                  title: "Frontend Engineer — Super Dispatch",
-                  icon: <FaLaptopCode />,
-                  description:
-                    "Jul 2023 – Feb 2024 — Remote (US). Worked on a transportation/logistics platform using React and TypeScript; refined UI/UX and built scalable applications.",
-                },
-                {
-                  id: "work-flymeto",
-                  title: "Senior Frontend Developer — Flymeto",
-                  icon: <FaBriefcase />,
-                  description:
-                    "Feb 2022 – Aug 2022 — Remote (Prague). Developed a flight ticketing service for high-traffic websites using React, Next.js, TypeScript and SCSS.",
-                },
-                {
-                  id: "work-omnetic",
-                  title: "Senior Frontend Developer — OMNETIC",
-                  icon: <FaBuilding />,
-                  description:
-                    "Jul 2020 – Feb 2022 — Remote (Prague). Built a Dealership Management System for Czech/EU market. Tech: React, Next.js, TypeScript, SCSS, Material UI, Redux, Cypress.",
-                },
-                {
-                  id: "work-realtrac",
-                  title: "Senior Frontend Developer — RealTrac Technologies",
-                  icon: <FaCode />,
-                  description:
-                    "Dec 2017 – Jun 2020 — St. Petersburg. Developed tracking/communication system; migrated codebase to TypeScript, improved performance, added reports constructor, GIS maps and WebSocket events.",
-                },
-                {
-                  id: "work-miix",
-                  title: "Frontend Web Developer — MiiiX.org",
-                  icon: <FaBoxes />,
-                  description:
-                    "Mar 2016 – Dec 2017 — St. Petersburg. Worked on an e-commerce platform with real-time auctions and admin panel using React, Redux and Webpack.",
-                },
-                {
-                  id: "work-programny",
-                  title: "Frontend Web Developer — Programny Produkt",
-                  icon: <FaBriefcase />,
-                  description:
-                    "May 2014 – Nov 2015 — Moscow/Remote. Developed portals for Russian ministries and companies (Finance Ministry, MFA, OTP Bank, Rostelecom). Used IBM WebSphere, JavaScript and SCSS.",
-                },
-                {
-                  id: "work-altera",
-                  title: "Junior Web Developer — Altera Media",
-                  icon: <FaRobot />,
-                  description:
-                    "Apr 2013 – May 2014 — St. Petersburg. Worked on websites and smaller projects.",
-                },
-                {
-                  id: "work-fabricasaitov",
-                  title: "Junior Web Developer — Fabricasaitov.ru",
-                  icon: <FaMicrochip />,
-                  description:
-                    "Dec 2012 – Jan 2013 — St. Petersburg. Entry-level role building websites.",
-                },
-              ]}
-            />
+            <Box className={styles.experienceList}>
+              {experience.map((job) => (
+                <Box key={job.id} className={styles.experienceItem}>
+                  <Text className={styles.experiencePeriod}>{job.period}</Text>
+                  <Box>
+                    <h3 className={styles.experienceRole}>
+                      {job.role}{" "}
+                      <span className={styles.experienceCompany}>
+                        — {job.company}
+                      </span>
+                    </h3>
+                    <p className={styles.experienceSummary}>{job.summary}</p>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
           </LandingSection>
         </section>
 

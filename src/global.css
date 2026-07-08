@@ -5,6 +5,7 @@
   /* Ethereal Aura design tokens (docs/DESIGN_VISION.md) */
   --canvas: #f8f5ee; /* near-white luminous canvas */
   --ink: #1a1e21; /* charcoal — never pure black */
+  --ink-rgb: 26, 30, 33; /* raw channels for rgba() alpha variants */
   --ink-soft: #4a5964; /* slate — secondary text */
   --glass-fill: rgba(255, 255, 255, 0.38);
   --glass-border: rgba(255, 255, 255, 0.55);
@@ -66,6 +67,9 @@ body {
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--canvas);
+  /* Mantine's default dimmed gray (#868e96) is ~2.9:1 on the light canvas —
+     below WCAG AA. Remap every c="dimmed" to slate, which passes at 6.6:1. */
+  --mantine-color-dimmed: var(--ink-soft);
 }
 
 h1,

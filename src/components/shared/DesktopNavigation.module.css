@@ -17,7 +17,8 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 6px 2px;
+  /* generous vertical padding = ≥44px hit area without changing the look */
+  padding: 13px 6px;
   transition: color 0.2s ease;
 }
 
@@ -25,9 +26,10 @@
 .navButton::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  left: 6px;
+  right: 6px;
+  /* hugs the text despite the enlarged hit area */
+  bottom: 7px;
   height: 1px;
   background: var(--ink);
   transform: scaleX(0);
@@ -46,6 +48,12 @@
 
 .navButtonActive {
   color: var(--ink);
+}
+
+/* Mantine sizes the burger glyph; padding widens the tap target to ~45px */
+.burger {
+  padding: 10px;
+  box-sizing: content-box;
 }
 
 /* Mobile menu overlay */
@@ -77,6 +85,17 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .mobileMenu {
+    animation: none;
+  }
+
+  .navButton::after,
+  .drawerLink {
+    transition: none;
+  }
+}
+
 .mobileMenuLabel {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -96,7 +115,7 @@
   text-transform: uppercase;
   color: var(--ink);
   text-decoration: none;
-  border-bottom: 1px solid rgba(26, 30, 33, 0.12);
+  border-bottom: 1px solid rgba(var(--ink-rgb), 0.12);
   transition: padding-left 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 

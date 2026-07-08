@@ -293,7 +293,8 @@
   );
 }
 
-.serviceText h3 {
+/* h2 for document outline (h1 → h2); visually a compact service label */
+.serviceText h2 {
   margin: 0 0 6px;
   font-family: var(--font-sans);
   font-weight: 500;
@@ -304,7 +305,7 @@
   position: relative;
 }
 
-.serviceText h3::after {
+.serviceText h2::after {
   content: "";
   position: absolute;
   left: 0;
@@ -317,7 +318,7 @@
   transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.service:hover .serviceText h3::after {
+.service:hover .serviceText h2::after {
   transform: scaleX(1);
 }
 
