@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import * as styles from "./3dBackground.module.css";
 import { auraColors } from "../../theme";
@@ -17,9 +17,12 @@ const hexToRgba = (hex: string, alpha: number) => {
 const gauss = () =>
   (Math.random() + Math.random() + Math.random() + Math.random()) / 2 - 1;
 
-const BokehParticles = ({
+// All viewport-dependent sizing happens inside useFrame (which rewrites every
+// position each frame anyway), so props stay literal/stable and a window
+// resize never re-renders this component or regenerates the random buffers.
+const BokehParticlesImpl = ({
   count = 60,
-  spread = 16,
+  spreadScale = 1.2,
   size = 0.6,
   opacity = 0.55,
   shimmer = 0.25,
@@ -28,10 +31,11 @@ const BokehParticles = ({
   frontDepth = -1.2,
   color = auraColors.warmSand,
   bandAngle = 0.62,
-  bandSigma = 2.2,
+  sigmaScale = 0.22,
 }: {
   count?: number;
-  spread?: number;
+  /** band length as a multiple of the viewport diagonal */
+  spreadScale?: number;
   size?: number;
   opacity?: number;
   shimmer?: number;
@@ -40,7 +44,8 @@ const BokehParticles = ({
   frontDepth?: number;
   color?: string;
   bandAngle?: number;
-  bandSigma?: number;
+  /** gaussian band thickness as a multiple of the viewport height */
+  sigmaScale?: number;
 }) => {
   const pointsRef = useRef<THREE.Points>(null);
   const texture = useMemo(() => {
@@ -65,20 +70,21 @@ const BokehParticles = ({
   }, [color]);
 
   const particles = useMemo(() => {
+    // Normalized band-space samples: u along the ribbon axis in [-0.5, 0.5],
+    // v across it (unit gaussian). World scale is applied per-frame from the
+    // live viewport so a resize just restretches — it never resamples.
     const positions = new Float32Array(count * 3);
+    const bandU = new Float32Array(count);
+    const bandV = new Float32Array(count);
+    const depth = new Float32Array(count);
     const phases = new Float32Array(count);
     const offsets = new Float32Array(count * 3);
     const colorBuffer = new Float32Array(count * 3);
     const baseColor = new THREE.Color(color);
-    const cosA = Math.cos(bandAngle);
-    const sinA = Math.sin(bandAngle);
     for (let i = 0; i < count; i++) {
-      // Sample along the diagonal ribbon axis, gaussian falloff across it
-      const u = (Math.random() - 0.5) * spread;
-      const v = gauss() * bandSigma;
-      positions[i * 3] = cosA * u - sinA * v;
-      positions[i * 3 + 1] = sinA * u + cosA * v;
-      positions[i * 3 + 2] = frontDepth - Math.random() * 1.2;
+      bandU[i] = Math.random() - 0.5;
+      bandV[i] = gauss();
+      depth[i] = frontDepth - Math.random() * 1.2;
       phases[i] = Math.random() * Math.PI * 2;
       offsets[i * 3] = Math.random() * Math.PI * 2;
       offsets[i * 3 + 1] = Math.random() * Math.PI * 2;
@@ -88,16 +94,10 @@ const BokehParticles = ({
       colorBuffer[i * 3 + 1] = tint.g;
       colorBuffer[i * 3 + 2] = tint.b;
     }
-    return {
-      positions,
-      basePositions: positions.slice(),
-      phases,
-      offsets,
-      colors: colorBuffer,
-    };
-  }, [count, spread, frontDepth, color, bandAngle, bandSigma]);
+    return { positions, bandU, bandV, depth, phases, offsets, colors: colorBuffer };
+  }, [count, frontDepth, color]);
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock, viewport }) => {
     const time = clock.getElapsedTime();
     const geometry = pointsRef.current?.geometry;
     const material = pointsRef.current?.material as
@@ -105,20 +105,28 @@ const BokehParticles = ({
       | undefined;
     if (!geometry) return;
     const positions = geometry.attributes.position.array as Float32Array;
+    const spread = Math.hypot(viewport.width, viewport.height) * spreadScale;
+    const sigma = viewport.height * sigmaScale;
+    // Portrait screens draw roughly half the particles
+    const visible = Math.round(count * (viewport.aspect < 1 ? 0.5 : 1));
+    const cosA = Math.cos(bandAngle);
+    const sinA = Math.sin(bandAngle);
     for (let i = 0; i < count; i++) {
       const index = i * 3;
-      const baseX = particles.basePositions[index];
-      const baseY = particles.basePositions[index + 1];
-      const baseZ = particles.basePositions[index + 2];
+      const u = particles.bandU[i] * spread;
+      const v = particles.bandV[i] * sigma;
       positions[index] =
-        baseX + Math.sin(time * 0.14 + particles.offsets[index]) * drift;
+        cosA * u - sinA * v +
+        Math.sin(time * 0.14 + particles.offsets[index]) * drift;
       positions[index + 1] =
-        baseY +
+        sinA * u + cosA * v +
         Math.cos(time * 0.12 + particles.offsets[index + 1]) * rise * 2.2;
       positions[index + 2] =
-        baseZ + Math.sin(time * 0.1 + particles.offsets[index + 2]) * 0.22;
+        particles.depth[i] +
+        Math.sin(time * 0.1 + particles.offsets[index + 2]) * 0.22;
     }
     geometry.attributes.position.needsUpdate = true;
+    geometry.setDrawRange(0, visible);
     if (material) {
       material.opacity =
         opacity + Math.sin(time * 0.6 + particles.phases[0]) * shimmer;
@@ -158,20 +166,21 @@ const BokehParticles = ({
   );
 };
 
-// Fluid shader canvas + bokeh clustered along the same diagonal band
-function Scene() {
-  const { viewport } = useThree();
-  const diagonal = Math.hypot(viewport.width, viewport.height);
-  // Portrait screens get roughly half the particles
-  const density = viewport.aspect < 1 ? 0.5 : 1;
+// props are primitive and stable per layer → memo keeps particles from
+// re-rendering when the parent Scene re-renders for any reason
+const BokehParticles = React.memo(BokehParticlesImpl);
 
+// Fluid shader canvas + bokeh clustered along the same diagonal band.
+// Deliberately viewport-free: every prop below is a literal, so this tree
+// renders exactly once — resizes are absorbed inside each layer's useFrame.
+function Scene() {
   return (
     <>
       <FluidBackground />
       {/* tiny golden sparks hugging the ribbon — warm lights on a cool canvas */}
       <BokehParticles
-        count={Math.round(55 * density)}
-        spread={diagonal * 1.3}
+        count={55}
+        spreadScale={1.3}
         size={0.14}
         opacity={0.68}
         shimmer={0.16}
@@ -179,12 +188,12 @@ function Scene() {
         rise={0.06}
         frontDepth={-0.6}
         color="#F2D9AE"
-        bandSigma={viewport.height * 0.2}
+        sigmaScale={0.2}
       />
       {/* mid golden glow dots */}
       <BokehParticles
-        count={Math.round(26 * density)}
-        spread={diagonal * 1.2}
+        count={26}
+        spreadScale={1.2}
         size={0.4}
         opacity={0.55}
         shimmer={0.18}
@@ -192,12 +201,12 @@ function Scene() {
         rise={0.05}
         frontDepth={-0.8}
         color="#F0D3A4"
-        bandSigma={viewport.height * 0.22}
+        sigmaScale={0.22}
       />
       {/* a few large soft discs, far layer */}
       <BokehParticles
-        count={Math.round(5 * density)}
-        spread={diagonal * 1.1}
+        count={5}
+        spreadScale={1.1}
         size={0.8}
         opacity={0.2}
         shimmer={0.08}
@@ -205,12 +214,12 @@ function Scene() {
         rise={0.04}
         frontDepth={-1.2}
         color="#F2DCB6"
-        bandSigma={viewport.height * 0.26}
+        sigmaScale={0.26}
       />
       {/* foreground out-of-focus discs — depth-of-field layer */}
       <BokehParticles
-        count={Math.round(6 * density)}
-        spread={diagonal * 1.2}
+        count={6}
+        spreadScale={1.2}
         size={1.7}
         opacity={0.1}
         shimmer={0.05}
@@ -218,7 +227,7 @@ function Scene() {
         rise={0.06}
         frontDepth={-0.12}
         color="#F5E6C8"
-        bandSigma={viewport.height * 0.4}
+        sigmaScale={0.4}
       />
     </>
   );
