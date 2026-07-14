@@ -9,7 +9,7 @@ export default function ReactPerformanceConsultingPage() {
       title="React Performance Consulting"
       lead="I build scalable, sub-second React applications and Gatsby systems that convert faster and rank higher."
       sectionTitle="Performance Metrics"
-      sectionBody="Core Web Vitals, Lighthouse, and real-user monitoring. We translate speed into measurable business outcomes."
+      sectionBody="Core Web Vitals, Lighthouse, and real-user monitoring. I translate speed into measurable business outcomes."
       form={{
         title: "Audit My Architecture",
         subtitle:

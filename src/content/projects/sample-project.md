@@ -1,4 +1,5 @@
 ---
+template: "project"
 title: "E-commerce Dashboard"
 slug: "e-commerce-dashboard"
 description: "A comprehensive dashboard for e-commerce businesses providing real-time analytics, inventory management, and sales forecasting."

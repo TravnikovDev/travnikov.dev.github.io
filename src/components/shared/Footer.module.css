@@ -117,7 +117,9 @@
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.04);
-  font-family: "Playfair Display", "Times New Roman", serif;
+  /* Playfair was never bundled — visitors fell back to Times New Roman.
+     Fraunces is the site's shipped display serif with the same contrast. */
+  font-family: var(--font-display);
   line-height: 0.8 !important;
 }
 
@@ -128,7 +130,7 @@
   text-transform: uppercase;
   color: #f7f4ee;
   text-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
-  font-family: "Playfair Display", "Times New Roman", serif;
+  font-family: var(--font-display);
   line-height: 0.8 !important;
   margin-bottom: 20px;
 }

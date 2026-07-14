@@ -39,11 +39,11 @@ export default function BlogPage({ data }: BlogPageProps) {
       <Container size="lg" py="xl">
         <Box mb="xl">
           <Title order={1} mb="md">
-            Blog
+            Insights
           </Title>
           <Text size="lg">
-            Thoughts, insights, and experiences from my journey as a frontend
-            developer.
+            Notes on AI automation, web performance, and technical leadership —
+            what I learn shipping real systems.
           </Text>
         </Box>
 

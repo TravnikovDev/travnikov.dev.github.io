@@ -1,4 +1,5 @@
 ---
+template: "experiment"
 title: "Interactive Particle System"
 slug: "interactive-particle-system"
 description: "An interactive particle system that responds to mouse movement and music, creating a visually engaging experience."

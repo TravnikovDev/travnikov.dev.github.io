@@ -31,6 +31,7 @@ export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions,
         };
         frontmatter: {
           template: string;
+          slug: string;
         };
       }>;
     };
@@ -44,6 +45,7 @@ export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions,
           }
           frontmatter {
             template
+            slug
           }
         }
       }
@@ -55,12 +57,23 @@ export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions,
     return;
   }
 
-  // Create pages for markdown files
+  // Create pages for markdown files.
+  // Paths must match the links used across the site:
+  // /blog/<slug>, /projects/<slug>, /experiments/<slug>
+  const pathPrefixes: Record<string, string> = {
+    blog: '/blog',
+    project: '/projects',
+    experiment: '/experiments',
+  };
   const markdownPages = result.data?.allMarkdownRemark.nodes || [];
   markdownPages.forEach((page) => {
     const template = page.frontmatter.template === 'blog' ? blogTemplate : projectTemplate;
+    const prefix = pathPrefixes[page.frontmatter.template] ?? '';
+    const slug = page.frontmatter.slug
+      ? `/${page.frontmatter.slug}/`
+      : page.fields.slug;
     createPage({
-      path: page.fields.slug,
+      path: `${prefix}${slug}`,
       component: template,
       context: {
         id: page.id,
