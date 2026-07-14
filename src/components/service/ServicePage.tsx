@@ -9,8 +9,9 @@ export type ServicePageProps = {
   eyebrow: string;
   title: string;
   lead: string;
-  sectionTitle: string;
-  sectionBody: string;
+  /** optional mid-page section between the hero and the form */
+  sectionTitle?: string;
+  sectionBody?: string;
   form: {
     title: string;
     subtitle: string;
@@ -62,10 +63,12 @@ export default function ServicePage({
           <p className={styles.lead}>{lead}</p>
         </header>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>{sectionTitle}</h2>
-          <p className={styles.sectionBody}>{sectionBody}</p>
-        </section>
+        {sectionTitle && sectionBody && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>{sectionTitle}</h2>
+            <p className={styles.sectionBody}>{sectionBody}</p>
+          </section>
+        )}
 
         <section className={styles.formSection}>
           <form className={styles.formCard} onSubmit={onSubmit}>

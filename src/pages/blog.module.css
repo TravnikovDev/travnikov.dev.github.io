@@ -1,14 +1,120 @@
-.articleStack {
-  gap: 1.5rem;
+/* Insights listing — same aura page language as the service pages */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: clamp(120px, 16vh, 180px) clamp(20px, 5vw, 40px)
+    clamp(60px, 10vh, 110px);
 }
 
-.articleLink {
+.back {
+  display: inline-block;
+  margin-bottom: clamp(28px, 5vh, 52px);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
   text-decoration: none;
-  color: inherit;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
-.placeholderBox {
-  background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 0.5rem;
+.back:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-weight: 550;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 1.4rem;
+}
+
+.lead {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 44ch;
+  margin: 0;
+}
+
+/* ---------- Article rows ---------- */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: clamp(48px, 9vh, 88px);
+}
+
+.item {
+  display: block;
+  padding: 1.2rem 1.4rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--ink);
+  border: 1px solid rgba(var(--ink-rgb), 0.14);
+  background: rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(6px);
+  transition: transform 200ms ease, border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--ink-rgb), 0.42);
+  box-shadow: 0 12px 26px rgba(60, 84, 78, 0.14);
+}
+
+.itemMeta {
+  display: flex;
+  gap: 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.itemTitle {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0.3rem 0 0.5rem;
+}
+
+.itemExcerpt {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(var(--ink-rgb), 0.78);
+  max-width: 62ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .back {
+    transition: none;
+  }
 }

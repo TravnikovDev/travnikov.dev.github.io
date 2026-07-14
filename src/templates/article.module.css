@@ -1,0 +1,204 @@
+/* Shared article chrome for blog posts and case studies — aura page language */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(120px, 16vh, 180px) clamp(20px, 5vw, 40px)
+    clamp(60px, 10vh, 110px);
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: clamp(28px, 5vh, 52px);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.back:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-weight: 550;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin: 0 0 1.2rem;
+  text-wrap: balance;
+}
+
+.lead {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 54ch;
+  margin: 0;
+}
+
+.externalLink {
+  display: inline-block;
+  margin-top: 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+}
+
+/* ---------- Markdown body ---------- */
+.content {
+  margin-top: clamp(40px, 7vh, 64px);
+  padding-top: clamp(28px, 4vh, 40px);
+  border-top: 1px solid rgba(var(--ink-rgb), 0.16);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: rgba(var(--ink-rgb), 0.86);
+}
+
+/* The markdown files open with "# <title>", which duplicates the page h1
+   above — hide that first heading, keep every later one. */
+.content > h1:first-child {
+  display: none;
+}
+
+.content h1,
+.content h2 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 2.2em 0 0.7em;
+}
+
+.content h3,
+.content h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 1.8em 0 0.6em;
+}
+
+.content p {
+  margin: 0 0 1.2em;
+  max-width: 68ch;
+}
+
+.content ul,
+.content ol {
+  margin: 0 0 1.2em;
+  padding-left: 1.4em;
+  max-width: 65ch;
+}
+
+.content li {
+  margin-bottom: 0.4em;
+}
+
+.content a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(var(--ink-rgb), 0.4);
+}
+
+.content a:hover {
+  text-decoration-color: var(--ink);
+}
+
+.content blockquote {
+  margin: 1.6em 0;
+  padding: 0.2em 0 0.2em 1.2em;
+  border-left: 2px solid rgba(var(--ink-rgb), 0.3);
+  color: var(--ink-soft);
+}
+
+.content code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: rgba(var(--ink-rgb), 0.07);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+.content pre {
+  margin: 0 0 1.4em;
+  padding: 1.1rem 1.3rem;
+  border-radius: 12px;
+  background: #22282c;
+  overflow-x: auto;
+}
+
+.content pre code {
+  background: none;
+  padding: 0;
+  color: #e8ebe9;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.content img {
+  max-width: 100%;
+  border-radius: 12px;
+}
+
+.content hr {
+  border: 0;
+  border-top: 1px solid rgba(var(--ink-rgb), 0.16);
+  margin: 2.4em 0;
+}
+
+/* ---------- Tag list ---------- */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  margin-top: clamp(36px, 6vh, 56px);
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(var(--ink-rgb), 0.16);
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back {
+    transition: none;
+  }
+}

@@ -1,17 +1,18 @@
-import React from 'react';
-import { graphql, PageProps } from 'gatsby';
-import { Title, Text, Stack, Container, Group, Badge, Divider } from '@mantine/core';
-import BaseLayout from '../layouts/BaseLayout';
-import { SEO } from '../utils/seo/SEO';
-import * as styles from './BlogTemplate.module.css';
+import React from "react";
+import { graphql, Link, PageProps } from "gatsby";
+import BaseLayout from "../layouts/BaseLayout";
+import ThreeDBackground from "../components/3d/3dBackground";
+import { SEO } from "../utils/seo/SEO";
+import * as styles from "./article.module.css";
 
 interface BlogTemplateProps extends PageProps {
   data: {
     markdownRemark: {
+      timeToRead: number;
       frontmatter: {
         title: string;
         date: string;
-        tags: string[];
+        tags: string[] | null;
         excerpt: string;
       };
       html: string;
@@ -20,44 +21,51 @@ interface BlogTemplateProps extends PageProps {
 }
 
 export default function BlogTemplate({ data }: BlogTemplateProps) {
-  const articleData = data.markdownRemark;
-  const date = new Date(articleData.frontmatter.date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const article = data.markdownRemark;
 
   return (
     <BaseLayout>
-      <Container size="md" py="xl">
-        <Stack className={styles.blogStack}>
-          <Title order={1}>{articleData.frontmatter.title}</Title>
-          <Group>
-            <Text size="sm" color="dimmed">{date}</Text>
-          </Group>
-          <Divider />
-          <div dangerouslySetInnerHTML={{ __html: articleData.html }} />
-          <Divider my="xl" />
-          <Group>
-            {articleData.frontmatter.tags.map((tag, index) => (
-              <Badge key={index} size="md" variant="outline">
+      <ThreeDBackground />
+
+      <article className={styles.page}>
+        <header>
+          <Link to="/blog" className={styles.back}>
+            ← Insights
+          </Link>
+          <div className={styles.meta}>
+            <span>{article.frontmatter.date}</span>
+            <span>{article.timeToRead} min read</span>
+          </div>
+          <h1 className={styles.title}>{article.frontmatter.title}</h1>
+          <p className={styles.lead}>{article.frontmatter.excerpt}</p>
+        </header>
+
+        <div
+          className={styles.content}
+          dangerouslySetInnerHTML={{ __html: article.html }}
+        />
+
+        {article.frontmatter.tags && article.frontmatter.tags.length > 0 && (
+          <div className={styles.tags}>
+            {article.frontmatter.tags.map((tag) => (
+              <span key={tag} className={styles.tag}>
                 {tag}
-              </Badge>
+              </span>
             ))}
-          </Group>
-        </Stack>
-      </Container>
+          </div>
+        )}
+      </article>
     </BaseLayout>
   );
 }
 
 export function Head({ data }: BlogTemplateProps) {
-  const articleData = data.markdownRemark;
-  
+  const article = data.markdownRemark;
+
   return (
     <SEO
-      title={articleData.frontmatter.title}
-      description={articleData.frontmatter.excerpt}
+      title={article.frontmatter.title}
+      description={article.frontmatter.excerpt}
     />
   );
 }
@@ -65,9 +73,10 @@ export function Head({ data }: BlogTemplateProps) {
 export const query = graphql`
   query BlogPostQuery($id: String!) {
     markdownRemark(id: { eq: $id }) {
+      timeToRead
       frontmatter {
         title
-        date
+        date(formatString: "MMM D, YYYY")
         tags
         excerpt
       }

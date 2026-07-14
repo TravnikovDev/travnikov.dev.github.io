@@ -83,9 +83,11 @@
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
   /* defined lift, not a soft ghost halo */
   box-shadow: 0 16px 38px rgba(60, 84, 78, 0.18);
-  /* flat overlap — clip only the bottom of the last line. (vh here amplifies
-     the overlap on tall screens and slices through the word — do not use it.) */
-  margin-top: -42px;
+  /* Overlap kisses the descenders of the last headline line only. Flat -42px
+     swallowed the whole word at wide viewports (the headline scales with vw
+     but the overlap didn't); scale with vw and cap at roughly a third of the
+     largest line height. (vh amplifies on tall screens — do not use it.) */
+  margin-top: clamp(-30px, -2vw, -16px);
   position: relative;
   z-index: 2;
 }
