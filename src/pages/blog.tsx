@@ -7,23 +7,21 @@ import * as styles from "./blog.module.css";
 
 interface BlogPageProps extends PageProps {
   data: {
-    allMarkdownRemark: {
+    allBlogPost: {
       nodes: {
         id: string;
         timeToRead: number;
-        frontmatter: {
-          title: string;
-          date: string;
-          slug: string;
-          excerpt: string;
-        };
+        title: string;
+        date: string;
+        slug: string;
+        excerpt: string;
       }[];
     };
   };
 }
 
 export default function BlogPage({ data }: BlogPageProps) {
-  const articles = data.allMarkdownRemark.nodes;
+  const articles = data.allBlogPost.nodes;
 
   return (
     <BaseLayout>
@@ -46,17 +44,15 @@ export default function BlogPage({ data }: BlogPageProps) {
           {articles.map((article) => (
             <Link
               key={article.id}
-              to={`/blog/${article.frontmatter.slug}`}
+              to={`/blog/${article.slug}`}
               className={styles.item}
             >
               <span className={styles.itemMeta}>
-                <span>{article.frontmatter.date}</span>
+                <span>{article.date}</span>
                 <span>{article.timeToRead} min read</span>
               </span>
-              <h2 className={styles.itemTitle}>{article.frontmatter.title}</h2>
-              <p className={styles.itemExcerpt}>
-                {article.frontmatter.excerpt}
-              </p>
+              <h2 className={styles.itemTitle}>{article.title}</h2>
+              <p className={styles.itemExcerpt}>{article.excerpt}</p>
             </Link>
           ))}
         </div>
@@ -76,19 +72,14 @@ export function Head() {
 
 export const query = graphql`
   query {
-    allMarkdownRemark(
-      filter: { frontmatter: { template: { eq: "blog" } } }
-      sort: { frontmatter: { date: DESC } }
-    ) {
+    allBlogPost(sort: { date: DESC }) {
       nodes {
         id
         timeToRead
-        frontmatter {
-          title
-          date(formatString: "MMM D, YYYY")
-          slug
-          excerpt
-        }
+        title
+        date(formatString: "MMM D, YYYY")
+        slug
+        excerpt
       }
     }
   }

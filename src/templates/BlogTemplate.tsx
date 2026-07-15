@@ -7,21 +7,19 @@ import * as styles from "./article.module.css";
 
 interface BlogTemplateProps extends PageProps {
   data: {
-    markdownRemark: {
+    blogPost: {
       timeToRead: number;
-      frontmatter: {
-        title: string;
-        date: string;
-        tags: string[] | null;
-        excerpt: string;
-      };
+      title: string;
+      date: string;
+      tags: string[] | null;
+      excerpt: string;
       html: string;
     };
   };
 }
 
 export default function BlogTemplate({ data }: BlogTemplateProps) {
-  const article = data.markdownRemark;
+  const article = data.blogPost;
 
   return (
     <BaseLayout>
@@ -33,11 +31,11 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
             ← Insights
           </Link>
           <div className={styles.meta}>
-            <span>{article.frontmatter.date}</span>
+            <span>{article.date}</span>
             <span>{article.timeToRead} min read</span>
           </div>
-          <h1 className={styles.title}>{article.frontmatter.title}</h1>
-          <p className={styles.lead}>{article.frontmatter.excerpt}</p>
+          <h1 className={styles.title}>{article.title}</h1>
+          <p className={styles.lead}>{article.excerpt}</p>
         </header>
 
         <div
@@ -45,9 +43,9 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
           dangerouslySetInnerHTML={{ __html: article.html }}
         />
 
-        {article.frontmatter.tags && article.frontmatter.tags.length > 0 && (
+        {article.tags && article.tags.length > 0 && (
           <div className={styles.tags}>
-            {article.frontmatter.tags.map((tag) => (
+            {article.tags.map((tag) => (
               <span key={tag} className={styles.tag}>
                 {tag}
               </span>
@@ -60,26 +58,19 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
 }
 
 export function Head({ data }: BlogTemplateProps) {
-  const article = data.markdownRemark;
+  const article = data.blogPost;
 
-  return (
-    <SEO
-      title={article.frontmatter.title}
-      description={article.frontmatter.excerpt}
-    />
-  );
+  return <SEO title={article.title} description={article.excerpt} />;
 }
 
 export const query = graphql`
   query BlogPostQuery($id: String!) {
-    markdownRemark(id: { eq: $id }) {
+    blogPost(id: { eq: $id }) {
       timeToRead
-      frontmatter {
-        title
-        date(formatString: "MMM D, YYYY")
-        tags
-        excerpt
-      }
+      title
+      date(formatString: "MMM D, YYYY")
+      tags
+      excerpt
       html
     }
   }

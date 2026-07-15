@@ -7,22 +7,20 @@ import * as styles from "./projects.module.css";
 
 interface ProjectsPageProps extends PageProps {
   data: {
-    allMarkdownRemark: {
+    allCaseStudy: {
       nodes: {
         id: string;
-        frontmatter: {
-          title: string;
-          slug: string;
-          description: string;
-          category: string;
-        };
+        title: string;
+        slug: string;
+        description: string;
+        category: string;
       }[];
     };
   };
 }
 
 export default function ProjectsPage({ data }: ProjectsPageProps) {
-  const projects = data.allMarkdownRemark.nodes;
+  const projects = data.allCaseStudy.nodes;
 
   return (
     <BaseLayout>
@@ -46,18 +44,16 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
             {projects.map((project) => (
               <Link
                 key={project.id}
-                to={`/projects/${project.frontmatter.slug}`}
+                to={`/projects/${project.slug}`}
                 className={styles.item}
               >
                 <div>
                   <span className={styles.itemCategory}>
-                    {project.frontmatter.category}
+                    {project.category}
                   </span>
-                  <h2 className={styles.itemTitle}>
-                    {project.frontmatter.title}
-                  </h2>
+                  <h2 className={styles.itemTitle}>{project.title}</h2>
                   <p className={styles.itemDescription}>
-                    {project.frontmatter.description}
+                    {project.description}
                   </p>
                 </div>
                 <span className={styles.itemCta}>View case study</span>
@@ -92,15 +88,13 @@ export function Head() {
 
 export const query = graphql`
   query {
-    allMarkdownRemark(filter: { frontmatter: { template: { eq: "project" } } }) {
+    allCaseStudy(sort: { title: ASC }) {
       nodes {
         id
-        frontmatter {
-          title
-          slug
-          description
-          category
-        }
+        title
+        slug
+        description
+        category
       }
     }
   }

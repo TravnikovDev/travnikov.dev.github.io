@@ -1,140 +1,74 @@
-import React from "react";
-import { graphql, PageProps } from "gatsby";
-import {
-  SimpleGrid,
-  Card,
-  Image,
-  Text,
-  Badge,
-  Group,
-  Title,
-  Container,
-  Box,
-  Code,
-  Button,
-} from "@mantine/core";
+import "react";
+import { graphql, Link, PageProps } from "gatsby";
 import BaseLayout from "../layouts/BaseLayout";
+import ThreeDBackground from "../components/3d/3dBackground";
 import { SEO } from "../utils/seo/SEO";
+import * as styles from "./projects.module.css";
 
 interface ExperimentsPageProps extends PageProps {
   data: {
-    allMarkdownRemark: {
+    allExperiment: {
       nodes: {
         id: string;
-        frontmatter: {
-          title: string;
-          slug: string;
-          description: string;
-          featuredImage: string;
-          technologies: string[];
-        };
-        html: string;
+        title: string;
+        slug: string;
+        description: string;
+        technologies: string[] | null;
       }[];
     };
   };
 }
 
 export default function ExperimentsPage({ data }: ExperimentsPageProps) {
-  const experiments = data.allMarkdownRemark.nodes;
+  const experiments = data.allExperiment.nodes;
 
   return (
     <BaseLayout>
-      <Container size="lg" py="xl">
-        <Box mb="xl">
-          <Title order={1} mb="md">
-            Web Experiments
-          </Title>
-          <Text size="lg">
-            A collection of fun and interactive frontend experiments showcasing
-            creative techniques and concepts.
-          </Text>
-        </Box>
+      <ThreeDBackground />
+
+      <div className={styles.page}>
+        <header>
+          <Link to="/" className={styles.back}>
+            ← Home
+          </Link>
+          <span className={styles.eyebrow}>Playground</span>
+          <h1 className={styles.title}>Experiments</h1>
+          <p className={styles.lead}>
+            Interactive frontend experiments — creative techniques tried in
+            public.
+          </p>
+        </header>
 
         {experiments.length > 0 ? (
-          <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
+          <div className={styles.list}>
             {experiments.map((experiment) => (
-              <Card
+              <Link
                 key={experiment.id}
-                shadow="sm"
-                padding="lg"
-                radius="md"
-                withBorder
+                to={`/experiments/${experiment.slug}`}
+                className={styles.item}
               >
-                {experiment.frontmatter.featuredImage && (
-                  <Card.Section>
-                    <Image
-                      src={experiment.frontmatter.featuredImage}
-                      height={200}
-                      alt={experiment.frontmatter.title}
-                    />
-                  </Card.Section>
-                )}
-                <Title order={3} mt="md" mb="xs">
-                  {experiment.frontmatter.title}
-                </Title>
-                <Group mb="md">
-                  {experiment.frontmatter.technologies.map((tech, index) => (
-                    <Badge key={index} color="blue" variant="light">
-                      {tech}
-                    </Badge>
-                  ))}
-                </Group>
-                <Text mb="md">{experiment.frontmatter.description}</Text>
-                <Box mb="md">
-                  <Text fw={500} mb="xs">
-                    Sample Code:
-                  </Text>
-                  <Code block>{experiment.html}</Code>
-                </Box>
-                <Button
-                  component="a"
-                  href={`/experiments/${experiment.frontmatter.slug}`}
-                  fullWidth
-                >
-                  View Details
-                </Button>
-              </Card>
+                <div>
+                  <span className={styles.itemCategory}>
+                    {(experiment.technologies ?? []).join(" · ")}
+                  </span>
+                  <h2 className={styles.itemTitle}>{experiment.title}</h2>
+                  <p className={styles.itemDescription}>
+                    {experiment.description}
+                  </p>
+                </div>
+                <span className={styles.itemCta}>View experiment</span>
+              </Link>
             ))}
-          </SimpleGrid>
+          </div>
         ) : (
-          // Placeholder content when no experiments exist yet
-          <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
-            {[1, 2, 3, 4].map((i) => (
-              <Card key={i} shadow="sm" padding="lg" radius="md" withBorder>
-                <Card.Section>
-                  <Box h={200} bg="gray.2" />
-                </Card.Section>
-                <Title order={3} mt="md" mb="xs">
-                  Experiment {i}
-                </Title>
-                <Group mb="md">
-                  <Badge color="blue" variant="light">
-                    React
-                  </Badge>
-                  <Badge color="green" variant="light">
-                    Three.js
-                  </Badge>
-                </Group>
-                <Text mb="md">
-                  This is a placeholder for an experiment description.
-                  Experiments will be loaded from Markdown files.
-                </Text>
-                <Box mb="md">
-                  <Text fw={500} mb="xs">
-                    Sample Code:
-                  </Text>
-                  <Code block>{`function ExampleComponent() {
-  return <div>Hello World</div>;
-}`}</Code>
-                </Box>
-                <Button fullWidth disabled>
-                  View Live Demo
-                </Button>
-              </Card>
-            ))}
-          </SimpleGrid>
+          <div className={styles.empty}>
+            <p className={styles.emptyText}>
+              Nothing on the bench right now — new experiments land here as
+              they are built.
+            </p>
+          </div>
         )}
-      </Container>
+      </div>
     </BaseLayout>
   );
 }
@@ -142,25 +76,21 @@ export default function ExperimentsPage({ data }: ExperimentsPageProps) {
 export function Head() {
   return (
     <SEO
-      title="Web Experiments"
-      description="Explore interactive web experiments and frontend demos created by Roman Travnikov using modern web technologies."
+      title="Experiments"
+      description="Interactive web experiments and frontend demos by Roman Travnikov."
     />
   );
 }
 
 export const query = graphql`
   query {
-    allMarkdownRemark(filter: { frontmatter: { template: { eq: "experiment" } } }) {
+    allExperiment(sort: { title: ASC }) {
       nodes {
         id
-        frontmatter {
-          title
-          slug
-          description
-          featuredImage
-          technologies
-        }
-        html
+        title
+        slug
+        description
+        technologies
       }
     }
   }

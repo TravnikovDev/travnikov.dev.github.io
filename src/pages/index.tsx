@@ -26,26 +26,22 @@ import * as styles from "./index.module.css";
 
 interface IndexPageProps extends PageProps {
   data: {
-    allBlogPosts: {
+    allBlogPost: {
       nodes: {
         id: string;
         timeToRead: number;
-        frontmatter: {
-          title: string;
-          date: string;
-          slug: string;
-        };
+        title: string;
+        date: string;
+        slug: string;
       }[];
     };
-    allProjects: {
+    allCaseStudy: {
       nodes: {
         id: string;
-        frontmatter: {
-          title: string;
-          slug: string;
-          description: string;
-          category: string;
-        };
+        title: string;
+        slug: string;
+        description: string;
+        category: string;
       }[];
     };
   };
@@ -119,8 +115,8 @@ const experience = [
 ];
 
 export default function IndexPage({ data }: IndexPageProps) {
-  const insights = data?.allBlogPosts?.nodes ?? [];
-  const caseStudies = data?.allProjects?.nodes ?? [];
+  const insights = data?.allBlogPost?.nodes ?? [];
+  const caseStudies = data?.allCaseStudy?.nodes ?? [];
   // Progress bar is updated via ref (no setState) so scrolling never
   // re-renders the page — keeps the 3D background/glyph canvases stable.
   const progressRef = useRef<HTMLDivElement>(null);
@@ -162,15 +158,15 @@ export default function IndexPage({ data }: IndexPageProps) {
               {insights.map((insight) => (
                 <Link
                   key={insight.id}
-                  to={`/blog/${insight.frontmatter.slug}`}
+                  to={`/blog/${insight.slug}`}
                   className={styles.insightItem}
                 >
                   <Box>
                     <Text size="sm" c="dimmed">
-                      {insight.frontmatter.date}
+                      {insight.date}
                     </Text>
                     <Text className={styles.insightTitle}>
-                      {insight.frontmatter.title}
+                      {insight.title}
                     </Text>
                   </Box>
                   <Text size="sm" c="dimmed">
@@ -191,18 +187,18 @@ export default function IndexPage({ data }: IndexPageProps) {
               {caseStudies.map((project) => (
                 <Link
                   key={project.id}
-                  to={`/projects/${project.frontmatter.slug}`}
+                  to={`/projects/${project.slug}`}
                   className={styles.caseStudyItem}
                 >
                   <Box>
                     <Text size="sm" c="dimmed">
-                      {project.frontmatter.category}
+                      {project.category}
                     </Text>
                     <Text className={styles.caseStudyTitle}>
-                      {project.frontmatter.title}
+                      {project.title}
                     </Text>
                     <Text size="sm" c="dimmed">
-                      {project.frontmatter.description}
+                      {project.description}
                     </Text>
                   </Box>
                   <Text size="sm" className={styles.caseStudyCta}>
@@ -376,34 +372,22 @@ export const query = graphql`
         siteTitle
       }
     }
-    allBlogPosts: allMarkdownRemark(
-      filter: { frontmatter: { template: { eq: "blog" } } }
-      sort: { frontmatter: { date: DESC } }
-      limit: 3
-    ) {
+    allBlogPost(sort: { date: DESC }, limit: 3) {
       nodes {
         id
         timeToRead
-        frontmatter {
-          title
-          date(formatString: "MMM D, YYYY")
-          slug
-        }
+        title
+        date(formatString: "MMM D, YYYY")
+        slug
       }
     }
-    allProjects: allMarkdownRemark(
-      filter: { frontmatter: { template: { eq: "project" } } }
-      sort: { frontmatter: { title: ASC } }
-      limit: 2
-    ) {
+    allCaseStudy(sort: { title: ASC }, limit: 2) {
       nodes {
         id
-        frontmatter {
-          title
-          slug
-          description
-          category
-        }
+        title
+        slug
+        description
+        category
       }
     }
   }

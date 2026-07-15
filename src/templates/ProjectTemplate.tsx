@@ -7,21 +7,19 @@ import * as styles from "./article.module.css";
 
 interface ProjectTemplateProps extends PageProps {
   data: {
-    markdownRemark: {
-      frontmatter: {
-        title: string;
-        description: string;
-        url: string | null;
-        category: string;
-        tags: string[] | null;
-      };
+    caseStudy: {
+      title: string;
+      description: string;
+      url: string | null;
+      category: string;
+      tags: string[] | null;
       html: string;
     };
   };
 }
 
 export default function ProjectTemplate({ data }: ProjectTemplateProps) {
-  const project = data.markdownRemark;
+  const project = data.caseStudy;
 
   return (
     <BaseLayout>
@@ -33,13 +31,13 @@ export default function ProjectTemplate({ data }: ProjectTemplateProps) {
             ← Case Studies
           </Link>
           <div className={styles.meta}>
-            <span>{project.frontmatter.category}</span>
+            <span>{project.category}</span>
           </div>
-          <h1 className={styles.title}>{project.frontmatter.title}</h1>
-          <p className={styles.lead}>{project.frontmatter.description}</p>
-          {project.frontmatter.url && (
+          <h1 className={styles.title}>{project.title}</h1>
+          <p className={styles.lead}>{project.description}</p>
+          {project.url && (
             <a
-              href={project.frontmatter.url}
+              href={project.url}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.externalLink}
@@ -54,9 +52,9 @@ export default function ProjectTemplate({ data }: ProjectTemplateProps) {
           dangerouslySetInnerHTML={{ __html: project.html }}
         />
 
-        {project.frontmatter.tags && project.frontmatter.tags.length > 0 && (
+        {project.tags && project.tags.length > 0 && (
           <div className={styles.tags}>
-            {project.frontmatter.tags.map((tag) => (
+            {project.tags.map((tag) => (
               <span key={tag} className={styles.tag}>
                 {tag}
               </span>
@@ -69,26 +67,19 @@ export default function ProjectTemplate({ data }: ProjectTemplateProps) {
 }
 
 export function Head({ data }: ProjectTemplateProps) {
-  const project = data.markdownRemark;
+  const project = data.caseStudy;
 
-  return (
-    <SEO
-      title={project.frontmatter.title}
-      description={project.frontmatter.description}
-    />
-  );
+  return <SEO title={project.title} description={project.description} />;
 }
 
 export const query = graphql`
   query ProjectQuery($id: String!) {
-    markdownRemark(id: { eq: $id }) {
-      frontmatter {
-        title
-        description
-        url
-        category
-        tags
-      }
+    caseStudy(id: { eq: $id }) {
+      title
+      description
+      url
+      category
+      tags
       html
     }
   }

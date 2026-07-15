@@ -20,29 +20,10 @@ const config: GatsbyConfig = {
   trailingSlash: `always`,
   plugins: [
     'gatsby-plugin-dts-css-modules',
-    'gatsby-transformer-remark',
     'gatsby-plugin-offline',
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `blog`,
-        path: `${__dirname}/src/content/blog`,
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `projects`,
-        path: `${__dirname}/src/content/projects`,
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `experiments`,
-        path: `${__dirname}/src/content/experiments`,
-      },
-    },
+    // Content (articles, case studies, experiments) is sourced from Strapi in
+    // gatsby-node.ts — see docs/CMS.md. src/content/*.md only feeds the
+    // one-time seed script (scripts/seed-strapi.mjs).
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
