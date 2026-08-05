@@ -243,30 +243,202 @@ Confirmed technical defects:
 
 ---
 
-## Phase 6 — The compounding engine 🟡
+## Phase 6 — The content fabric: capture → publish → syndicate 🟡
 
-*Owner: both · Ongoing · This is where inbound actually comes from*
+*Owner: both · Ongoing · **This is where inbound actually comes from***
 
-Traffic is the input to the whole funnel; without it the work above converts
-zero visitors perfectly.
+Traffic is the input to the whole funnel. Phases 1–5 convert visitors; without
+this phase they convert zero visitors perfectly. It is also the **highest-
+leverage phase overall**, because it produces traffic *and* case-study
+material from the same work.
+
+### 6.0 What exists today (workflow "Content fabric", n8n id `4rmbY55rfTJ2dHzz`)
+
+```
+Telegram (voice/text)
+   └─ Switch ─ voice ─► Download ─► Transcribe (Whisper)
+        └─ MainData ─► AI Agent (ramble ➜ structured brief, gpt-5)
+             └─ Research Agent (gpt-5 + Perplexity + memory)
+                  └─ ⭐ LinkedIn Post Agent  ← current source of truth
+                       ├─ Image Prompt ─► gpt-image-1 ─► LinkedIn post
+                       ├─ Shorten ─► X
+                       ├─ GitHub Gist            ← canonical slot, wrong owner
+                       └─ Translate RU ─► truncate ─► @travnikov_dev channel
+                            └─ Merge ─► status report back to Telegram
+```
+
+**Strengths worth preserving unchanged:** the Research Agent's
+cross-checking/skepticism rules, and the LinkedIn voice prompt (jargon
+assassin, hook-before-bot, Highlander rule, rounded numbers). That voice
+is a genuine asset — the rewrite must not touch it.
+
+**The four structural problems:**
+
+1. **travnikov.dev is not in the pipeline at all.** A public GitHub Gist
+   occupies the canonical slot. Every post builds equity on LinkedIn, X,
+   Telegram and gist.github.com — **none on your own domain.**
+2. **No link back anywhere.** Zero traffic reaches the funnel in Phases 1–5.
+   The content engine has no destination; the funnel has no source.
+3. **The LinkedIn post is the source of truth** and everything derives from
+   it. For a blog-canonical model this is inverted — a 1,500-character
+   LinkedIn post cannot be the parent of a 1,200-word article.
+4. **No approval gate.** Voice note → four live platforms, fully automatic.
+   This is the reputation risk in 6.1, currently in production.
+
+### 6.0b Target architecture
+
+The article is canonical; every platform gets a derivative that points home.
+Because backlinks need the URL to exist first, the flow **must** split in two —
+and that split is the moderation gate you wanted.
+
+```
+STAGE 1 — capture & draft (extends the current workflow)
+
+  Telegram (voice/text)  ◄──────── lead notifications (Phase 1, same bot)
+     └─ transcribe ─► brief ─► Research Agent      [keep as-is]
+          └─ ⭐ NEW: Article Agent (1,200+ words, long-form)
+               └─ Strapi entry, status = DRAFT
+                    └─ Telegram: "Draft ready: <admin link>"
+
+              ── YOU review / edit / publish in Strapi ──   ◄ human gate
+
+STAGE 2 — syndicate (new workflow, triggered after deploy)
+
+  Strapi publish ─► repository_dispatch ─► GitHub Actions build
+     └─ on deploy success ─► POST n8n webhook (canonical URL now LIVE)
+          └─ fan-out, each link tagged ?utm_source=<platform>
+               ├─ LinkedIn   teaser + link      ⭐ buyers are here
+               ├─ X          shortened + link
+               ├─ Telegram   RU version + link  [keep translate+truncate]
+               ├─ Dev.to     full text, canonical_url ✅
+               ├─ Hashnode   full text, originalArticleURL ✅
+               └─ Newsletter RSS-triggered
+                    └─ status report to Telegram  [keep]
+```
+
+Two notes on the mechanics:
+
+- **Trigger syndication from the deploy, not from the Strapi publish.** The
+  site is static; the page is live only after the ~2–3 min Actions build.
+  Posting earlier links people to a 404.
+- **Retire the Gist**, or keep it only as an archive whose description links
+  to the canonical post. It should never be the primary destination.
+
+### 6.0c Prompt-chain change
+
+The LinkedIn agent stops being the parent and becomes a child:
+
+| | Now | Target |
+| --- | --- | --- |
+| Source of truth | LinkedIn post (1.5–2k chars) | **Article (1,200+ words)** |
+| LinkedIn | original | teaser derived from article + link |
+| X | shortened LinkedIn post | hook + link |
+| Telegram RU | translated LinkedIn post | translated teaser + link |
+| Dev.to/Hashnode | — | full article, canonical → travnikov.dev |
+| Gist | canonical archive | retired / demoted |
+
+Reuse the existing voice prompt verbatim for the article agent's tone
+section — same person, longer form.
+
+### 6.0d Topic discipline (the quiet one)
+
+The prompt examples suggest general-curiosity topics (sharks, Mauritius
+holdcos, SAFE notes). That content builds *an* audience, but not one that
+buys React performance work. **An audience is only an asset if it overlaps
+with your buyers.**
+
+- [ ] Tag every idea at capture time with a target service (automation /
+      performance / CTO) — or explicitly "general".
+- [ ] Keep a meaningful majority mapped to a service you sell.
+- [ ] Every article ends with a CTA to that service page.
+
+### 6.1 Non-negotiables
+
+- [ ] **`rel="canonical"` on every syndicated copy**, pointing at the
+      travnikov.dev post. Dev.to, Hashnode and Medium all support it. A plain
+      backlink is far weaker, and without canonical the copy can outrank and
+      cannibalise your original — building the platform's authority instead of
+      your domain's. **This one detail decides whether the pipeline works.**
+- [ ] **Human approval gate before anything publishes.** Automated
+      multi-platform AI content is what floods LinkedIn today and readers
+      pattern-match it instantly. For someone selling expertise, publishing
+      recognisably generated content is *evidence against you*. The bot
+      removes friction from your thinking — it does not replace it.
+- [ ] **UTM tags per platform** on every syndicated link. Without attribution
+      you'll maintain seven integrations with no idea which one produces
+      clients. Closes the loop with Phase 4 analytics.
+- [ ] **Every post routes to a service CTA** relevant to its topic.
+
+### 6.2 Platform priority
+
+Ranked by *likelihood of producing a client*, not by reach:
+
+| Platform | Audience | Priority | Notes |
+| --- | --- | --- | --- |
+| **LinkedIn** | CTOs, founders — **your actual buyers** | ⭐ First | Native post outperforms bare links; API is restrictive, semi-manual is fine |
+| Newsletter | People who already trust you | High | Highest conversion per reader; needs Phase 6.3 |
+| Dev.to | Peer developers | Medium | Authority + backlinks, rarely buyers |
+| Hashnode | Peer developers | Medium | Same; easy canonical support |
+| X/Twitter | Mixed | Low | Paid API; high effort per click |
+| Reddit / HN | Mixed | Situational | Real traffic, but self-promotion is punished — participate, don't broadcast |
+
+Start with LinkedIn only. Add platforms when the first one is running.
+
+### 6.3 Site-side work (Claude)
+
+- [ ] **Deploy → syndication trigger.** Add a final step to
+      `.github/workflows/pages.yml` that POSTs to an n8n webhook after a
+      successful deploy, passing the published slugs. This is what guarantees
+      the canonical URL is live before anything links to it.
+- [ ] **Canonical + `article` OG tags** (also Phase 5) — required for
+      syndication to behave correctly.
+- [ ] **RSS feed** (`gatsby-plugin-feed`) — also the newsletter trigger.
+- [ ] **Email capture** + provider. Without RSS or email every reader is a
+      one-time visitor.
+- [ ] **`syndicatedTo` field** in Strapi → render "Also published on …" links
+      on the post (reciprocal linking, and it looks deliberate).
+- [ ] **UTM-aware analytics** so `?utm_source=linkedin` is attributable all the
+      way to a form submit (closes the loop with Phases 1 and 4).
+- [ ] Tag pages, related posts, next/prev — turn one post into a session.
+
+### 6.4 Build order for the fabric rewrite
+
+Smallest change that puts your domain in the loop, first:
+
+1. **Add the Article Agent + Strapi draft node** to the existing workflow.
+   Stop there and run it a few times — you get drafts to review, and nothing
+   publishes automatically any more.
+2. **Split stage 2 into its own workflow**, triggered manually at first, using
+   the canonical URL. Verify each platform posts with a working link.
+3. **Wire the deploy → webhook trigger** so stage 2 becomes automatic.
+4. **Add Dev.to + Hashnode** with proper canonical fields.
+5. **Retire the Gist**, add UTMs, then the newsletter.
+
+Each step leaves a working system. Do not rewrite the whole fabric at once —
+the current one publishes today, and losing that while rebuilding kills the
+habit.
+
+### 6.5 Content standard
 
 - [ ] **Publish substantively.** Current posts are 112–355-word stubs and the
       "1 MIN READ" label advertises it. Two or three 1,200-word pieces that
-      genuinely help a CTO beat ten stubs.
-- [ ] **Write from client problems** — each post should map to a service and
-      end with a relevant CTA.
-- [ ] **RSS feed** (`gatsby-plugin-feed`) + email capture. Without either,
-      every reader is a one-time visitor.
-- [ ] **Distribution:** LinkedIn is where your buyers are. Post the argument,
-      link the article. Repurpose one article into 3–5 LinkedIn posts.
-- [ ] **The n8n → Strapi content fabric is itself the proof.** Document it,
-      publish it, and it becomes simultaneously a case study, a lead magnet,
-      and a demonstration that your automation pitch is real.
-- [ ] Tag pages, related posts, next/prev — turn one post into a session.
+      genuinely help a CTO beat ten stubs — and thin content syndicated widely
+      just distributes the wrong impression faster.
+- [ ] **Write from client problems**, mapped to a service.
+- [ ] Cadence over volume: one good piece a fortnight, sustained, beats a
+      burst followed by silence.
+
+### 6.6 The pipeline is case study #1
+
+Document the fabric itself and publish it: Telegram → n8n → Strapi → static
+site → multi-platform syndication with attribution. It is simultaneously a
+case study, a lead magnet, and living proof that your automation pitch is
+real — for the exact service you sell. **Build it in public and it resolves
+the Phase 2 stall.**
 
 ---
 
-## 5. Sequencing
+## Sequencing
 
 ```
 Phase 0  Unblock             ██  (in flight — nothing works without it)
@@ -283,7 +455,7 @@ Phase 3 (a face).** Those three convert the traffic you already have.
 
 ---
 
-## 6. Known technical debt (unrelated to the funnel)
+## Known technical debt (unrelated to the funnel)
 
 - GitHub Actions: `checkout@v4`, `setup-node@v4`, `cache@v4`,
   `configure-pages@v4`, `upload-artifact@v4` are Node-20 based and being
@@ -297,7 +469,7 @@ Phase 3 (a face).** Those three convert the traffic you already have.
 
 ---
 
-## 7. What "done" looks like
+## What "done" looks like
 
 The site is working when, in a single month, three people you have never met
 fill in a form or book a call, and at least one of them mentions a specific
