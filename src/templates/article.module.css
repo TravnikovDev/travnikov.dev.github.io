@@ -1,11 +1,27 @@
-/* Shared article chrome for blog posts and case studies — aura page language */
+/* Shared article chrome — "ink sheet": a dark reading surface floating on the
+   aura. Long-form prose can't sit directly on the animated shader (contrast
+   swings toward 1:1 wherever the dark blobs pass under the text), so reading
+   gets its own opaque surface while the background stays untouched. */
 .page {
+  /* local dark palette — kept here so the sheet is self-contained */
+  --sheet: #171b1d;
+  --sheet-ink: rgba(245, 241, 234, 0.88);
+  --sheet-ink-strong: #f7f4ee;
+  --sheet-ink-soft: rgba(245, 241, 234, 0.64);
+  --sheet-rule: rgba(245, 241, 234, 0.14);
+
   position: relative;
   z-index: 1;
-  max-width: 760px;
-  margin: 0 auto;
-  padding: clamp(120px, 16vh, 180px) clamp(20px, 5vw, 40px)
-    clamp(60px, 10vh, 110px);
+  max-width: 860px;
+  /* margin (not padding) clears the fixed header, so the aura stays visible
+     above the sheet — bright arrival, then focused reading */
+  margin: clamp(56px, 8vh, 96px) auto clamp(56px, 9vh, 100px);
+  padding: clamp(32px, 5vw, 60px);
+  background: var(--sheet);
+  border-radius: 20px;
+  box-shadow: 0 28px 70px rgba(16, 24, 26, 0.28),
+    0 2px 10px rgba(16, 24, 26, 0.16);
+  color: var(--sheet-ink);
 }
 
 .back {
@@ -16,15 +32,15 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--sheet-ink-soft);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .back:hover {
-  color: var(--ink);
-  border-color: var(--ink);
+  color: var(--sheet-ink-strong);
+  border-color: var(--sheet-ink-strong);
 }
 
 .meta {
@@ -36,7 +52,7 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--sheet-ink-soft);
   margin-bottom: 1rem;
 }
 
@@ -46,17 +62,18 @@
   font-size: clamp(2rem, 4.5vw, 3.2rem);
   line-height: 1.04;
   letter-spacing: -0.025em;
-  color: var(--ink);
+  color: var(--sheet-ink-strong);
   margin: 0 0 1.2rem;
   text-wrap: balance;
 }
 
 .lead {
-  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
   line-height: 1.55;
-  color: var(--ink-soft);
+  color: var(--sheet-ink-soft);
   max-width: 54ch;
   margin: 0;
+  text-wrap: pretty;
 }
 
 .externalLink {
@@ -67,19 +84,20 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--sheet-ink-strong);
   text-decoration: none;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--sheet-ink-strong);
 }
 
 /* ---------- Markdown body ---------- */
 .content {
   margin-top: clamp(40px, 7vh, 64px);
   padding-top: clamp(28px, 4vh, 40px);
-  border-top: 1px solid rgba(var(--ink-rgb), 0.16);
-  font-size: 1.02rem;
-  line-height: 1.7;
-  color: rgba(var(--ink-rgb), 0.86);
+  border-top: 1px solid var(--sheet-rule);
+  /* long-form wants a larger body size than UI text */
+  font-size: clamp(1.06rem, 1.1vw, 1.15rem);
+  line-height: 1.75;
+  color: var(--sheet-ink);
 }
 
 /* The markdown files open with "# <title>", which duplicates the page h1
@@ -92,61 +110,73 @@
 .content h2 {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+  font-size: clamp(1.45rem, 2.6vw, 1.85rem);
   letter-spacing: -0.02em;
-  line-height: 1.15;
-  color: var(--ink);
+  line-height: 1.2;
+  color: var(--sheet-ink-strong);
   margin: 2.2em 0 0.7em;
+  text-wrap: balance;
 }
 
 .content h3,
 .content h4 {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.18rem;
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: var(--sheet-ink-strong);
   margin: 1.8em 0 0.6em;
 }
 
 .content p {
-  margin: 0 0 1.2em;
+  margin: 0 0 1.3em;
   max-width: 68ch;
+  text-wrap: pretty;
+}
+
+.content strong {
+  color: var(--sheet-ink-strong);
+  font-weight: 600;
 }
 
 .content ul,
 .content ol {
-  margin: 0 0 1.2em;
+  margin: 0 0 1.3em;
   padding-left: 1.4em;
   max-width: 65ch;
 }
 
 .content li {
-  margin-bottom: 0.4em;
+  margin-bottom: 0.5em;
+}
+
+.content li::marker {
+  color: var(--sheet-ink-soft);
 }
 
 .content a {
-  color: var(--ink);
+  color: var(--sheet-ink-strong);
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: rgba(var(--ink-rgb), 0.4);
+  text-decoration-color: rgba(245, 241, 234, 0.45);
+  transition: text-decoration-color 0.2s ease;
 }
 
 .content a:hover {
-  text-decoration-color: var(--ink);
+  text-decoration-color: var(--sheet-ink-strong);
 }
 
 .content blockquote {
   margin: 1.6em 0;
   padding: 0.2em 0 0.2em 1.2em;
-  border-left: 2px solid rgba(var(--ink-rgb), 0.3);
-  color: var(--ink-soft);
+  border-left: 2px solid rgba(245, 241, 234, 0.32);
+  color: var(--sheet-ink-soft);
 }
 
 .content code {
   font-family: var(--font-mono);
   font-size: 0.88em;
-  background: rgba(var(--ink-rgb), 0.07);
+  background: rgba(245, 241, 234, 0.1);
   border-radius: 4px;
   padding: 0.15em 0.4em;
 }
@@ -155,7 +185,9 @@
   margin: 0 0 1.4em;
   padding: 1.1rem 1.3rem;
   border-radius: 12px;
-  background: #22282c;
+  /* inset well, darker than the sheet */
+  background: #0f1315;
+  border: 1px solid rgba(245, 241, 234, 0.09);
   overflow-x: auto;
 }
 
@@ -170,12 +202,19 @@
 .content img {
   max-width: 100%;
   border-radius: 12px;
+  display: block;
+  margin: 1.8em 0;
 }
 
 .content hr {
   border: 0;
-  border-top: 1px solid rgba(var(--ink-rgb), 0.16);
+  border-top: 1px solid var(--sheet-rule);
   margin: 2.4em 0;
+}
+
+/* trailing italic CTA paragraph reads as an aside, not body copy */
+.content em {
+  color: var(--sheet-ink-soft);
 }
 
 /* ---------- Tag list ---------- */
@@ -185,7 +224,7 @@
   gap: 0.6rem 1.2rem;
   margin-top: clamp(36px, 6vh, 56px);
   padding-top: 1.4rem;
-  border-top: 1px solid rgba(var(--ink-rgb), 0.16);
+  border-top: 1px solid var(--sheet-rule);
 }
 
 .tag {
@@ -194,11 +233,42 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--sheet-ink-soft);
+}
+
+/* ---------- Mobile: full-bleed sheet, every pixel of reading width ------- */
+@media (max-width: 40em) {
+  .page {
+    margin-top: clamp(24px, 5vh, 48px);
+    margin-bottom: 0;
+    border-radius: 0;
+    padding: clamp(28px, 7vw, 40px) clamp(20px, 5.5vw, 28px);
+    box-shadow: none;
+  }
+
+  /* global.css drops the root to 14–15px on small screens AND sets
+     `p, li, td, th { font-size: 1.1rem }` — fine for UI, too small for
+     long-form. Target the children directly so we out-specify it. */
+  .content,
+  .content p,
+  .content li {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .lead {
+    font-size: 18px;
+  }
+
+  .content h1,
+  .content h2 {
+    font-size: 1.35rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .back {
+  .back,
+  .content a {
     transition: none;
   }
 }

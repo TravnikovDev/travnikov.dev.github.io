@@ -52,9 +52,11 @@
 .lead {
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   line-height: 1.5;
-  color: var(--ink-soft);
+  /* near-ink: this sits directly on the shader with no surface behind it */
+  color: rgba(var(--ink-rgb), 0.82);
   max-width: 44ch;
   margin: 0;
+  text-wrap: pretty;
 }
 
 /* ---------- Article rows ---------- */
@@ -67,13 +69,15 @@
 
 .item {
   display: block;
-  padding: 1.2rem 1.4rem;
+  padding: 1.3rem 1.5rem;
   border-radius: 12px;
   text-decoration: none;
   color: var(--ink);
   border: 1px solid rgba(var(--ink-rgb), 0.14);
-  background: rgba(255, 255, 255, 0.34);
-  backdrop-filter: blur(6px);
+  /* opaque enough that a title never lands on one of the shader's dark
+     blobs — 0.34 let the band show through and contrast collapsed */
+  background: rgba(252, 251, 248, 0.86);
+  backdrop-filter: blur(10px);
   transition: transform 200ms ease, border-color 200ms ease,
     box-shadow 200ms ease;
 }
