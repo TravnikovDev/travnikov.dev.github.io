@@ -1,11 +1,26 @@
-/* Insights listing — same aura page language as the service pages */
+/* Insights listing — same "ink sheet" surface as the article pages, so
+   browsing and reading are one continuous world. Rows are hairline-separated
+   rather than cards: a card on a sheet is a nested box. */
 .page {
+  --sheet: #171b1d;
+  --sheet-ink: rgba(245, 241, 234, 0.88);
+  --sheet-ink-strong: #f7f4ee;
+  --sheet-ink-soft: rgba(245, 241, 234, 0.64);
+  --sheet-rule: rgba(245, 241, 234, 0.14);
+
   position: relative;
   z-index: 1;
-  max-width: 820px;
-  margin: 0 auto;
-  padding: clamp(120px, 16vh, 180px) clamp(20px, 5vw, 40px)
-    clamp(60px, 10vh, 110px);
+  max-width: 860px;
+  /* keeps a gutter between 640px and 860px, where the sheet would otherwise
+     run into the viewport edges */
+  width: calc(100% - clamp(24px, 5vw, 48px));
+  margin: clamp(56px, 8vh, 96px) auto clamp(56px, 9vh, 100px);
+  padding: clamp(32px, 5vw, 60px);
+  background: var(--sheet);
+  border-radius: 20px;
+  box-shadow: 0 28px 70px rgba(16, 24, 26, 0.28),
+    0 2px 10px rgba(16, 24, 26, 0.16);
+  color: var(--sheet-ink);
 }
 
 .back {
@@ -16,15 +31,15 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--sheet-ink-soft);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .back:hover {
-  color: var(--ink);
-  border-color: var(--ink);
+  color: var(--sheet-ink-strong);
+  border-color: var(--sheet-ink-strong);
 }
 
 .eyebrow {
@@ -34,7 +49,7 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--sheet-ink-soft);
   margin-bottom: 1rem;
 }
 
@@ -45,16 +60,15 @@
   line-height: 0.98;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--sheet-ink-strong);
   margin: 0 0 1.4rem;
 }
 
 .lead {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  line-height: 1.5;
-  /* near-ink: this sits directly on the shader with no surface behind it */
-  color: rgba(var(--ink-rgb), 0.82);
-  max-width: 44ch;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--sheet-ink-soft);
+  max-width: 48ch;
   margin: 0;
   text-wrap: pretty;
 }
@@ -63,29 +77,33 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: clamp(48px, 9vh, 88px);
+  margin-top: clamp(40px, 7vh, 64px);
+  padding-top: clamp(12px, 2vh, 20px);
+  border-top: 1px solid var(--sheet-rule);
 }
 
 .item {
   display: block;
-  padding: 1.3rem 1.5rem;
-  border-radius: 12px;
+  padding: 1.5rem 1rem 1.6rem;
+  margin: 0 -1rem;
+  border-radius: 10px;
+  border-bottom: 1px solid var(--sheet-rule);
   text-decoration: none;
-  color: var(--ink);
-  border: 1px solid rgba(var(--ink-rgb), 0.14);
-  /* opaque enough that a title never lands on one of the shader's dark
-     blobs — 0.34 let the band show through and contrast collapsed */
-  background: rgba(252, 251, 248, 0.86);
-  backdrop-filter: blur(10px);
-  transition: transform 200ms ease, border-color 200ms ease,
-    box-shadow 200ms ease;
+  color: var(--sheet-ink);
+  transition: background 200ms ease;
+}
+
+.item:last-child {
+  border-bottom: 0;
 }
 
 .item:hover {
-  transform: translateY(-3px);
-  border-color: rgba(var(--ink-rgb), 0.42);
-  box-shadow: 0 12px 26px rgba(60, 84, 78, 0.14);
+  background: rgba(245, 241, 234, 0.05);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--sheet-ink-strong);
+  outline-offset: 2px;
 }
 
 .itemMeta {
@@ -96,29 +114,55 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--sheet-ink-soft);
 }
 
 .itemTitle {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: clamp(1.3rem, 2.2vw, 1.6rem);
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--ink);
-  margin: 0.3rem 0 0.5rem;
+  color: var(--sheet-ink-strong);
+  margin: 0.4rem 0 0.55rem;
+  text-wrap: balance;
+  transition: opacity 200ms ease;
+}
+
+.item:hover .itemTitle {
+  opacity: 0.82;
 }
 
 .itemExcerpt {
   margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: rgba(var(--ink-rgb), 0.78);
-  max-width: 62ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--sheet-ink);
+  max-width: 66ch;
+  text-wrap: pretty;
+}
+
+/* ---------- Mobile: full-bleed sheet ---------- */
+@media (max-width: 40em) {
+  .page {
+    width: 100%;
+    margin-top: clamp(24px, 5vh, 48px);
+    margin-bottom: 0;
+    border-radius: 0;
+    padding: clamp(28px, 7vw, 40px) clamp(20px, 5.5vw, 28px);
+    box-shadow: none;
+  }
+
+  /* global.css drops the root to 14px and sets p/li to 1.1rem — too small
+     for reading. Pin the excerpt size in px. */
+  .itemExcerpt {
+    font-size: 16px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .back,
   .item,
-  .back {
+  .itemTitle {
     transition: none;
   }
 }

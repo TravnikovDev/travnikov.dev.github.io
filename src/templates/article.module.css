@@ -13,6 +13,9 @@
   position: relative;
   z-index: 1;
   max-width: 860px;
+  /* keeps a gutter between 640px and 860px, where the sheet would otherwise
+     run into the viewport edges */
+  width: calc(100% - clamp(24px, 5vw, 48px));
   /* margin (not padding) clears the fixed header, so the aura stays visible
      above the sheet — bright arrival, then focused reading */
   margin: clamp(56px, 8vh, 96px) auto clamp(56px, 9vh, 100px);
@@ -239,6 +242,7 @@
 /* ---------- Mobile: full-bleed sheet, every pixel of reading width ------- */
 @media (max-width: 40em) {
   .page {
+    width: 100%;
     margin-top: clamp(24px, 5vh, 48px);
     margin-bottom: 0;
     border-radius: 0;
