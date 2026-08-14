@@ -16,7 +16,11 @@
   width: calc(100% - clamp(24px, 5vw, 48px));
   margin: clamp(56px, 8vh, 96px) auto clamp(56px, 9vh, 100px);
   padding: clamp(32px, 5vw, 60px);
-  background: linear-gradient(180deg, var(--sheet-top) 0%, var(--sheet) 420px);
+  /* smoked glass + specular edge (padding-box fill, border-box rim) */
+  border: 1px solid transparent;
+  background: var(--sheet-fill) padding-box, var(--sheet-edge) border-box;
+  backdrop-filter: var(--sheet-blur);
+  -webkit-backdrop-filter: var(--sheet-blur);
   border-radius: var(--sheet-radius);
   box-shadow: var(--sheet-shadow);
   color: var(--sheet-ink);

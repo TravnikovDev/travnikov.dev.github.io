@@ -10,7 +10,11 @@
   width: calc(100% - clamp(24px, 5vw, 48px));
   margin: clamp(56px, 8vh, 96px) auto clamp(56px, 9vh, 100px);
   padding: clamp(32px, 5vw, 60px);
-  background: linear-gradient(180deg, var(--sheet-top) 0%, var(--sheet) 420px);
+  /* smoked glass + specular edge (padding-box fill, border-box rim) */
+  border: 1px solid transparent;
+  background: var(--sheet-fill) padding-box, var(--sheet-edge) border-box;
+  backdrop-filter: var(--sheet-blur);
+  -webkit-backdrop-filter: var(--sheet-blur);
   border-radius: var(--sheet-radius);
   box-shadow: var(--sheet-shadow);
   color: var(--sheet-ink);
@@ -99,14 +103,14 @@
   margin-top: clamp(48px, 9vh, 88px);
 }
 
+/* Not a card — a card inside the glass sheet is a nested box. Hairline rule
+   above, same device as .section and .related. */
 .formCard {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: clamp(24px, 4vw, 40px);
-  border-radius: 16px;
-  background: rgba(245, 241, 234, 0.045);
-  border: 1px solid var(--sheet-rule);
+  padding-top: clamp(28px, 4vh, 40px);
+  border-top: 1px solid var(--sheet-rule);
 }
 
 .formTitle {
@@ -237,12 +241,6 @@
 
 .relatedLink:hover {
   border-color: var(--ink);
-}
-
-@media (max-width: 48em) {
-  .page {
-    padding-top: clamp(88px, 12vh, 120px);
-  }
 }
 
 @media (max-width: 40em) {
