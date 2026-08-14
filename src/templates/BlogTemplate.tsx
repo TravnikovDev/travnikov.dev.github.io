@@ -15,11 +15,21 @@ interface BlogTemplateProps extends PageProps {
       excerpt: string;
       html: string;
     };
+    readNext: {
+      nodes: {
+        id: string;
+        title: string;
+        slug: string;
+        excerpt: string;
+        timeToRead: number;
+      }[];
+    };
   };
 }
 
 export default function BlogTemplate({ data }: BlogTemplateProps) {
   const article = data.blogPost;
+  const readNext = data.readNext?.nodes ?? [];
 
   return (
     <BaseLayout>
@@ -52,6 +62,26 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
             ))}
           </div>
         )}
+
+        {readNext.length > 0 && (
+          <nav className={styles.readNext} aria-label="More articles">
+            <h2 className={styles.readNextHeading}>Read next</h2>
+            <ul className={styles.readNextList}>
+              {readNext.map((post) => (
+                <li key={post.id}>
+                  {/* full titles as anchor text — descriptive internal links
+                      are worth far more than "previous / next" */}
+                  <Link to={`/blog/${post.slug}`} className={styles.readNextItem}>
+                    <span className={styles.readNextTitle}>{post.title}</span>
+                    <span className={styles.readNextMeta}>
+                      {post.timeToRead} min read
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </article>
     </BaseLayout>
   );
@@ -72,6 +102,19 @@ export const query = graphql`
       tags
       excerpt
       html
+    }
+    readNext: allBlogPost(
+      filter: { id: { ne: $id } }
+      sort: { date: DESC }
+      limit: 3
+    ) {
+      nodes {
+        id
+        title
+        slug
+        excerpt
+        timeToRead
+      }
     }
   }
 `;

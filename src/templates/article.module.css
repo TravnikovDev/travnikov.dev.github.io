@@ -131,22 +131,34 @@
   margin: 1.8em 0 0.6em;
 }
 
+/* `ch` is the width of "0", which is narrower than Inter's average glyph —
+   68ch measured 86 real characters per line. 55ch measures ~70, in the
+   middle of the 65–75 comfortable range. */
 .content p {
   margin: 0 0 1.3em;
-  max-width: 68ch;
+  max-width: 55ch;
   text-wrap: pretty;
+}
+
+/* opening paragraph sets the tone: a size up, so the article begins rather
+   than just starts */
+.content > p:first-of-type {
+  font-size: 1.14em;
+  line-height: 1.65;
+  color: var(--sheet-ink-strong);
+  margin-bottom: 1.5em;
 }
 
 .content strong {
   color: var(--sheet-ink-strong);
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .content ul,
 .content ol {
   margin: 0 0 1.3em;
   padding-left: 1.4em;
-  max-width: 65ch;
+  max-width: 53ch;
 }
 
 .content li {
@@ -169,11 +181,30 @@
   text-decoration-color: var(--sheet-ink-strong);
 }
 
+/* Pull quote: large, hanging into the left margin so it breaks the column
+   rather than sitting inside it. One of these does more for a 4,000px page
+   than any other single device. */
 .content blockquote {
-  margin: 1.6em 0;
-  padding: 0.2em 0 0.2em 1.2em;
-  border-left: 2px solid rgba(245, 241, 234, 0.32);
-  color: var(--sheet-ink-soft);
+  margin: 2.2em 0 2.2em -0.6em;
+  padding: 0 0 0 1.4em;
+  border-left: 2px solid rgba(245, 241, 234, 0.28);
+  max-width: 46ch;
+  font-family: var(--font-display);
+  font-size: 1.3em;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--sheet-ink-strong);
+}
+
+.content blockquote p {
+  font-size: inherit;
+  max-width: none;
+  margin-bottom: 0.6em;
+}
+
+.content blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 .content code {
@@ -212,11 +243,40 @@
 .content hr {
   border: 0;
   border-top: 1px solid var(--sheet-rule);
-  margin: 2.4em 0;
+  margin: 2.8em 0 2.2em;
 }
 
-/* trailing italic CTA paragraph reads as an aside, not body copy */
 .content em {
+  color: var(--sheet-ink-soft);
+}
+
+/* The closing CTA — markdown renders it as `hr` + an italic paragraph. This
+   is the conversion point of a lead-gen article, so it gets a real panel
+   instead of a stray line of italics. */
+.content hr + p {
+  max-width: none;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid rgba(245, 241, 234, 0.16);
+  border-radius: 14px;
+  background: rgba(245, 241, 234, 0.045);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.content hr + p em {
+  color: var(--sheet-ink);
+  font-style: normal;
+}
+
+.content hr + p a {
+  color: var(--sheet-ink-strong);
+  font-weight: 600;
+  text-decoration-color: var(--sheet-ink-strong);
+}
+
+/* the sources line that follows the CTA on some posts */
+.content hr + p + p {
+  font-size: 0.86rem;
   color: var(--sheet-ink-soft);
 }
 
@@ -237,6 +297,83 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--sheet-ink-soft);
+}
+
+/* ---------- Read next ----------
+   Full article titles as anchor text. "Previous / Next" wastes the anchor,
+   which is one of the few internal-linking signals an article page has. */
+.readNext {
+  margin-top: clamp(44px, 7vh, 72px);
+  padding-top: clamp(24px, 3.5vh, 34px);
+  border-top: 1px solid var(--sheet-rule);
+}
+
+.readNextHeading {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sheet-ink-soft);
+  margin: 0 0 0.4rem;
+}
+
+.readNextList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.readNextItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 0.9rem;
+  margin: 0 -0.9rem;
+  border-radius: 10px;
+  border-bottom: 1px solid var(--sheet-rule);
+  text-decoration: none;
+  transition: background 200ms ease;
+}
+
+.readNextList li:last-child .readNextItem {
+  border-bottom: 0;
+}
+
+.readNextItem:hover {
+  background: rgba(245, 241, 234, 0.05);
+}
+
+.readNextItem:focus-visible {
+  outline: 2px solid var(--sheet-ink-strong);
+  outline-offset: 2px;
+}
+
+.readNextTitle {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--sheet-ink-strong);
+  text-wrap: balance;
+}
+
+.readNextMeta {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sheet-ink-soft);
+  white-space: nowrap;
+}
+
+@media (max-width: 30em) {
+  .readNextItem {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
 }
 
 /* ---------- Mobile: full-bleed sheet, every pixel of reading width ------- */
