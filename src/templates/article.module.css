@@ -20,10 +20,13 @@
      above the sheet — bright arrival, then focused reading */
   margin: clamp(56px, 8vh, 96px) auto clamp(56px, 9vh, 100px);
   padding: clamp(32px, 5vw, 60px);
-  background: var(--sheet);
+  /* lit surface, not a hole: a few percent lighter at the top edge, with a
+     hairline inner highlight where the light would catch */
+  background: linear-gradient(180deg, #1c2124 0%, var(--sheet) 420px);
   border-radius: 20px;
-  box-shadow: 0 28px 70px rgba(16, 24, 26, 0.28),
-    0 2px 10px rgba(16, 24, 26, 0.16);
+  box-shadow: 0 28px 70px rgba(16, 24, 26, 0.3),
+    0 2px 10px rgba(16, 24, 26, 0.18),
+    inset 0 1px 0 rgba(245, 241, 234, 0.07);
   color: var(--sheet-ink);
 }
 
@@ -324,7 +327,9 @@
   padding: 0;
 }
 
-.readNextItem {
+/* The row is the flex container, not the anchor — so the read-time can sit
+   beside the link without ending up inside its anchor text. */
+.readNextRow {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -333,30 +338,36 @@
   margin: 0 -0.9rem;
   border-radius: 10px;
   border-bottom: 1px solid var(--sheet-rule);
-  text-decoration: none;
   transition: background 200ms ease;
 }
 
-.readNextList li:last-child .readNextItem {
+.readNextList li:last-child {
   border-bottom: 0;
 }
 
-.readNextItem:hover {
+.readNextRow:hover {
   background: rgba(245, 241, 234, 0.05);
 }
 
-.readNextItem:focus-visible {
-  outline: 2px solid var(--sheet-ink-strong);
-  outline-offset: 2px;
-}
-
-.readNextTitle {
+.readNextItem {
   font-family: var(--font-display);
   font-size: 1.08rem;
   font-weight: 600;
   line-height: 1.35;
   color: var(--sheet-ink-strong);
+  text-decoration: none;
   text-wrap: balance;
+}
+
+.readNextItem:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.readNextItem:focus-visible {
+  outline: 2px solid var(--sheet-ink-strong);
+  outline-offset: 3px;
+  border-radius: 3px;
 }
 
 .readNextMeta {
@@ -370,7 +381,7 @@
 }
 
 @media (max-width: 30em) {
-  .readNextItem {
+  .readNextRow {
     flex-direction: column;
     gap: 0.35rem;
   }

@@ -68,15 +68,19 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
             <h2 className={styles.readNextHeading}>Read next</h2>
             <ul className={styles.readNextList}>
               {readNext.map((post) => (
-                <li key={post.id}>
-                  {/* full titles as anchor text — descriptive internal links
-                      are worth far more than "previous / next" */}
-                  <Link to={`/blog/${post.slug}`} className={styles.readNextItem}>
-                    <span className={styles.readNextTitle}>{post.title}</span>
-                    <span className={styles.readNextMeta}>
-                      {post.timeToRead} min read
-                    </span>
+                <li key={post.id} className={styles.readNextRow}>
+                  {/* The anchor contains the title and nothing else, so the
+                      anchor text stays exactly the article title. Read-time
+                      lives outside the link or it gets concatenated into it. */}
+                  <Link
+                    to={`/blog/${post.slug}`}
+                    className={styles.readNextItem}
+                  >
+                    {post.title}
                   </Link>
+                  <span className={styles.readNextMeta}>
+                    {post.timeToRead} min read
+                  </span>
                 </li>
               ))}
             </ul>

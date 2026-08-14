@@ -11,6 +11,6 @@ export const tag: string;
 export const readNext: string;
 export const readNextHeading: string;
 export const readNextList: string;
+export const readNextRow: string;
 export const readNextItem: string;
-export const readNextTitle: string;
 export const readNextMeta: string;

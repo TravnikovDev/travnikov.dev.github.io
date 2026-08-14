@@ -15,6 +15,7 @@ interface BlogPageProps extends PageProps {
         date: string;
         slug: string;
         excerpt: string;
+        tags: string[] | null;
       }[];
     };
   };
@@ -41,18 +42,37 @@ export default function BlogPage({ data }: BlogPageProps) {
         </header>
 
         <div className={styles.list}>
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <Link
               key={article.id}
               to={`/blog/${article.slug}`}
-              className={styles.item}
+              /* the newest post carries more weight — otherwise every row
+                 reads as equally current and nothing is "the new one" */
+              className={`${styles.item} ${
+                index === 0 ? styles.itemFeatured : ""
+              }`}
             >
               <span className={styles.itemMeta}>
                 <span>{article.date}</span>
                 <span>{article.timeToRead} min read</span>
+                {index === 0 && (
+                  <span className={styles.latestBadge}>Latest</span>
+                )}
               </span>
               <h2 className={styles.itemTitle}>{article.title}</h2>
               <p className={styles.itemExcerpt}>{article.excerpt}</p>
+              {article.tags && article.tags.length > 0 && (
+                <span className={styles.chips}>
+                  {article.tags.slice(0, 3).map((tag) => (
+                    <span key={tag} className={styles.chip}>
+                      {tag}
+                    </span>
+                  ))}
+                </span>
+              )}
+              <span className={styles.itemArrow} aria-hidden="true">
+                →
+              </span>
             </Link>
           ))}
         </div>
@@ -80,6 +100,7 @@ export const query = graphql`
         date(formatString: "MMM D, YYYY")
         slug
         excerpt
+        tags
       }
     }
   }
