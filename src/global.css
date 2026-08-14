@@ -55,6 +55,28 @@
   --card-shadow: rgba(var(--mantine-color-aura-9-rgb, 74, 89, 100), 0.12);
   --glass-blur: 10px;
   --spacing: 120px;
+
+  /* ---------- Ink sheet ----------
+     The dark content surface that floats on the aura. Long-form and list
+     content can't sit directly on the animated shader (contrast collapses
+     wherever its dark blobs pass under the text), so every content surface
+     on the site uses this. The home hero is the deliberate exception: it is
+     the arrival moment and keeps the full aura.
+
+     Any element using --sheet-* should ALSO redefine --ink / --ink-soft /
+     --ink-rgb locally (see .sheet pattern in the page modules) so nested
+     components invert automatically instead of being restyled one by one. */
+  --sheet: #171b1d;
+  --sheet-top: #1c2124;
+  --sheet-ink: rgba(245, 241, 234, 0.88);
+  --sheet-ink-strong: #f7f4ee;
+  --sheet-ink-soft: rgba(245, 241, 234, 0.64);
+  --sheet-ink-rgb: 245, 241, 234;
+  --sheet-rule: rgba(245, 241, 234, 0.14);
+  --sheet-radius: 20px;
+  --sheet-shadow: 0 28px 70px rgba(16, 24, 26, 0.3),
+    0 2px 10px rgba(16, 24, 26, 0.18),
+    inset 0 1px 0 rgba(245, 241, 234, 0.07);
 }
 
 /* Base font sizing */

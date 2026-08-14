@@ -3,12 +3,11 @@
    swings toward 1:1 wherever the dark blobs pass under the text), so reading
    gets its own opaque surface while the background stays untouched. */
 .page {
-  /* local dark palette — kept here so the sheet is self-contained */
-  --sheet: #171b1d;
-  --sheet-ink: rgba(245, 241, 234, 0.88);
-  --sheet-ink-strong: #f7f4ee;
-  --sheet-ink-soft: rgba(245, 241, 234, 0.64);
-  --sheet-rule: rgba(245, 241, 234, 0.14);
+  /* sheet tokens live in global.css; redefining --ink* locally makes every
+     nested component invert for free */
+  --ink: var(--sheet-ink-strong);
+  --ink-soft: var(--sheet-ink-soft);
+  --ink-rgb: var(--sheet-ink-rgb);
 
   position: relative;
   z-index: 1;
@@ -20,13 +19,9 @@
      above the sheet — bright arrival, then focused reading */
   margin: clamp(56px, 8vh, 96px) auto clamp(56px, 9vh, 100px);
   padding: clamp(32px, 5vw, 60px);
-  /* lit surface, not a hole: a few percent lighter at the top edge, with a
-     hairline inner highlight where the light would catch */
-  background: linear-gradient(180deg, #1c2124 0%, var(--sheet) 420px);
-  border-radius: 20px;
-  box-shadow: 0 28px 70px rgba(16, 24, 26, 0.3),
-    0 2px 10px rgba(16, 24, 26, 0.18),
-    inset 0 1px 0 rgba(245, 241, 234, 0.07);
+  background: linear-gradient(180deg, var(--sheet-top) 0%, var(--sheet) 420px);
+  border-radius: var(--sheet-radius);
+  box-shadow: var(--sheet-shadow);
   color: var(--sheet-ink);
 }
 

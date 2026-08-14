@@ -17,28 +17,26 @@
   overflow: hidden;
 }
 
-/* Same placement/structure as before — refreshed frosted-cool surface */
+/* Content sections are ink sheets — same surface as /blog and the articles.
+   The hero opts out below: it is the arrival moment and keeps the aura. */
 section {
+  /* redefining --ink* locally inverts every nested component (LandingSection,
+     ShowcaseGrid) without touching their stylesheets */
+  --ink: var(--sheet-ink-strong);
+  --ink-soft: var(--sheet-ink-soft);
+  --ink-rgb: var(--sheet-ink-rgb);
+
   position: relative;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto var(--spacing) auto;
   padding: clamp(2rem, 4vw, 3rem);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.42),
-    rgba(237, 241, 239, 0.26)
-  );
-  backdrop-filter: blur(18px) saturate(1.15);
-  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  background: linear-gradient(180deg, var(--sheet-top) 0%, var(--sheet) 420px);
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--ink);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 24px 60px rgba(60, 84, 78, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: var(--sheet-ink);
+  border-radius: var(--sheet-radius);
+  box-shadow: var(--sheet-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -46,14 +44,21 @@ section {
   margin: 0 auto var(--spacing) auto;
 }
 
-/* Full-bleed hero: opt out of the default glass-card section chrome */
+/* Full-bleed hero: opts out of the ink sheet entirely. This is the arrival
+   moment — full aura, light type, 3D glyphs — and the only place on the site
+   where content sits directly on the shader. */
 .heroSection {
+  --ink: #1a1e21;
+  --ink-soft: #4a5964;
+  --ink-rgb: 26, 30, 33;
+
   max-width: min(1560px, 100%);
   background: none;
   border: none;
   box-shadow: none;
   backdrop-filter: none;
   border-radius: 0;
+  color: var(--ink);
   padding: 0 clamp(16px, 3.5vw, 56px);
   animation: none;
 }
@@ -73,17 +78,16 @@ section {
   border-radius: 12px;
   text-decoration: none;
   color: var(--ink);
-  border: 1px solid rgba(var(--ink-rgb), 0.14);
-  background: rgba(255, 255, 255, 0.34);
-  backdrop-filter: blur(6px);
+  border: 1px solid var(--sheet-rule);
+  background: rgba(245, 241, 234, 0.04);
   transition: transform 200ms ease, border-color 200ms ease,
     box-shadow 200ms ease;
 }
 
 .insightItem:hover {
   transform: translateY(-3px);
-  border-color: rgba(var(--ink-rgb), 0.42);
-  box-shadow: 0 12px 26px rgba(60, 84, 78, 0.14);
+  border-color: rgba(245, 241, 234, 0.3);
+  background: rgba(245, 241, 234, 0.07);
 }
 
 .insightTitle {
@@ -110,17 +114,16 @@ section {
   border-radius: 12px;
   text-decoration: none;
   color: var(--ink);
-  border: 1px solid rgba(var(--ink-rgb), 0.14);
-  background: rgba(255, 255, 255, 0.34);
-  backdrop-filter: blur(6px);
+  border: 1px solid var(--sheet-rule);
+  background: rgba(245, 241, 234, 0.04);
   transition: transform 200ms ease, border-color 200ms ease,
     box-shadow 200ms ease;
 }
 
 .caseStudyItem:hover {
   transform: translateY(-3px);
-  border-color: rgba(var(--ink-rgb), 0.42);
-  box-shadow: 0 12px 26px rgba(60, 84, 78, 0.14);
+  border-color: rgba(245, 241, 234, 0.3);
+  background: rgba(245, 241, 234, 0.07);
 }
 
 .caseStudyTitle {
@@ -175,11 +178,11 @@ section {
   gap: 0.4rem 1.5rem;
   align-items: baseline;
   padding: 1.05rem 0.4rem;
-  border-bottom: 1px solid rgba(var(--ink-rgb), 0.12);
+  border-bottom: 1px solid var(--sheet-rule);
 }
 
 .experienceItem:first-child {
-  border-top: 1px solid rgba(var(--ink-rgb), 0.12);
+  border-top: 1px solid var(--sheet-rule);
 }
 
 .experiencePeriod {
@@ -210,7 +213,7 @@ section {
   margin: 0.3rem 0 0;
   font-size: 0.92rem;
   line-height: 1.55;
-  color: rgba(var(--ink-rgb), 0.78);
+  color: var(--sheet-ink);
   max-width: 62ch;
 }
 
