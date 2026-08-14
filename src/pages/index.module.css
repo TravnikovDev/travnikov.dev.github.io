@@ -18,8 +18,10 @@
 }
 
 /* Content sections are ink sheets — same surface as /blog and the articles.
-   The hero opts out below: it is the arrival moment and keeps the aura. */
-section {
+   Scoped to .sectionRight, NOT bare `section`: CSS Modules only scope class
+   selectors, so an element selector here leaks to every <section> on the
+   site (it was styling the service pages' inner sections). */
+.sectionRight {
   /* redefining --ink* locally inverts every nested component (LandingSection,
      ShowcaseGrid) without touching their stylesheets */
   --ink: var(--sheet-ink-strong);
@@ -41,10 +43,6 @@ section {
   border-radius: var(--sheet-radius);
   box-shadow: var(--sheet-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.sectionRight {
-  margin: 0 auto var(--spacing) auto;
 }
 
 /* Full-bleed hero: opts out of the ink sheet entirely. This is the arrival
@@ -238,20 +236,20 @@ section {
   }
 }
 
-section {
+.sectionRight {
   animation: sectionFadeIn 0.6s ease forwards;
 }
 
-section:nth-child(2) {
+.sectionRight:nth-child(2) {
   animation-delay: 0.2s;
 }
 
-section:nth-child(3) {
+.sectionRight:nth-child(3) {
   animation-delay: 0.4s;
 }
 
 @media (max-width: 48em) {
-  section {
+  .sectionRight {
     padding: 2rem 1rem;
     margin-bottom: calc(var(--spacing) / 2);
   }
@@ -262,7 +260,7 @@ section:nth-child(3) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  section {
+  .sectionRight {
     animation: none;
   }
 
@@ -272,14 +270,15 @@ section:nth-child(3) {
   }
 }
 
-/* Ensures text stacks above the 3D background; ink-on-pearl needs no shadow */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
+/* Ensures text stacks above the 3D background. Scoped to .mainContent —
+   as bare element selectors these were global and applied site-wide. */
+.mainContent h1,
+.mainContent h2,
+.mainContent h3,
+.mainContent h4,
+.mainContent h5,
+.mainContent h6,
+.mainContent p {
   position: relative;
   z-index: 2;
 }
