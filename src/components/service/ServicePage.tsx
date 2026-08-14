@@ -53,7 +53,7 @@ export default function ServicePage({
     <BaseLayout>
       <ThreeDBackground />
 
-      <main className={styles.page}>
+      <main className={styles.page} data-sheet>
         <header className={styles.hero}>
           <Link to="/" className={styles.back}>
             ← Home

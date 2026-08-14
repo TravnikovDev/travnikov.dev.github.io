@@ -34,7 +34,8 @@
   margin: 0 auto var(--spacing) auto;
   padding: clamp(2rem, 4vw, 3rem);
   border: 1px solid transparent;
-  background: var(--sheet-fill) padding-box, var(--sheet-edge) border-box;
+  background: var(--sheet-glow) padding-box, var(--sheet-fill) padding-box,
+    var(--sheet-edge) border-box;
   backdrop-filter: var(--sheet-blur);
   -webkit-backdrop-filter: var(--sheet-blur);
   font-size: 1rem;

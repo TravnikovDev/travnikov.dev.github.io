@@ -149,7 +149,7 @@ export default function IndexPage({ data }: IndexPageProps) {
         </section>
 
         {insights.length > 0 && (
-        <section className={styles.sectionRight}>
+        <section className={styles.sectionRight} data-sheet>
           <LandingSection
             title="Recent Insights"
             description="Fresh thinking across automation, performance, and technical leadership."
@@ -180,7 +180,7 @@ export default function IndexPage({ data }: IndexPageProps) {
         )}
 
         {caseStudies.length > 0 && (
-        <section className={styles.sectionRight}>
+        <section className={styles.sectionRight} data-sheet>
           {/* Landing subsections */}
           <LandingSection title="Selected Case Studies">
             <Box className={styles.caseStudiesList}>
@@ -214,7 +214,7 @@ export default function IndexPage({ data }: IndexPageProps) {
         </section>
         )}
 
-        {/* <section className={styles.sectionRight}>
+        {/* <section className={styles.sectionRight} data-sheet>
           <LandingSection title="My apps">
             <ShowcaseGrid
               items={[
@@ -229,7 +229,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section> */}
 
-        <section className={styles.sectionRight}>
+        <section className={styles.sectionRight} data-sheet>
           <LandingSection title="Open Source">
             <ShowcaseGrid
               items={[
@@ -254,7 +254,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section>
 
-        {/* <section className={styles.sectionRight}>
+        {/* <section className={styles.sectionRight} data-sheet>
           <LandingSection title="Chrome extensions">
             <ShowcaseGrid
               items={[
@@ -270,7 +270,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section> */}
 
-        <section className={styles.sectionRight}>
+        <section className={styles.sectionRight} data-sheet>
           <LandingSection title="Professional Experience">
             <Box className={styles.experienceList}>
               {experience.map((job) => (
@@ -291,7 +291,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section>
 
-        {/*         <section className={styles.sectionRight}>
+        {/*         <section className={styles.sectionRight} data-sheet>
           <LandingSection title="YouTube widget">
             <ShowcaseGrid
               items={[
@@ -306,7 +306,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section> */}
 
-        {/* <section className={styles.sectionRight}>
+        {/* <section className={styles.sectionRight} data-sheet>
           <LandingSection title="Skills">
             <ShowcaseGrid
               items={[
@@ -325,7 +325,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section> */}
 
-        {/*         <section className={styles.sectionRight}>
+        {/*         <section className={styles.sectionRight} data-sheet>
           <LandingSection title="What I can help you with">
             <ShowcaseGrid
               items={[

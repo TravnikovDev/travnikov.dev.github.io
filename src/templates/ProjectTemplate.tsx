@@ -25,7 +25,7 @@ export default function ProjectTemplate({ data }: ProjectTemplateProps) {
     <BaseLayout>
       <ThreeDBackground />
 
-      <article className={styles.page}>
+      <article className={styles.page} data-sheet>
         <header>
           <Link to="/projects" className={styles.back}>
             ← Case Studies

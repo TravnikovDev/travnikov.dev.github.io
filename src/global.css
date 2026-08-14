@@ -94,6 +94,14 @@
     rgba(245, 241, 234, 0.03) 72%
   );
   --sheet-blur: blur(28px) saturate(160%);
+  /* Pointer highlight. --mx/--my are set by the listener in BaseLayout; the
+     default --my sits above the sheet so nothing shows until the pointer
+     enters. Deliberately faint (5.5%) — it should be felt, not seen. */
+  --sheet-glow: radial-gradient(
+    620px circle at var(--mx, 50%) var(--my, -25%),
+    rgba(245, 241, 234, 0.055),
+    transparent 42%
+  );
   --sheet-shadow: 0 28px 70px rgba(16, 24, 26, 0.3),
     0 2px 10px rgba(16, 24, 26, 0.18),
     inset 0 1px 0 rgba(245, 241, 234, 0.09);

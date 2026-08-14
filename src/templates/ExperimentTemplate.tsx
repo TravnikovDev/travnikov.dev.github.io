@@ -24,7 +24,7 @@ export default function ExperimentTemplate({ data }: ExperimentTemplateProps) {
     <BaseLayout>
       <ThreeDBackground />
 
-      <article className={styles.page}>
+      <article className={styles.page} data-sheet>
         <header>
           <Link to="/experiments" className={styles.back}>
             ← Experiments

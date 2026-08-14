@@ -35,7 +35,7 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
     <BaseLayout>
       <ThreeDBackground />
 
-      <article className={styles.page}>
+      <article className={styles.page} data-sheet>
         <header>
           <Link to="/blog" className={styles.back}>
             ← Insights

@@ -28,7 +28,7 @@ export default function BlogPage({ data }: BlogPageProps) {
     <BaseLayout>
       <ThreeDBackground />
 
-      <div className={styles.page}>
+      <div className={styles.page} data-sheet>
         <header>
           <Link to="/" className={styles.back}>
             ← Home

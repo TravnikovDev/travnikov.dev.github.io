@@ -26,7 +26,7 @@ export default function ExperimentsPage({ data }: ExperimentsPageProps) {
     <BaseLayout>
       <ThreeDBackground />
 
-      <div className={styles.page}>
+      <div className={styles.page} data-sheet>
         <header>
           <Link to="/" className={styles.back}>
             ← Home
