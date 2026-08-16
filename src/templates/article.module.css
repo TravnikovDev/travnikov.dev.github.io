@@ -424,3 +424,15 @@
     transition: none;
   }
 }
+
+/* ---------- Cover image ----------
+   Sits between the header and the body, full sheet width, so the article
+   opens with something to look at rather than a wall of prose. */
+.cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: clamp(32px, 5vh, 48px);
+  border-radius: 12px;
+  border: 1px solid var(--sheet-rule);
+}

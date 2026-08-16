@@ -13,6 +13,8 @@ interface BlogTemplateProps extends PageProps {
       date: string;
       tags: string[] | null;
       excerpt: string;
+      coverUrl: string | null;
+      coverAlt: string | null;
       html: string;
     };
     readNext: {
@@ -47,6 +49,16 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
           <h1 className={styles.title}>{article.title}</h1>
           <p className={styles.lead}>{article.excerpt}</p>
         </header>
+
+        {article.coverUrl && (
+          <img
+            className={styles.cover}
+            src={article.coverUrl}
+            alt={article.coverAlt ?? ""}
+            width={1400}
+            height={933}
+          />
+        )}
 
         <div
           className={styles.content}
@@ -105,6 +117,8 @@ export const query = graphql`
       date(formatString: "MMM D, YYYY")
       tags
       excerpt
+      coverUrl
+      coverAlt
       html
     }
     readNext: allBlogPost(

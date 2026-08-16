@@ -11,14 +11,23 @@ const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
 
 type StrapiEntry = Record<string, unknown> & { id: number; documentId: string };
 
-async function fetchCollection(apiId: string): Promise<StrapiEntry[]> {
+async function fetchCollection(
+  apiId: string,
+  populate: string[] = []
+): Promise<StrapiEntry[]> {
   const entries: StrapiEntry[] = [];
   let page = 1;
   let pageCount = 1;
   while (page <= pageCount) {
+    // Strapi 400s on populate for a field the type doesn't have, so this is
+    // passed per-collection rather than applied globally.
+    const populateQs = populate
+      .map((f, i) => `&populate[${i}]=${f}`)
+      .join('');
     const url =
       `${STRAPI_URL}/api/${apiId}` +
-      `?pagination[page]=${page}&pagination[pageSize]=100&sort=createdAt:desc`;
+      `?pagination[page]=${page}&pagination[pageSize]=100&sort=createdAt:desc` +
+      populateQs;
     const res = await fetch(url, {
       headers: STRAPI_TOKEN ? { Authorization: `Bearer ${STRAPI_TOKEN}` } : {},
     });
@@ -80,10 +89,21 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
 
   try {
     const [articles, caseStudies, experiments] = await Promise.all([
-      fetchCollection('articles'),
+      fetchCollection('articles', ['cover']),
       fetchCollection('case-studies'),
       fetchCollection('experiments'),
     ]);
+
+    // Strapi returns media as a relation object; flatten it to an absolute
+    // URL + alt so templates don't need to know the CMS shape.
+    const media = (v: unknown) => {
+      const m = v as { url?: string; alternativeText?: string } | null;
+      if (!m?.url) return { coverUrl: null, coverAlt: null };
+      return {
+        coverUrl: m.url.startsWith('http') ? m.url : `${STRAPI_URL}${m.url}`,
+        coverAlt: m.alternativeText ?? null,
+      };
+    };
 
     for (const entry of articles) {
       const { html, timeToRead } = renderMarkdown(str(entry.body));
@@ -93,6 +113,7 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         date: str(entry.date) || str(entry.publishedAt),
         excerpt: str(entry.excerpt),
         tags: strArr(entry.tags),
+        ...media(entry.cover),
         html,
         timeToRead,
       });
@@ -144,6 +165,8 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
         date: Date @dateformat
         excerpt: String
         tags: [String]
+        coverUrl: String
+        coverAlt: String
         html: String
         timeToRead: Int
       }

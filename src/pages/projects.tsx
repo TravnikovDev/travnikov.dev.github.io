@@ -34,7 +34,7 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
           <span className={styles.eyebrow}>Selected Work</span>
           <h1 className={styles.title}>Case Studies</h1>
           <p className={styles.lead}>
-            Engagements in automation, web performance, and product delivery —
+            Engagements in automation, web performance, and product delivery.
             what was built, and what it changed.
           </p>
         </header>
@@ -64,7 +64,7 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
           <div className={styles.empty}>
             <p className={styles.emptyText}>
               Case studies are being written up. If you want to hear how I have
-              handled a problem like yours, ask directly — I am happy to walk
+              handled a problem like yours, ask directly. I am happy to walk
               through relevant work.
             </p>
             <a href="mailto:roman@travnikov.dev" className={styles.emptyCta}>

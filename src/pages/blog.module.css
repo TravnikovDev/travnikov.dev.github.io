@@ -233,3 +233,22 @@
     transition: none;
   }
 }
+
+/* Row thumbnail: wide and short so the row stays scannable and the list
+   still reads as a list, not a card grid. */
+.itemCover {
+  display: block;
+  width: 100%;
+  height: clamp(120px, 18vw, 190px);
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+  border: 1px solid var(--sheet-rule);
+  margin-bottom: 1rem;
+}
+
+/* only the featured (newest) post gets a full-height cover; the rest stay
+   compact so the list does not become a stack of equal cards */
+.item:not(.itemFeatured) .itemCover {
+  height: clamp(88px, 11vw, 120px);
+}

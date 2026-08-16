@@ -9,7 +9,7 @@ export default function ContactPage() {
     <ServicePage
       eyebrow="Contact"
       title="Get in Touch"
-      lead="Have a project in mind? Tell me what you are building and where it hurts — I reply to every message."
+      lead="Have a project in mind? Tell me what you are building and where it hurts. I reply to every message."
       form={{
         title: "Send a Message",
         subtitle:

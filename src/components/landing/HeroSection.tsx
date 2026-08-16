@@ -30,7 +30,7 @@ const vectors: {
     id: "vector-c",
     title: "Strategic Consulting",
     href: "/fractional-cto",
-    copy: "Balancing product velocity and technical debt — audits, roadmaps and hands-on team enablement.",
+    copy: "Balancing product velocity and technical debt. Audits, roadmaps and hands-on team enablement.",
     glyph: "balance",
   },
 ];
@@ -107,7 +107,7 @@ const HeroSection = () => {
         <div className={`${styles.glassCard} ${styles.reveal}`}>
           <p>
             I design automation systems and frontend architecture that let
-            teams ship faster — from n8n content pipelines to production React
+            teams ship faster, from n8n content pipelines to production React
             platforms serving real businesses.
           </p>
           <div className={styles.actions}>
@@ -136,13 +136,7 @@ const HeroSection = () => {
         </div>
 
         <div className={`${styles.availability} ${styles.reveal}`}>
-          <span className={styles.availabilityDot} />
           Available for new opportunities
-        </div>
-
-        <div className={styles.scrollCue} aria-hidden="true">
-          <span className={styles.scrollCueLabel}>Scroll</span>
-          <span className={styles.scrollCueLine} />
         </div>
       </div>
 

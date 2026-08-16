@@ -45,7 +45,7 @@ export default function ServicePage({
       `${data.get(form.textarea.name) || ""}`,
     ];
     window.location.href = `mailto:roman@travnikov.dev?subject=${encodeURIComponent(
-      `${title} — inquiry`
+      `${title} inquiry`
     )}&body=${encodeURIComponent(lines.join("\n"))}`;
   };
 

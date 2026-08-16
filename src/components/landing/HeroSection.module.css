@@ -184,15 +184,6 @@
   color: var(--ink-soft);
 }
 
-.availabilityDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--mantine-color-primary-4);
-  box-shadow: 0 0 10px rgba(var(--mantine-color-primary-4-rgb), 0.6);
-  animation: pulse 2.4s ease-in-out infinite;
-}
-
 /* ---------- Services column ---------- */
 
 .services {
@@ -345,43 +336,6 @@
   pointer-events: none;
 }
 
-/* ---------- Scroll cue: a line drawing itself downward ---------- */
-
-.scrollCue {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-@media (max-width: 64em) {
-  .scrollCue {
-    display: none;
-  }
-}
-
-.scrollCueLabel {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  writing-mode: vertical-rl;
-}
-
-.scrollCueLine {
-  width: 1px;
-  height: 44px;
-  background: var(--ink-soft);
-  transform-origin: top;
-  animation: drawDown 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
 /* ---------- Animations ---------- */
 
 /* Drawn-in reveal for the left column, staggered after the brand */
@@ -407,34 +361,6 @@
   to {
     opacity: 1;
     transform: none;
-  }
-}
-
-@keyframes drawDown {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-  45%,
-  55% {
-    transform: scaleY(1);
-    transform-origin: top;
-  }
-  100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.25);
-    opacity: 0.75;
   }
 }
 
@@ -498,10 +424,5 @@
     animation: none;
     opacity: 1;
     transform: none;
-  }
-
-  .availabilityDot,
-  .scrollCueLine {
-    animation: none;
   }
 }

@@ -34,7 +34,7 @@ export default function ExperimentsPage({ data }: ExperimentsPageProps) {
           <span className={styles.eyebrow}>Playground</span>
           <h1 className={styles.title}>Experiments</h1>
           <p className={styles.lead}>
-            Interactive frontend experiments — creative techniques tried in
+            Interactive frontend experiments. Creative techniques tried in
             public.
           </p>
         </header>
@@ -63,7 +63,7 @@ export default function ExperimentsPage({ data }: ExperimentsPageProps) {
         ) : (
           <div className={styles.empty}>
             <p className={styles.emptyText}>
-              Nothing on the bench right now — new experiments land here as
+              Nothing on the bench right now. New experiments land here as
               they are built.
             </p>
           </div>

@@ -14,3 +14,4 @@ export const readNextList: string;
 export const readNextRow: string;
 export const readNextItem: string;
 export const readNextMeta: string;
+export const cover: string;

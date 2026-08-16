@@ -14,3 +14,4 @@ export const itemArrow: string;
 export const chips: string;
 export const chip: string;
 export const itemMeta: string;
+export const itemCover: string;

@@ -16,6 +16,8 @@ interface BlogPageProps extends PageProps {
         slug: string;
         excerpt: string;
         tags: string[] | null;
+        coverUrl: string | null;
+        coverAlt: string | null;
       }[];
     };
   };
@@ -36,7 +38,7 @@ export default function BlogPage({ data }: BlogPageProps) {
           <span className={styles.eyebrow}>Writing</span>
           <h1 className={styles.title}>Insights</h1>
           <p className={styles.lead}>
-            Notes on AI automation, web performance, and technical leadership —
+            Notes on AI automation, web performance, and technical leadership.
             what I learn shipping real systems.
           </p>
         </header>
@@ -52,6 +54,16 @@ export default function BlogPage({ data }: BlogPageProps) {
                 index === 0 ? styles.itemFeatured : ""
               }`}
             >
+              {article.coverUrl && (
+                <img
+                  className={styles.itemCover}
+                  src={article.coverUrl}
+                  alt={article.coverAlt ?? ""}
+                  loading="lazy"
+                  width={1400}
+                  height={933}
+                />
+              )}
               <span className={styles.itemMeta}>
                 <span>{article.date}</span>
                 <span>{article.timeToRead} min read</span>
@@ -101,6 +113,8 @@ export const query = graphql`
         slug
         excerpt
         tags
+        coverUrl
+        coverAlt
       }
     }
   }

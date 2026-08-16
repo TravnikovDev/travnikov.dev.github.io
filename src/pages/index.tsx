@@ -52,7 +52,7 @@ interface IndexPageProps extends PageProps {
 const experience = [
   {
     id: "work-super-dispatch",
-    period: "2023 – 2024",
+    period: "2023-2024",
     role: "Frontend Engineer",
     company: "Super Dispatch · Remote (US)",
     summary:
@@ -68,7 +68,7 @@ const experience = [
   },
   {
     id: "work-omnetic",
-    period: "2020 – 2022",
+    period: "2020-2022",
     role: "Senior Frontend Developer",
     company: "OMNETIC · Remote (Prague)",
     summary:
@@ -76,7 +76,7 @@ const experience = [
   },
   {
     id: "work-realtrac",
-    period: "2017 – 2020",
+    period: "2017-2020",
     role: "Senior Frontend Developer",
     company: "RealTrac Technologies · St. Petersburg",
     summary:
@@ -84,7 +84,7 @@ const experience = [
   },
   {
     id: "work-miix",
-    period: "2016 – 2017",
+    period: "2016-2017",
     role: "Frontend Web Developer",
     company: "MiiiX.org · St. Petersburg",
     summary:
@@ -92,7 +92,7 @@ const experience = [
   },
   {
     id: "work-programny",
-    period: "2014 – 2015",
+    period: "2014-2015",
     role: "Frontend Web Developer",
     company: "Programny Produkt · Moscow / Remote",
     summary:
@@ -100,14 +100,14 @@ const experience = [
   },
   {
     id: "work-altera",
-    period: "2013 – 2014",
+    period: "2013-2014",
     role: "Junior Web Developer",
     company: "Altera Media · St. Petersburg",
     summary: "Websites and smaller client projects.",
   },
   {
     id: "work-fabricasaitov",
-    period: "2012 – 2013",
+    period: "2012-2013",
     role: "Junior Web Developer",
     company: "Fabricasaitov.ru · St. Petersburg",
     summary: "Entry-level role building websites.",
@@ -239,7 +239,7 @@ export default function IndexPage({ data }: IndexPageProps) {
                   icon: <FaRobot />,
                   url: "https://www.npmjs.com/package/vibe-janitor",
                   description:
-                    "vibe-janitor — utility library published on npm.",
+                    "vibe-janitor, a utility library published on npm.",
                 },
                 {
                   id: "lib-ffmpegslideshow",
@@ -247,7 +247,7 @@ export default function IndexPage({ data }: IndexPageProps) {
                   icon: <FaTools />,
                   url: "https://www.npmjs.com/package/ffmpegslideshow",
                   description:
-                    "ffmpegslideshow — npm package for creating slideshows with ffmpeg.",
+                    "ffmpegslideshow, an npm package for creating slideshows with ffmpeg.",
                 },
               ]}
             />
@@ -278,9 +278,9 @@ export default function IndexPage({ data }: IndexPageProps) {
                   <Text className={styles.experiencePeriod}>{job.period}</Text>
                   <Box>
                     <h3 className={styles.experienceRole}>
-                      {job.role}{" "}
+                      {job.role}
                       <span className={styles.experienceCompany}>
-                        — {job.company}
+                        {job.company}
                       </span>
                     </h3>
                     <p className={styles.experienceSummary}>{job.summary}</p>
@@ -360,7 +360,7 @@ export function Head() {
   return (
     <SEO
       title="AI Automation & Web Architecture for Startups"
-      description="I engineer autonomous AI systems and high-performance React & Gatsby architecture for startups — plus fractional CTO leadership."
+      description="I engineer autonomous AI systems and high-performance React & Gatsby architecture for startups, plus fractional CTO leadership."
     />
   );
 }
