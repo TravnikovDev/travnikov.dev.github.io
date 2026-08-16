@@ -33,6 +33,7 @@ interface IndexPageProps extends PageProps {
         title: string;
         date: string;
         slug: string;
+        coverUrl: string | null;
       }[];
     };
     allCaseStudy: {
@@ -161,6 +162,18 @@ export default function IndexPage({ data }: IndexPageProps) {
                   to={`/blog/${insight.slug}`}
                   className={styles.insightItem}
                 >
+                  {insight.coverUrl && (
+                    /* decorative: the row's anchor text is already the title,
+                       so a described thumbnail would only pad it */
+                    <img
+                      className={styles.insightCover}
+                      src={insight.coverUrl}
+                      alt=""
+                      loading="lazy"
+                      width={1400}
+                      height={700}
+                    />
+                  )}
                   <Box>
                     <Text size="sm" c="dimmed">
                       {insight.date}
@@ -379,6 +392,7 @@ export const query = graphql`
         title
         date(formatString: "MMM D, YYYY")
         slug
+        coverUrl
       }
     }
     allCaseStudy(sort: { title: ASC }, limit: 2) {

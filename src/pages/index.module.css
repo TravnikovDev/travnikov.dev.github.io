@@ -71,10 +71,28 @@
   gap: 1rem;
 }
 
+/* Thumbnail of the article's cover. Shown at its true 2:1 — the art is
+   composed for that frame, so it is never cropped to fit a box. */
+.insightCover {
+  flex: none;
+  width: clamp(92px, 13vw, 128px);
+  height: auto;
+  aspect-ratio: 2 / 1;
+  border-radius: 8px;
+  border: 1px solid var(--sheet-rule);
+}
+
+/* the date + title block takes the slack, so the read-time stays right */
+.insightItem > div {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .insightItem {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  /* was baseline, which hung the thumbnail off the title's baseline */
+  align-items: center;
   gap: 1.5rem;
   padding: 0.85rem 1.1rem;
   border-radius: 12px;

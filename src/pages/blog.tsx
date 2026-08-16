@@ -58,7 +58,10 @@ export default function BlogPage({ data }: BlogPageProps) {
                 <img
                   className={styles.itemCover}
                   src={article.coverUrl}
-                  alt={article.coverAlt ?? ""}
+                  /* decorative: the row is one link and its anchor text is
+                     already the title, so a described thumbnail only pads it.
+                     The article page shows the same image with its real alt. */
+                  alt=""
                   loading="lazy"
                   width={1400}
                   height={700}
