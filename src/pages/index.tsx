@@ -149,6 +149,9 @@ export default function IndexPage({ data }: IndexPageProps) {
           <HeroSection />
         </section>
 
+        {/* Full-bleed "book": sections become facing pages, two to a spread on
+            desktop, single column below. */}
+        <Box className={styles.book}>
         {insights.length > 0 && (
         <section className={styles.sectionRight} data-sheet>
           <LandingSection
@@ -358,6 +361,7 @@ export default function IndexPage({ data }: IndexPageProps) {
             />
           </LandingSection>
         </section> */}
+        </Box>
 
         <div
           ref={progressRef}

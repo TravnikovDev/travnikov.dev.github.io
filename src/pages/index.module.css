@@ -21,8 +21,12 @@
    Scoped to .sectionRight, NOT bare `section`: CSS Modules only scope class
    selectors, so an element selector here leaks to every <section> on the
    site (it was styling the service pages' inner sections). */
-.sectionRight {
-  /* redefining --ink* locally inverts every nested component (LandingSection,
+/* ---------- The book ----------
+   Below the hero the page becomes one continuous full-bleed surface, and the
+   sections are its pages: two facing pages to a spread on desktop, a single
+   column below. Replaces the old stack of floating 1200px cards. */
+.book {
+  /* redefining --ink* here inverts every nested component (LandingSection,
      ShowcaseGrid) without touching their stylesheets */
   --ink: var(--sheet-ink-strong);
   --ink-soft: var(--sheet-ink-soft);
@@ -34,21 +38,77 @@
   --mantine-color-dimmed: var(--ink-soft);
 
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto var(--spacing) auto;
-  padding: clamp(2rem, 4vw, 3rem);
-  border: 1px solid transparent;
-  background: var(--sheet-glow) padding-box, var(--sheet-fill) padding-box,
-    var(--sheet-edge) border-box;
+  /* still smoked glass over the shader — just edge to edge now */
+  background: var(--sheet-fill);
   backdrop-filter: var(--sheet-blur);
   -webkit-backdrop-filter: var(--sheet-blur);
+  /* no top rule — the gradient above has to land seamlessly, and the footer
+     below is #151b1b, so hero -> book -> footer is now one transition */
   font-size: 1rem;
   line-height: 1.6;
   color: var(--sheet-ink);
-  border-radius: var(--sheet-radius);
-  box-shadow: var(--sheet-shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* The old layout cut from the light hero straight to a hard-edged dark card.
+   This bleeds the top edge into the aura above it instead. */
+.book::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: clamp(140px, 20vh, 260px);
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 31, 33, 0) 0%,
+    rgba(26, 31, 33, 0.35) 45%,
+    rgba(26, 31, 33, 0.78) 100%
+  );
+}
+
+.sectionRight {
+  position: relative;
+  width: 100%;
+  padding: clamp(2.5rem, 4.5vw, 4.5rem) clamp(1.5rem, 3.5vw, 3.5rem);
+  /* the glow follows the pointer across whichever page it is over */
+  background: var(--sheet-glow);
+}
+
+/* The fold. A hairline where the pages meet, with each page darkening as it
+   curves into the gutter. Only drawn where a facing page actually exists. */
+.sectionRight:nth-child(odd):not(:last-child) {
+  border-right: 1px solid var(--sheet-rule);
+}
+
+.sectionRight:nth-child(odd):not(:last-child)::after,
+.sectionRight:nth-child(even)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(40px, 6vw, 96px);
+  pointer-events: none;
+}
+
+.sectionRight:nth-child(odd):not(:last-child)::after {
+  right: 0;
+  background: linear-gradient(90deg, transparent, rgba(8, 11, 12, 0.3));
+}
+
+.sectionRight:nth-child(even)::after {
+  left: 0;
+  background: linear-gradient(270deg, transparent, rgba(8, 11, 12, 0.3));
+}
+
+/* An odd number of sections would leave a blank page, so the last one runs
+   the full spread instead. */
+.sectionRight:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--sheet-rule);
 }
 
 /* Full-bleed hero: opts out of the ink sheet entirely. This is the arrival
@@ -272,22 +332,39 @@
   animation: sectionFadeIn 0.6s ease forwards;
 }
 
+/* indices are relative to .book now, so the first page is child 1 */
 .sectionRight:nth-child(2) {
-  animation-delay: 0.2s;
+  animation-delay: 0.1s;
 }
 
 .sectionRight:nth-child(3) {
-  animation-delay: 0.4s;
+  animation-delay: 0.2s;
+}
+
+/* A spread needs two readable columns. Below that the book runs single-page,
+   with the fold suppressed — there is nothing to fold against. */
+@media (max-width: 64em) {
+  .book {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionRight {
+    border-right: 0;
+    border-top: 0;
+  }
+
+  .sectionRight:not(:last-child) {
+    border-bottom: 1px solid var(--sheet-rule);
+  }
+
+  .sectionRight::after {
+    display: none;
+  }
 }
 
 @media (max-width: 48em) {
   .sectionRight {
-    padding: 2rem 1rem;
-    margin-bottom: calc(var(--spacing) / 2);
-  }
-
-  .sectionRight {
-    margin-bottom: calc(var(--spacing) / 2);
+    padding: 2.5rem 1.25rem;
   }
 }
 
