@@ -39,7 +39,7 @@ export default function BlogPage({ data }: BlogPageProps) {
           <h1 className={styles.title}>Insights</h1>
           <p className={styles.lead}>
             Notes on AI automation, web performance, and technical leadership.
-            what I learn shipping real systems.
+            What I learn shipping real systems.
           </p>
         </header>
 

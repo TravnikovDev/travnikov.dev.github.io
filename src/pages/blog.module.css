@@ -234,21 +234,47 @@
   }
 }
 
-/* Row thumbnail: wide and short so the row stays scannable and the list
-   still reads as a list, not a card grid. */
+/* The art is composed as a 2:1 frame, so it is shown at 2:1. A fixed height
+   plus `object-fit: cover` cropped the subject out of its own composition. */
 .itemCover {
   display: block;
   width: 100%;
-  height: clamp(120px, 18vw, 190px);
-  object-fit: cover;
-  object-position: center;
+  height: auto;
+  aspect-ratio: 2 / 1;
   border-radius: 10px;
   border: 1px solid var(--sheet-rule);
   margin-bottom: 1rem;
 }
 
-/* only the featured (newest) post gets a full-height cover; the rest stay
-   compact so the list does not become a stack of equal cards */
+/* Only the featured post runs the cover full width. The rest move it into a
+   side column, which keeps the row heights short — the reason the crop existed
+   — without cutting the image, and keeps the list reading as a list rather
+   than a stack of equal cards. */
+.item:not(.itemFeatured):has(.itemCover) {
+  display: grid;
+  grid-template-columns: clamp(150px, 26%, 230px) 1fr;
+  column-gap: clamp(1rem, 2.5vw, 1.75rem);
+  align-items: start;
+}
+
 .item:not(.itemFeatured) .itemCover {
-  height: clamp(88px, 11vw, 120px);
+  grid-column: 1;
+  grid-row: 1 / span 4;
+  align-self: start;
+  margin-bottom: 0;
+}
+
+.item:not(.itemFeatured) > :not(.itemCover) {
+  grid-column: 2;
+}
+
+/* Side-by-side gets too narrow to read; stack and let the art run full width. */
+@media (max-width: 34em) {
+  .item:not(.itemFeatured):has(.itemCover) {
+    display: block;
+  }
+
+  .item:not(.itemFeatured) .itemCover {
+    margin-bottom: 1rem;
+  }
 }

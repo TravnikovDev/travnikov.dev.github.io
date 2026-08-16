@@ -432,6 +432,8 @@
   display: block;
   width: 100%;
   height: auto;
+  /* the art is composed as 2:1; never crop it to fit a box */
+  aspect-ratio: 2 / 1;
   margin-top: clamp(32px, 5vh, 48px);
   border-radius: 12px;
   border: 1px solid var(--sheet-rule);
