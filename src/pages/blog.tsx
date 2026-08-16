@@ -61,7 +61,7 @@ export default function BlogPage({ data }: BlogPageProps) {
                   alt={article.coverAlt ?? ""}
                   loading="lazy"
                   width={1400}
-                  height={933}
+                  height={700}
                 />
               )}
               <span className={styles.itemMeta}>

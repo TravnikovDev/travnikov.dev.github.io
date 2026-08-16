@@ -56,7 +56,7 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
             src={article.coverUrl}
             alt={article.coverAlt ?? ""}
             width={1400}
-            height={933}
+            height={700}
           />
         )}
 
