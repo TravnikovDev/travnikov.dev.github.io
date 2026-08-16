@@ -27,6 +27,11 @@
   --ink: var(--sheet-ink-strong);
   --ink-soft: var(--sheet-ink-soft);
   --ink-rgb: var(--sheet-ink-rgb);
+  /* custom properties resolve where they are DECLARED, so the body-level
+     `--mantine-color-dimmed: var(--ink-soft)` computed to the light-canvas
+     slate and inherited that literal value in here — ~2.1:1 on the sheet.
+     Redeclaring it re-resolves it against the local --ink-soft. */
+  --mantine-color-dimmed: var(--ink-soft);
 
   position: relative;
   width: 100%;
@@ -75,7 +80,8 @@
    composed for that frame, so it is never cropped to fit a box. */
 .insightCover {
   flex: none;
-  width: clamp(92px, 13vw, 128px);
+  /* 128px reduced fine hairline art to mush; this reads as a picture */
+  width: clamp(140px, 18vw, 210px);
   height: auto;
   aspect-ratio: 2 / 1;
   border-radius: 8px;

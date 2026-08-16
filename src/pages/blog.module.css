@@ -7,6 +7,11 @@
   --ink: var(--sheet-ink-strong);
   --ink-soft: var(--sheet-ink-soft);
   --ink-rgb: var(--sheet-ink-rgb);
+  /* custom properties resolve where they are DECLARED, so the body-level
+     `--mantine-color-dimmed: var(--ink-soft)` computed to the light-canvas
+     slate and inherited that literal value in here — ~2.1:1 on the sheet.
+     Redeclaring it re-resolves it against the local --ink-soft. */
+  --mantine-color-dimmed: var(--ink-soft);
 
   position: relative;
   z-index: 1;
