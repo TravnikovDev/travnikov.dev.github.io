@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
             <Box className={styles.linkGroup}>
               <Text className={styles.linkTitle}>Socials</Text>
               <Anchor
-                href="https://linkedin.com/in/travnikov"
+                href="https://www.linkedin.com/in/roman-travnikov/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.link}
@@ -44,16 +44,6 @@ const Footer: React.FC = () => {
                 className={styles.link}
               >
                 GitHub
-              </Anchor>
-            </Box>
-
-            <Box className={styles.linkGroup}>
-              <Text className={styles.linkTitle}>Legal</Text>
-              <Anchor href="/privacy" className={styles.link}>
-                Privacy
-              </Anchor>
-              <Anchor href="/terms" className={styles.link}>
-                Terms
               </Anchor>
             </Box>
           </Box>

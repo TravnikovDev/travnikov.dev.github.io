@@ -230,9 +230,16 @@
   margin: 0;
 }
 
+/* Own line, not a run-on: JSX drops the newline between {job.role} and this
+   span, so inline they rendered as "Frontend EngineerSuper Dispatch". A
+   separator would also read badly — the company string already carries its
+   own "·" before the location. */
 .experienceCompany {
+  display: block;
+  margin-top: 0.2rem;
   color: var(--ink-soft);
   font-weight: 450;
+  font-size: 0.92rem;
 }
 
 .experienceSummary {
