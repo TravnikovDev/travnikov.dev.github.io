@@ -76,6 +76,12 @@
   padding: clamp(2.5rem, 4.5vw, 4.5rem) clamp(1.5rem, 3.5vw, 3.5rem);
   /* the glow follows the pointer across whichever page it is over */
   background: var(--sheet-glow);
+  /* Facing pages stretch to equal height, so a short section leaves slack.
+     Centring puts that slack above and below as page margin instead of
+     dumping it all at the bottom, which reads as a gap. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* The fold. A hairline where the pages meet, with each page darkening as it

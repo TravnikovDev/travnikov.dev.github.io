@@ -5,7 +5,7 @@ import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
 import { LandingSection } from "../components/landing/TimelineSection";
 import ShowcaseGrid from "../components/landing/ShowcaseGrid";
-import { FaBoxes, FaRobot, FaTools, FaMicrochip } from "react-icons/fa";
+import { FaBoxes, FaRobot, FaTools, FaMicrochip, FaBrain } from "react-icons/fa";
 import {
   SiTypescript,
   SiReact,
@@ -322,7 +322,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section> */}
 
-        {/* <section className={styles.sectionRight} data-sheet>
+        <section className={styles.sectionRight} data-sheet>
           <LandingSection title="Skills">
             <ShowcaseGrid
               items={[
@@ -339,9 +339,9 @@ export default function IndexPage({ data }: IndexPageProps) {
               ]}
             />
           </LandingSection>
-        </section> */}
+        </section>
 
-        {/*         <section className={styles.sectionRight} data-sheet>
+        <section className={styles.sectionRight} data-sheet>
           <LandingSection title="What I can help you with">
             <ShowcaseGrid
               items={[
@@ -360,7 +360,7 @@ export default function IndexPage({ data }: IndexPageProps) {
               ]}
             />
           </LandingSection>
-        </section> */}
+        </section>
         </Box>
 
         <div
