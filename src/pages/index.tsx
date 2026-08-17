@@ -5,7 +5,7 @@ import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
 import { LandingSection } from "../components/landing/TimelineSection";
 import ShowcaseGrid from "../components/landing/ShowcaseGrid";
-import { FaBoxes, FaRobot, FaTools, FaMicrochip, FaBrain } from "react-icons/fa";
+import { FaBoxes, FaRobot, FaTools, FaMicrochip } from "react-icons/fa";
 import {
   SiTypescript,
   SiReact,
@@ -341,24 +341,60 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section>
 
+        {/* Closing spread — the last thing before the footer, so it is the
+            conversion point: the three service lines, each with the offer its
+            own page actually opens with, then a route out for everyone else. */}
         <section className={styles.sectionRight} data-sheet>
-          <LandingSection title="What I can help you with">
-            <ShowcaseGrid
-              items={[
+          <LandingSection
+            title="What I can help you with"
+            description="Three ways teams bring me in. Start with whichever matches the bottleneck."
+          >
+            <Box className={styles.serviceList}>
+              {[
                 {
-                  id: "help-1",
-                  title: "Consulting",
-                  icon: <FaBrain />,
-                  description: "Product and engineering consulting",
+                  to: "/ai-automation-engineer",
+                  name: "AI Automation",
+                  blurb:
+                    "Replace manual operations with n8n workflows and AI agents that connect your data, tools and teams.",
+                  cta: "Book a workflow audit",
                 },
                 {
-                  id: "help-2",
-                  title: "Code Reviews",
-                  icon: <FaTools />,
-                  description: "Practical, actionable reviews",
+                  to: "/react-performance-consulting",
+                  name: "Web Performance",
+                  blurb:
+                    "Scalable, sub-second React and Gatsby systems that convert faster and rank higher.",
+                  cta: "Audit my architecture",
                 },
-              ]}
-            />
+                {
+                  to: "/fractional-cto",
+                  name: "Fractional CTO",
+                  blurb:
+                    "Strategy, hiring support and technical leadership that keeps engineering aligned to business goals.",
+                  cta: "Discuss your vision",
+                },
+              ].map((service) => (
+                <Link
+                  key={service.to}
+                  to={service.to}
+                  className={styles.serviceItem}
+                  aria-label={service.name}
+                >
+                  <h3 className={styles.serviceName}>{service.name}</h3>
+                  <p className={styles.serviceBlurb}>{service.blurb}</p>
+                  <span className={styles.serviceCta}>{service.cta} →</span>
+                </Link>
+              ))}
+            </Box>
+
+            <Box className={styles.serviceFooter}>
+              <Text className={styles.serviceFooterText}>
+                Not sure which one it is? Describe what is slowing you down and
+                I will tell you straight whether I am the right person.
+              </Text>
+              <Link to="/contact" className={styles.serviceFooterCta}>
+                Get in touch
+              </Link>
+            </Box>
           </LandingSection>
         </section>
         </Box>

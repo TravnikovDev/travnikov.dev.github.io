@@ -256,6 +256,128 @@
   border-color: var(--ink);
 }
 
+/* ---------- Services: the closing spread ----------
+   Runs the full width, so three across without a breakpoint; collapses on its
+   own when the pages narrow. */
+.serviceList {
+  display: grid;
+  /* 240px is chosen against LandingSection's 774px content width so the three
+     services sit on one row — the whole point is reading them as a set. */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.serviceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1.5rem 1.4rem 1.4rem;
+  border-radius: 12px;
+  border: 1px solid var(--sheet-rule);
+  background: rgba(245, 241, 234, 0.04);
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 200ms ease, border-color 200ms ease,
+    background 200ms ease;
+}
+
+.serviceItem:hover {
+  transform: translateY(-3px);
+  border-color: rgba(245, 241, 234, 0.3);
+  background: rgba(245, 241, 234, 0.07);
+}
+
+.serviceItem:focus-visible {
+  outline: 2px solid var(--sheet-ink-strong);
+  outline-offset: 3px;
+}
+
+.serviceName {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.serviceBlurb {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--sheet-ink);
+  /* pushes the CTA to the bottom so the three line up across the row */
+  flex: 1 1 auto;
+}
+
+.serviceCta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color 200ms ease;
+}
+
+.serviceItem:hover .serviceCta {
+  color: var(--ink);
+}
+
+/* The catch-all, for anyone who does not self-identify with one of the three */
+.serviceFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-top: 1.6rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--sheet-rule);
+}
+
+.serviceFooterText {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--sheet-ink);
+  max-width: 56ch;
+}
+
+.serviceFooterCta {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 241, 234, 0.25);
+  background: rgba(245, 241, 234, 0.06);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sheet-ink-strong);
+  text-decoration: none;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+
+.serviceFooterCta:hover {
+  background: rgba(245, 241, 234, 0.14);
+  border-color: rgba(245, 241, 234, 0.45);
+}
+
+.serviceFooterCta:focus-visible {
+  outline: 2px solid var(--sheet-ink-strong);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serviceItem {
+    transition: none;
+  }
+}
+
 /* ---------- Professional experience: editorial role list ----------
    Rows with hairline rules instead of a grid of identical cards — the
    period column reads like a CV margin, the role carries the weight. */
