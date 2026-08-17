@@ -15,10 +15,31 @@ const GlyphLights = () => (
   </>
 );
 
+// All three glyphs sit inside the same hairline cube. It is what gave the
+// lattice its drawn, outlined character, so the crystal and the balance now
+// share it — one family rather than three unrelated objects.
+const useBoxFrame = () =>
+  useMemo(
+    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(2.7, 2.7, 2.7)),
+    []
+  );
+
+const GlyphFrame = () => {
+  const edges = useBoxFrame();
+  return (
+    <lineSegments geometry={edges}>
+      <lineBasicMaterial color="#5a6771" transparent opacity={0.5} />
+    </lineSegments>
+  );
+};
+
 // Stellated crystal star: elongated octahedron shards radiating from a core,
 // like the reference's translucent diamond bloom
 const Crystal = () => {
   const geometry = useMemo(() => new THREE.OctahedronGeometry(1, 0), []);
+  // drawn edges over the glass, so the shape reads as outlined rather than
+  // as a soft refractive blob
+  const octaEdges = useMemo(() => new THREE.EdgesGeometry(geometry), [geometry]);
   const material = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
@@ -69,18 +90,35 @@ const Crystal = () => {
   }, []);
 
   return (
-    <group scale={1.24}>
-      <mesh geometry={geometry} material={material} scale={[0.75, 1.0, 0.75]} />
-      {spikes.map((spike, i) => (
+    <group>
+      <GlyphFrame />
+      <group scale={0.86}>
         <mesh
-          key={i}
           geometry={geometry}
           material={material}
-          position={spike.position}
-          quaternion={spike.quaternion}
-          scale={[0.3, spike.length, 0.3]}
+          scale={[0.75, 1.0, 0.75]}
         />
-      ))}
+        <lineSegments geometry={octaEdges} scale={[0.75, 1.0, 0.75]}>
+          <lineBasicMaterial color="#3c4a53" transparent opacity={0.55} />
+        </lineSegments>
+        {spikes.map((spike, i) => (
+          <group
+            key={i}
+            position={spike.position}
+            quaternion={spike.quaternion}
+            scale={[0.3, spike.length, 0.3]}
+          >
+            <mesh geometry={geometry} material={material} />
+            <lineSegments geometry={octaEdges}>
+              <lineBasicMaterial
+                color="#3c4a53"
+                transparent
+                opacity={0.42}
+              />
+            </lineSegments>
+          </group>
+        ))}
+      </group>
     </group>
   );
 };
@@ -88,10 +126,6 @@ const Crystal = () => {
 // Web-architecture glyph: a clean geodesic wireframe sphere (a network of
 // nodes + connections) suspended inside a light cube frame, with a metal core.
 const Lattice = ({ innerRef }: { innerRef: React.RefObject<THREE.Group> }) => {
-  const boxEdges = useMemo(
-    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(2.7, 2.7, 2.7)),
-    []
-  );
   // full triangle mesh of a subdivided icosahedron = geodesic "system" look
   const sphereWire = useMemo(
     () => new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.02, 1)),
@@ -119,9 +153,7 @@ const Lattice = ({ innerRef }: { innerRef: React.RefObject<THREE.Group> }) => {
 
   return (
     <group scale={1.02}>
-      <lineSegments geometry={boxEdges}>
-        <lineBasicMaterial color="#5a6771" transparent opacity={0.35} />
-      </lineSegments>
+      <GlyphFrame />
       <group ref={innerRef}>
         <lineSegments geometry={sphereWire}>
           <lineBasicMaterial color="#3c4a53" transparent opacity={0.7} />
@@ -160,12 +192,36 @@ const arcEndY = arcRadius - arcRadius * Math.cos(arcHalf);
 const arcYAt = (x: number) =>
   arcRadius - Math.sqrt(arcRadius * arcRadius - x * x);
 
-const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => (
-  <group scale={1.0} position={[0, 0.3, 0]}>
+const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => {
+  // low-poly cone so its drawn edges read as facets rather than a dense fan
+  const coneEdges = useMemo(
+    () => new THREE.EdgesGeometry(new THREE.ConeGeometry(1.0, 1.1, 12)),
+    []
+  );
+  const arcLine = useMemo(() => {
+    const pts: THREE.Vector3[] = [];
+    for (let i = 0; i <= 48; i++) {
+      const x = -arcEndX + (2 * arcEndX * i) / 48;
+      pts.push(new THREE.Vector3(x, arcYAt(x), 0));
+    }
+    return new THREE.BufferGeometry().setFromPoints(pts);
+  }, []);
+
+  return (
+  <group>
+    <GlyphFrame />
+    <group scale={1.0} position={[0, 0.3, 0]}>
     <mesh position={[0, -1.62, 0]} rotation={[Math.PI, 0, 0]}>
       <coneGeometry args={[1.0, 1.1, 40]} />
       <meshStandardMaterial color="#ebe5d8" roughness={0.55} metalness={0.05} />
     </mesh>
+    <lineSegments
+      geometry={coneEdges}
+      position={[0, -1.62, 0]}
+      rotation={[Math.PI, 0, 0]}
+    >
+      <lineBasicMaterial color="#5a6771" transparent opacity={0.45} />
+    </lineSegments>
     {/* chrome/mercury pivot bead */}
     <mesh position={[0, -0.6, 0]}>
       <sphereGeometry args={[0.4, 48, 48]} />
@@ -219,9 +275,16 @@ const Balance = ({ beamRef }: { beamRef: React.RefObject<THREE.Group> }) => (
           envMapIntensity={1.25}
         />
       </mesh>
+      {/* the beam drawn as a line, echoing the lattice's wireframe */}
+      <line>
+        <primitive object={arcLine} attach="geometry" />
+        <lineBasicMaterial color="#3c4a53" transparent opacity={0.6} />
+      </line>
+    </group>
     </group>
   </group>
-);
+  );
+};
 
 export function GlyphScene({
   kind,

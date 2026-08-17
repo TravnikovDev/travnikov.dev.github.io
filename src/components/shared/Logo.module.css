@@ -1,7 +1,28 @@
 .logo {
   display: flex;
   align-items: center;
+  gap: 10px;
   text-decoration: none;
+}
+
+/* The brand sphere, matching the hero's. Sized off the wordmark so the two
+   scale together at every breakpoint. */
+.mark {
+  display: flex;
+  flex: none;
+  filter: drop-shadow(0 3px 7px rgba(60, 130, 116, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.mark svg {
+  display: block;
+  width: 1.08em;
+  height: 1.08em;
+  font-size: 24px;
+}
+
+.logo:hover .mark {
+  transform: translateY(-1px) scale(1.04);
 }
 
 .logoText {
@@ -19,11 +40,25 @@
   .logoText {
     font-size: 20px;
   }
+
+  .mark svg {
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 30em) { /* $mantine-breakpoint-xs */
   .logoText {
     font-size: 18px;
+  }
+
+  .mark svg {
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark {
+    transition: none;
   }
 }
 
