@@ -7,7 +7,7 @@ export default function ReactPerformanceConsultingPage() {
     <ServicePage
       eyebrow="Web Performance"
       title="React Performance Consulting"
-      lead="I build scalable, sub-second React applications and Gatsby systems that convert faster and rank higher."
+      lead="I build scalable, sub-second React and Next.js applications that convert faster and rank higher."
       sectionTitle="Performance Metrics"
       sectionBody="Core Web Vitals, Lighthouse, and real-user monitoring. I translate speed into measurable business outcomes."
       form={{
@@ -35,11 +35,11 @@ export default function ReactPerformanceConsultingPage() {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="React Performance Consulting"
-      description="Web performance consulting for React and Gatsby. Improve Core Web Vitals, Lighthouse scores, and conversion speed."
+      description="Web performance consulting for React and Next.js. Improve Core Web Vitals, Lighthouse scores, and conversion speed."
     />
   );
 }

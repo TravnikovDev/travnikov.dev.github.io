@@ -17,7 +17,7 @@ const vectors = [
     label: "Vector B",
     title: "Web Architecture",
     href: "/react-performance-consulting",
-    hook: "I build scalable, sub-second React applications and Gatsby systems.",
+    hook: "I build scalable, sub-second React and Next.js applications.",
   },
   {
     id: "vector-c",

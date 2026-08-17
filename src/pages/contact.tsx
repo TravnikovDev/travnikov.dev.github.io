@@ -35,9 +35,9 @@ export default function ContactPage() {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="Contact"
       description="Get in touch with Roman Travnikov for project inquiries or professional opportunities."
     />

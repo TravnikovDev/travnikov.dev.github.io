@@ -96,9 +96,9 @@ export default function BlogPage({ data }: BlogPageProps) {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="Insights"
       description="Notes on AI automation, web performance, and technical leadership from Roman Travnikov."
     />

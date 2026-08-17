@@ -34,9 +34,9 @@ export default function FractionalCtoPage() {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="Fractional CTO"
       description="Fractional CTO services for startups. Strategy, mentorship, hiring, and delivery leadership aligned to business goals."
     />

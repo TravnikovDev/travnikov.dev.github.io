@@ -66,10 +66,10 @@ export default function ProjectTemplate({ data }: ProjectTemplateProps) {
   );
 }
 
-export function Head({ data }: ProjectTemplateProps) {
+export function Head({ data, location }: ProjectTemplateProps) {
   const project = data.caseStudy;
 
-  return <SEO title={project.title} description={project.description} />;
+  return <SEO pathname={location.pathname} title={project.title} description={project.description} />;
 }
 
 export const query = graphql`

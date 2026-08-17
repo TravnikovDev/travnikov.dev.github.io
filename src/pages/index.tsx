@@ -370,7 +370,7 @@ export default function IndexPage({ data }: IndexPageProps) {
                   to: "/react-performance-consulting",
                   name: "Web Performance",
                   blurb:
-                    "Scalable, sub-second React and Gatsby systems that convert faster and rank higher.",
+                    "Scalable, sub-second React and Next.js systems that convert faster and rank higher.",
                   cta: "Audit my architecture",
                 },
                 {
@@ -417,11 +417,11 @@ export default function IndexPage({ data }: IndexPageProps) {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="AI Automation & Web Architecture for Startups"
-      description="I engineer autonomous AI systems and high-performance React & Gatsby architecture for startups, plus fractional CTO leadership."
+      description="I engineer autonomous AI systems and high-performance React architecture for startups, plus fractional CTO leadership."
     />
   );
 }

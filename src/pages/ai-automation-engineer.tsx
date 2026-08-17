@@ -34,9 +34,9 @@ export default function AiAutomationEngineerPage() {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="AI Automation Engineer"
       description="AI automation services for startups. Replace manual operations with n8n workflows, AI agents, and reliable data pipelines."
     />

@@ -23,7 +23,7 @@ const vectors: {
     id: "vector-b",
     title: "Web Architecture",
     href: "/react-performance-consulting",
-    copy: "Scalable, sub-second React and Gatsby systems designed for performance and long-term growth.",
+    copy: "Scalable, sub-second React and Next.js systems designed for performance and long-term growth.",
     glyph: "lattice",
   },
   {

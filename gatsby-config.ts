@@ -8,10 +8,10 @@ const config: GatsbyConfig = {
     // You can overwrite values here that are used for the SEO component
     // You can also add new values here to query them like usual
     siteTitle: `Travnikov.dev`,
-    siteTitleAlt: `Roman Travnikov — AI Automation & Web Architecture`,
-    siteHeadline: `Roman Travnikov — I engineer autonomous AI systems and high-performance web architecture for startups`,
-    siteUrl: `https://Travnikov.dev`,
-    siteDescription: `Roman Travnikov engineers autonomous AI automation and high-performance React & Gatsby architecture for startups, plus fractional CTO leadership. Explore services, case studies, and insights.`,
+    siteTitleAlt: `Roman Travnikov, AI Automation & Web Architecture`,
+    siteHeadline: `Roman Travnikov engineers autonomous AI systems and high-performance web architecture for startups`,
+    siteUrl: `https://travnikov.dev`,
+    siteDescription: `Roman Travnikov engineers autonomous AI automation and high-performance React architecture for startups, plus fractional CTO leadership. Explore services, case studies, and insights.`,
     siteImage: `/banner.jpg`,
     siteLanguage: `en`,
     author: `Roman Travnikov`,

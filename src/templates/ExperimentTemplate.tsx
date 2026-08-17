@@ -65,10 +65,10 @@ export default function ExperimentTemplate({ data }: ExperimentTemplateProps) {
   );
 }
 
-export function Head({ data }: ExperimentTemplateProps) {
+export function Head({ data, location }: ExperimentTemplateProps) {
   const experiment = data.experiment;
 
-  return <SEO title={experiment.title} description={experiment.description} />;
+  return <SEO pathname={location.pathname} title={experiment.title} description={experiment.description} />;
 }
 
 export const query = graphql`

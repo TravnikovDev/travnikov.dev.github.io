@@ -77,9 +77,9 @@ export default function ProjectsPage({ data }: ProjectsPageProps) {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="Case Studies"
       description="Browse case studies focused on automation, performance engineering, and product delivery."
     />

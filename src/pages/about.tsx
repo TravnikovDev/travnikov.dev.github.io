@@ -162,11 +162,11 @@ export default function AboutPage() {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="About"
-      description="Roman Travnikov — AI automation and frontend architecture for teams that have outgrown doing things by hand. Twelve years in frontend, based in Istanbul, working remotely."
+      description="Roman Travnikov: AI automation and frontend architecture for teams that have outgrown doing things by hand. Building for the web since 2012, based in Istanbul, working remotely."
     />
   );
 }

@@ -73,9 +73,9 @@ export default function ExperimentsPage({ data }: ExperimentsPageProps) {
   );
 }
 
-export function Head() {
+export function Head({ location }: { location: { pathname: string } }) {
   return (
-    <SEO
+    <SEO pathname={location.pathname}
       title="Experiments"
       description="Interactive web experiments and frontend demos by Roman Travnikov."
     />

@@ -103,10 +103,10 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
   );
 }
 
-export function Head({ data }: BlogTemplateProps) {
+export function Head({ data, location }: BlogTemplateProps) {
   const article = data.blogPost;
 
-  return <SEO title={article.title} description={article.excerpt} />;
+  return <SEO pathname={location.pathname} title={article.title} description={article.excerpt} />;
 }
 
 export const query = graphql`
