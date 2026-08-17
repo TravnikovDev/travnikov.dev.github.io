@@ -11,6 +11,7 @@ interface BlogTemplateProps extends PageProps {
       timeToRead: number;
       title: string;
       date: string;
+      isoDate: string;
       tags: string[] | null;
       excerpt: string;
       coverUrl: string | null;
@@ -105,8 +106,59 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
 
 export function Head({ data, location }: BlogTemplateProps) {
   const article = data.blogPost;
+  const site = "https://travnikov.dev";
+  const url = `${site}${location.pathname}`;
 
-  return <SEO pathname={location.pathname} title={article.title} description={article.excerpt} />;
+  // An article page's primary entity is the article, not the site owner.
+  // Without this, these pages carried only the site-wide Person block and were
+  // ineligible for any article rich result.
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#article`,
+        headline: article.title,
+        description: article.excerpt,
+        datePublished: article.isoDate,
+        dateModified: article.isoDate,
+        wordCount: article.timeToRead * 200,
+        keywords: article.tags ?? undefined,
+        image: article.coverUrl ?? `${site}/banner.jpg`,
+        inLanguage: "en",
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        author: { "@id": `${site}/#person` },
+        publisher: { "@id": `${site}/#person` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: site },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Insights",
+            item: `${site}/blog/`,
+          },
+          { "@type": "ListItem", position: 3, name: article.title, item: url },
+        ],
+      },
+    ],
+  };
+
+  return (
+    <SEO
+      pathname={location.pathname}
+      title={article.title}
+      description={article.excerpt}
+      image={article.coverUrl ?? undefined}
+    >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+    </SEO>
+  );
 }
 
 export const query = graphql`
@@ -115,6 +167,7 @@ export const query = graphql`
       timeToRead
       title
       date(formatString: "MMM D, YYYY")
+      isoDate: date
       tags
       excerpt
       coverUrl

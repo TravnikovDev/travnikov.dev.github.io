@@ -261,3 +261,93 @@ export const createPages: GatsbyNode['createPages'] = async ({
     }
   }
 };
+
+// The site had no sitemap, no robots.txt and no feed. Generated here rather
+// than pulling in three plugins for a handful of files.
+export const onPostBuild: GatsbyNode['onPostBuild'] = async ({ graphql, reporter }) => {
+  const SITE = 'https://travnikov.dev';
+  const fs = await import('fs/promises');
+  const out = (name: string, body: string) =>
+    fs.writeFile(path.join('public', name), body, 'utf8');
+
+  const result = await graphql<{
+    allSitePage: { nodes: { path: string }[] };
+    allBlogPost: {
+      nodes: {
+        title: string;
+        slug: string;
+        excerpt: string;
+        date: string;
+      }[];
+    };
+  }>(`
+    query {
+      allSitePage { nodes { path } }
+      allBlogPost(sort: { date: DESC }) {
+        nodes { title slug excerpt date }
+      }
+    }
+  `);
+
+  if (result.errors || !result.data) {
+    reporter.warn('Could not build sitemap/feed');
+    return;
+  }
+
+  const esc = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  // 404s and Gatsby's internal shells are not content
+  const pages = result.data.allSitePage.nodes
+    .map((n) => n.path)
+    .filter((p) => !/^\/(404|dev-404-page|offline-plugin)/.test(p))
+    .sort();
+
+  await out(
+    'sitemap.xml',
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      pages
+        .map(
+          (p) =>
+            `  <url><loc>${SITE}${p}</loc>` +
+            `<priority>${p === '/' ? '1.0' : '0.7'}</priority></url>`
+        )
+        .join('\n') +
+      `\n</urlset>\n`
+  );
+
+  await out(
+    'robots.txt',
+    `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`
+  );
+
+  const posts = result.data.allBlogPost.nodes;
+  await out(
+    'rss.xml',
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+      `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n` +
+      `  <title>Roman Travnikov — Insights</title>\n` +
+      `  <link>${SITE}/blog/</link>\n` +
+      `  <description>Notes on AI automation, web performance, and technical leadership.</description>\n` +
+      `  <language>en</language>\n` +
+      `  <atom:link href="${SITE}/rss.xml" rel="self" type="application/rss+xml"/>\n` +
+      posts
+        .map(
+          (p) =>
+            `  <item>\n` +
+            `    <title>${esc(p.title)}</title>\n` +
+            `    <link>${SITE}/blog/${p.slug}/</link>\n` +
+            `    <guid isPermaLink="true">${SITE}/blog/${p.slug}/</guid>\n` +
+            `    <description>${esc(p.excerpt)}</description>\n` +
+            `    <pubDate>${new Date(p.date).toUTCString()}</pubDate>\n` +
+            `  </item>`
+        )
+        .join('\n') +
+      `\n</channel>\n</rss>\n`
+  );
+
+  reporter.info(
+    `Generated sitemap.xml (${pages.length} urls), robots.txt and rss.xml (${posts.length} items)`
+  );
+};

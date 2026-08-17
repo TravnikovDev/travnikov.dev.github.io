@@ -55,11 +55,14 @@ export function SEO({
     author,
   } = site.siteMetadata;
 
+  // article covers come from Strapi as absolute URLs; only site-relative
+  // paths get the origin prepended
+  const rawImage = image || siteImage;
   const seo = {
     title: title || siteTitleAlt,
     description: description || siteDescription,
     url: `${siteUrl}${pathname || ``}`,
-    image: `${siteUrl}${image || siteImage}`,
+    image: /^https?:\/\//.test(rawImage) ? rawImage : `${siteUrl}${rawImage}`,
   };
 
   // matches the old Helmet titleTemplate/defaultTitle behaviour
