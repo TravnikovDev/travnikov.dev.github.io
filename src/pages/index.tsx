@@ -54,10 +54,10 @@ const experience = [
   {
     id: "work-outlier",
     period: "2024-now",
-    role: "Generative AI Engineer & Senior Reviewer",
-    company: "Outlier · Contract",
+    role: "Senior Reviewer & Squad Lead",
+    company: "Outlier (Scale AI) · United States",
     summary:
-      "Reviewing frontier-model output across reasoning, coding and image interpretation, and contributing to the datasets those models train on. Led a squad of 10+ reviewers for ten months; recognised as a top performer and put on the complex evaluation tracks.",
+      "Reviewing frontier-model output across reasoning, coding and image interpretation, and contributing to the datasets those models train on. Led a squad of 10+ reviewers for ten months; recognised as a top performer and assigned to the high-difficulty tracks.",
   },
   {
     id: "work-freelance",
@@ -70,56 +70,42 @@ const experience = [
   {
     id: "work-super-dispatch",
     period: "2023-2024",
-    role: "Frontend Engineer",
-    company: "Super Dispatch · Remote (US)",
+    role: "Senior Frontend Developer",
+    company: "Super Dispatch · United States",
     summary:
-      "Transportation and logistics platform for carriers, brokers and shippers. Cut load times by 20% through code and SCSS/Redux optimisation.",
+      "Logistics platform for carriers, brokers and shippers. Introduced reusable component patterns and stricter typing, added Jest and Playwright coverage, and cut load times by 20%.",
   },
   {
-    id: "work-jimmy",
+    id: "work-flymeto",
+    period: "2022",
+    role: "Senior Frontend Developer",
+    company: "Flymeto · Czech Republic",
+    summary:
+      "Flight booking platform for desktop, tablet and mobile. Next.js with server-side rendering, Redux Toolkit and Ant Design; UI tests in Jest and Playwright, with performance budgets held against Core Web Vitals.",
+  },
+  {
+    id: "work-omnetic",
     period: "2020-2022",
     role: "Senior Frontend Developer",
-    company: "Jimmy Technologies · Remote (Prague)",
+    company: "OMNETIC · Czech Republic",
     summary:
-      "Led frontend across two high-traffic platforms: Flymeto, a flight ticketing service, and OMNETIC, a dealership management system for the Czech and EU markets. React, Next.js, Vite, TypeScript, Redux Toolkit, Jest, Cypress and Playwright.",
+      "Dealership management system used across EU clients. Component standardisation and a Jest and Cypress testing approach for multi-device reliability.",
   },
   {
     id: "work-realtrac",
     period: "2017-2020",
     role: "Senior Frontend Developer",
-    company: "RealTrac Technologies · St. Petersburg",
+    company: "RealTrac Technologies",
     summary:
-      "Industrial tracking and communication system; migrated the codebase to TypeScript, added a reports constructor, GIS maps and WebSocket events.",
+      "Tracking platform for people and vehicles in mining and industrial settings. Led the migration to TypeScript and React 16, built GIS modules handling thousands of concurrent map markers, added SIP/VoIP calling and a reports system, and fixed memory leaks that were capping capacity under load.",
   },
   {
-    id: "work-miix",
-    period: "2016-2017",
-    role: "Frontend Web Developer",
-    company: "MiiiX.org · St. Petersburg",
+    id: "work-early",
+    period: "2012-2017",
+    role: "Frontend Developer, early roles",
+    company: "MiiiX.org, Programmny Produkt (ppr.ru), Altera Media",
     summary:
-      "E-commerce platform with real-time auctions and an admin panel using React, Redux and Webpack.",
-  },
-  {
-    id: "work-programny",
-    period: "2014-2015",
-    role: "Frontend Web Developer",
-    company: "Programny Produkt · Moscow / Remote",
-    summary:
-      "Portals for Russian ministries and companies (Finance Ministry, MFA, OTP Bank, Rostelecom) on IBM WebSphere, JavaScript and SCSS.",
-  },
-  {
-    id: "work-altera",
-    period: "2013-2014",
-    role: "Junior Web Developer",
-    company: "Altera Media · St. Petersburg",
-    summary: "Websites and smaller client projects.",
-  },
-  {
-    id: "work-fabricasaitov",
-    period: "2012-2013",
-    role: "Junior Web Developer",
-    company: "Fabricasaitov.ru · St. Petersburg",
-    summary: "Entry-level role building websites.",
+      "E-commerce with real-time auctions and an admin panel at MiiiX.org. Before that, large government and enterprise portals on IBM WebSphere — ministries, OTP Bank and Rostelecom — then agency and small-business work.",
   },
 ];
 

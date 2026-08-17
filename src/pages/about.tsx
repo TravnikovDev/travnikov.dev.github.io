@@ -9,8 +9,8 @@ const now = [
   {
     id: "outlier",
     period: "Nov 2024 — now",
-    role: "Generative AI Engineer & Senior Reviewer",
-    org: "Outlier · Contract",
+    role: "Senior Reviewer & Squad Lead",
+    org: "Outlier (Scale AI) · Contract, United States",
     detail:
       "Reviewing frontier-model output across reasoning, coding and image interpretation, and contributing to the datasets those models train on. Recognised as a top performer and moved onto the complex evaluation tracks. For ten months I also led a squad of 10+ reviewers across AI evaluation projects covering UI/UX generation and code review, training them to get evaluation quality consistent rather than merely fast.",
   },
@@ -144,6 +144,10 @@ export default function AboutPage() {
                 What I learn shipping real systems
               </span>
             </li>
+            {/* Résumé link goes here once static/Roman_Travnikov_Resume.pdf
+                exists — held back so this does not ship as a 404. The copy
+                supplied carried a personal phone number, so it is waiting on a
+                re-export without it. */}
           </ul>
         </section>
 
