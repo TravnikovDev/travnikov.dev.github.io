@@ -57,7 +57,7 @@ const experience = [
     role: "Generative AI Engineer & Senior Reviewer",
     company: "Outlier · Contract",
     summary:
-      "Reviewing model output across reasoning, coding and image interpretation, and leading a squad of 10+ reviewers on AI evaluation projects covering UI/UX generation and code review.",
+      "Reviewing frontier-model output across reasoning, coding and image interpretation, and contributing to the datasets those models train on. Led a squad of 10+ reviewers for ten months; recognised as a top performer and put on the complex evaluation tracks.",
   },
   {
     id: "work-freelance",
@@ -65,7 +65,7 @@ const experience = [
     role: "Independent Consultant",
     company: "Self-employed · Remote",
     summary:
-      "Frontend and automation work for international clients in SaaS, crypto and e-commerce — React and TypeScript applications built for scale.",
+      "Frontend and automation for international clients in SaaS, crypto and e-commerce. Sanity CMS with Algolia for real-time search; an Etsy storefront scaled on an SVG pipeline automated with Node.js and AI.",
   },
   {
     id: "work-super-dispatch",
@@ -73,23 +73,15 @@ const experience = [
     role: "Frontend Engineer",
     company: "Super Dispatch · Remote (US)",
     summary:
-      "Transportation/logistics platform in React and TypeScript; refined UI/UX and built scalable applications.",
+      "Transportation and logistics platform for carriers, brokers and shippers. Cut load times by 20% through code and SCSS/Redux optimisation.",
   },
   {
-    id: "work-flymeto",
-    period: "2022",
-    role: "Senior Frontend Developer",
-    company: "Flymeto · Remote (Prague)",
-    summary:
-      "Flight ticketing service for high-traffic websites using React, Next.js, TypeScript and SCSS.",
-  },
-  {
-    id: "work-omnetic",
+    id: "work-jimmy",
     period: "2020-2022",
     role: "Senior Frontend Developer",
-    company: "OMNETIC · Remote (Prague)",
+    company: "Jimmy Technologies · Remote (Prague)",
     summary:
-      "Dealership Management System for the Czech/EU market. React, Next.js, TypeScript, SCSS, Material UI, Redux, Cypress.",
+      "Led frontend across two high-traffic platforms: Flymeto, a flight ticketing service, and OMNETIC, a dealership management system for the Czech and EU markets. React, Next.js, Vite, TypeScript, Redux Toolkit, Jest, Cypress and Playwright.",
   },
   {
     id: "work-realtrac",

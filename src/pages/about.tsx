@@ -12,7 +12,7 @@ const now = [
     role: "Generative AI Engineer & Senior Reviewer",
     org: "Outlier · Contract",
     detail:
-      "Reviewing model output across reasoning, coding and image interpretation, and setting the feedback standard other reviewers work to. For ten months I also led a squad of 10+ reviewers across AI evaluation projects covering UI/UX generation and code review.",
+      "Reviewing frontier-model output across reasoning, coding and image interpretation, and contributing to the datasets those models train on. Recognised as a top performer and moved onto the complex evaluation tracks. For ten months I also led a squad of 10+ reviewers across AI evaluation projects covering UI/UX generation and code review, training them to get evaluation quality consistent rather than merely fast.",
   },
   {
     id: "freelance",
@@ -20,7 +20,7 @@ const now = [
     role: "Independent consultant",
     org: "Self-employed · Remote",
     detail:
-      "Frontend and automation work for international clients in SaaS, crypto and e-commerce — React and TypeScript applications built to scale, and the n8n pipelines that keep the work around them from being done by hand.",
+      "Frontend and automation for international clients in SaaS, crypto and e-commerce. A Sanity CMS build with Algolia behind real-time search; an Etsy storefront scaled on an SVG production pipeline automated with Node.js and AI — which is the same shape of problem I now solve for teams as automation work.",
   },
 ];
 
@@ -43,10 +43,12 @@ export default function AboutPage() {
               not ready to hire two specialists to fix it.
             </p>
             <p className={styles.body}>
-              Twelve years in frontend, most of it senior or lead, across
-              logistics, travel, industrial tracking and e-commerce. The last
+              Building for the web since 2012, most of it senior or lead, across
+              logistics, travel, industrial tracking, dealership software and
+              e-commerce — including government portals on IBM WebSphere early
+              on and a 20% cut in load times at Super Dispatch later. The last
               two years have been split between evaluating generative AI systems
-              at close range and building for clients independently — which is
+              at close range and building for clients independently, which is
               where the two halves of this site come from.
             </p>
             <p className={styles.meta}>
