@@ -52,6 +52,22 @@ interface IndexPageProps extends PageProps {
 // an editorial list rather than a grid of identical cards
 const experience = [
   {
+    id: "work-outlier",
+    period: "2024-now",
+    role: "Generative AI Engineer & Senior Reviewer",
+    company: "Outlier · Contract",
+    summary:
+      "Reviewing model output across reasoning, coding and image interpretation, and leading a squad of 10+ reviewers on AI evaluation projects covering UI/UX generation and code review.",
+  },
+  {
+    id: "work-freelance",
+    period: "2024-now",
+    role: "Independent Consultant",
+    company: "Self-employed · Remote",
+    summary:
+      "Frontend and automation work for international clients in SaaS, crypto and e-commerce — React and TypeScript applications built for scale.",
+  },
+  {
     id: "work-super-dispatch",
     period: "2023-2024",
     role: "Frontend Engineer",

@@ -1,0 +1,309 @@
+/* About — same ink sheet as /blog and the articles, so the whole site reads as
+   one surface. */
+.page {
+  --ink: var(--sheet-ink-strong);
+  --ink-soft: var(--sheet-ink-soft);
+  --ink-rgb: var(--sheet-ink-rgb);
+  --mantine-color-dimmed: var(--ink-soft);
+
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  width: calc(100% - clamp(24px, 5vw, 48px));
+  margin: clamp(56px, 8vh, 96px) auto clamp(56px, 9vh, 100px);
+  padding: clamp(32px, 5vw, 60px);
+  border: 1px solid transparent;
+  background: var(--sheet-glow) padding-box, var(--sheet-fill) padding-box,
+    var(--sheet-edge) border-box;
+  backdrop-filter: var(--sheet-blur);
+  -webkit-backdrop-filter: var(--sheet-blur);
+  border-radius: var(--sheet-radius);
+  box-shadow: var(--sheet-shadow);
+  color: var(--sheet-ink);
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: clamp(28px, 5vh, 52px);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sheet-ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.back:hover {
+  color: var(--sheet-ink-strong);
+  border-color: var(--sheet-ink-strong);
+}
+
+/* ---------- Intro: portrait beside the opening ---------- */
+.intro {
+  display: grid;
+  grid-template-columns: 1fr clamp(200px, 26%, 270px);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+
+.introText {
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-weight: 550;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--sheet-ink-strong);
+  margin: 0 0 1.2rem;
+  text-wrap: balance;
+}
+
+.lead {
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--sheet-ink-strong);
+  max-width: 52ch;
+  margin: 0 0 1.2rem;
+  text-wrap: pretty;
+}
+
+.body {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--sheet-ink);
+  max-width: 62ch;
+  margin: 0 0 1rem;
+  text-wrap: pretty;
+}
+
+.meta {
+  margin: 1.2rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sheet-ink-soft);
+}
+
+/* The source is a passport-style shot on white. Rather than cut it out (the
+   shirt is white too), it is framed: warm-graded stock inside the sheet's own
+   radius, with a hairline rule. */
+.portraitFigure {
+  margin: 0;
+}
+
+.portrait {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--sheet-rule);
+}
+
+/* ---------- Sections ---------- */
+.section {
+  margin-top: clamp(40px, 6vh, 64px);
+  padding-top: clamp(24px, 3.5vh, 36px);
+  border-top: 1px solid var(--sheet-rule);
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sheet-ink-soft);
+  margin: 0 0 1.4rem;
+}
+
+/* ---------- Now ---------- */
+.nowList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nowItem {
+  display: grid;
+  grid-template-columns: clamp(120px, 15vw, 165px) 1fr;
+  gap: 0.4rem 1.5rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--sheet-rule);
+}
+
+.nowItem:last-child {
+  border-bottom: 0;
+}
+
+.nowPeriod {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sheet-ink-soft);
+  white-space: nowrap;
+}
+
+.nowRole {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  color: var(--sheet-ink-strong);
+  margin: 0;
+}
+
+/* own line — JSX drops the newline before this span, so inline it would run on */
+.nowOrg {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.92rem;
+  font-weight: 450;
+  color: var(--sheet-ink-soft);
+}
+
+.nowDetail {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--sheet-ink);
+  max-width: 62ch;
+}
+
+/* ---------- Links ---------- */
+.links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.links li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem 1rem;
+}
+
+.link {
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 550;
+  color: var(--sheet-ink-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(245, 241, 234, 0.35);
+  transition: text-decoration-color 0.2s ease;
+}
+
+.link:hover {
+  text-decoration-color: var(--sheet-ink-strong);
+}
+
+.linkNote {
+  font-size: 0.92rem;
+  color: var(--sheet-ink-soft);
+}
+
+/* ---------- Closing CTA ---------- */
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-top: clamp(40px, 6vh, 64px);
+  padding-top: clamp(24px, 3.5vh, 36px);
+  border-top: 1px solid var(--sheet-rule);
+}
+
+.ctaText {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--sheet-ink);
+  max-width: 54ch;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 241, 234, 0.25);
+  background: rgba(245, 241, 234, 0.06);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sheet-ink-strong);
+  text-decoration: none;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+
+.ctaButton:hover {
+  background: rgba(245, 241, 234, 0.14);
+  border-color: rgba(245, 241, 234, 0.45);
+}
+
+.ctaButton:focus-visible,
+.link:focus-visible,
+.back:focus-visible {
+  outline: 2px solid var(--sheet-ink-strong);
+  outline-offset: 3px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 48em) {
+  .intro {
+    grid-template-columns: 1fr;
+  }
+
+  /* portrait first on narrow screens — the face is the point of this page */
+  .portraitFigure {
+    order: -1;
+    max-width: 220px;
+  }
+
+  .nowItem {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 40em) {
+  .page {
+    width: 100%;
+    margin-top: clamp(24px, 5vh, 48px);
+    margin-bottom: 0;
+    border-radius: 0;
+    padding: clamp(28px, 7vw, 40px) clamp(20px, 5.5vw, 28px);
+    box-shadow: none;
+  }
+
+  .body,
+  .ctaText {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back,
+  .link,
+  .ctaButton {
+    transition: none;
+  }
+}

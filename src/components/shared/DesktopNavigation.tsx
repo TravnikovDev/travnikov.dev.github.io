@@ -10,6 +10,7 @@ const navItems = [
   { label: "Web Performance", path: "/react-performance-consulting" },
   { label: "Fractional CTO", path: "/fractional-cto" },
   { label: "Insights", path: "/blog" },
+  { label: "About", path: "/about" },
 ];
 
 const NavItem = ({
