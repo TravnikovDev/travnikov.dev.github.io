@@ -43,19 +43,9 @@
   align-items: center;
   gap: var(--spacing);
   width: 100%;
-  /* Scrim behind the whole stack, faded in over the top. The hero used to cut
-     straight to a hard-edged dark card; now the aura dims into the reading
-     area, and the gaps between sheets stay part of that mood instead of
-     flashing bright again. */
-  /* same side gutters as the hero, so the sheets align with it */
-  padding: clamp(120px, 18vh, 220px) clamp(16px, 3.5vw, 56px)
-    clamp(48px, 8vh, 96px);
-  background: linear-gradient(
-    180deg,
-    rgba(20, 25, 27, 0) 0%,
-    rgba(20, 25, 27, 0.18) clamp(200px, 26vh, 360px),
-    rgba(20, 25, 27, 0.18) 100%
-  );
+  /* No scrim — the aura stays at full brightness behind the sheets.
+     Side gutters match the hero, so the sheets align with it. */
+  padding: var(--spacing) clamp(16px, 3.5vw, 56px) clamp(48px, 8vh, 96px);
   font-size: 1rem;
   line-height: 1.6;
   color: var(--sheet-ink);
@@ -435,7 +425,7 @@
    with the fold suppressed — there is nothing to fold against. */
 @media (max-width: 48em) {
   .book {
-    padding-top: clamp(72px, 12vh, 130px);
+    padding-top: calc(var(--spacing) / 2);
     gap: calc(var(--spacing) / 2);
   }
 
