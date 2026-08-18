@@ -26,10 +26,12 @@ export const onRenderBody: GatsbySSR["onRenderBody"] = ({
     // the portrait, not the brand banner — this is what Google may show
     // beside the entity
     image: `${SITE}/portrait/portrait.jpg`,
+    // kept in step with the footer — search engines and visitors should see
+    // the same set of profiles
     sameAs: [
-      "https://github.com/TravnikovDev",
       "https://www.linkedin.com/in/roman-travnikov/",
-      "https://instagram.com/travnikov.dev",
+      "https://github.com/TravnikovDev",
+      "https://twitter.com/TravnikovDev",
     ],
     description:
       "Engineers autonomous AI systems and high-performance web architecture for startups; fractional CTO services.",

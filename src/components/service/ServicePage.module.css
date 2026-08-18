@@ -259,3 +259,40 @@
     box-shadow: none;
   }
 }
+
+/* Off-screen rather than display:none — some bots skip hidden inputs but
+   still fill positioned ones. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.formNote,
+.formNoteError {
+  margin: 0.9rem 0 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.formNote {
+  color: var(--sheet-ink);
+}
+
+.formNoteError {
+  color: #f0b8a8;
+}
+
+.formNoteError a {
+  color: var(--sheet-ink-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

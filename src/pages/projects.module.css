@@ -1,3 +1,6 @@
+/* Shared stylesheet: /projects is hidden (no case studies to show yet) but
+   experiments.tsx still uses these styles. Kept deliberately — restoring
+   src/pages/projects.tsx from git is all that is needed to bring the page back. */
 /* Case-studies listing — ink sheet, same surface as /blog and the articles */
 .page {
   --ink: var(--sheet-ink-strong);

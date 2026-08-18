@@ -111,8 +111,8 @@ const HeroSection = () => {
             platforms serving real businesses.
           </p>
           <div className={styles.actions}>
-            <Link to="/projects" className={styles.cta}>
-              View case studies
+            <Link to="/contact" className={styles.cta}>
+              Start a conversation
               <svg
                 width="14"
                 height="14"
@@ -129,9 +129,9 @@ const HeroSection = () => {
                 />
               </svg>
             </Link>
-            <a href="mailto:roman@travnikov.dev" className={styles.ctaSecondary}>
-              Get in touch
-            </a>
+            <Link to="/blog" className={styles.ctaSecondary}>
+              Read the insights
+            </Link>
           </div>
         </div>
 

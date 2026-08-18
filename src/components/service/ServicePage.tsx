@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "gatsby";
 import BaseLayout from "../../layouts/BaseLayout";
 import ThreeDBackground from "../3d/3dBackground";
@@ -33,20 +33,66 @@ export default function ServicePage({
   form,
   related,
 }: ServicePageProps) {
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
+  // Set GATSBY_LEAD_WEBHOOK to the n8n webhook URL. Until it is set the form
+  // falls back to mailto, which is what this used to do unconditionally — and
+  // which silently loses leads on mobile and webmail.
+  const ENDPOINT = process.env.GATSBY_LEAD_WEBHOOK;
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle"
+  );
+  const startedAt = useRef(Date.now());
+
+  const mailtoFallback = (payload: Record<string, string>) => {
     const lines = [
-      `Name: ${data.get("name") || ""}`,
-      `Email: ${data.get("email") || ""}`,
-      `${form.thirdField.label}: ${data.get(form.thirdField.name) || ""}`,
+      `Name: ${payload.name}`,
+      `Email: ${payload.email}`,
+      `${form.thirdField.label}: ${payload.third}`,
       ``,
       `${form.textarea.label}:`,
-      `${data.get(form.textarea.name) || ""}`,
+      payload.message,
     ];
     window.location.href = `mailto:roman@travnikov.dev?subject=${encodeURIComponent(
       `${title} inquiry`
     )}&body=${encodeURIComponent(lines.join("\n"))}`;
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formEl = e.currentTarget;
+    const data = new FormData(formEl);
+
+    // bots fill hidden fields and submit instantly; humans do neither
+    if (data.get("company_website")) return;
+    if (Date.now() - startedAt.current < 2000) return;
+
+    const payload = {
+      name: String(data.get("name") ?? ""),
+      email: String(data.get("email") ?? ""),
+      third: String(data.get(form.thirdField.name) ?? ""),
+      message: String(data.get(form.textarea.name) ?? ""),
+      service: title,
+      page: typeof window !== "undefined" ? window.location.pathname : "",
+      submittedAt: new Date().toISOString(),
+    };
+
+    if (!ENDPOINT) {
+      mailtoFallback(payload);
+      return;
+    }
+
+    setState("sending");
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      setState("sent");
+      formEl.reset();
+    } catch {
+      setState("error");
+    }
   };
 
   return (
@@ -113,8 +159,26 @@ export default function ServicePage({
               />
             </label>
 
-            <button type="submit" className={styles.submit}>
-              {form.submitLabel}
+            {/* honeypot — hidden from people, irresistible to bots */}
+            <input
+              type="text"
+              name="company_website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className={styles.honeypot}
+            />
+
+            <button
+              type="submit"
+              className={styles.submit}
+              disabled={state === "sending" || state === "sent"}
+            >
+              {state === "sending"
+                ? "Sending…"
+                : state === "sent"
+                ? "Sent"
+                : form.submitLabel}
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path
                   d="M1 7h11M8 3l4 4-4 4"
@@ -125,6 +189,20 @@ export default function ServicePage({
                 />
               </svg>
             </button>
+
+            {state === "sent" && (
+              <p className={styles.formNote} role="status">
+                Thanks — that reached me. I reply to everything within a working
+                day.
+              </p>
+            )}
+            {state === "error" && (
+              <p className={styles.formNoteError} role="alert">
+                That did not go through. Email{" "}
+                <a href="mailto:roman@travnikov.dev">roman@travnikov.dev</a>{" "}
+                directly and it will reach me just the same.
+              </p>
+            )}
           </form>
         </section>
 

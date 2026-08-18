@@ -12,7 +12,7 @@ const config: GatsbyConfig = {
     siteHeadline: `Roman Travnikov engineers autonomous AI systems and high-performance web architecture for startups`,
     siteUrl: `https://travnikov.dev`,
     siteDescription: `Roman Travnikov engineers autonomous AI automation and high-performance React architecture for startups, plus fractional CTO leadership. Explore services, case studies, and insights.`,
-    siteImage: `/banner.jpg`,
+    siteImage: `/og-cover.jpg`,
     siteLanguage: `en`,
     author: `Roman Travnikov`,
   },

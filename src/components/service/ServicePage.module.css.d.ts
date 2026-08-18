@@ -20,3 +20,6 @@ export const submit: string;
 export const related: string;
 export const relatedLabel: string;
 export const relatedLink: string;
+export const honeypot: string;
+export const formNote: string;
+export const formNoteError: string;

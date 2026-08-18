@@ -124,7 +124,7 @@ export function Head({ data, location }: BlogTemplateProps) {
         dateModified: article.isoDate,
         wordCount: article.timeToRead * 200,
         keywords: article.tags ?? undefined,
-        image: article.coverUrl ?? `${site}/banner.jpg`,
+        image: article.coverUrl ?? `${site}/og-cover.jpg`,
         inLanguage: "en",
         mainEntityOfPage: { "@type": "WebPage", "@id": url },
         author: { "@id": `${site}/#person` },
