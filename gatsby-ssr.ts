@@ -51,14 +51,54 @@ export const onRenderBody: GatsbySSR["onRenderBody"] = ({
     ],
   };
 
-  setHeadComponents([
+  const head: React.ReactNode[] = [
     React.createElement("script", {
       key: "ld-person",
       type: "application/ld+json",
       dangerouslySetInnerHTML: { __html: JSON.stringify(person) },
     }),
-  ]);
+  ];
+
+  if (GA_ID) {
+    head.push(
+      React.createElement("script", {
+        key: "ga-src",
+        async: true,
+        src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`,
+      }),
+      React.createElement("script", {
+        key: "ga-init",
+        dangerouslySetInnerHTML: {
+          __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','${GA_ID}',{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});`,
+        },
+      })
+    );
+  }
+
+  if (CF_TOKEN) {
+    head.push(
+      React.createElement("script", {
+        key: "cf-beacon",
+        defer: true,
+        src: "https://static.cloudflareinsights.com/beacon.min.js",
+        "data-cf-beacon": JSON.stringify({ token: CF_TOKEN }),
+      } as React.ScriptHTMLAttributes<HTMLScriptElement>)
+    );
+  }
+
+  setHeadComponents(head);
 };
+
+// Analytics. Both are opt-in via env: nothing is injected unless the value is
+// set, so local and preview builds stay clean and no IDs live in the repo.
+//
+// Cloudflare Web Analytics is cookieless and needs no consent banner.
+// Google Analytics does set cookies — see docs/ANALYTICS.md for the consent
+// question before pointing EU traffic at it.
+const GA_ID = process.env.GA_MEASUREMENT_ID;
+const CF_TOKEN = process.env.CF_BEACON_TOKEN;
 
 // Gatsby injects <meta name="generator" content="Gatsby x.y.z">. It tells
 // visitors what the site is built with, which is not what is being sold here.
