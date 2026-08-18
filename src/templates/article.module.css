@@ -392,14 +392,14 @@
   }
 }
 
-/* ---------- Mobile: full-bleed sheet, every pixel of reading width ------- */
-@media (max-width: 40em) {
+/* ---------- Mobile and tablet: full-bleed sheet, every pixel of width ----- */
+@media (max-width: 48em) {
   .page {
     width: 100%;
     margin-top: clamp(24px, 5vh, 48px);
     margin-bottom: 0;
     border-radius: 0;
-    padding: clamp(28px, 7vw, 40px) clamp(20px, 5.5vw, 28px);
+    padding: clamp(28px, 7vw, 40px) clamp(16px, 4vw, 24px);
     box-shadow: none;
   }
 

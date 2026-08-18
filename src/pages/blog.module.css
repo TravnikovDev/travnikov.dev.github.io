@@ -213,14 +213,16 @@
   text-wrap: pretty;
 }
 
-/* ---------- Mobile: full-bleed sheet ---------- */
-@media (max-width: 40em) {
+/* ---------- Mobile and tablet: full-bleed sheet ---------- */
+@media (max-width: 48em) {
   .page {
     width: 100%;
     margin-top: clamp(24px, 5vh, 48px);
     margin-bottom: 0;
     border-radius: 0;
-    padding: clamp(28px, 7vw, 40px) clamp(20px, 5.5vw, 28px);
+    /* was 20-28px each side, which cost ~15% of the reading width on a
+       375px phone for no gain once the sheet is already edge to edge */
+    padding: clamp(28px, 7vw, 40px) clamp(16px, 4vw, 24px);
     box-shadow: none;
   }
 
@@ -273,8 +275,10 @@
   grid-column: 2;
 }
 
-/* Side-by-side gets too narrow to read; stack and let the art run full width. */
-@media (max-width: 34em) {
+/* Side-by-side only on real desktop. Below that the image column collapses to
+   its 150px floor next to a ~350px text column, which is the worst of both:
+   the art is too small to read and the text is too narrow to scan. Stack. */
+@media (max-width: 64em) {
   .item:not(.itemFeatured):has(.itemCover) {
     display: block;
   }
