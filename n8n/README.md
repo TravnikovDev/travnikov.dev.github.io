@@ -121,3 +121,41 @@ which still pins `whisper-1`.
 event that cites last year's numbers reads as stale unless the target year is
 in the title and first line — that is a real failure this content already hit
 once.
+
+## Node versions and error handling
+
+Validated against the n8n node database, not written from memory. Every node
+sits on its current `typeVersion`:
+
+| Node | Version | | Node | Version |
+|---|---|---|---|---|
+| agent | 3.1 | | httpRequest | 4.5 |
+| lmChatOpenAi | 1.3 | | set | 3.5 |
+| openAi (langchain) | 2.3 | | if | 2.3 |
+| perplexity | 2 | | switch | 3.4 |
+| telegramTrigger | 1.5 | | merge | 3.2 |
+| telegram | 1.2 | | webhook | 2.1 |
+| scheduleTrigger | 1.3 | | code | 2 |
+
+Two things the template carried that are now stale:
+
+- **`continueOnFail` is deprecated.** Replaced with `onError:
+  "continueRegularOutput"` everywhere. Both express the same intent, but only
+  the new one is read by current n8n.
+- **Agent nodes were on 1.7.** That is three majors behind; 3.1 is current.
+
+Every node that touches the network — Strapi, Perplexity, OpenAI, Telegram,
+LinkedIn, X, GitHub — also carries `retryOnFail` with two tries and a two
+second gap. A provider blip should cost a retry, not the whole run.
+
+## Providers
+
+Only OpenAI and Perplexity do the thinking:
+
+- **OpenAI** — gpt-5.4 for the article and the idea scout, gpt-5.4-mini for the
+  LinkedIn post, gpt-5.4-nano for the brief, X version, image prompt and the
+  Russian caption, gpt-image-2 for images, gpt-transcribe for voice.
+- **Perplexity** — sonar-pro, both research stages, as the native node.
+
+Everything else is a destination, not a model: Telegram, LinkedIn, X, GitHub,
+Strapi.

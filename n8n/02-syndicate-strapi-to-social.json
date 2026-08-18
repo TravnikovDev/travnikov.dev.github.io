@@ -21,7 +21,7 @@
       "id": "hook",
       "name": "Strapi Publish Webhook",
       "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
+      "typeVersion": 2.1,
       "position": [
         -1850,
         540
@@ -48,7 +48,7 @@
       "id": "man-in",
       "name": "Manual Test Slug",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         -1640,
         320
@@ -84,7 +84,7 @@
       "id": "fetch",
       "name": "Fetch Published Article",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "typeVersion": 4.5,
       "position": [
         -1200,
         440
@@ -120,7 +120,11 @@
         "options": {
           "timeout": 120000
         }
-      }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "norm-art",
@@ -139,7 +143,7 @@
       "id": "flags",
       "name": "PublishFlags",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         -760,
         440
@@ -186,7 +190,7 @@
       "id": "li-agent",
       "name": "LinkedIn Post Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
+      "typeVersion": 3.1,
       "position": [
         -520,
         440
@@ -234,7 +238,7 @@
       "id": "img-agent",
       "name": "Image Prompt Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
+      "typeVersion": 3.1,
       "position": [
         -260,
         300
@@ -282,7 +286,7 @@
       "id": "if-img",
       "name": "IF Generate Image",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         -40,
         300
@@ -342,13 +346,17 @@
           "size": "1536x1024",
           "binaryPropertyOutput": "data"
         }
-      }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "if-li",
       "name": "IF Publish LinkedIn",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         420,
         220
@@ -388,7 +396,6 @@
         160
       ],
       "alwaysOutputData": true,
-      "continueOnFail": true,
       "onError": "continueRegularOutput",
       "credentials": {
         "linkedInOAuth2Api": {
@@ -406,13 +413,16 @@
         "shareMediaCategory": "IMAGE",
         "binaryPropertyName": "data",
         "additionalFields": {}
-      }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "li-skip",
       "name": "LinkedIn Skipped",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         640,
         340
@@ -460,7 +470,7 @@
       "id": "tw-agent",
       "name": "Shorten for X",
       "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
+      "typeVersion": 3.1,
       "position": [
         -260,
         780
@@ -508,7 +518,7 @@
       "id": "if-x",
       "name": "IF Publish X",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         -20,
         780
@@ -548,7 +558,6 @@
         720
       ],
       "alwaysOutputData": true,
-      "continueOnFail": true,
       "onError": "continueRegularOutput",
       "credentials": {
         "twitterOAuth2Api": {
@@ -559,13 +568,16 @@
       "parameters": {
         "text": "={{ $('Shorten for X').item.json.output }}",
         "additionalFields": {}
-      }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "x-skip",
       "name": "X Skipped",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         200,
         900
@@ -653,7 +665,11 @@
             }
           ]
         }
-      }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "trunc",
@@ -672,7 +688,7 @@
       "id": "combine",
       "name": "Combine Image and Caption",
       "type": "n8n-nodes-base.merge",
-      "typeVersion": 3,
+      "typeVersion": 3.2,
       "position": [
         200,
         1100
@@ -687,7 +703,7 @@
       "id": "if-tg",
       "name": "IF Publish Telegram",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         420,
         1100
@@ -727,7 +743,6 @@
         1040
       ],
       "alwaysOutputData": true,
-      "continueOnFail": true,
       "onError": "continueRegularOutput",
       "webhookId": "c2b8f6a3-0000-4000-8000-000000000002",
       "credentials": {
@@ -743,13 +758,16 @@
         "additionalFields": {
           "caption": "={{ $('Truncate to 900').item.json.text }}"
         }
-      }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "tg-skip",
       "name": "Telegram Skipped",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         640,
         1220
@@ -797,7 +815,7 @@
       "id": "if-rebuild",
       "name": "IF Rebuild Site",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         -40,
         60
@@ -831,13 +849,12 @@
       "id": "rebuild",
       "name": "Trigger Site Rebuild",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "typeVersion": 4.5,
       "position": [
         200,
         0
       ],
       "alwaysOutputData": true,
-      "continueOnFail": true,
       "onError": "continueRegularOutput",
       "credentials": {
         "githubApi": {
@@ -869,13 +886,16 @@
         "options": {
           "timeout": 60000
         }
-      }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "rebuild-skip",
       "name": "Rebuild Skipped",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         200,
         160
@@ -923,7 +943,7 @@
       "id": "merge",
       "name": "Merge All Responses",
       "type": "n8n-nodes-base.merge",
-      "typeVersion": 3,
+      "typeVersion": 3.2,
       "position": [
         1140,
         640
@@ -968,7 +988,11 @@
           "appendAttribution": false,
           "parse_mode": "HTML"
         }
-      }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "s2",

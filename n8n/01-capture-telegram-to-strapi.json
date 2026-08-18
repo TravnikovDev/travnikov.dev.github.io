@@ -21,7 +21,7 @@
       "id": "tg-trigger",
       "name": "Telegram Trigger",
       "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.1,
+      "typeVersion": 1.5,
       "position": [
         -2050,
         560
@@ -57,7 +57,7 @@
       "id": "stage-in",
       "name": "Staging Test Input",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         -1840,
         320
@@ -80,7 +80,7 @@
       "id": "switch",
       "name": "Switch",
       "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
+      "typeVersion": 3.4,
       "position": [
         -1840,
         560
@@ -162,13 +162,17 @@
         "resource": "file",
         "fileId": "={{ $json.message.voice.file_id }}",
         "additionalFields": {}
-      }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "transcribe",
       "name": "Transcribe Audio",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "typeVersion": 4.5,
       "position": [
         -1400,
         400
@@ -208,13 +212,17 @@
           },
           "timeout": 300000
         }
-      }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "maindata",
       "name": "MainData",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         -1180,
         520
@@ -249,7 +257,7 @@
       "id": "brief",
       "name": "Brief Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3,
+      "typeVersion": 3.1,
       "position": [
         -960,
         520
@@ -331,13 +339,17 @@
           "searchMode": "web",
           "webSearchOptions": "{\"search_context_size\":\"medium\"}"
         }
-      }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "article",
       "name": "Article Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3,
+      "typeVersion": 3.1,
       "position": [
         -440,
         520
@@ -398,7 +410,7 @@
       "id": "if-strapi",
       "name": "IF Publish Strapi",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         60,
         520
@@ -432,7 +444,7 @@
       "id": "strapi-skip",
       "name": "Strapi Skipped",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         280,
         680
@@ -467,12 +479,11 @@
       "id": "find-draft",
       "name": "Find Strapi Draft",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "typeVersion": 4.5,
       "position": [
         280,
         440
       ],
-      "continueOnFail": true,
       "alwaysOutputData": true,
       "onError": "continueRegularOutput",
       "parameters": {
@@ -510,13 +521,16 @@
         "options": {
           "timeout": 120000
         }
-      }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "if-lookup",
       "name": "IF Strapi Lookup OK",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         500,
         440
@@ -550,7 +564,7 @@
       "id": "if-exists",
       "name": "IF Draft Exists",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         720,
         380
@@ -584,7 +598,7 @@
       "id": "lookup-failed",
       "name": "Strapi Lookup Failed",
       "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "typeVersion": 3.5,
       "position": [
         720,
         600
@@ -619,12 +633,11 @@
       "id": "create-draft",
       "name": "Create Strapi Draft",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "typeVersion": 4.5,
       "position": [
         960,
         460
       ],
-      "continueOnFail": true,
       "alwaysOutputData": true,
       "onError": "continueRegularOutput",
       "parameters": {
@@ -658,18 +671,20 @@
         "options": {
           "timeout": 120000
         }
-      }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "update-draft",
       "name": "Update Strapi Draft",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "typeVersion": 4.5,
       "position": [
         960,
         300
       ],
-      "continueOnFail": true,
       "alwaysOutputData": true,
       "onError": "continueRegularOutput",
       "parameters": {
@@ -703,7 +718,10 @@
         "options": {
           "timeout": 120000
         }
-      }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "norm-strapi",
@@ -735,7 +753,7 @@
       "id": "if-reply",
       "name": "IF From Telegram",
       "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "typeVersion": 2.3,
       "position": [
         1640,
         480
@@ -788,7 +806,11 @@
           "appendAttribution": false,
           "parse_mode": "HTML"
         }
-      }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
     },
     {
       "id": "n2",
