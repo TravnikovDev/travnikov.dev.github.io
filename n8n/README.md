@@ -1,9 +1,15 @@
 # Content fabric
 
-Two workflows, split at the point a human decides. Import both, keep both
-inactive until you have walked the checklist below.
+Three workflows. Two of them form the pipeline, split at the point a human
+decides; the third feeds it ideas. Import all three, keep them inactive until
+you have walked the checklist below.
 
 ```
+03 scout (weekday 08:00) ──► research ──► ideas ──► Telegram
+                                                       │
+                                       you pick one and forward it
+                                                       │
+                                                       ▼
 Telegram (text or voice)
    └─► 01 capture ──► research ──► article ──► Strapi DRAFT
                                                   │
@@ -29,11 +35,28 @@ published by hand.
 It also makes each half independently testable, and lets you re-run
 syndication for an article that already exists without regenerating it.
 
-| | 01 capture | 02 syndicate |
-|---|---|---|
-| Trigger | Telegram message, or Manual | Strapi `entry.publish` webhook, or Manual |
-| Writes | one Strapi **draft** | LinkedIn, X, Telegram, site rebuild |
-| Idempotent | yes, by slug | no — re-running posts again |
+| | 01 capture | 02 syndicate | 03 scout |
+|---|---|---|---|
+| Trigger | Telegram message, or Manual | Strapi `entry.publish` webhook, or Manual | Weekdays 08:00, or Manual |
+| Writes | one Strapi **draft** | LinkedIn, X, Telegram, site rebuild | nothing — one Telegram message |
+| Idempotent | yes, by slug | no — re-running posts again | yes, it only reads |
+
+## 03 scout
+
+Runs every weekday morning, reads what is already in Strapi so it stops
+pitching things you have covered, scans the last fortnight in your three
+service areas, and sends 3-5 ideas to Telegram.
+
+Each idea arrives with a hook, what happened and when, who it is for, and the
+angle only you can take — plus a pasteable brief block. Copy the block, send it
+to the capture bot, and 01 turns it into a draft. That is the whole loop.
+
+It is the safest of the three: it has no write path anywhere. Turn it on first.
+
+The dedupe is deliberately crude — significant-word overlap against existing
+titles, dropping anything over 60%. It exists to catch the model re-pitching a
+topic because the research surfaced the same source again. Lower the threshold
+in `Normalize And Dedupe` if it starts eating good ideas.
 
 ## Environment
 
@@ -50,7 +73,10 @@ empty, re-select them once in the node.
 
 ## Rollout
 
-1. Import both. **Leave them inactive.**
+0. `03`: import, Manual Trigger, read what lands in Telegram. Nothing it does
+   is destructive, so if the ideas are good, activate it and leave it running
+   while you work through the rest.
+1. Import all three. **Leave 01 and 02 inactive.**
 2. `01`: Manual Trigger → Staging Test Input with a real idea, `publishStrapi`
    still **false**. Confirm the article body in the execution log reads like
    you and the slug is sane.

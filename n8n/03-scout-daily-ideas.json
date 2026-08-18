@@ -1,0 +1,384 @@
+{
+  "name": "Scout - daily article ideas to Telegram",
+  "active": false,
+  "nodes": [
+    {
+      "id": "s1",
+      "name": "Note s1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1500,
+        80
+      ],
+      "parameters": {
+        "width": 860,
+        "height": 380,
+        "content": "## 3. Daily idea scout\n\nRuns every weekday morning and sends a handful of article ideas to Telegram. Writes nothing, publishes nothing, changes nothing.\n\nIt reads the articles already in Strapi first, so it stops proposing things you have covered. Each idea comes out as a ready brief: copy the block, paste it to the capture bot, and workflow 01 turns it into a draft.\n\nWeekdays at 08:00 Istanbul. Change the Schedule node to move it."
+      }
+    },
+    {
+      "id": "cron",
+      "name": "Every Weekday Morning",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1450,
+        560
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * 1-5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "man",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1450,
+        380
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "fetch",
+      "name": "Fetch Existing Articles",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1200,
+        480
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true,
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "url": "={{ ($env.STRAPI_URL || '').replace(/\\/$/, '') + '/api/articles' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + ($env.STRAPI_API_TOKEN || '') }}"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields[0]",
+              "value": "title"
+            },
+            {
+              "name": "fields[1]",
+              "value": "slug"
+            },
+            {
+              "name": "fields[2]",
+              "value": "tags"
+            },
+            {
+              "name": "pagination[pageSize]",
+              "value": "100"
+            },
+            {
+              "name": "sort",
+              "value": "date:desc"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "ctx",
+      "name": "Build Coverage Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        480
+      ],
+      "parameters": {
+        "jsCode": "// What has already been written, so the scout does not re-pitch it.\nconst rows = Array.isArray($input.first().json.data) ? $input.first().json.data : [];\nconst covered = rows.map((a) => ({\n  title: a.title || '',\n  slug: a.slug || '',\n  tags: Array.isArray(a.tags) ? a.tags : [],\n}));\n\nconst tagCounts = {};\nfor (const a of covered) for (const t of a.tags) {\n  const k = String(t).toLowerCase();\n  tagCounts[k] = (tagCounts[k] || 0) + 1;\n}\nconst topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 15);\n\nreturn [{ json: {\n  coveredTitles: covered.map((a) => a.title).filter(Boolean),\n  coveredSlugs: covered.map((a) => a.slug).filter(Boolean),\n  topTags: topTags.map(([t, n]) => t + ' (' + n + ')'),\n  count: covered.length,\n  today: $now.toFormat('yyyy-MM-dd'),\n} }];"
+      }
+    },
+    {
+      "id": "research",
+      "name": "Scan The Week (Perplexity)",
+      "type": "n8n-nodes-base.perplexity",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        480
+      ],
+      "credentials": {
+        "perplexityApi": {
+          "id": "h9SzWbkrw9xQpfFe",
+          "name": "Perplexity account"
+        }
+      },
+      "parameters": {
+        "resource": "chat",
+        "operation": "complete",
+        "model": "sonar-pro",
+        "messages": {
+          "message": [
+            {
+              "role": "system",
+              "content": "You scan recent developments for a consultant who sells three things: AI automation (n8n, agents, LLM pipelines), web performance and frontend architecture (React, Next.js, Core Web Vitals), and fractional CTO work (team, delivery, technical strategy).\n\nReport what actually changed in roughly the last two weeks: releases, version bumps, pricing or licence changes, benchmark results, notable outages or postmortems, survey data, and shifts in practice.\n\nRules:\n- Prefer primary sources: release notes, official docs, filings, postmortems, survey PDFs.\n- Give dates. If something is older than two weeks, say so.\n- Distinguish confirmed fact from speculation and vendor marketing.\n- Skip funding rounds and personnel news unless they change what a team should build.\n- Return a compact structured brief with inline URLs and a Sources section.\n- Do not propose article ideas. That is the next stage's job."
+            },
+            {
+              "role": "user",
+              "content": "=Today is {{ $json.today }}. What changed recently in AI automation, web performance and engineering leadership that a hands-on consultant would care about?\n\nFor context, these topics are already covered and should not be re-reported unless something genuinely new has happened:\n{{ $json.coveredTitles.map((t) => '- ' + t).join('\\n') }}"
+            }
+          ]
+        },
+        "simplify": true,
+        "options": {
+          "maxTokens": 4000,
+          "temperature": 0.2,
+          "searchMode": "web",
+          "webSearchOptions": "{\"search_context_size\":\"medium\"}"
+        }
+      }
+    },
+    {
+      "id": "ideas",
+      "name": "Idea Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -480,
+        480
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "=You are Roman Travnikov's editorial scout. Turn this week's research into article ideas he could actually write.\n\nRESEARCH\n{{ $json.message }}\n\nALREADY COVERED - do not repeat these angles\n{{ $('Build Coverage Context').item.json.coveredTitles.map((t) => '- ' + t).join('\\n') }}\n\nWHO IS WRITING\nTwelve-plus years in frontend, most of it senior or lead. Now split between evaluating generative AI systems at close range and building automation and React platforms for clients. Sells AI automation, web performance and fractional CTO work. Writes from production experience, is sceptical of hype, and prefers trade-offs to conclusions.\n\nWHAT MAKES A GOOD IDEA HERE\n- It is anchored to something that actually happened, with a date.\n- He can say something from experience that a summariser could not.\n- It helps a specific person decide something this quarter.\n- It is narrow. One argument, not a survey.\n\nWHAT TO REJECT\n- Anything that is just a feature announcement restated.\n- Predictions with no evidence.\n- Listicles, beginner tutorials, and anything a vendor blog already published.\n- Topics where he would have nothing to add beyond the source.\n\nReturn between 3 and 5 ideas. Fewer good ones beats five weak ones - if the week was quiet, return 3 and say so in the note.\n\nReturn exactly one valid JSON object, no code fence:\n{\n  \"note\": \"one sentence on the week, or on why there are few ideas\",\n  \"ideas\": [\n    {\n      \"title\": \"the article title he would actually use\",\n      \"hook\": \"one sentence: the specific claim or tension\",\n      \"whyNow\": \"what happened and when, with the source URL\",\n      \"audience\": \"who decides something differently after reading it\",\n      \"angle\": \"what he can say that the source cannot\",\n      \"brief\": \"3-4 sentences written as if dictating the idea to himself, ready to paste into the capture bot\",\n      \"tags\": [\"two\", \"tags\"]\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "id": "model-Model (Ideas)",
+      "name": "Model (Ideas)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -480,
+        700
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4",
+          "mode": "id",
+          "cachedResultName": "gpt-5.4"
+        },
+        "responsesApiEnabled": true,
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "medium",
+          "timeout": 300000,
+          "maxRetries": 2
+        }
+      }
+    },
+    {
+      "id": "norm",
+      "name": "Normalize And Dedupe",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        480
+      ],
+      "parameters": {
+        "jsCode": "const raw = String($input.first().json.output ?? '').trim();\nconst ctx = $('Build Coverage Context').first().json;\n\nlet parsed;\ntry {\n  const unfenced = raw.replace(/^\\s*```(?:json)?/i, '').replace(/```\\s*$/, '').trim();\n  const s = unfenced.indexOf('{'), e = unfenced.lastIndexOf('}');\n  parsed = JSON.parse(s >= 0 && e > s ? unfenced.slice(s, e + 1) : unfenced);\n} catch {\n  throw new Error('Idea agent did not return valid JSON. Raw start: ' + raw.slice(0, 200));\n}\n\nconst clean = (v) => String(v ?? '').replace(/\\s+/g, ' ').trim();\n// crude but effective: compare significant word sets, not exact strings\nconst sig = (s) => new Set(\n  String(s).toLowerCase().replace(/[^a-z0-9\\s]/g, ' ').split(/\\s+/)\n    .filter((w) => w.length > 3)\n);\nconst overlap = (a, b) => {\n  const A = sig(a), B = sig(b);\n  if (!A.size || !B.size) return 0;\n  let hit = 0;\n  for (const w of A) if (B.has(w)) hit++;\n  return hit / Math.min(A.size, B.size);\n};\n\nconst ideas = (Array.isArray(parsed.ideas) ? parsed.ideas : [])\n  .map((i) => ({\n    title: clean(i.title),\n    hook: clean(i.hook),\n    whyNow: clean(i.whyNow),\n    audience: clean(i.audience),\n    angle: clean(i.angle),\n    brief: clean(i.brief),\n    tags: (Array.isArray(i.tags) ? i.tags : []).map((t) => clean(t).toLowerCase()).slice(0, 3),\n  }))\n  .filter((i) => i.title && i.brief)\n  // drop anything too close to an existing article\n  .filter((i) => !ctx.coveredTitles.some((t) => overlap(i.title, t) > 0.6))\n  .slice(0, 5);\n\nreturn [{ json: {\n  note: clean(parsed.note),\n  ideas,\n  dropped: (Array.isArray(parsed.ideas) ? parsed.ideas.length : 0) - ideas.length,\n  today: ctx.today,\n  covered: ctx.count,\n} }];"
+      }
+    },
+    {
+      "id": "fmt",
+      "name": "Format For Telegram",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        480
+      ],
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nconst esc = (v) => String(v ?? '')\n  .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');\n\nif (!d.ideas.length) {\n  return [{ json: { message: '<b>Idea scout - ' + esc(d.today) + '</b>\\n\\nNothing worth pitching today. ' + esc(d.note) } }];\n}\n\nconst lines = [\n  '<b>Idea scout - ' + esc(d.today) + '</b>',\n  esc(d.note),\n  '',\n];\n\nd.ideas.forEach((i, n) => {\n  lines.push('<b>' + (n + 1) + '. ' + esc(i.title) + '</b>');\n  lines.push(esc(i.hook));\n  lines.push('<i>Why now:</i> ' + esc(i.whyNow));\n  lines.push('<i>For:</i> ' + esc(i.audience));\n  lines.push('<i>Your angle:</i> ' + esc(i.angle));\n  lines.push('');\n  // the pasteable part: send this straight back to the capture bot\n  lines.push('<pre>' + esc(i.brief) + '</pre>');\n  lines.push('');\n});\n\nlines.push('Copy any grey block and send it to the capture bot to turn it into a draft.');\nif (d.dropped > 0) lines.push('(' + d.dropped + ' dropped as too close to something already published.)');\n\n// Telegram caps a message at 4096 characters\nlet message = lines.join('\\n');\nif (message.length > 4000) {\n  message = message.slice(0, 3900).replace(/\\n[^\\n]*$/, '') + '\\n\\n<i>Truncated. Full set is in the execution log.</i>';\n}\nreturn [{ json: { message } }];"
+      }
+    },
+    {
+      "id": "send",
+      "name": "Send Ideas To Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        480
+      ],
+      "webhookId": "c3d9a7b4-0000-4000-8000-000000000001",
+      "credentials": {
+        "telegramApi": {
+          "id": "MhceLPoiLGRf6GvJ",
+          "name": "Telegram account"
+        }
+      },
+      "parameters": {
+        "chatId": "54526027",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML",
+          "disable_web_page_preview": true
+        }
+      }
+    },
+    {
+      "id": "s2",
+      "name": "Note s2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        760
+      ],
+      "parameters": {
+        "width": 700,
+        "height": 300,
+        "content": "## Dedupe is deliberately crude\n\nIt compares significant word sets against existing article titles and drops anything over 60% overlap. Fuzzy, but it costs nothing and catches the common case: the model re-pitching a topic already on the site because the research surfaced the same source again.\n\nIf it starts dropping ideas it should keep, lower the threshold in Normalize And Dedupe."
+      }
+    }
+  ],
+  "connections": {
+    "Every Weekday Morning": {
+      "main": [
+        [
+          {
+            "node": "Fetch Existing Articles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch Existing Articles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Existing Articles": {
+      "main": [
+        [
+          {
+            "node": "Build Coverage Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Coverage Context": {
+      "main": [
+        [
+          {
+            "node": "Scan The Week (Perplexity)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scan The Week (Perplexity)": {
+      "main": [
+        [
+          {
+            "node": "Idea Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model (Ideas)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Idea Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Idea Agent": {
+      "main": [
+        [
+          {
+            "node": "Normalize And Dedupe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize And Dedupe": {
+      "main": [
+        [
+          {
+            "node": "Format For Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format For Telegram": {
+      "main": [
+        [
+          {
+            "node": "Send Ideas To Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Istanbul"
+  },
+  "staticData": null,
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}
