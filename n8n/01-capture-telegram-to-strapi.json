@@ -1,0 +1,1112 @@
+{
+  "name": "Capture - Telegram to Strapi draft",
+  "active": false,
+  "nodes": [
+    {
+      "id": "n1",
+      "name": "Note n1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2100,
+        100
+      ],
+      "parameters": {
+        "width": 900,
+        "height": 420,
+        "content": "## 1. Capture\n\nTelegram in, Strapi draft out. Nothing is published anywhere by this workflow — it only ever writes a **draft**.\n\n- Text or voice. Voice goes through gpt-transcribe because n8n's built-in Transcribe still pins whisper-1.\n- Manual Trigger + Staging Test Input is the safe path for testing without Telegram.\n- Idempotent by slug: re-sending the same idea updates the existing draft instead of creating a second one."
+      }
+    },
+    {
+      "id": "tg-trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2050,
+        560
+      ],
+      "webhookId": "c1a7e5f2-0000-4000-8000-000000000001",
+      "credentials": {
+        "telegramApi": {
+          "id": "MhceLPoiLGRf6GvJ",
+          "name": "Telegram account"
+        }
+      },
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "userIds": "54526027"
+        }
+      }
+    },
+    {
+      "id": "man-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2050,
+        320
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "stage-in",
+      "name": "Staging Test Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1840,
+        320
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "stage-in-text",
+              "name": "text",
+              "type": "string",
+              "value": "Replace this with an article idea before running manually."
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1840,
+        560
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": ""
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "sw-text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": ""
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "dl",
+      "name": "Download File",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1620,
+        400
+      ],
+      "webhookId": "c1a7e5f2-0000-4000-8000-000000000002",
+      "credentials": {
+        "telegramApi": {
+          "id": "MhceLPoiLGRf6GvJ",
+          "name": "Telegram account"
+        }
+      },
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      }
+    },
+    {
+      "id": "transcribe",
+      "name": "Transcribe Audio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1400,
+        400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/audio/transcriptions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formData",
+              "name": "model",
+              "value": "gpt-transcribe"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      }
+    },
+    {
+      "id": "maindata",
+      "name": "MainData",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1180,
+        520
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "maindata-mainPrompt",
+              "name": "mainPrompt",
+              "type": "string",
+              "value": "={{ $json.text || $json.message?.text || '' }}"
+            },
+            {
+              "id": "maindata-sessionID",
+              "name": "sessionID",
+              "type": "string",
+              "value": "={{ $json.message?.chat?.id || $execution.id }}"
+            },
+            {
+              "id": "maindata-publishStrapi",
+              "name": "publishStrapi",
+              "type": "boolean",
+              "value": false
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "brief",
+      "name": "Brief Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -960,
+        520
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.mainPrompt }}",
+        "options": {
+          "systemMessage": "You are an AI agent that converts long, raw, voice-transcribed input into a clear, structured task while preserving the user's natural tone and intention.\n\nThe input may be long, dictated while walking, repetitive, and may drift between explanation and idea. Assume the user is thinking out loud.\n\nProduce a structured brief that is clear and executable, preserves the casual tone, and removes noise without sterilizing the voice.\n\nOutput sections (always in English):\n- Task Summary (in the user's tone)\n- Context (cleaned, not rewritten)\n- What we are actually trying to figure out\n- Desired outcome\n- Constraints and reality checks\n- Expected output format\n\nRules: do not solve the task. Do not add humour that is not already there. Do not sanitize emphasis. If several tasks are present, identify the primary one and list the rest briefly."
+        }
+      }
+    },
+    {
+      "id": "model-Model (Brief)",
+      "name": "Model (Brief)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -960,
+        740
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4-nano",
+          "mode": "id",
+          "cachedResultName": "gpt-5.4-nano"
+        },
+        "responsesApiEnabled": true,
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "medium",
+          "timeout": 300000,
+          "maxRetries": 2
+        }
+      }
+    },
+    {
+      "id": "research",
+      "name": "Research Agent (Perplexity)",
+      "type": "n8n-nodes-base.perplexity",
+      "typeVersion": 2,
+      "position": [
+        -700,
+        520
+      ],
+      "credentials": {
+        "perplexityApi": {
+          "id": "h9SzWbkrw9xQpfFe",
+          "name": "Perplexity account"
+        }
+      },
+      "parameters": {
+        "resource": "chat",
+        "operation": "complete",
+        "model": "sonar-pro",
+        "messages": {
+          "message": [
+            {
+              "role": "system",
+              "content": "You are the sole research stage for an article. Perform one bounded research pass.\n\n- Prioritise primary sources, official documentation, papers, filings and direct reports.\n- Cross-check consequential claims against at least two independent sources where possible.\n- Separate verified fact from interpretation.\n- Surface uncertainty, disagreement, incentives and practical trade-offs.\n- Prefer current information, but include foundational older sources where needed.\n- Return a concise structured brief with inline source URLs and a final Sources section.\n- Do not write the article."
+            },
+            {
+              "role": "user",
+              "content": "={{ $json.output || $json.mainPrompt || '' }}"
+            }
+          ]
+        },
+        "simplify": true,
+        "options": {
+          "maxTokens": 5000,
+          "temperature": 0.2,
+          "searchMode": "web",
+          "webSearchOptions": "{\"search_context_size\":\"medium\"}"
+        }
+      }
+    },
+    {
+      "id": "article",
+      "name": "Article Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -440,
+        520
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "=You are Roman Travnikov's long-form blog editor.\n\nORIGINAL BRIEF\n{{ $('Brief Agent').item.json.output }}\n\nRESEARCH\n{{ $json.message }}\n\nCITATIONS RETURNED BY RESEARCH\n{{ JSON.stringify($json.citations || []) }}\n\nWrite the canonical English article. Social posts are derived from it later, so it must stand on its own.\n\nVOICE\n- Clear, conversational, direct, technically literate, sceptical of hype.\n- Explain complex terms simply without talking down.\n- Prefer production lessons and honest trade-offs.\n\nREQUIREMENTS\n- 900-1,600 words unless the topic genuinely needs less.\n- One clear thesis, descriptive H2 sections, short paragraphs, a decisive conclusion.\n- Use only evidence from the research. Never invent facts or citations.\n- Mark uncertainty plainly where evidence is contested.\n- No corporate filler, no fake personal anecdotes, no generic AI phrasing.\n- Regular hyphens, never em dashes.\n- If the piece is seasonal or tied to a year, state the target year explicitly in the title and the first sentence, and label prior-year figures as baseline.\n\nReturn exactly one valid JSON object, no code fence:\n{\n  \"title\": \"...\",\n  \"slug\": \"lowercase-kebab-case\",\n  \"excerpt\": \"one concise paragraph\",\n  \"body\": \"complete Markdown article, without repeating the title\",\n  \"tags\": [\"three\", \"lowercase\", \"tags\"],\n  \"seoTitle\": \"under 60 characters\",\n  \"seoDescription\": \"under 160 characters\",\n  \"citations\": [\"https://...\"]\n}"
+        }
+      }
+    },
+    {
+      "id": "model-Model (Article)",
+      "name": "Model (Article)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -440,
+        740
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4",
+          "mode": "id",
+          "cachedResultName": "gpt-5.4"
+        },
+        "responsesApiEnabled": true,
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "medium",
+          "timeout": 300000,
+          "maxRetries": 2
+        }
+      }
+    },
+    {
+      "id": "normalize",
+      "name": "Normalize Article",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        520
+      ],
+      "parameters": {
+        "jsCode": "const raw = String($input.first().json.output ?? '').trim();\nconst research = $('Research Agent (Perplexity)').first().json;\nconst brief = String($('Brief Agent').first().json.output ?? $('MainData').first().json.mainPrompt ?? '').trim();\n\nlet parsed;\ntry {\n  const unfenced = raw.replace(/^\\s*```(?:json)?/i, '').replace(/```\\s*$/, '').trim();\n  const start = unfenced.indexOf('{');\n  const end = unfenced.lastIndexOf('}');\n  parsed = JSON.parse(start >= 0 && end > start ? unfenced.slice(start, end + 1) : unfenced);\n} catch {\n  parsed = { body: raw };\n}\n\nconst clean = (v) => String(v ?? '').replace(/\\s+/g, ' ').trim();\nconst slugify = (v) => clean(v).toLowerCase().normalize('NFKD')\n  .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-')\n  .replace(/^-+|-+$/g, '').slice(0, 90);\n\nconst body = String(parsed.body ?? raw).trim();\nconst title = clean(parsed.title || clean(brief).slice(0, 90) || 'Untitled article');\nconst slug = slugify(parsed.slug || title) || 'article-' + $now.toFormat('yyyy-MM-dd-HHmm');\nconst plain = clean(body.replace(/[#*_>\\[\\]()]/g, ''));\nconst excerpt = clean(parsed.excerpt || plain.slice(0, 240));\n\nconst tags = (Array.isArray(parsed.tags) ? parsed.tags : [])\n  .map((t) => clean(t).toLowerCase()).filter(Boolean).slice(0, 5);\n\nconst citations = [...new Set([\n  ...(Array.isArray(parsed.citations) ? parsed.citations : []),\n  ...(Array.isArray(research.citations) ? research.citations : []),\n].filter((v) => typeof v === 'string' && /^https?:\\/\\//i.test(v)))];\n\n// fail loudly rather than writing a stub into the CMS\nif (!title || body.length < 300) {\n  throw new Error('Article validation failed: empty title or body under 300 characters.');\n}\n\nreturn [{ json: {\n  title, slug, excerpt, body, tags, citations,\n  seoTitle: clean(parsed.seoTitle || title).slice(0, 60),\n  seoDescription: clean(parsed.seoDescription || excerpt).slice(0, 160),\n  date: $now.toFormat('yyyy-MM-dd'),\n  research: research.message || '',\n} }];"
+      }
+    },
+    {
+      "id": "if-strapi",
+      "name": "IF Publish Strapi",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        60,
+        520
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-strapi-c",
+              "leftValue": "={{ $('MainData').item.json.publishStrapi }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "strapi-skip",
+      "name": "Strapi Skipped",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        680
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "strapi-skip-platform",
+              "name": "platform",
+              "type": "string",
+              "value": "strapi"
+            },
+            {
+              "id": "strapi-skip-status",
+              "name": "status",
+              "type": "string",
+              "value": "skipped"
+            },
+            {
+              "id": "strapi-skip-reason",
+              "name": "reason",
+              "type": "string",
+              "value": "publishStrapi=false"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "find-draft",
+      "name": "Find Strapi Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        280,
+        440
+      ],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "url": "={{ ($env.STRAPI_URL || '').replace(/\\/$/, '') }} + '/api/articles'",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + ($env.STRAPI_API_TOKEN || '') }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "draft"
+            },
+            {
+              "name": "filters[slug][$eq]",
+              "value": "={{ $('Normalize Article').item.json.slug }}"
+            },
+            {
+              "name": "pagination[pageSize]",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "if-lookup",
+      "name": "IF Strapi Lookup OK",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        440
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-lookup-c",
+              "leftValue": "={{ !$json.error && Array.isArray($json.data) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "if-exists",
+      "name": "IF Draft Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        380
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-exists-c",
+              "leftValue": "={{ Array.isArray($json.data) && $json.data.length > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "lookup-failed",
+      "name": "Strapi Lookup Failed",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        600
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "lookup-failed-platform",
+              "name": "platform",
+              "type": "string",
+              "value": "strapi"
+            },
+            {
+              "id": "lookup-failed-status",
+              "name": "status",
+              "type": "string",
+              "value": "failed"
+            },
+            {
+              "id": "lookup-failed-error",
+              "name": "error",
+              "type": "string",
+              "value": "={{ $json.error?.message || $json.error || $json.message || 'Strapi draft lookup failed' }}"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "create-draft",
+      "name": "Create Strapi Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        460
+      ],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.STRAPI_URL || '').replace(/\\/$/, '') }} + '/api/articles'",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + ($env.STRAPI_API_TOKEN || '') }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "draft"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ (() => {\n  const a = $('Normalize Article').item.json;\n  const data = {\n    title: a.title,\n    slug: a.slug,\n    excerpt: a.excerpt,\n    body: a.body,\n    tags: a.tags,\n    date: a.date,\n  };\n  return { data };\n})() }}",
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "update-draft",
+      "name": "Update Strapi Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        300
+      ],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ ($env.STRAPI_URL || '').replace(/\\/$/, '') }} + '/api/articles/' + $('Find Strapi Draft').item.json.data[0].documentId",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + ($env.STRAPI_API_TOKEN || '') }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "draft"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ (() => {\n  const a = $('Normalize Article').item.json;\n  const data = {\n    title: a.title,\n    slug: a.slug,\n    excerpt: a.excerpt,\n    body: a.body,\n    tags: a.tags,\n    date: a.date,\n  };\n  return { data };\n})() }}",
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "norm-strapi",
+      "name": "Normalize Strapi Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        380
+      ],
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nconst doc = d.data || {};\nconst id = doc.documentId || doc.id;\nconst err = d.error?.message || d.error || d.message || '';\nconst base = String($env.STRAPI_URL || '').replace(/\\/$/, '');\nreturn [{ json: {\n  platform: 'strapi',\n  status: id ? (doc.createdAt === doc.updatedAt ? 'drafted' : 'updated') : 'failed',\n  url: id && base ? base + '/admin/content-manager/collection-types/api::article.article/' + id : '',\n  error: id ? '' : String(err || 'Strapi returned no documentId'),\n  documentId: id || '',\n} }];"
+      }
+    },
+    {
+      "id": "fmt",
+      "name": "Format Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        480
+      ],
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nconst a = $('Normalize Article').first().json;\nconst esc = (v) => String(v ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');\nconst icon = { drafted: '✅', updated: '♻️', skipped: '⏭️', failed: '❌' }[r.status] || 'ℹ️';\nconst lines = [\n  '<b>Draft captured</b>', '',\n  '<b>' + esc(a.title) + '</b>',\n  '<code>' + esc(a.slug) + '</code>',\n  '',\n  icon + ' Strapi: ' + esc(r.status) + (r.url ? ' - ' + esc(r.url) : r.error ? ' - ' + esc(r.error) : ''),\n  '',\n  'Review it in Strapi, then publish. Publishing is what triggers syndication.',\n];\nreturn [{ json: { message: lines.join('\\n') } }];"
+      }
+    },
+    {
+      "id": "if-reply",
+      "name": "IF From Telegram",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1640,
+        480
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-reply-c",
+              "leftValue": "={{ $('Telegram Trigger').isExecuted }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "reply",
+      "name": "Send Reply To Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1860,
+        420
+      ],
+      "webhookId": "c1a7e5f2-0000-4000-8000-000000000003",
+      "credentials": {
+        "telegramApi": {
+          "id": "MhceLPoiLGRf6GvJ",
+          "name": "Telegram account"
+        }
+      },
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Note n2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        760
+      ],
+      "parameters": {
+        "width": 700,
+        "height": 300,
+        "content": "## Strapi is the only sink\n\n`publishStrapi` is **false** by default, so a first run does everything except write. Flip it in MainData once you have seen the draft body in the execution log.\n\nRequires `STRAPI_URL` and `STRAPI_API_TOKEN` as n8n environment variables.\n\nField names match the live content type: title, slug, excerpt, body, tags, date."
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Staging Test Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Staging Test Input": {
+      "main": [
+        [
+          {
+            "node": "MainData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MainData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Transcribe Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe Audio": {
+      "main": [
+        [
+          {
+            "node": "MainData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MainData": {
+      "main": [
+        [
+          {
+            "node": "Brief Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model (Brief)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Brief Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brief Agent": {
+      "main": [
+        [
+          {
+            "node": "Research Agent (Perplexity)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Agent (Perplexity)": {
+      "main": [
+        [
+          {
+            "node": "Article Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model (Article)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Article Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Article Agent": {
+      "main": [
+        [
+          {
+            "node": "Normalize Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Article": {
+      "main": [
+        [
+          {
+            "node": "IF Publish Strapi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Publish Strapi": {
+      "main": [
+        [
+          {
+            "node": "Find Strapi Draft",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Strapi Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Strapi Draft": {
+      "main": [
+        [
+          {
+            "node": "IF Strapi Lookup OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Strapi Lookup OK": {
+      "main": [
+        [
+          {
+            "node": "IF Draft Exists",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Strapi Lookup Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Draft Exists": {
+      "main": [
+        [
+          {
+            "node": "Update Strapi Draft",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Strapi Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Strapi Draft": {
+      "main": [
+        [
+          {
+            "node": "Normalize Strapi Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Strapi Draft": {
+      "main": [
+        [
+          {
+            "node": "Normalize Strapi Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Strapi Result": {
+      "main": [
+        [
+          {
+            "node": "Format Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Strapi Skipped": {
+      "main": [
+        [
+          {
+            "node": "Format Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Strapi Lookup Failed": {
+      "main": [
+        [
+          {
+            "node": "Format Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Reply": {
+      "main": [
+        [
+          {
+            "node": "IF From Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF From Telegram": {
+      "main": [
+        [
+          {
+            "node": "Send Reply To Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

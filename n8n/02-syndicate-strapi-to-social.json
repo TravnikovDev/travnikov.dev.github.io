@@ -1,0 +1,1456 @@
+{
+  "name": "Syndicate - Strapi publish to social",
+  "active": false,
+  "nodes": [
+    {
+      "id": "s1",
+      "name": "Note s1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1900,
+        80
+      ],
+      "parameters": {
+        "width": 820,
+        "height": 400,
+        "content": "## 2. Syndicate\n\nFires when an article is **published** in Strapi, not when it is drafted. Capture writes drafts; a human presses publish; this fans out.\n\nTrigger options, in order of preference:\n1. Strapi webhook (Settings > Webhooks) pointed at this workflow's production URL, event `entry.publish`.\n2. Manual Trigger with a slug, for testing and for back-filling anything already published.\n\nEvery publisher is OFF by default. Turn them on one at a time."
+      }
+    },
+    {
+      "id": "hook",
+      "name": "Strapi Publish Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1850,
+        540
+      ],
+      "webhookId": "c2b8f6a3-0000-4000-8000-000000000001",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "strapi-publish",
+        "options": {}
+      }
+    },
+    {
+      "id": "man",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1850,
+        320
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "man-in",
+      "name": "Manual Test Slug",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1640,
+        320
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "man-in-slug",
+              "name": "slug",
+              "type": "string",
+              "value": "replace-with-a-published-slug"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "resolve",
+      "name": "Resolve Slug",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1420,
+        440
+      ],
+      "parameters": {
+        "jsCode": "// Accepts either a Strapi webhook body or a manual { slug } input.\nconst j = $input.first().json;\nconst slug = j.slug\n  || j.entry?.slug\n  || j.body?.entry?.slug\n  || j.query?.slug\n  || '';\nconst event = j.event || j.body?.event || 'manual';\nif (!slug) {\n  throw new Error('No slug found. Strapi webhook body should contain entry.slug.');\n}\nreturn [{ json: { slug: String(slug), event } }];"
+      }
+    },
+    {
+      "id": "fetch",
+      "name": "Fetch Published Article",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1200,
+        440
+      ],
+      "parameters": {
+        "url": "={{ ($env.STRAPI_URL || '').replace(/\\/$/, '') + '/api/articles' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + ($env.STRAPI_API_TOKEN || '') }}"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filters[slug][$eq]",
+              "value": "={{ $json.slug }}"
+            },
+            {
+              "name": "populate[0]",
+              "value": "cover"
+            },
+            {
+              "name": "pagination[pageSize]",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "norm-art",
+      "name": "Normalize Published Article",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -980,
+        440
+      ],
+      "parameters": {
+        "jsCode": "const rows = $input.first().json.data;\nif (!Array.isArray(rows) || rows.length === 0) {\n  throw new Error('No published article found for that slug.');\n}\nconst a = rows[0];\nconst site = 'https://travnikov.dev';\nreturn [{ json: {\n  documentId: a.documentId,\n  title: a.title,\n  slug: a.slug,\n  excerpt: a.excerpt || '',\n  body: a.body || '',\n  tags: Array.isArray(a.tags) ? a.tags : [],\n  coverUrl: a.cover?.url || '',\n  url: site + '/blog/' + a.slug + '/',\n} }];"
+      }
+    },
+    {
+      "id": "flags",
+      "name": "PublishFlags",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -760,
+        440
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "flags-generateImage",
+              "name": "generateImage",
+              "type": "boolean",
+              "value": false
+            },
+            {
+              "id": "flags-publishLinkedIn",
+              "name": "publishLinkedIn",
+              "type": "boolean",
+              "value": false
+            },
+            {
+              "id": "flags-publishX",
+              "name": "publishX",
+              "type": "boolean",
+              "value": false
+            },
+            {
+              "id": "flags-publishTelegram",
+              "name": "publishTelegram",
+              "type": "boolean",
+              "value": false
+            },
+            {
+              "id": "flags-rebuildSite",
+              "name": "rebuildSite",
+              "type": "boolean",
+              "value": false
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "li-agent",
+      "name": "LinkedIn Post Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -520,
+        440
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Normalize Published Article').item.json.body }}",
+        "options": {
+          "systemMessage": "=You are Roman Travnikov's LinkedIn editor. Derive one LinkedIn post from the published article below.\n\nARTICLE TITLE\n{{ $('Normalize Published Article').item.json.title }}\n\nCANONICAL ARTICLE\n{{ $('Normalize Published Article').item.json.body }}\n\nARTICLE URL\n{{ $('Normalize Published Article').item.json.url }}\n\nVOICE\n- Personal, direct, curious, practical, allergic to corporate fluff.\n- Write like you are explaining a useful discovery to a smart friend.\n- Prefer production reality over demos and hype.\n- Explain unavoidable jargon in plain language.\n\nRULES\n- English only.\n- 1,500-2,000 characters.\n- Open with the strongest fact, tension or opinion. Never with the research process.\n- One main insight. Do not turn it into a list of tools or examples.\n- Weave uncertainty and trade-offs into the story.\n- Round numbers unless precision matters.\n- No bold, no hashtags unless essential, no em dash.\n- At most two emojis.\n- End with a real opinion and one natural reader question, then the article URL on its own final line.\n- Introduce no facts absent from the article.\n\nReturn only the final LinkedIn post."
+        }
+      }
+    },
+    {
+      "id": "model-Model (LinkedIn)",
+      "name": "Model (LinkedIn)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -520,
+        660
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4-mini",
+          "mode": "id",
+          "cachedResultName": "gpt-5.4-mini"
+        },
+        "responsesApiEnabled": true,
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "medium",
+          "timeout": 300000,
+          "maxRetries": 2
+        }
+      }
+    },
+    {
+      "id": "img-agent",
+      "name": "Image Prompt Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -260,
+        300
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "You are an AI illustration prompt generator for LinkedIn posts.\nTake a LinkedIn post and describe a conceptual, hand-drawn visual that represents it.\n\nSTYLE\n- Minimal, precise, vector-style line illustration with a soft hand-drawn feel\n- Fusion of Boho warmth and Digital Bauhaus minimalism\n- Icon-system composition: one main central element surrounded by 2-3 smaller related icons\n- Flat pastel palette (muted blue, olive, coral, teal, sand, warm gray)\n- Light neutral background with generous spacing\n- No gradients, 3D, heavy shading or messy sketching\n\nCONTENT\n- Express the main idea symbolically with recognisable real-world objects\n- Human first-person viewpoint, slightly isometric angle\n- No people, no faces, no text\n\nFORMAT\n2:1 landscape.\n\nReturn only the final image prompt, no commentary."
+        }
+      }
+    },
+    {
+      "id": "model-Model (Image)",
+      "name": "Model (Image)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -260,
+        520
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4-nano",
+          "mode": "id",
+          "cachedResultName": "gpt-5.4-nano"
+        },
+        "responsesApiEnabled": true,
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "medium",
+          "timeout": 300000,
+          "maxRetries": 2
+        }
+      }
+    },
+    {
+      "id": "if-img",
+      "name": "IF Generate Image",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -40,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-img-c",
+              "leftValue": "={{ $('PublishFlags').item.json.generateImage }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "make-img",
+      "name": "Create Image",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        180,
+        220
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "resource": "image",
+        "operation": "generate",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-image-2",
+          "mode": "id",
+          "cachedResultName": "gpt-image-2"
+        },
+        "prompt": "={{ $json.output }}",
+        "options": {
+          "quality": "low",
+          "size": "1536x1024",
+          "binaryPropertyOutput": "data"
+        }
+      }
+    },
+    {
+      "id": "if-li",
+      "name": "IF Publish LinkedIn",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        420,
+        220
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-li-c",
+              "leftValue": "={{ $('PublishFlags').item.json.publishLinkedIn }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "li-post",
+      "name": "Create a post",
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        640,
+        160
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "8zug9c8k5hU3AmzM",
+          "name": "LinkedIn account"
+        }
+      },
+      "parameters": {
+        "authentication": "standard",
+        "resource": "post",
+        "operation": "create",
+        "postAs": "person",
+        "person": "ZLXMqtkdpb",
+        "text": "={{ $('LinkedIn Post Agent').item.json.output }}",
+        "shareMediaCategory": "IMAGE",
+        "binaryPropertyName": "data",
+        "additionalFields": {}
+      }
+    },
+    {
+      "id": "li-skip",
+      "name": "LinkedIn Skipped",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        340
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "li-skip-platform",
+              "name": "platform",
+              "type": "string",
+              "value": "linkedin"
+            },
+            {
+              "id": "li-skip-status",
+              "name": "status",
+              "type": "string",
+              "value": "skipped"
+            },
+            {
+              "id": "li-skip-reason",
+              "name": "reason",
+              "type": "string",
+              "value": "={{ $('PublishFlags').item.json.generateImage ? 'publishLinkedIn=false' : 'generateImage=false' }}"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "li-norm",
+      "name": "Normalize LinkedIn Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        220
+      ],
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nconst urn = d.urn || d['x-restli-id'];\nconst err = d.error?.message || d.error || d.message || '';\nreturn [{ json: { platform: 'linkedin', status: urn ? 'posted' : 'failed',\n  url: urn ? 'https://www.linkedin.com/feed/update/' + urn + '/' : '',\n  error: urn ? '' : String(err || 'LinkedIn returned no post URN') } }];"
+      }
+    },
+    {
+      "id": "tw-agent",
+      "name": "Shorten for X",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -260,
+        780
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('LinkedIn Post Agent').item.json.output }}",
+        "options": {
+          "systemMessage": "=You are Roman Travnikov's X editor.\n\nCANONICAL ARTICLE\n{{ $('Normalize Published Article').item.json.body }}\n\nARTICLE URL\n{{ $('Normalize Published Article').item.json.url }}\n\nLINKEDIN VERSION\n{{ $('LinkedIn Post Agent').item.json.output }}\n\nCreate one self-contained post for X using the strongest idea from the article.\n\nHARD RULES\n- Maximum 280 characters including the URL.\n- Single paragraph, no line breaks.\n- No engagement bait, no em dash, no corporate filler.\n- Zero to two emojis. Hashtags only if essential.\n- Do not invent numbers or claims.\n- End with the article URL.\n\nReturn only the final post."
+        }
+      }
+    },
+    {
+      "id": "model-Model (X)",
+      "name": "Model (X)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -260,
+        1000
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4-nano",
+          "mode": "id",
+          "cachedResultName": "gpt-5.4-nano"
+        },
+        "responsesApiEnabled": true,
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "medium",
+          "timeout": 300000,
+          "maxRetries": 2
+        }
+      }
+    },
+    {
+      "id": "if-x",
+      "name": "IF Publish X",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -20,
+        780
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-x-c",
+              "leftValue": "={{ $('PublishFlags').item.json.publishX }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "x-post",
+      "name": "X",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        200,
+        720
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "FmPNNTP0GHUv6jk8",
+          "name": "X account"
+        }
+      },
+      "parameters": {
+        "text": "={{ $('Shorten for X').item.json.output }}",
+        "additionalFields": {}
+      }
+    },
+    {
+      "id": "x-skip",
+      "name": "X Skipped",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        900
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "x-skip-platform",
+              "name": "platform",
+              "type": "string",
+              "value": "x"
+            },
+            {
+              "id": "x-skip-status",
+              "name": "status",
+              "type": "string",
+              "value": "skipped"
+            },
+            {
+              "id": "x-skip-reason",
+              "name": "reason",
+              "type": "string",
+              "value": "publishX=false"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "x-norm",
+      "name": "Normalize X Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        780
+      ],
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nconst id = d.data?.id || d.id;\nconst err = d.error?.message || d.error || d.message || '';\nreturn [{ json: { platform: 'x', status: id ? 'posted' : 'failed',\n  url: id ? 'https://twitter.com/i/web/status/' + id : '',\n  error: id ? '' : String(err || 'X returned no post ID') } }];"
+      }
+    },
+    {
+      "id": "ru",
+      "name": "Translate to Russian",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        -260,
+        1180
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "xz7cbJWc9tbNLx9B",
+          "name": "OpenAi account"
+        }
+      },
+      "parameters": {
+        "resource": "text",
+        "operation": "response",
+        "simplify": false,
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5.4-nano",
+          "mode": "id",
+          "cachedResultName": "gpt-5.4-nano"
+        },
+        "builtInTools": {},
+        "options": {
+          "reasoning": {
+            "reasoningOptions": [
+              {
+                "effort": "medium",
+                "summary": "none"
+              }
+            ]
+          },
+          "store": false
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Ты превращаешь LinkedIn-пост на английском в живой текст на русском для Telegram. Не буквальный перевод, а человечный пересказ смыслов.\n\nИсходный текст:\n{{ $('LinkedIn Post Agent').item.json.output }}\n\nСсылка на статью:\n{{ $('Normalize Published Article').item.json.url }}\n\nЦЕЛЬ\nПлавный, связный, читабельный текст: спокойно, простым языком, с переходами, без списков и без механического перечисления фактов.\n\nДЛИНА\nДо 800 символов, максимум 900.\n\nФОРМАТ\n- Короткий человеческий хук, без кликбейта.\n- 2-4 небольших абзаца.\n- 0-2 ненавязчивых эмодзи.\n- Только обычный дефис, без длинного тире.\n- Без буллетов и таблиц.\n- В конце - ссылка на статью.\n\nВыведи ТОЛЬКО итоговый текст."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "trunc",
+      "name": "Truncate to 900",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        1180
+      ],
+      "parameters": {
+        "jsCode": "const out = $input.first().json.output;\nconst text = out?.[0]?.content?.[0]?.text || out?.[1]?.content?.[0]?.text || '';\nconst MAX = 900;\nif (text.length <= MAX) return [{ json: { text } }];\nlet t = text.slice(0, MAX);\nconst end = Math.max(t.lastIndexOf('. '), t.lastIndexOf('! '), t.lastIndexOf('? '));\nif (end > MAX * 0.8) t = text.slice(0, end + 1).trim();\nelse {\n  const sp = t.lastIndexOf(' ');\n  t = (sp > MAX * 0.8 ? text.slice(0, sp) : t).trim() + '...';\n}\nreturn [{ json: { text: t } }];"
+      }
+    },
+    {
+      "id": "combine",
+      "name": "Combine Image and Caption",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        200,
+        1100
+      ],
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      }
+    },
+    {
+      "id": "if-tg",
+      "name": "IF Publish Telegram",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        420,
+        1100
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-tg-c",
+              "leftValue": "={{ $('PublishFlags').item.json.publishTelegram }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "tg-post",
+      "name": "Post to Telegram Channel",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        1040
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true,
+      "onError": "continueRegularOutput",
+      "webhookId": "c2b8f6a3-0000-4000-8000-000000000002",
+      "credentials": {
+        "telegramApi": {
+          "id": "MhceLPoiLGRf6GvJ",
+          "name": "Telegram account"
+        }
+      },
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "@travnikov_dev",
+        "binaryData": true,
+        "additionalFields": {
+          "caption": "={{ $('Truncate to 900').item.json.text }}"
+        }
+      }
+    },
+    {
+      "id": "tg-skip",
+      "name": "Telegram Skipped",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        1220
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "tg-skip-platform",
+              "name": "platform",
+              "type": "string",
+              "value": "telegram"
+            },
+            {
+              "id": "tg-skip-status",
+              "name": "status",
+              "type": "string",
+              "value": "skipped"
+            },
+            {
+              "id": "tg-skip-reason",
+              "name": "reason",
+              "type": "string",
+              "value": "={{ $('PublishFlags').item.json.generateImage ? 'publishTelegram=false' : 'generateImage=false' }}"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "tg-norm",
+      "name": "Normalize Telegram Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        1100
+      ],
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nconst id = d.result?.message_id;\nconst err = d.error?.message || d.error || d.description || d.message || '';\nreturn [{ json: { platform: 'telegram', status: d.ok && id ? 'posted' : 'failed',\n  url: d.ok && id ? 'https://t.me/travnikov_dev/' + id : '',\n  error: d.ok && id ? '' : String(err || 'Telegram returned no message ID') } }];"
+      }
+    },
+    {
+      "id": "if-rebuild",
+      "name": "IF Rebuild Site",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -40,
+        60
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "if-rebuild-c",
+              "leftValue": "={{ $('PublishFlags').item.json.rebuildSite }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "rebuild",
+      "name": "Trigger Site Rebuild",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        0
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "githubApi": {
+          "id": "mvMBOFhVVZ08Lxj1",
+          "name": "GitHub account"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/TravnikovDev/travnikov.dev.github.io/dispatches",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2022-11-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ event_type: 'strapi_publish', client_payload: { slug: $('Normalize Published Article').item.json.slug } }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      }
+    },
+    {
+      "id": "rebuild-skip",
+      "name": "Rebuild Skipped",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        160
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "rebuild-skip-platform",
+              "name": "platform",
+              "type": "string",
+              "value": "site"
+            },
+            {
+              "id": "rebuild-skip-status",
+              "name": "status",
+              "type": "string",
+              "value": "skipped"
+            },
+            {
+              "id": "rebuild-skip-reason",
+              "name": "reason",
+              "type": "string",
+              "value": "rebuildSite=false"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "rebuild-norm",
+      "name": "Normalize Rebuild Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        60
+      ],
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\n// GitHub dispatches returns 204 with an empty body on success\nconst failed = !!(d.error || d.message);\nreturn [{ json: { platform: 'site', status: failed ? 'failed' : 'triggered',\n  url: failed ? '' : 'https://github.com/TravnikovDev/travnikov.dev.github.io/actions',\n  error: failed ? String(d.error?.message || d.message) : '' } }];"
+      }
+    },
+    {
+      "id": "merge",
+      "name": "Merge All Responses",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1140,
+        640
+      ],
+      "parameters": {
+        "numberInputs": 4
+      }
+    },
+    {
+      "id": "fmt",
+      "name": "Format Final Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        640
+      ],
+      "parameters": {
+        "jsCode": "const results = $input.all().map((i) => i.json);\nconst a = $('Normalize Published Article').first().json;\nconst labels = { linkedin: 'LinkedIn', x: 'X', telegram: 'Telegram channel', site: 'Site rebuild' };\nconst icons = { posted: '✅', triggered: '✅', skipped: '⏭️', failed: '❌' };\nconst esc = (v) => String(v ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');\nconst by = new Map(results.filter((r) => r.platform).map((r) => [r.platform, r]));\nconst lines = ['<b>Syndication complete</b>', '', '<b>' + esc(a.title) + '</b>', esc(a.url), ''];\nfor (const p of ['linkedin', 'x', 'telegram', 'site']) {\n  const r = by.get(p) || { status: 'failed', error: 'No result received' };\n  const detail = r.url ? ' - ' + esc(r.url) : r.reason ? ' - ' + esc(r.reason) : r.error ? ' - ' + esc(r.error) : '';\n  lines.push((icons[r.status] || 'ℹ️') + ' <b>' + labels[p] + ':</b> ' + esc(r.status) + detail);\n}\nlines.push('', 'Publishing switches live in PublishFlags.');\nreturn [{ json: { message: lines.join('\\n') } }];"
+      }
+    },
+    {
+      "id": "notify",
+      "name": "Notify Me On Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1580,
+        640
+      ],
+      "webhookId": "c2b8f6a3-0000-4000-8000-000000000003",
+      "credentials": {
+        "telegramApi": {
+          "id": "MhceLPoiLGRf6GvJ",
+          "name": "Telegram account"
+        }
+      },
+      "parameters": {
+        "chatId": "54526027",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      }
+    },
+    {
+      "id": "s2",
+      "name": "Note s2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        300
+      ],
+      "parameters": {
+        "width": 700,
+        "height": 300,
+        "content": "## Fan-in\n\nEvery branch, published or skipped, reports one `{platform, status, url|reason|error}` object into the merge. That is why a skipped platform still produces a row in the final message: silence and success look identical otherwise.\n\nLinkedIn and Telegram both need an image, so they are also skipped when `generateImage` is false."
+      }
+    }
+  ],
+  "connections": {
+    "Strapi Publish Webhook": {
+      "main": [
+        [
+          {
+            "node": "Resolve Slug",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Manual Test Slug",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Test Slug": {
+      "main": [
+        [
+          {
+            "node": "Resolve Slug",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolve Slug": {
+      "main": [
+        [
+          {
+            "node": "Fetch Published Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Published Article": {
+      "main": [
+        [
+          {
+            "node": "Normalize Published Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Published Article": {
+      "main": [
+        [
+          {
+            "node": "PublishFlags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PublishFlags": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Post Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF Rebuild Site",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model (LinkedIn)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "LinkedIn Post Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn Post Agent": {
+      "main": [
+        [
+          {
+            "node": "Image Prompt Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Shorten for X",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Translate to Russian",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model (Image)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Image Prompt Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Prompt Agent": {
+      "main": [
+        [
+          {
+            "node": "IF Generate Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Generate Image": {
+      "main": [
+        [
+          {
+            "node": "Create Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LinkedIn Skipped",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Image": {
+      "main": [
+        [
+          {
+            "node": "IF Publish LinkedIn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Combine Image and Caption",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "IF Publish LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LinkedIn Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post": {
+      "main": [
+        [
+          {
+            "node": "Normalize LinkedIn Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize LinkedIn Result": {
+      "main": [
+        [
+          {
+            "node": "Merge All Responses",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn Skipped": {
+      "main": [
+        [
+          {
+            "node": "Merge All Responses",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model (X)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Shorten for X",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shorten for X": {
+      "main": [
+        [
+          {
+            "node": "IF Publish X",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Publish X": {
+      "main": [
+        [
+          {
+            "node": "X",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "X Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "X": {
+      "main": [
+        [
+          {
+            "node": "Normalize X Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize X Result": {
+      "main": [
+        [
+          {
+            "node": "Merge All Responses",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "X Skipped": {
+      "main": [
+        [
+          {
+            "node": "Merge All Responses",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Translate to Russian": {
+      "main": [
+        [
+          {
+            "node": "Truncate to 900",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Truncate to 900": {
+      "main": [
+        [
+          {
+            "node": "Combine Image and Caption",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Image and Caption": {
+      "main": [
+        [
+          {
+            "node": "IF Publish Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Publish Telegram": {
+      "main": [
+        [
+          {
+            "node": "Post to Telegram Channel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to Telegram Channel": {
+      "main": [
+        [
+          {
+            "node": "Normalize Telegram Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Telegram Result": {
+      "main": [
+        [
+          {
+            "node": "Merge All Responses",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Telegram Skipped": {
+      "main": [
+        [
+          {
+            "node": "Merge All Responses",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "IF Rebuild Site": {
+      "main": [
+        [
+          {
+            "node": "Trigger Site Rebuild",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rebuild Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Site Rebuild": {
+      "main": [
+        [
+          {
+            "node": "Normalize Rebuild Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Rebuild Result": {
+      "main": [
+        [
+          {
+            "node": "Merge All Responses",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Rebuild Skipped": {
+      "main": [
+        [
+          {
+            "node": "Merge All Responses",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge All Responses": {
+      "main": [
+        [
+          {
+            "node": "Format Final Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Final Message": {
+      "main": [
+        [
+          {
+            "node": "Notify Me On Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}
