@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Slow gate, once per push rather than once per commit.
+#
+# `gatsby clean` first, deliberately. An incremental build can report "no new
+# or changed html files" and pass while the HTML still points at a previous
+# build's hashed stylesheet — that exact state was committed and shipped, and
+# the old pre-commit build passed on it. A gate that validates cached output
+# is worse than no gate: it costs minutes and grants false confidence.
+echo "▸ clean build (this is the gate that matters)"
+npm run build:clean || exit 1

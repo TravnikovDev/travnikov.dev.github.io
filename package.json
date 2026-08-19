@@ -17,7 +17,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "prepare": "husky && husky install",
-    "pre-commit": "npm run typecheck && npm run build"
+    "build:clean": "gatsby clean && gatsby build"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",

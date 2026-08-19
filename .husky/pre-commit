@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "Running type check..."
+# Fast gate: catches the mistakes worth catching at commit time without
+# making you wait. The build moved to pre-push — see .husky/pre-push.
+echo "▸ typecheck"
 npm run typecheck || exit 1
 
-echo "Running build verification..."
-npm run build || exit 1
+echo "▸ tests"
+npm test -- --silent || exit 1
