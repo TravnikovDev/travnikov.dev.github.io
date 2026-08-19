@@ -1,9 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Link } from "gatsby";
-import { Canvas } from "@react-three/fiber";
+import BrandMark from "../shared/BrandMark";
+import type { GlyphKind } from "../3d/ServiceGlyphs";
 import * as styles from "./HeroSection.module.css";
-import { GlyphScene, GlyphKind } from "../3d/ServiceGlyphs";
-import BrandSphere from "../3d/BrandSphere";
+
+// Heavy visuals (three.js, R3F, the glyph scenes, the brand sphere) load only
+// where they earn their weight. Mobile gets the SVG mark and the CSS glow that
+// already sit behind these canvases.
+const GlyphCanvas = React.lazy(() => import("./HeroVisuals"));
+const BrandSphereLazy = React.lazy(() =>
+  import("./HeroVisuals").then((m) => ({ default: m.BrandSphere }))
+);
+
+const RICH_VISUALS = "(min-width: 48em) and (pointer: fine)";
+
+const useRichVisuals = () => {
+  const [rich, setRich] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia(RICH_VISUALS);
+    const decide = () => setRich(mq.matches);
+    decide();
+    mq.addEventListener("change", decide);
+    return () => mq.removeEventListener("change", decide);
+  }, []);
+  return rich;
+};
 
 const vectors: {
   id: string;
@@ -35,62 +57,24 @@ const vectors: {
   },
 ];
 
-// Each glyph gets its own small canvas so it scrolls natively with the DOM.
-// (A shared drei <View> re-scissors per frame and visibly lags during scroll.)
-// To keep it cheap, each canvas pauses its render loop when scrolled off
-// screen (IntersectionObserver) and stays static under reduced motion.
-const GlyphCanvas = ({
-  kind,
-  phase,
-  reducedMotion,
-}: {
-  kind: GlyphKind;
-  phase: number;
-  reducedMotion: boolean;
-}) => {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [onScreen, setOnScreen] = useState(true);
-
-  useEffect(() => {
-    if (reducedMotion) return; // stays "demand" regardless of visibility
-    const el = wrapRef.current;
-    if (!el || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(
-      ([entry]) => setOnScreen(entry.isIntersecting),
-      { rootMargin: "150px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [reducedMotion]);
-
-  // never = paused (keeps last frame on the GPU); demand = one static frame
-  const frameloop = reducedMotion ? "demand" : onScreen ? "always" : "never";
-
-  return (
-    <div ref={wrapRef} className={styles.glyphCanvasWrap}>
-      <Canvas
-        className={styles.glyphCanvas}
-        dpr={[1, 2]}
-        frameloop={frameloop}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <GlyphScene kind={kind} phase={phase} />
-      </Canvas>
-    </div>
-  );
-};
-
 const HeroSection = () => {
   const reducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rich = useRichVisuals();
 
   return (
     <div className={styles.hero}>
       <div className={styles.left}>
         <div className={`${styles.brand} ${styles.reveal}`}>
           <span className={styles.brandMark} aria-hidden="true">
-            <BrandSphere reducedMotion={reducedMotion} />
+            {rich ? (
+              <Suspense fallback={<BrandMark size={72} />}>
+                <BrandSphereLazy reducedMotion={reducedMotion} />
+              </Suspense>
+            ) : (
+              <BrandMark size={72} />
+            )}
           </span>
           <span className={styles.brandName}>
             Roman
@@ -155,11 +139,15 @@ const HeroSection = () => {
                 vector.glyph === "crystal" ? "crystal-glyph-anchor" : undefined
               }
             >
-              <GlyphCanvas
-                kind={vector.glyph}
-                phase={index * 2.1}
-                reducedMotion={reducedMotion}
-              />
+              {rich && (
+                <Suspense fallback={null}>
+                <GlyphCanvas
+                  kind={vector.glyph}
+                  phase={index * 2.1}
+                  reducedMotion={reducedMotion}
+                />
+                </Suspense>
+              )}
             </div>
             <div className={styles.serviceText}>
               <h2>{vector.title}</h2>

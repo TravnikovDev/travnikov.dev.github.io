@@ -10,3 +10,51 @@
   /* matches the WebGL clear colour so there's no dark flash before init */
   background-color: var(--canvas);
 }
+
+/* The mobile aura: the shader's diagonal band rebuilt from static gradients.
+   Same palette (mint, pale aqua, muted teal, warm sand, cream) laid on the
+   same top-left to bottom-right axis, so the two tiers read as one design.
+   Paints on the first frame, animates nothing, costs no JS. */
+.staticAura {
+  position: absolute;
+  inset: 0;
+  background-color: #f8f5ee;
+  background-image:
+    /* warm sand, upper right — the champagne pass */
+    radial-gradient(
+      70% 55% at 82% 12%,
+      rgba(224, 196, 174, 0.55) 0%,
+      rgba(237, 217, 194, 0.28) 45%,
+      transparent 72%
+    ),
+    /* mint core of the band */
+    radial-gradient(
+      65% 50% at 26% 34%,
+      rgba(141, 212, 200, 0.5) 0%,
+      rgba(194, 235, 228, 0.26) 48%,
+      transparent 74%
+    ),
+    /* muted teal, lower left, anchoring the diagonal */
+    radial-gradient(
+      80% 60% at 8% 88%,
+      rgba(106, 156, 151, 0.42) 0%,
+      rgba(165, 205, 224, 0.2) 50%,
+      transparent 76%
+    ),
+    /* pale aqua sweep along the axis */
+    linear-gradient(
+      142deg,
+      rgba(248, 245, 238, 0) 22%,
+      rgba(194, 235, 228, 0.34) 48%,
+      rgba(224, 196, 174, 0.22) 66%,
+      rgba(248, 245, 238, 0) 86%
+    );
+}
+
+/* The shader paints its own clear colour; when it is absent the gradient is
+   the background, so it must not be dimmed by the container's flat fill. */
+@supports (background: radial-gradient(1px 1px at 0 0, red, transparent)) {
+  .backgroundContainer {
+    background-color: transparent;
+  }
+}

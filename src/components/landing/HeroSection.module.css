@@ -426,3 +426,22 @@
     transform: none;
   }
 }
+
+/* Mirror of the JS gate in HeroSection: where the glyph canvases do not load,
+   the column they occupied is dead space, so the service text takes the full
+   width instead of sitting beside an empty box. Keep this query in sync with
+   RICH_VISUALS. */
+@media (max-width: 47.99em), (pointer: coarse) {
+  .service,
+  .service:nth-child(1),
+  .service:nth-child(2),
+  .service:nth-child(3) {
+    grid-template-columns: 1fr;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .glyph {
+    display: none;
+  }
+}
