@@ -98,26 +98,23 @@
    composed for that frame, so it is never cropped to fit a box. */
 .insightCover {
   flex: none;
-  /* 128px reduced fine hairline art to mush; this reads as a picture */
-  width: clamp(140px, 18vw, 210px);
+  /* full width when stacked; the desktop rule below narrows it */
+  width: 100%;
   height: auto;
   aspect-ratio: 2 / 1;
   border-radius: 8px;
   border: 1px solid var(--sheet-rule);
 }
 
-/* the date + title block takes the slack, so the read-time stays right */
-.insightItem > div {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
+/* Stacked by default: cover on the first row, text on the second. Side by
+   side is opt-in at desktop only (below). Squeezing a 210px thumbnail, a
+   title and a read-time into three columns on a phone left the title
+   wrapping one word per line. */
 .insightItem {
   display: flex;
-  justify-content: space-between;
-  /* was baseline, which hung the thumbnail off the title's baseline */
-  align-items: center;
-  gap: 1.5rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.85rem;
   padding: 0.85rem 1.1rem;
   border-radius: 12px;
   text-decoration: none;
@@ -126,6 +123,30 @@
   background: rgba(245, 241, 234, 0.04);
   transition: transform 200ms ease, border-color 200ms ease,
     box-shadow 200ms ease;
+}
+
+.insightItem > div {
+  min-width: 0;
+}
+
+/* Desktop: cover beside the text, read-time pushed to the right edge. */
+@media (min-width: 64.0625em) {
+  .insightItem {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .insightCover {
+    /* 128px reduced fine hairline art to mush; this reads as a picture */
+    width: clamp(140px, 18vw, 210px);
+  }
+
+  /* the date + title block takes the slack, so the read-time stays right */
+  .insightItem > div {
+    flex: 1 1 auto;
+  }
 }
 
 .insightItem:hover {
