@@ -20,7 +20,6 @@ const config: GatsbyConfig = {
   trailingSlash: `always`,
   plugins: [
     'gatsby-plugin-dts-css-modules',
-    'gatsby-plugin-offline',
     // Content (articles, case studies, experiments) is sourced from Strapi in
     // gatsby-node.ts — see docs/CMS.md. src/content/*.md only feeds the
     // one-time seed script (scripts/seed-strapi.mjs).

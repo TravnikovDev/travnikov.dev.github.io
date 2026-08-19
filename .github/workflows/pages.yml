@@ -65,21 +65,25 @@ jobs:
         with:
           # Automatically inject pathPrefix in your Gatsby configuration file.
           static_site_generator: gatsby
-      - name: Restore cache
+      # public/ is deliberately NOT cached. Restoring it let Gatsby decide
+      # "no new or changed html files" and ship HTML still pointing at a
+      # previous build's hashed stylesheet — the site served stale CSS while
+      # the new CSS sat unused beside it.
+      - name: Restore Gatsby cache
         uses: actions/cache@v4
         with:
-          path: |
-            public
-            .cache
-          key: ${{ runner.os }}-gatsby-build-${{ hashFiles('public') }}
+          path: .cache
+          key: ${{ runner.os }}-gatsby-cache-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-gatsby-build-
+            ${{ runner.os }}-gatsby-cache-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Type check
         run: ${{ steps.detect-package-manager.outputs.manager }} run typecheck
       - name: Test
         run: ${{ steps.detect-package-manager.outputs.manager }} test
+      - name: Clean previous build output
+        run: npx gatsby clean
       - name: Build with Gatsby
         env:
           PREFIX_PATHS: 'true'
