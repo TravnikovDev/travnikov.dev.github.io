@@ -253,37 +253,30 @@
   margin-bottom: 1rem;
 }
 
-/* Only the featured post runs the cover full width. The rest move it into a
-   side column, which keeps the row heights short — the reason the crop existed
-   — without cutting the image, and keeps the list reading as a list rather
-   than a stack of equal cards. */
-.item:not(.itemFeatured):has(.itemCover) {
-  display: grid;
-  grid-template-columns: clamp(150px, 26%, 230px) 1fr;
-  column-gap: clamp(1rem, 2.5vw, 1.75rem);
-  align-items: start;
-}
+/* Default everywhere: one column, image on the first row, text on the second.
+   The side-by-side variant is opt-in at desktop only (below), so any failure
+   mode — an unsupported :has(), a stale stylesheet — degrades to the stacked
+   layout rather than to a crushed 150px image beside a 350px text column. */
 
-.item:not(.itemFeatured) .itemCover {
-  grid-column: 1;
-  grid-row: 1 / span 4;
-  align-self: start;
-  margin-bottom: 0;
-}
-
-.item:not(.itemFeatured) > :not(.itemCover) {
-  grid-column: 2;
-}
-
-/* Side-by-side only on real desktop. Below that the image column collapses to
-   its 150px floor next to a ~350px text column, which is the worst of both:
-   the art is too small to read and the text is too narrow to scan. Stack. */
-@media (max-width: 64em) {
+/* Desktop only: the cover moves into a side column, which keeps row heights
+   short without cropping the art and keeps the list reading as a list rather
+   than a stack of equal cards. 64em is where there is genuinely room for both. */
+@media (min-width: 64.0625em) {
   .item:not(.itemFeatured):has(.itemCover) {
-    display: block;
+    display: grid;
+    grid-template-columns: clamp(150px, 26%, 230px) 1fr;
+    column-gap: clamp(1rem, 2.5vw, 1.75rem);
+    align-items: start;
   }
 
   .item:not(.itemFeatured) .itemCover {
-    margin-bottom: 1rem;
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    align-self: start;
+    margin-bottom: 0;
+  }
+
+  .item:not(.itemFeatured) > :not(.itemCover) {
+    grid-column: 2;
   }
 }
