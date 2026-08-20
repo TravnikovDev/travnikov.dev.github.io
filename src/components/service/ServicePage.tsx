@@ -33,23 +33,32 @@ export default function ServicePage({
   form,
   related,
 }: ServicePageProps) {
-  // Set GATSBY_LEAD_WEBHOOK to the n8n webhook URL. Until it is set the form
-  // falls back to mailto, which is what this used to do unconditionally — and
-  // which silently loses leads on mobile and webmail.
-  const ENDPOINT = process.env.GATSBY_LEAD_WEBHOOK;
+  // Formspree for now: it captures leads today without waiting on n8n, and
+  // the endpoint is public by design so there is nothing to hide in a secret.
+  // Set GATSBY_LEAD_WEBHOOK to move to the n8n webhook later without touching
+  // this file. If both are absent the form falls back to mailto, which is what
+  // it used to do unconditionally — and which silently loses leads on mobile
+  // and for webmail users.
+  const ENDPOINT =
+    process.env.GATSBY_LEAD_WEBHOOK || "https://formspree.io/f/mvzebyqy";
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
   );
   const startedAt = useRef(Date.now());
 
-  const mailtoFallback = (payload: Record<string, string>) => {
+  const mailtoFallback = (f: {
+    name: string;
+    email: string;
+    third: string;
+    message: string;
+  }) => {
     const lines = [
-      `Name: ${payload.name}`,
-      `Email: ${payload.email}`,
-      `${form.thirdField.label}: ${payload.third}`,
+      `Name: ${f.name}`,
+      `Email: ${f.email}`,
+      `${form.thirdField.label}: ${f.third}`,
       ``,
       `${form.textarea.label}:`,
-      payload.message,
+      f.message,
     ];
     window.location.href = `mailto:roman@travnikov.dev?subject=${encodeURIComponent(
       `${title} inquiry`
@@ -65,18 +74,26 @@ export default function ServicePage({
     if (data.get("company_website")) return;
     if (Date.now() - startedAt.current < 2000) return;
 
-    const payload = {
-      name: String(data.get("name") ?? ""),
-      email: String(data.get("email") ?? ""),
-      third: String(data.get(form.thirdField.name) ?? ""),
-      message: String(data.get(form.textarea.name) ?? ""),
+    const name = String(data.get("name") ?? "");
+    const email = String(data.get("email") ?? "");
+    const third = String(data.get(form.thirdField.name) ?? "");
+    const message = String(data.get(form.textarea.name) ?? "");
+
+    // keys double as labels in the notification email, so they are written
+    // for a human reading it on a phone, not for a schema
+    const payload: Record<string, string> = {
+      name,
+      email,
+      [form.thirdField.label]: third,
+      [form.textarea.label]: message,
       service: title,
       page: typeof window !== "undefined" ? window.location.pathname : "",
       submittedAt: new Date().toISOString(),
+      _subject: `${title} enquiry from ${name || "the site"}`,
     };
 
     if (!ENDPOINT) {
-      mailtoFallback(payload);
+      mailtoFallback({ name, email, third, message });
       return;
     }
 
@@ -84,12 +101,32 @@ export default function ServicePage({
     try {
       const res = await fetch(ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          // without this Formspree answers with a redirect to its own
+          // thank-you page instead of JSON, and the visitor leaves the site
+          Accept: "application/json",
+        },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error(String(res.status));
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(
+          body?.errors?.[0]?.message ?? `Request failed (${res.status})`
+        );
+      }
+
       setState("sent");
       formEl.reset();
+
+      // a submitted form is the only conversion this site has; count it
+      const gtag = (window as unknown as { gtag?: (...a: unknown[]) => void })
+        .gtag;
+      gtag?.("event", "generate_lead", {
+        service: title,
+        page: window.location.pathname,
+      });
     } catch {
       setState("error");
     }
