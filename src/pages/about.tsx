@@ -167,10 +167,32 @@ export default function AboutPage() {
 }
 
 export function Head({ location }: { location: { pathname: string } }) {
+  const site = "https://travnikov.dev";
+
+  // Every page carries the Person entity. This one says it *is* the profile
+  // for that person, via mainEntity pointing at the same @id, so the entity
+  // has one canonical home rather than being asserted everywhere equally.
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${site}/about/#profile`,
+    url: `${site}/about/`,
+    name: "About Roman Travnikov",
+    mainEntity: { "@id": `${site}/#person` },
+    isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, url: site },
+  };
+
   return (
-    <SEO pathname={location.pathname}
+    <SEO
+      pathname={location.pathname}
       title="About"
       description="Roman Travnikov: AI automation and frontend architecture for teams that have outgrown doing things by hand. Building for the web since 2012, based in Istanbul, working remotely."
-    />
+      image="/portrait/portrait.jpg"
+    >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+    </SEO>
   );
 }

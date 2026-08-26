@@ -159,3 +159,58 @@ Only OpenAI and Perplexity do the thinking:
 
 Everything else is a destination, not a model: Telegram, LinkedIn, X, GitHub,
 Strapi.
+
+## Link attribution
+
+Every link a workflow posts back to the site carries UTM parameters, generated
+deterministically so the analytics can answer one question: which channel
+brought someone who actually read the piece.
+
+```
+https://travnikov.dev/blog/<slug>/?utm_source=<platform>&utm_medium=<medium>&utm_campaign=<slug>&utm_content=<format>
+```
+
+| Parameter | Value | Notes |
+|---|---|---|
+| `utm_source` | `linkedin`, `x`, `telegram` | the platform, lowercase |
+| `utm_medium` | `social` | `email` if a digest is ever added |
+| `utm_campaign` | the article slug | one campaign per article, across every channel |
+| `utm_content` | `post`, `short`, `bio` | the format within that platform |
+
+Campaign is the slug and nothing else. That is what makes "this article pulled
+40 readers, 28 of them from LinkedIn" answerable without hand-reconciling
+names later.
+
+Build it in the syndication flow from the article the workflow already has:
+
+```js
+const url = new URL(`https://travnikov.dev/blog/${article.slug}/`);
+url.searchParams.set('utm_source', platform);
+url.searchParams.set('utm_medium', 'social');
+url.searchParams.set('utm_campaign', article.slug);
+url.searchParams.set('utm_content', format);
+```
+
+The site pairs with this: article pages emit `article_50`, `article_complete`
+and `source_click`, and the forms emit `generate_lead`. A campaign can
+therefore be judged on whether people finished reading, not just whether they
+arrived.
+
+## Distribution metadata
+
+Workflow 02 knows where each article went but currently tells nobody. When the
+n8n API key works, the useful next step is writing that back to Strapi so the
+site owns the record:
+
+```ts
+distribution: {
+  linkedin?:  { url, externalId, publishedAt }
+  x?:         { url, externalId, publishedAt }
+  telegram?:  { url, externalId, publishedAt }
+}
+```
+
+That needs a JSON field on the Article type, added in the Strapi content-type
+builder — it cannot be created over the REST API. Nothing on the public site
+should render it; it exists so the fabric can answer "was this distributed,
+and where" without scraping the platforms.

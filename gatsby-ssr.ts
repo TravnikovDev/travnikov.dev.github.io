@@ -51,7 +51,24 @@ export const onRenderBody: GatsbySSR["onRenderBody"] = ({
     ],
   };
 
+  // The site itself as an entity, so /about's ProfilePage has something real
+  // to point isPartOf at and the graph resolves instead of dangling.
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE}/#website`,
+    url: SITE,
+    name: "Travnikov.dev",
+    inLanguage: "en",
+    publisher: { "@id": `${SITE}/#person` },
+  };
+
   const head: React.ReactNode[] = [
+    React.createElement("script", {
+      key: "ld-website",
+      type: "application/ld+json",
+      dangerouslySetInnerHTML: { __html: JSON.stringify(website) },
+    }),
     React.createElement("script", {
       key: "ld-person",
       type: "application/ld+json",

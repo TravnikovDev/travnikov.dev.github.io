@@ -3,6 +3,7 @@ import { graphql, Link, PageProps } from "gatsby";
 import BaseLayout from "../layouts/BaseLayout";
 import ThreeDBackground from "../components/3d/3dBackground";
 import { SEO } from "../utils/seo/SEO";
+import { useArticleEngagement } from "../utils/analytics/useArticleEngagement";
 import * as styles from "./article.module.css";
 
 interface BlogTemplateProps extends PageProps {
@@ -12,6 +13,8 @@ interface BlogTemplateProps extends PageProps {
       title: string;
       date: string;
       isoDate: string;
+      isoModified: string;
+      slug: string;
       tags: string[] | null;
       excerpt: string;
       coverUrl: string | null;
@@ -31,6 +34,7 @@ interface BlogTemplateProps extends PageProps {
 }
 
 export default function BlogTemplate({ data }: BlogTemplateProps) {
+  useArticleEngagement(data.blogPost.slug);
   const article = data.blogPost;
   const readNext = data.readNext?.nodes ?? [];
 
@@ -121,7 +125,8 @@ export function Head({ data, location }: BlogTemplateProps) {
         headline: article.title,
         description: article.excerpt,
         datePublished: article.isoDate,
-        dateModified: article.isoDate,
+        // real last-changed time, not a copy of datePublished
+        dateModified: article.isoModified || article.isoDate,
         wordCount: article.timeToRead * 200,
         keywords: article.tags ?? undefined,
         image: article.coverUrl ?? `${site}/og-cover.jpg`,
@@ -168,6 +173,8 @@ export const query = graphql`
       title
       date(formatString: "MMM D, YYYY")
       isoDate: date
+      isoModified: modified
+      slug
       tags
       excerpt
       coverUrl

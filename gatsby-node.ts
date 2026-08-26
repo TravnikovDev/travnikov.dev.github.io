@@ -111,6 +111,10 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         title: str(entry.title),
         slug: str(entry.slug),
         date: str(entry.date) || str(entry.publishedAt),
+        // Strapi's own row timestamp. Distinct from `date`, which is the
+        // editorial publication date; this is when the content last actually
+        // changed, which is what dateModified should report.
+        modified: str(entry.updatedAt) || str(entry.date),
         excerpt: str(entry.excerpt),
         tags: strArr(entry.tags),
         ...media(entry.cover),
@@ -163,6 +167,7 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
         title: String!
         slug: String!
         date: Date @dateformat
+        modified: Date @dateformat
         excerpt: String
         tags: [String]
         coverUrl: String
