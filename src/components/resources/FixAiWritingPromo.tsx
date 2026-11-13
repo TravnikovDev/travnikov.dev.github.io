@@ -1,25 +1,30 @@
 import React from "react";
 import { Link } from "gatsby";
 import { LandingSection } from "../landing/TimelineSection";
-import WritingEditExample from "./WritingEditExample";
+import GuideActions from "./GuideActions";
+import GuidePreview from "./GuidePreview";
 import * as styles from "./WritingResource.module.css";
 
 export default function FixAiWritingPromo() {
   return (
-    <LandingSection
-      title={<span id="writing-guide-title">Fix AI Writing</span>}
-      description="Give your AI draft a proper edit. Remove stock phrases without losing what you meant."
-    >
-      <div className={styles.promo}>
-        <div>
-          <p className={styles.promoLead}>A free editing guide by Roman Travnikov.</p>
-          <Link to="/fix-ai-writing/" className={styles.promoLink}>
-            Get the free guide <span aria-hidden="true">↗</span>
-          </Link>
-          <p className={styles.small}>12-page PDF. 74 editing rules. No signup.</p>
+    <div className={styles.promoContainer}>
+      <LandingSection
+        title={<span id="writing-guide-title">Fix AI Writing</span>}
+        description="Editing instructions for the LLM you already use."
+        compact
+        align="left"
+      >
+        <div className={styles.promo}>
+          <div>
+            <p className={styles.promoLead}>Attach this guide alongside your draft and ask the model to apply its rules.</p>
+            <GuideActions />
+            <p className={styles.small}>74 editing rules. Free Markdown file.</p>
+            <p className={styles.author}>By <a href="https://travnikov.dev/">Roman Travnikov</a></p>
+            <Link to="/fix-ai-writing/" className={styles.textLink}>How to use it <span aria-hidden="true">↗</span></Link>
+          </div>
+          <GuidePreview />
         </div>
-        <WritingEditExample />
-      </div>
-    </LandingSection>
+      </LandingSection>
+    </div>
   );
 }

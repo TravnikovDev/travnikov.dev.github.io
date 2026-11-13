@@ -8,6 +8,8 @@ export type LandingSectionProps = {
   children?: React.ReactNode;
   containerSize?: number | "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
+  compact?: boolean;
+  align?: "left" | "center";
 };
 
 export const LandingSection = React.forwardRef<
@@ -20,13 +22,15 @@ export const LandingSection = React.forwardRef<
     children,
     containerSize = "xl",
     className,
+    compact = false,
+    align = "center",
   }: LandingSectionProps,
   ref
 ) {
   return (
     <Container
       size={containerSize}
-      className={`${styles.timelineSection} ${className ?? ""}`}
+      className={`${styles.timelineSection} ${compact ? styles.compact : ""} ${align === "left" ? styles.alignLeft : ""} ${className ?? ""}`}
       ref={ref}
     >
       {/* Title area */}

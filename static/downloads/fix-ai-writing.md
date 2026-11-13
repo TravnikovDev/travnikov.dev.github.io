@@ -1,16 +1,12 @@
-# Fix AI Writing
-
-By [Roman Travnikov](https://travnikov.dev/)
-
-Public edition | 13 November 2026
+# Writing Style Guide
 
 ## Purpose and enforcement
 
 Remove the AI-writing patterns listed in this guide from the final text. Treat every prohibition as a requirement. Do not merely reduce frequency, allow an occasional occurrence, or decide that a prohibited pattern sounds acceptable in context. Rewrite until none of the applicable prohibited patterns remain.
 
-This guide covers prose, formatting, and the factual accuracy of a rewrite. The assignment defines the content and required format.
+This guide controls prose, formatting, and the factual integrity of a rewrite. Task logic and substantive requirements belong in the applicable task contract and workflow guides. For OpenClaw Lobster tasks, task-contract_lobster.md and the relevant rubric or workflow guide remain authoritative for those requirements.
 
-The prohibited examples below are instructions for the editor. They must not be copied into the cleaned output. Use the examples to identify a pattern, then rewrite the passage without changing its intended meaning.
+The prohibited examples below are instructions for the editor. They must not be copied into the cleaned output. The catalog covers current and historical signals from the supplied Signs of AI writing text, together with the original style requirements and the previously reviewed writing skills.
 
 A style audit and an external AI-detector result are separate checks. Compliance with this guide cannot establish human authorship or predict a detector's label. Never describe an untested passage as having passed Pangram or another external check.
 
@@ -44,7 +40,7 @@ These rules improve relevance and precision. A detector outcome remains unknown 
 
 ## Author voice
 
-Use the author's established voice when writing on their behalf. An assigned persona determines the speaker in task prompts. Evaluator material keeps the plain professional register required elsewhere in this guide. Every prohibition in the guide still applies.
+Use Roman's edited voice when writing on his behalf or when no other author voice is specified. An assigned persona determines the speaker in task prompts. Evaluator material keeps the plain professional register required elsewhere in this guide. Every prohibition in the guide still applies.
 
 The voice should make the intended result explicit through ordinary conversational English. Keep the concrete context that explains the request. Preserve the author's actual preferences and degree of certainty. Correct grammar and remove accidental repetition while keeping the purpose of the message intact.
 
@@ -129,7 +125,6 @@ The following are a strict blocklist in rewritten prose, including their inflect
 * G09. Repeated section and paragraph summaries. Do not add a conclusion to each section, restate each paragraph's point at its end, or append an automatically balanced positive-negative-inspiring close. Stop when the point is complete; do not leave a necessary argument unfinished.
 
 * G10. Unnecessary conjunctions. Minimize conjunctions, especially "and" and "or". Review every occurrence in the finished prose. Remove it or restructure the sentence whenever a natural version preserves the facts and intended relationship. Use "and" or "or" only when unavoidable for accurate meaning or grammatical wording within the required format. Do not chain independent claims merely to pack them into one sentence. Do not substitute comma splices, slash shorthand, synonym connectors, or a series of semicolons. Preserve joint requirements and genuine alternatives. Keep necessary causal or conditional relationships explicit. Respect the field's sentence limit.
-
 ## Prohibited chatbot and editorial residue
 
 * U01. Assistant preambles and acknowledgments. Do not include "Here is a", "Here are several", "Answer:", "Of course", "Certainly", "Absolutely", "Great question", "You're absolutely right", "I hope this helps", "I hope/trust this message finds you well", "Dear Wikipedia Editorial Team", or "I am writing to" as canned scaffolding. Do not label the deliverable "a Wikipedia-style article" or narrate what the next section will discuss.
@@ -199,7 +194,7 @@ Agent Objective, Core Functionalities, and Desired Outcome use concise prose. Sa
 
 ### Rubrics
 
-Write one plain sentence naming one observable final result and its evidence location. Do not use vague labels, canned openings, process narration, or formulaic safety explanations. Use the assignment's stated criterion.
+Write one plain sentence naming one observable final result and its evidence location. Do not use vague labels, canned openings, process narration, or formulaic safety explanations. The rubric guide owns substantive criterion rules.
 
 ### Reviews and justifications
 
@@ -207,7 +202,7 @@ Lead with the finding and evidence. State what happened, who or what was affecte
 
 ### Rewrites
 
-Return only the revised text in the requested format. Add a change summary or alternatives only when requested, and then follow P05-P08.
+Return only the revised text in the requested format. Add a change summary or alternatives only when requested, and then follow P05-P08. For OpenClaw Lobster tasks, follow task-contract_lobster.md for thin-space and timelessness requirements.
 
 ## Factual accuracy and language safeguards
 
@@ -244,6 +239,10 @@ Keep a separate test record containing the exact final text, task decision, guid
 
 A single successful scan establishes one observed result. It does not establish a reliable pass rate or a universal prompt. Retest material changes under the relevant integration before claiming a demonstrated improvement. A result from another detector or a differently assembled input is not a substitute for the target platform's result.
 
+### Observed QC outcome
+
+On 10 November 2026, the user reported that the rewritten two-sentence rationale passed the target check. This is one user-reported outcome. The detector version, score, and full input scope were not provided. It does not establish that any specific wording change caused the pass, and it does not validate the new conjunction rule or the guide as a whole.
+
 ### Evidence and meaning
 
 Use the evaluator's actual decision and observations as the source of the rationale. Preserve the facts and required format during any comparison. Do not manufacture mistakes, unusual wording, invisible characters, false anecdotes, or false claims of human authorship to influence a score. Record the actual drafting and editing history accurately.
@@ -271,3 +270,6 @@ Check the author voice as well: the intended result and concrete constraints mus
 A completed style check supports only a style-compliance finding. Report external detector status separately when requested, using actual results or the status untested.
 
 Perform this check silently. Return only the requested deliverable.
+
+
+Created by [Roman Travnikov | travnikov.dev](https://travnikov.dev/).

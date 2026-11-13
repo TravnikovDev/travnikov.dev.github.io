@@ -307,7 +307,7 @@ export const onPostBuild: GatsbyNode['onPostBuild'] = async ({ graphql, reporter
     ...result.data.allSitePage.nodes.map((n) => n.path),
     // These public resources are copied from static/, outside Gatsby's page registry.
     '/downloads/fix-ai-writing/',
-    '/downloads/fix-ai-writing.pdf',
+    '/downloads/fix-ai-writing.md',
   ])]
     .filter((p) => !/^\/(404|dev-404-page|offline-plugin)/.test(p))
     .sort();

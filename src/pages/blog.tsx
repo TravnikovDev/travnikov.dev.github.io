@@ -46,7 +46,7 @@ export default function BlogPage({ data }: BlogPageProps) {
 
         <Link to="/fix-ai-writing/" className={resourceStyles.insightsLink}>
           <strong>Fix AI Writing</strong>
-          <span>A free PDF guide to editing AI-generated text <span aria-hidden="true">↗</span></span>
+          <span>Markdown editing instructions for your LLM <span aria-hidden="true">↗</span></span>
         </Link>
 
         <div className={styles.list}>

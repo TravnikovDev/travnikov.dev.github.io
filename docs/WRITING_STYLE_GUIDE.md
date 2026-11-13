@@ -1,36 +1,32 @@
 # Fix AI Writing
 
-The public Markdown source is [resources/fix-ai-writing.md](resources/fix-ai-writing.md).
-The original private file in the author's Work directory is not modified.
-The public edition removes internal task-contract references and the private QC anecdote.
-Every PDF page has a linked credit: `Created by Roman Travnikov | travnikov.dev`.
+The public file is [fix-ai-writing.md](../static/downloads/fix-ai-writing.md).
+It contains the original `/Users/travnikov/Work/Writing_Style_Guide_1.md`
+verbatim, followed only by a linked website credit. The source file is unchanged.
+Do not rewrite or remove sections when refreshing this download.
 
 Public routes:
 
-- Guide landing page: `https://travnikov.dev/fix-ai-writing/`
-- PDF: `https://travnikov.dev/downloads/fix-ai-writing.pdf`
-- Automatic download page: `https://travnikov.dev/downloads/fix-ai-writing/`
+- Guide: `https://travnikov.dev/fix-ai-writing/`
+- Markdown: `https://travnikov.dev/downloads/fix-ai-writing.md`
+- Automatic download: `https://travnikov.dev/downloads/fix-ai-writing/`
 
-The download page attempts one same-origin download using the HTML download
-attribute. Browser settings can still require confirmation or block automatic
-downloads. The visible download link works without JavaScript. Opening the raw
-PDF URL may use the browser's PDF viewer. No attachment response header is
-configured by this change.
+Gatsby copies the static Markdown file unchanged. Download Markdown and Copy
+guide use this same file, including the website credit. The copy control preloads
+the file so the clipboard write starts during the click. If clipboard access is
+blocked, it selects the complete text in a read-only field for manual copying.
+If loading fails, the download link remains available.
 
-The landing page explains the guide with an example edit and a real PDF preview.
-The homepage promotes it immediately after Recent Insights, using the shared
-homepage section surface and heading component. Insights links to it above
-the article list, and the shared footer includes it under Resources. The landing
-page has its own SEO metadata; all three public routes appear in the sitemap.
-The earlier provisional filenames were never deployed and are not published as
-duplicate copies.
+The automatic download page attempts one same-origin download per navigation.
+Browser settings can block automatic downloads; its visible link works without
+JavaScript. The raw Markdown URL may display as text in a browser. The download
+links use the HTML download attribute; no attachment response header is configured.
 
-To regenerate the PDF, use Python 3.10 or newer with `reportlab` installed:
+The homepage promotion follows Recent Insights and uses the shared section
+surface and heading. Its top-aligned layout shows a real excerpt of the file
+and stacks when the component becomes narrow. The guide page includes usage
+instructions and an example edit. Insights and the shared footer link to it.
+The guide, Markdown file, and download helper appear in the sitemap.
 
-```sh
-python3 scripts/build-writing-style-guide.py
-```
-
-The PDF is committed under `static/downloads/`; Gatsby copies it unchanged.
-The production build does not install Python or regenerate the PDF. PDF review
-renders and extraction caches belong in gitignored local working directories.
+The earlier PDF, cover preview, and PDF generator have been removed. There is
+no separate edited public edition or generated document to maintain.

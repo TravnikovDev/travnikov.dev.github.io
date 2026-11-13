@@ -14,7 +14,8 @@ visit the Insights articles and downloadable writing resources.
 
 Explain the services, show evidence of the work, and help a visitor reach the
 relevant service or contact page. Fix AI Writing gives readers an editing
-reference they can download without registration.
+reference they can download as Markdown or copy into an LLM without registration.
+The downloadable file preserves the original guide and appends a website credit.
 
 ## Brand Personality
 
