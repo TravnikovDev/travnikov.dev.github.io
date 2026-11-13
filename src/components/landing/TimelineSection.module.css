@@ -16,28 +16,6 @@
 }
 
 /* Main title styles */
-.timelineSection.compact {
-  max-width: 100%;
-  padding: 0;
-}
-
-.compact .timelineTitleContainer {
-  margin-bottom: 24px;
-}
-
-.alignLeft .timelineTitleContainer,
-.alignLeft .timelineDescriptionText {
-  text-align: left;
-}
-
-.alignLeft .timelineDescriptionText {
-  margin: 16px 0 0;
-}
-
-.compact .timelineUnderline {
-  display: none;
-}
-
 .timelineTitleContainer {
   margin-bottom: 2.4rem;
   text-align: center;

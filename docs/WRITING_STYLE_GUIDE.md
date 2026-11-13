@@ -23,8 +23,9 @@ JavaScript. The raw Markdown URL may display as text in a browser. The download
 links use the HTML download attribute; no attachment response header is configured.
 
 The homepage promotion follows Recent Insights and uses the shared section
-surface and heading. Its top-aligned layout shows a real excerpt of the file
-and stacks when the component becomes narrow. The guide page includes usage
+surface, centered heading, and underline without local heading overrides.
+A before-and-after example leads into the download and copy controls; the
+homepage does not show a Markdown preview. The example stacks on narrow screens. The guide page includes usage
 instructions and an example edit. Insights and the shared footer link to it.
 The guide, Markdown file, and download helper appear in the sitemap.
 

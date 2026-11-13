@@ -10,19 +10,42 @@
   container-type: inline-size;
 }
 
-.promo {
-  display: grid;
-  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
-  gap: clamp(28px, 3vw, 52px);
-  align-items: start;
+.promoActions {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--sheet-rule);
+  text-align: center;
 }
 
 .promoLead {
-  max-width: 42ch;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.6;
-  margin: 0 0 24px;
+  margin: 0 0 20px;
   text-wrap: pretty;
+}
+
+.promoActions .actionRow {
+  justify-content: center;
+}
+
+.promoDetails {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0 24px;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.promoDetails p {
+  margin: 0;
+}
+
+.promoDetails .textLink {
+  font-size: 14px;
 }
 
 .guideActions {
@@ -413,8 +436,69 @@
 
 .insightsLink:hover strong { color: var(--guide-accent); }
 
-@container (max-width: 800px) {
-  .promo { grid-template-columns: minmax(0, 1fr); }
+.comparison .exampleCaption {
+  color: var(--ink);
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.comparison .examplePair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+}
+
+.comparison .draft,
+.comparison .edited {
+  padding: 20px 0 24px;
+  border-color: var(--sheet-rule);
+}
+
+.comparison .edited {
+  border-color: var(--guide-accent);
+}
+
+.comparison .exampleLabel {
+  margin-bottom: 16px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.comparison .edited .exampleLabel {
+  color: var(--guide-accent);
+}
+
+.comparison .draft p,
+.comparison .edited p {
+  font-size: clamp(19px, 2vw, 24px);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.comparison .draft p {
+  color: var(--ink-soft);
+}
+
+.draft del {
+  text-decoration-color: #93a5a0;
+  text-decoration-thickness: 1px;
+}
+
+.comparison .edited p {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+@container (max-width: 560px) {
+  .comparison .examplePair {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .promoActions {
+    margin-top: 24px;
+    padding-top: 24px;
+  }
 }
 
 @container (max-width: 420px) {
