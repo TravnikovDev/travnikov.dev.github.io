@@ -18,7 +18,8 @@ PDF URL may use the browser's PDF viewer. No attachment response header is
 configured by this change.
 
 The landing page explains the guide with an example edit and a real PDF preview.
-The homepage promotes it immediately after the hero. Insights links to it above
+The homepage promotes it immediately after Recent Insights, using the shared
+homepage section surface and heading component. Insights links to it above
 the article list, and the shared footer includes it under Resources. The landing
 page has its own SEO metadata; all three public routes appear in the sitemap.
 The earlier provisional filenames were never deployed and are not published as

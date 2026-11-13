@@ -147,7 +147,6 @@ export default function IndexPage({ data }: IndexPageProps) {
         {/* Full-bleed "book": sections become facing pages, two to a spread on
             desktop, single column below. */}
         <Box className={styles.book}>
-        <FixAiWritingPromo />
         {insights.length > 0 && (
         <section className={styles.sectionRight} data-sheet>
           <LandingSection
@@ -190,6 +189,10 @@ export default function IndexPage({ data }: IndexPageProps) {
           </LandingSection>
         </section>
         )}
+
+        <section className={styles.sectionRight} data-sheet aria-labelledby="writing-guide-title">
+          <FixAiWritingPromo />
+        </section>
 
         {caseStudies.length > 0 && (
         <section className={styles.sectionRight} data-sheet>

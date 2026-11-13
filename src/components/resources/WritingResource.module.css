@@ -1,4 +1,3 @@
-.promo,
 .page {
   --ink: #f7f4ee;
   --ink-soft: #b9c1c0;
@@ -8,14 +7,52 @@
 }
 
 .promo {
-  width: 100%;
-  max-width: 1560px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(32px, 5vw, 88px);
   align-items: center;
-  padding: clamp(28px, 4vw, 60px);
-  border-radius: 16px;
+}
+
+.promoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 44px;
+  padding: 0.8rem 1.6rem;
+  border: 1px solid rgba(245, 241, 234, 0.25);
+  border-radius: 999px;
+  background: rgba(245, 241, 234, 0.06);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 180ms ease-out, border-color 180ms ease-out;
+}
+
+.promoLink:hover {
+  background: rgba(245, 241, 234, 0.14);
+  border-color: rgba(245, 241, 234, 0.45);
+  color: var(--ink);
+}
+
+.promoLink:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.promo .draft,
+.promo .edited {
+  border-color: var(--sheet-rule);
+}
+
+.promo .draft p {
+  color: var(--ink-soft);
+}
+
+.promo .edited p {
+  color: var(--ink);
 }
 
 .meta,
@@ -26,7 +63,6 @@
   margin: 0 0 20px;
 }
 
-.promoTitle,
 .title {
   font-family: var(--font-display);
   font-weight: 500;
@@ -35,10 +71,6 @@
   text-wrap: balance;
   margin: 0 0 24px;
   color: var(--ink);
-}
-
-.promoTitle {
-  font-size: clamp(36px, 4.2vw, 64px);
 }
 
 .promoLead {
@@ -334,6 +366,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .primaryLink,
+  .promoLink,
   .previewLink {
     transition: none;
   }
