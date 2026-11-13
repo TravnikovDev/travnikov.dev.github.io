@@ -19,7 +19,7 @@ function loadGuide() {
   return guideRequest;
 }
 
-export function useGuideText() {
+function useGuideText() {
   const [text, setText] = useState<string>();
   const [failed, setFailed] = useState(false);
   useEffect(() => {

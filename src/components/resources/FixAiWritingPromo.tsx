@@ -12,7 +12,7 @@ export default function FixAiWritingPromo() {
       description="Give AI drafts a proper edit without losing what you meant."
     >
       <div className={styles.promoContainer}>
-        <WritingEditExample comparison />
+        <WritingEditExample />
         <div className={styles.promoActions}>
           <p className={styles.promoLead}>Add the guide to your LLM conversation alongside your draft.</p>
           <GuideActions />

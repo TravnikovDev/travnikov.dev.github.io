@@ -25,8 +25,10 @@ links use the HTML download attribute; no attachment response header is configur
 The homepage promotion follows Recent Insights and uses the shared section
 surface, centered heading, and underline without local heading overrides.
 A before-and-after example leads into the download and copy controls; the
-homepage does not show a Markdown preview. The example stacks on narrow screens. The guide page includes usage
-instructions and an example edit. Insights and the shared footer link to it.
+homepage does not show a Markdown preview. Its example caption and explanatory
+note are centered. The guide page also omits the preview and shows two
+before-and-after examples: cutting filler and preserving uncertainty. Examples
+stack on narrow screens. Usage instructions follow the examples. Insights and the shared footer link to it.
 The guide, Markdown file, and download helper appear in the sitemap.
 
 The earlier PDF, cover preview, and PDF generator have been removed. There is

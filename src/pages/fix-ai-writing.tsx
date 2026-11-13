@@ -4,7 +4,6 @@ import BaseLayout from "../layouts/BaseLayout";
 import ThreeDBackground from "../components/3d/3dBackground";
 import WritingEditExample from "../components/resources/WritingEditExample";
 import GuideActions, { GUIDE_URL } from "../components/resources/GuideActions";
-import GuidePreview from "../components/resources/GuidePreview";
 import { SEO } from "../utils/seo/SEO";
 import * as styles from "../components/resources/WritingResource.module.css";
 
@@ -26,8 +25,16 @@ export default function FixAiWritingPage() {
             <p className={styles.small}>Original file with a website credit. No signup.</p>
             <p className={styles.author}>By <a href="https://travnikov.dev/">Roman Travnikov</a></p>
           </div>
-          <GuidePreview />
         </header>
+
+        <section className={styles.examples} aria-labelledby="examples-title">
+          <div className={styles.exampleIntro}>
+            <h2 id="examples-title" className={styles.sectionTitle}>Before and after</h2>
+            <p className={styles.sectionCopy}>Cut unnecessary wording. Keep the facts and any qualifications that matter.</p>
+          </div>
+          <WritingEditExample />
+          <WritingEditExample variant="uncertainty" />
+        </section>
 
         <section className={styles.usage} aria-labelledby="usage-title">
           <h2 id="usage-title" className={styles.sectionTitle}>Use it with a draft</h2>
@@ -37,17 +44,6 @@ export default function FixAiWritingPage() {
           </ol>
           <blockquote className={styles.usagePrompt}>Rewrite my draft using the attached writing guide. Preserve the meaning and factual qualifications. Return the revised text.</blockquote>
           <p className={styles.sectionCopy}>Review the result against your source. Check facts, citations, and any change in meaning before publishing.</p>
-        </section>
-
-        <section className={styles.exampleSection} aria-labelledby="example-title">
-          <div>
-            <h2 id="example-title" className={styles.sectionTitle}>Start with the sentence.</h2>
-            <p className={styles.sectionCopy}>
-              Remove the words that delay the point. Keep the cause of the delay exactly as stated.
-              An edit should improve the wording without inventing a different story.
-            </p>
-          </div>
-          <WritingEditExample />
         </section>
 
         <section className={styles.contents} aria-labelledby="contents-title">
