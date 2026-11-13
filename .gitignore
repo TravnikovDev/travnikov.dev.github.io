@@ -62,6 +62,8 @@ typings/
 
 .cache
 **/.cache
+.codex-pdf-cache/
+/editorial/
 public
 
 .idea
