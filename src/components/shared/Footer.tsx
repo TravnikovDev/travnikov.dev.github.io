@@ -20,6 +20,12 @@ const Footer: React.FC = () => {
 
           <Box className={styles.linkColumns}>
             <Box className={styles.linkGroup}>
+              <Text className={styles.linkTitle}>Resources</Text>
+              <Anchor href="/fix-ai-writing/" className={styles.link}>
+                Fix AI Writing
+              </Anchor>
+            </Box>
+            <Box className={styles.linkGroup}>
               <Text className={styles.linkTitle}>Socials</Text>
               <Anchor
                 href="https://www.linkedin.com/in/roman-travnikov/"

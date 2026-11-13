@@ -303,8 +303,12 @@ export const onPostBuild: GatsbyNode['onPostBuild'] = async ({ graphql, reporter
     s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   // 404s and Gatsby's internal shells are not content
-  const pages = result.data.allSitePage.nodes
-    .map((n) => n.path)
+  const pages = [...new Set([
+    ...result.data.allSitePage.nodes.map((n) => n.path),
+    // These public resources are copied from static/, outside Gatsby's page registry.
+    '/downloads/fix-ai-writing/',
+    '/downloads/fix-ai-writing.pdf',
+  ])]
     .filter((p) => !/^\/(404|dev-404-page|offline-plugin)/.test(p))
     .sort();
 

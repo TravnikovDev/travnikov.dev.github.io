@@ -5,6 +5,7 @@ import { SEO } from "../utils/seo/SEO";
 import HeroSection from "../components/landing/HeroSection";
 import { LandingSection } from "../components/landing/TimelineSection";
 import ShowcaseGrid from "../components/landing/ShowcaseGrid";
+import FixAiWritingPromo from "../components/resources/FixAiWritingPromo";
 import { FaBoxes, FaRobot, FaTools, FaMicrochip } from "react-icons/fa";
 import {
   SiTypescript,
@@ -146,6 +147,7 @@ export default function IndexPage({ data }: IndexPageProps) {
         {/* Full-bleed "book": sections become facing pages, two to a spread on
             desktop, single column below. */}
         <Box className={styles.book}>
+        <FixAiWritingPromo />
         {insights.length > 0 && (
         <section className={styles.sectionRight} data-sheet>
           <LandingSection

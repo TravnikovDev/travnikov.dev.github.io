@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Download Fix AI Writing | Roman Travnikov</title>
+    <meta name="description" content="Download Fix AI Writing by Roman Travnikov as a PDF. Editing rules for plain English, factual accuracy, and source checking.">
+    <link rel="canonical" href="https://travnikov.dev/downloads/fix-ai-writing/">
+    <style>
+      :root { color-scheme: light; font-family: system-ui, sans-serif; color: #29323a; background: #f4efe6; }
+      body { margin: 0; padding: clamp(24px, 6vw, 80px); }
+      main { max-width: 680px; margin: 10vh auto; }
+      .brand { color: #365f66; font-size: 14px; }
+      h1 { font-family: Georgia, serif; font-weight: 400; font-size: clamp(36px, 6vw, 60px); line-height: 1.1; margin: 36px 0 24px; }
+      p { font-size: 18px; line-height: 1.6; max-width: 58ch; }
+      a { color: #365f66; text-underline-offset: .2em; }
+      .download { display: inline-block; padding: 14px 22px; margin: 14px 0; background: #365f66; color: #fff; border-radius: 4px; text-decoration: none; font-weight: 600; }
+      a:focus-visible { outline: 3px solid #b67b40; outline-offset: 5px; }
+      .note { font-size: 15px; color: #586770; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="brand" href="https://travnikov.dev/fix-ai-writing/">About the guide / travnikov.dev</a>
+      <h1>Fix AI Writing</h1>
+      <p>Edit AI-generated text with 74 rules for direct prose and factual accuracy.</p>
+      <p id="download-status" role="status">Use the link below to save your copy.</p>
+      <a id="download" class="download" href="../fix-ai-writing.pdf" download="fix-ai-writing.pdf" type="application/pdf">Download the PDF</a>
+      <p class="note"><a href="../fix-ai-writing.pdf" type="application/pdf">Read the PDF in your browser</a></p>
+      <p class="note">Public edition: 13 November 2026. Created by <a href="https://travnikov.dev/">Roman Travnikov</a>.</p>
+    </main>
+    <script>
+      // One same-origin download attempt per navigation; keep the visible link as fallback.
+      document.getElementById('download-status').textContent =
+        'Your download should start shortly. If it does not, use the download link.';
+      document.getElementById('download').click();
+    </script>
+  </body>
+</html>

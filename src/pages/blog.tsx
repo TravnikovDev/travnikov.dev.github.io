@@ -4,6 +4,7 @@ import BaseLayout from "../layouts/BaseLayout";
 import ThreeDBackground from "../components/3d/3dBackground";
 import { SEO } from "../utils/seo/SEO";
 import * as styles from "./blog.module.css";
+import * as resourceStyles from "../components/resources/WritingResource.module.css";
 
 interface BlogPageProps extends PageProps {
   data: {
@@ -42,6 +43,11 @@ export default function BlogPage({ data }: BlogPageProps) {
             What I learn shipping real systems.
           </p>
         </header>
+
+        <Link to="/fix-ai-writing/" className={resourceStyles.insightsLink}>
+          <strong>Fix AI Writing</strong>
+          <span>A free PDF guide to editing AI-generated text <span aria-hidden="true">↗</span></span>
+        </Link>
 
         <div className={styles.list}>
           {articles.map((article, index) => (
