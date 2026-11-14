@@ -152,6 +152,7 @@ export default function IndexPage({ data }: IndexPageProps) {
           <LandingSection
             title="Recent Insights"
             description="Fresh thinking across automation, performance, and technical leadership."
+            className={styles.insightsSection}
           >
             <Box className={styles.insightsList}>
               {insights.map((insight) => (
@@ -161,8 +162,7 @@ export default function IndexPage({ data }: IndexPageProps) {
                   className={styles.insightItem}
                 >
                   {insight.coverUrl && (
-                    /* decorative: the row's anchor text is already the title,
-                       so a described thumbnail would only pad it */
+                    /* The linked title already names this decorative thumbnail. */
                     <img
                       className={styles.insightCover}
                       src={insight.coverUrl}
@@ -172,17 +172,15 @@ export default function IndexPage({ data }: IndexPageProps) {
                       height={700}
                     />
                   )}
-                  <Box>
-                    <Text size="sm" c="dimmed">
-                      {insight.date}
-                    </Text>
-                    <Text className={styles.insightTitle}>
+                  <Box className={styles.insightContent}>
+                    <Text component="h3" className={styles.insightTitle}>
                       {insight.title}
                     </Text>
+                    <Text className={styles.insightMeta}>
+                      <span>{insight.date}</span>
+                      <span>{insight.timeToRead} min read</span>
+                    </Text>
                   </Box>
-                  <Text size="sm" c="dimmed">
-                    {insight.timeToRead} min read
-                  </Text>
                 </Link>
               ))}
             </Box>
@@ -424,7 +422,7 @@ export const query = graphql`
         siteTitle
       }
     }
-    allBlogPost(sort: { date: DESC }, limit: 3) {
+    allBlogPost(sort: { date: DESC }, limit: 6) {
       nodes {
         id
         timeToRead
