@@ -19,6 +19,10 @@ interface BlogTemplateProps extends PageProps {
       excerpt: string;
       coverUrl: string | null;
       coverAlt: string | null;
+      coverImageUrl: string | null;
+      coverSrcSet: string | null;
+      coverWidth: number | null;
+      coverHeight: number | null;
       html: string;
     };
     readNext: {
@@ -58,10 +62,15 @@ export default function BlogTemplate({ data }: BlogTemplateProps) {
         {article.coverUrl && (
           <img
             className={styles.cover}
-            src={article.coverUrl}
+            src={article.coverImageUrl ?? article.coverUrl}
+            srcSet={article.coverSrcSet ?? undefined}
+            sizes="(max-width: 768px) 92vw, (max-width: 908px) 82vw, 740px"
             alt={article.coverAlt ?? ""}
-            width={1400}
-            height={700}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            width={article.coverWidth ?? 1400}
+            height={article.coverHeight ?? 700}
           />
         )}
 
@@ -179,6 +188,10 @@ export const query = graphql`
       excerpt
       coverUrl
       coverAlt
+      coverImageUrl
+      coverSrcSet
+      coverWidth
+      coverHeight
       html
     }
     readNext: allBlogPost(

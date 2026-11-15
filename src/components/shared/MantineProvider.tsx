@@ -4,7 +4,7 @@ import {
   createTheme,
   CSSVariablesResolver,
 } from "@mantine/core";
-import "@mantine/core/styles.css";
+import "../../mantine.css";
 import { theme as customTheme, auraColors } from "../../theme";
 
 // Helper function to convert hex to RGB

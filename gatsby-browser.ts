@@ -1,7 +1,6 @@
 import React from "react";
 import type { GatsbyBrowser } from "gatsby";
 import { MantineProvider } from "./src/components/shared/MantineProvider";
-import '@mantine/core/styles.css';
 // Self-hosted fonts (see docs/DESIGN_VISION.md typography roles)
 import '@fontsource-variable/inter';
 import '@fontsource-variable/fraunces';

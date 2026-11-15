@@ -1,0 +1,25 @@
+/* Only the components used by this site, including their internal dependencies.
+   Import the reset first. The full Mantine stylesheet includes every widget. */
+@import '@mantine/core/styles/global.css';
+@import '@mantine/core/styles/UnstyledButton.css';
+@import '@mantine/core/styles/VisuallyHidden.css';
+@import '@mantine/core/styles/Paper.css';
+@import '@mantine/core/styles/Group.css';
+@import '@mantine/core/styles/Loader.css';
+@import '@mantine/core/styles/Overlay.css';
+@import '@mantine/core/styles/CloseButton.css';
+@import '@mantine/core/styles/ModalBase.css';
+@import '@mantine/core/styles/ScrollArea.css';
+@import '@mantine/core/styles/AppShell.css';
+@import '@mantine/core/styles/Container.css';
+@import '@mantine/core/styles/Anchor.css';
+@import '@mantine/core/styles/Text.css';
+@import '@mantine/core/styles/Title.css';
+@import '@mantine/core/styles/Burger.css';
+@import '@mantine/core/styles/Button.css';
+@import '@mantine/core/styles/Card.css';
+@import '@mantine/core/styles/Image.css';
+@import '@mantine/core/styles/AspectRatio.css';
+@import '@mantine/core/styles/Center.css';
+@import '@mantine/core/styles/Stack.css';
+@import '@mantine/core/styles/Modal.css';

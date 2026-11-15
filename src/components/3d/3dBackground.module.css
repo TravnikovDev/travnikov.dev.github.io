@@ -8,5 +8,9 @@
   pointer-events: auto;
   overflow: hidden;
   /* matches the WebGL clear colour so there's no dark flash before init */
-  background-color: var(--canvas);
+  background:
+    radial-gradient(ellipse at 20% 75%, #6a9c97 0%, transparent 58%),
+    radial-gradient(ellipse at 80% 20%, #e0c4ae 0%, transparent 55%),
+    radial-gradient(ellipse at 55% 45%, #a5cde0 0%, transparent 65%),
+    var(--canvas);
 }

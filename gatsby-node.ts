@@ -1,6 +1,7 @@
 import { GatsbyNode } from 'gatsby';
 import path from 'path';
 import { marked } from 'marked';
+import { articleCover } from './src/utils/article-covers';
 
 // Content comes from Strapi v5 (see docs/CMS.md). Sourcing is tolerant-empty:
 // without STRAPI_API_URL the build succeeds with zero content (so local
@@ -55,6 +56,24 @@ const renderMarkdown = (body: string): { html: string; timeToRead: number } => {
   return { html, timeToRead: Math.max(1, Math.round(words / 200)) };
 };
 
+export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
+  getConfig, actions,
+}) => {
+  const config = getConfig();
+  // Gatsby inlines fonts under 10 KB by default. With Fontsource this embeds
+  // unused language subsets and WOFF fallbacks into every page's critical CSS.
+  // Keep unicode-range selection, but let the browser fetch only needed files.
+  for (const rule of config.module.rules) {
+    if (!rule.test?.test?.('font.woff2') || !Array.isArray(rule.use)) continue;
+    for (const loader of rule.use) {
+      if (loader.loader?.includes('url-loader')) {
+        loader.options = { ...loader.options, limit: 0 };
+      }
+    }
+  }
+  actions.replaceWebpackConfig(config);
+};
+
 export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
   actions,
   createNodeId,
@@ -105,6 +124,14 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
       };
     };
 
+    const covers = new Map<string, Awaited<ReturnType<typeof articleCover>>>();
+    // Bound both network and encoder concurrency on CI runners.
+    for (let offset = 0; offset < articles.length; offset += 4) {
+      await Promise.all(articles.slice(offset, offset + 4).map(async entry => {
+        covers.set(entry.documentId, await articleCover(entry.cover, STRAPI_URL));
+      }));
+    }
+
     for (const entry of articles) {
       const { html, timeToRead } = renderMarkdown(str(entry.body));
       makeNode('BlogPost', entry, {
@@ -118,6 +145,7 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         excerpt: str(entry.excerpt),
         tags: strArr(entry.tags),
         ...media(entry.cover),
+        ...covers.get(entry.documentId),
         html,
         timeToRead,
       });
@@ -172,6 +200,10 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
         tags: [String]
         coverUrl: String
         coverAlt: String
+        coverImageUrl: String
+        coverSrcSet: String
+        coverWidth: Int
+        coverHeight: Int
         html: String
         timeToRead: Int
       }

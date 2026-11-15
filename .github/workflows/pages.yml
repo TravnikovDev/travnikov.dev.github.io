@@ -78,6 +78,13 @@ jobs:
             ${{ runner.os }}-gatsby-cache-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Restore article cover derivatives
+        uses: actions/cache@v4
+        with:
+          path: .asset-cache/article-covers
+          key: ${{ runner.os }}-article-covers-${{ hashFiles('src/utils/article-covers.ts', 'package-lock.json') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-article-covers-${{ hashFiles('src/utils/article-covers.ts', 'package-lock.json') }}-
       - name: Type check
         run: ${{ steps.detect-package-manager.outputs.manager }} run typecheck
       - name: Test

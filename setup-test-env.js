@@ -6,21 +6,23 @@ global.___loader = {
 };
 
 // Mock Gatsby's window.location with a writable object
-Object.defineProperty(window, "location", {
-  writable: true,
-  value: {
-    pathname: "/",
-  },
-});
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, "location", {
+    writable: true,
+    value: {
+      pathname: "/",
+    },
+  });
 
-// Mock matchMedia to avoid issues with certain components that use it
-window.matchMedia = window.matchMedia || function() {
-  return {
-    matches: false,
-    addListener: function() {},
-    removeListener: function() {}
+  // Mock matchMedia to avoid issues with certain components that use it
+  window.matchMedia = window.matchMedia || function() {
+    return {
+      matches: false,
+      addListener: function() {},
+      removeListener: function() {}
+    };
   };
-};
 
-// Mock scroll behavior
-window.scrollTo = jest.fn();
+  // Mock scroll behavior
+  window.scrollTo = jest.fn();
+}

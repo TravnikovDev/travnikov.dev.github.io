@@ -9,16 +9,18 @@ global.ResizeObserver = class ResizeObserver {
 };
 
 // Mock window.scrollTo
-window.scrollTo = jest.fn();
+if (typeof window !== 'undefined') {
+  window.scrollTo = jest.fn();
 
-// Mock matchMedia
-window.matchMedia = query => ({
-  matches: false,
-  media: query,
-  onchange: null,
-  addListener: jest.fn(),
-  removeListener: jest.fn(),
-  addEventListener: jest.fn(),
-  removeEventListener: jest.fn(),
-  dispatchEvent: jest.fn(),
-});
+  // Mock matchMedia
+  window.matchMedia = query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  });
+}

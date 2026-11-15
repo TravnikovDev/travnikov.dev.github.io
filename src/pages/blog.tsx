@@ -19,6 +19,10 @@ interface BlogPageProps extends PageProps {
         tags: string[] | null;
         coverUrl: string | null;
         coverAlt: string | null;
+        coverImageUrl: string | null;
+        coverSrcSet: string | null;
+        coverWidth: number | null;
+        coverHeight: number | null;
       }[];
     };
   };
@@ -63,14 +67,20 @@ export default function BlogPage({ data }: BlogPageProps) {
               {article.coverUrl && (
                 <img
                   className={styles.itemCover}
-                  src={article.coverUrl}
+                  src={article.coverImageUrl ?? article.coverUrl}
+                  srcSet={article.coverSrcSet ?? undefined}
+                  sizes={index === 0
+                    ? "(max-width: 768px) 92vw, (max-width: 908px) 82vw, 724px"
+                    : "(max-width: 768px) 92vw, (max-width: 1024px) 724px, 188px"}
                   /* decorative: the row is one link and its anchor text is
                      already the title, so a described thumbnail only pads it.
                      The article page shows the same image with its real alt. */
                   alt=""
-                  loading="lazy"
-                  width={1400}
-                  height={700}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchPriority={index === 0 ? "high" : undefined}
+                  decoding="async"
+                  width={article.coverWidth ?? 1400}
+                  height={article.coverHeight ?? 700}
                 />
               )}
               <span className={styles.itemMeta}>
@@ -124,6 +134,10 @@ export const query = graphql`
         tags
         coverUrl
         coverAlt
+        coverImageUrl
+        coverSrcSet
+        coverWidth
+        coverHeight
       }
     }
   }
