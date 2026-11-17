@@ -2,6 +2,7 @@ import { GatsbyNode } from 'gatsby';
 import path from 'path';
 import { marked } from 'marked';
 import { articleCover } from './src/utils/article-covers';
+import { buildRelatedArticleIds } from './src/utils/related-articles';
 
 // Content comes from Strapi v5 (see docs/CMS.md). Sourcing is tolerant-empty:
 // without STRAPI_API_URL the build succeeds with zero content (so local
@@ -132,6 +133,16 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
       }));
     }
 
+    const relatedArticles = buildRelatedArticleIds(articles.map(entry => ({
+      id: entry.documentId,
+      slug: str(entry.slug),
+      title: str(entry.title),
+      excerpt: str(entry.excerpt),
+      body: str(entry.body),
+      tags: strArr(entry.tags),
+      date: str(entry.date) || str(entry.publishedAt),
+    })));
+
     for (const entry of articles) {
       const { html, timeToRead } = renderMarkdown(str(entry.body));
       makeNode('BlogPost', entry, {
@@ -144,6 +155,8 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         modified: str(entry.updatedAt) || str(entry.date),
         excerpt: str(entry.excerpt),
         tags: strArr(entry.tags),
+        relatedArticleIds: (relatedArticles.get(entry.documentId) ?? [])
+          .map(id => createNodeId(`BlogPost-${id}`)),
         ...media(entry.cover),
         ...covers.get(entry.documentId),
         html,
@@ -198,6 +211,7 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
         modified: Date @dateformat
         excerpt: String
         tags: [String]
+        relatedArticles: [BlogPost!]! @link(by: "id", from: "relatedArticleIds")
         coverUrl: String
         coverAlt: String
         coverImageUrl: String

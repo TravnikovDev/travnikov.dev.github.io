@@ -128,6 +128,21 @@ Research / editing / CMS admin ──► Strapi (draft) ──► Publish
                                     GitHub Actions build (pulls Strapi) ──► GH Pages
 ```
 
+### Read next
+
+Each build ranks related published articles in `src/utils/related-articles.ts`.
+It prefers the same reading topic, then compares distinctive words in titles,
+summaries, slugs, tags, and bodies. Titles and summaries have more weight than
+body text; common words and broad tags contribute less. Dates break ties.
+If there are no meaningful matches, recent articles provide a fallback within
+the topic when available. The section shows up to three unique article URLs,
+excluding the current page, and may show fewer for a small topic.
+
+The links are generated in the article HTML through Gatsby's `relatedArticles`
+relationship. No browser requests or model calls are needed. Publishing,
+unpublishing, or editing an article refreshes the recommendations on the next
+website build; no recommendation fields need to be maintained in Strapi.
+
 ## Environment
 
 | Variable | Where | Purpose |

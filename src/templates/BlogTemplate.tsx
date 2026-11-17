@@ -24,9 +24,7 @@ interface BlogTemplateProps extends PageProps {
       coverWidth: number | null;
       coverHeight: number | null;
       html: string;
-    };
-    readNext: {
-      nodes: {
+      relatedArticles: {
         id: string;
         title: string;
         slug: string;
@@ -40,7 +38,7 @@ interface BlogTemplateProps extends PageProps {
 export default function BlogTemplate({ data }: BlogTemplateProps) {
   useArticleEngagement(data.blogPost.slug);
   const article = data.blogPost;
-  const readNext = data.readNext?.nodes ?? [];
+  const readNext = article.relatedArticles ?? [];
 
   return (
     <BaseLayout>
@@ -193,13 +191,7 @@ export const query = graphql`
       coverWidth
       coverHeight
       html
-    }
-    readNext: allBlogPost(
-      filter: { id: { ne: $id } }
-      sort: { date: DESC }
-      limit: 3
-    ) {
-      nodes {
+      relatedArticles {
         id
         title
         slug
